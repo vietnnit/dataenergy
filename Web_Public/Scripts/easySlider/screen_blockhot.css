@@ -1,0 +1,1342 @@
+﻿/* Easy Slider */
+#slider_blockhot_1 ul, #slider_blockhot_1 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_1, #slider_blockhot_1 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_1
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_1
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_1
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_1 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_1 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_blockhot_2 ul, #slider_blockhot_2 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_2, #slider_blockhot_2 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_2
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_2
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_2
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_blockhot_3 ul, #slider_blockhot_3 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_3, #slider_blockhot_3 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_3
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_3
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_3
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_3 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_3 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_4 ul, #slider_blockhot_4 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_4, #slider_blockhot_4 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_4
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_4
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_4
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_4 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_4 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_5 ul, #slider_blockhot_5 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_5, #slider_blockhot_5 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_5
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_5
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_5
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_5 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_5 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_6 ul, #slider_blockhot_6 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_6, #slider_blockhot_6 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_6
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_6
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_6
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_6 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_6 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_7 ul, #slider_blockhot_7 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_7, #slider_blockhot_7 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_7
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_7
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_7
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_7 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_7 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_8 ul, #slider_blockhot_8 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_8, #slider_blockhot_8 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_8
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_8
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_8
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_8 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_8 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_9 ul, #slider_blockhot_9 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_9, #slider_blockhot_9 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_9
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_9
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_9
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_9 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_9 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_10 ul, #slider_blockhot_10 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_10, #slider_blockhot_10 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_10
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_10
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_10
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_10 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_10 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_11 ul, #slider_blockhot_11 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_11, #slider_blockhot_11 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_11
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_11
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_11
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_11 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_11 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_12 ul, #slider_blockhot_12 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_12, #slider_blockhot_12 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_12
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_12
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_12
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_12 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_12 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_13 ul, #slider_blockhot_13 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_13, #slider_blockhot_13 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_13
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_13
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_13
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_13 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_13 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_14 ul, #slider_blockhot_14 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_14, #slider_blockhot_14 li
+{
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_14
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_14
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_14
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_14 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_14 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_15 ul, #slider_blockhot_15 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_15, #slider_blockhot_15 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_15
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_15
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_15
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_15 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_15 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_16 ul, #slider_blockhot_16 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_16, #slider_blockhot_16 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_16
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_16
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_16
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_16 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_16 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_blockhot_17 ul, #slider_blockhot_17 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_17, #slider_blockhot_17 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_17
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_17
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_17
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_17 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_17 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_blockhot_18 ul, #slider_blockhot_18 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_18, #slider_blockhot_18 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_18
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_18
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_18
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_18 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_18 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_19 ul, #slider_blockhot_19 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_19, #slider_blockhot_19 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_19
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_19
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_19
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_19 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_19 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_blockhot_20 ul, #slider_blockhot_20 li
+{
+	margin: -420px 0 0 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_blockhot_20, #slider_blockhot_20 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 165px;
+	height: 420px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_blockhot_20
+{
+	margin: 0;
+	position: relative;
+	height:15px;
+	padding-top:5px;
+}
+
+
+
+#prevBtn_blockhot_20
+{
+	left:125px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_blockhot_20
+{
+	left:150px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_blockhot_20 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn_blockhot_20 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('v_next_btn.png') no-repeat 0 0;
+}

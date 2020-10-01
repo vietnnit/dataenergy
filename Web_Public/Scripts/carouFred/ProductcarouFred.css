@@ -1,0 +1,159 @@
+﻿.image_carousel_product
+{
+	padding: 10px 0 5px 20px;
+	position: relative;
+
+}
+.image_carousel_product img
+{
+	border: 0px solid #ccc;
+	background-color: white;
+	padding: 0px;
+	margin: 0px;
+	display: block;
+	float: left;
+}
+a.product_prev, a.product_next
+{
+	background: url(miscellaneous_sprite.png) no-repeat transparent;
+	width: 45px;
+	height: 50px;
+	display: block;
+	position: absolute;
+	top: 65px;
+}
+a.product_prev
+{
+	left: -15px;
+	background-position: 0 0;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	opacity: 0;
+}
+a.product_prev:hover
+{
+	background-position: 0 -50px;
+	filter: alpha(opacity=100);
+	-moz-opacity: 1;
+	-khtml-opacity:1;
+	opacity: 1;
+}
+a.product_prev.disabled
+{
+	background-position: 0 -100px !important;
+	filter: alpha(opacity=10);
+	-moz-opacity: 0.1;
+	-khtml-opacity: 0.1;
+	opacity: 0.1;
+}
+a.product_next
+{
+	right: -15px;
+	background-position: -50px 0;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	-khtml-opacity: 0;
+	opacity: 0;
+}
+a.product_next:hover
+{
+	background-position: -50px -50px;
+	filter: alpha(opacity=100);
+	-moz-opacity: 1;
+	-khtml-opacity:1;
+	opacity: 1;
+}
+a.product_next.disabled
+{
+	background-position: -50px -100px !important;
+	filter: alpha(opacity=10);
+	-moz-opacity: 0.1;
+	-khtml-opacity: 0.1;
+	opacity: 0.1;
+}
+a.product_prev.disabled, a.product_next.disabled
+{
+	cursor: default;
+}
+
+a.product_prev span, a.product_next span
+{
+	display: none;
+}
+.product_pagination
+{
+	text-align: center;
+}
+.product_pagination a
+{
+	background: url(miscellaneous_sprite.png) 0 -300px no-repeat transparent;
+	width: 15px;
+	height: 15px;
+	margin: 0 5px 0 0;
+	display: inline-block;
+}
+.product_pagination a.selected
+{
+	background-position: -25px -300px;
+	cursor: default;
+}
+.product_pagination a span
+{
+	display: none;
+}
+.clearfix
+{
+	float: none;
+	clear: both;
+}
+
+.caroufredsel_wrapper
+{
+	height: 160px;
+	width:100%
+}
+.box-content-main_product .image_carousel_product .caroufredsel_wrapper_product
+{
+	width:673px !important;	
+}
+.box-carousel_product
+{
+	display: none;
+	-webkit-backface-visibility: hidden;
+	width: 120px;
+	float: left;
+	display: block;
+	margin: 0;
+	padding: 0 18px;
+}
+/* Hide the slides before the JS is loaded. Avoids image jumping */
+.box-carousel_product img
+{
+	display: block;
+	width: 120px;
+	height:150px;
+}
+.box-carousel_product span
+{
+	text-transform: capitalize;
+}
+
+.box-carousel_product a
+{
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+	color:#000000;
+}
+
+.box-carousel_product .item-text
+{
+	width:120px;
+	text-align:center;
+}
+.box-carousel_product .item-text a
+{
+	color:#000000;
+}
+

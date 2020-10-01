@@ -1,0 +1,12 @@
+[core]
+	bare = true
+	repositoryformatversion = 0
+	filemode = false
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = http://116.212.37.59:8801/amitech/vets/dataenergy.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	pushurl = http://116.212.37.59:8801/amitech/vets/dataenergy.git
+[remote]
+	pushdefault = origin

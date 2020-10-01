@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+<link href="<%= ResolveUrl("~/") %>Scripts/ulSlide/css/ulSlide.css" rel="stylesheet" type="text/css" />
+<script src="<%= ResolveUrl("~/") %>Scripts/ulSlide/js/jquery.ulslide.min.js" type="text/javascript"></script>
+<ul id="ulslide_newshot">
+                            <li>
+                                Thông cáo báo chí Lễ biểu dương khen thưởng học sinh giỏi năm học 2013-2014 Tập đoàn Điện lực Việt Nam năm 2014
+                            </li>
+                            <li>
+                                Thông cáo báo chí Tình hình hoạt động đầu tư xây dựng và sản xuất kinh doanh tháng 7 năm 2014
+                            </li>
+                             <li>
+                                Thông cáo báo chí Lễ biểu dương khen thưởng học sinh giỏi năm học 2013-2014 Tập đoàn Điện lực Việt Nam năm 2014
+                            </li>
+                            <li>
+                                Thông cáo báo chí Tình hình hoạt động đầu tư xây dựng và sản xuất kinh doanh tháng 7 năm 2014
+                            </li>
+                             <li>
+                                Thông cáo báo chí Lễ biểu dương khen thưởng học sinh giỏi năm học 2013-2014 Tập đoàn Điện lực Việt Nam năm 2014
+                            </li>
+                            <li>
+                                Thông cáo báo chí Tình hình hoạt động đầu tư xây dựng và sản xuất kinh doanh tháng 7 năm 2014
+                            </li>
+                        </ul>
+
+                        <div class="ulslide-control">
+                            <a href="#" id="ulslide_prev" class="glyphicon glyphicon-chevron-left btn-control"></a>  <a href="#" id="ulslide_next" class="glyphicon glyphicon-chevron-right btn-control"></a>
+                        </div>
+
+
+ <script type="text/javascript">
+     $(function () {
+         $('#ulslide_newshot').ulslide({
+             weight: 'auto',
+             height: 'auto',
+             effect: {
+                 type: 'slide', // slide or fade
+                 axis: 'y',        // x, y
+                 showCount: 1
+             },
+             nextButton: '#ulslide_next',
+             prevButton: '#ulslide_prev',
+             duration: 800,
+             autoslide: 5000,
+             easing: 'easeOutBounce'
+         });
+     });
+ </script>
+</body>
+</html>

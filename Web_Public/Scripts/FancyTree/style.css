@@ -1,0 +1,115 @@
+
+html *
+{
+	/*margin: 0;
+	padding: 0;*/
+}
+
+#treeMenu
+{
+	width: 246px;
+	font: normal 12px Arial;
+}
+#treeMenu h2
+{
+	font: bold 20px Arial;
+	color: #454545;
+	margin-bottom: 12px;
+}
+#treeMenu ul
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#treeMenu ul li
+{
+	overflow: hidden;
+	background: #ececec;
+	border: solid 1px #fff;
+	margin: 4px 0;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+#treeMenu ul li span
+{
+	display: inline-block;
+	float: right;
+	width: 30px;
+	height: 30px;
+	background: url(treeSplit.png) no-repeat 100% 0;
+	cursor: pointer;
+}
+#treeMenu ul li a
+{
+	color: #000;
+	font: bold 13px Arial;
+	padding: 5px 10px;
+	display: inline-block;
+	text-decoration: none;
+	float: left;
+	line-height:24px;
+}
+#treeMenu ul li span.opened
+{
+	background-position: 100% -61px;
+}
+
+#treeMenu ul li div
+{
+	clear: both;
+	height: auto;
+}
+#treeMenu ul li li
+{
+	background: none;
+	border: 0;
+	margin: 0;
+	padding-left: 10px;
+	border-bottom: solid 1px #fff;
+	border-top: solid 1px #eee;
+	clear: both;
+	background:#f9f9f9;
+}
+#treeMenu ul li li a
+{
+	color: #333;
+	font:normal 12px Arial !important;
+	padding: 5px 0;
+	float: left;
+	width: auto;
+}
+#treeMenu ul li li a:hover
+{
+	text-decoration: none;
+	color: #0b55c4;
+}
+#treeMenu ul li li span
+{
+	float: left;
+	display: inline;
+	width: 15px;
+	height: 20px;
+	background-position: -10px -263px;
+	cursor: default;
+}
+#treeMenu ul li li span.closed
+{
+	background-position: -10px -131px;
+	cursor: pointer;
+}
+#treeMenu ul li li span.closed.opened
+{
+	background-position: -7px -197px;
+}
+
+#treeMenu ul li li li
+{
+	border: 0;
+}
+
+
+
+
+

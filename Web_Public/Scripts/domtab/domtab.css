@@ -1,0 +1,111 @@
+	div.domtab{
+			width:100%;
+			margin-top: 0px;
+		}
+		
+		ul.domtabs{
+			float:left;
+			width:100%;
+			margin: 0px;
+			padding: 0px;
+			list-style: none;			
+		}
+		
+		ul.domtabs li{
+			float:left;
+			padding:0px 2px 0px 0px;
+		}
+		
+		ul.domtabs a:link,
+		ul.domtabs a:visited,
+		ul.domtabs a:active,
+		ul.domtabs a:hover{
+			width:auto;
+			padding:.2em 1em;
+			display:block;
+			background:#dadada;
+			color:#000000;
+			font-weight:bold;
+			text-decoration:none;
+		}
+		html>body ul.domtabs a:link,
+		html>body ul.domtabs a:visited,
+		html>body ul.domtabs a:active,
+		html>body ul.domtabs a:hover{
+			height:auto;
+			padding: 8px;
+			-webkit-border-radius: 4px 4px 0px 0px;
+			-moz-border-radius: 4px 4px 0px 0px;
+			border-radius:4px 4px 0px 0px;
+		}
+		ul.domtabs a:hover{
+			background:#009ff0;
+			color: #ffffff;
+		}
+		div.domtab div{
+			clear:both;
+			width:auto;
+			background:#ffffff;
+			border: 5px solid #009ff0;
+			color:#000000;
+			padding:8px 8px 8px 0px;
+			-webkit-border-radius: 0px 4px 4px 4px;
+			-moz-border-radius: 0px 4px 4px 4px;
+			border-radius:0px 4px 4px 4px;
+		}
+		ul.domtabs li.active a:link,
+		ul.domtabs li.active a:visited,
+		ul.domtabs li.active a:active,
+		ul.domtabs li.active a:hover{
+			/*background: -webkit-linear-gradient(top, #00c9f0 0%,#009ff0 100%);
+		background: -moz-linear-gradient(top, #00c9f0 0%,#009ff0 100%);
+		background: -o-linear-gradient(top, #00c9f0 0%,#009ff0 100%);
+		background: -ms-linear-gradient(top, #00c9f0 0%,#009ff0 100%);
+		background: linear-gradient(top, #00c9f0 0%,#009ff0 100%);*/
+			color:#fff;
+			padding: 8px;
+			background:#009ff0;
+		}
+
+		#domtabprintview a:link,
+		#domtabprintview a:visited,
+		#domtabprintview a:active,
+		#domtabprintview a:hover{
+			color:#fff;
+			padding: 8px;
+		}
+		div.domtab div a:link,
+		div.domtab div a:visited,
+		div.domtab div a:active
+		{
+			color:#000000;
+			display:block;
+			font-size:12px;
+		}
+
+.tab1 {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+	
+.tab1 li {
+	background: url(list.jpg) no-repeat 0px 3px;
+	padding-left: 15px;
+	margin: 10px 0;
+}
+
+.tab1 li a:hover {
+	color: #003b85 !important;
+}
+
+.domtab h4 {
+	color: #003b85;
+	margin: 0px 0px 0px 15px;
+	padding: 0px;
+	}
+	
+	.bieudo {
+		margin: 8px 0px;
+		text-align: center;
+	}

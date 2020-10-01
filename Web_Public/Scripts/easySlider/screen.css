@@ -1,0 +1,201 @@
+/* Easy Slider */
+
+#slider .h1_tinmoi
+{
+	margin: 0;
+	padding: 0;
+}
+
+#slider .h1_tinmoi .a_tinmoi
+{
+	font-size: 12px;
+	font-weight: bold;
+	color: #123891;
+	text-decoration: none;
+	line-height: 18px;
+}
+
+#slider .h1_tinmoi .a_tinmoi:hover
+{
+	text-decoration: none;
+	color: #D40000;
+}
+#slider .p_tinmoi
+{
+	font-size: 12px;
+	font-weight: normal;
+	color: #656565;
+	padding: 5px 0px;
+	margin: 0;
+	line-height: 16px;
+}
+
+#slider .img_slider
+{
+	border: 1px solid #D3D3D3;
+	float: left;
+	margin: 0 10px 10px 0;
+	padding: 5px;
+	width: 150px;
+	height: 100px;
+}
+
+/* Easy Slider */
+#slider ul, #slider li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider, #slider li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 360px;
+	height: 120px;
+	overflow: hidden;
+}
+
+/*
+	#slider ul, #slider li,
+	#slider2 ul, #slider2 li{
+		margin:0;
+		padding:0;
+		list-style:none;
+		}
+	#slider2{margin-top:1em;}
+	#slider li, #slider2 li{ 
+		width:696px;
+		height:241px;
+		overflow:hidden; 
+		}	
+
+*/
+p#controls
+{
+	margin: 0;
+	position: relative;
+	height:25px;
+}
+
+
+
+#prevBtn, #nextBtn
+{
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn
+{
+	left:26px;
+	top:-21px;
+}
+
+#prevBtn a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('next_btn.png') no-repeat 0 0;
+}
+
+
+
+
+/* Silde 2*/
+/* Easy Slider */
+
+
+/* Easy Slider */
+#slider2 ul, #slider2 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider2, #slider2 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+/*
+	#slider ul, #slider li,
+	#slider2 ul, #slider2 li{
+		margin:0;
+		padding:0;
+		list-style:none;
+		}
+	#slider2{margin-top:1em;}
+	#slider li, #slider2 li{ 
+		width:696px;
+		height:241px;
+		overflow:hidden; 
+		}	
+
+*/
+p#controls2
+{
+	margin: 0;
+	position: relative;
+	height:25px;
+}
+
+
+
+#prevBtn2
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn2
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('back_btn.png') no-repeat 0 0;
+}
+
+#nextBtn2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('next_btn.png') no-repeat 0 0;
+}

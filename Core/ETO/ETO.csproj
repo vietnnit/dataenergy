@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2B7A7366-6CD4-468D-848F-15A7045A445A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ETO</RootNamespace>
+    <AssemblyName>ETO</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin.cs" />
+    <Compile Include="AdminRoles.cs" />
+    <Compile Include="Albums.cs" />
+    <Compile Include="AlbumsCate.cs" />
+    <Compile Include="AreaBO.cs" />
+    <Compile Include="AreaDTO.cs" />
+    <Compile Include="AuditReportBO.cs" />
+    <Compile Include="AuditReportDTO.cs" />
+    <Compile Include="BoilerBO.cs" />
+    <Compile Include="BoilerDTO.cs" />
+    <Compile Include="Brand.cs" />
+    <Compile Include="CateNews.cs" />
+    <Compile Include="CateNewsGroup.cs" />
+    <Compile Include="CateNewsGroupPermission.cs" />
+    <Compile Include="CateNewsPermission.cs" />
+    <Compile Include="CompressorBO.cs" />
+    <Compile Include="CompressorDTO.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Contact.cs" />
+    <Compile Include="ElectricMotorsBO.cs" />
+    <Compile Include="ElectricMotorsDTO.cs" />
+    <Compile Include="ElectricSupplyingBO.cs" />
+    <Compile Include="ElectricSupplyingDTO.cs" />
+    <Compile Include="ElectrictConsumeBO.cs" />
+    <Compile Include="ElectrictConsumeDTO.cs" />
+    <Compile Include="EnergyQuotaBO.cs" />
+    <Compile Include="EnergyQuotaDTO.cs" />
+    <Compile Include="EnterpriseHistoryBO.cs" />
+    <Compile Include="EnterpriseHistoryDTO.cs" />
+    <Compile Include="DistrictBO.cs" />
+    <Compile Include="DistrictDTO.cs" />
+    <Compile Include="DocumentTypeBO.cs" />
+    <Compile Include="DocumentTypeDTO.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="EnterpriseBO.cs" />
+    <Compile Include="EnterpriseDTO.cs" />
+    <Compile Include="EnterpriseYearBO.cs" />
+    <Compile Include="EnterpriseYearDTO.cs" />
+    <Compile Include="Faqs.cs" />
+    <Compile Include="FaqsCate.cs" />
+    <Compile Include="FuelBO.cs" />
+    <Compile Include="FuelDTO.cs" />
+    <Compile Include="FurnacesBO.cs" />
+    <Compile Include="FurnacesDTO.cs" />
+    <Compile Include="GiaiPhapBO.cs" />
+    <Compile Include="GiaiPhapDTO.cs" />
+    <Compile Include="GroupFuelBO.cs" />
+    <Compile Include="GroupFuelDTO.cs" />
+    <Compile Include="HitCounter.cs" />
+    <Compile Include="InfrastructureBO.cs" />
+    <Compile Include="InfrastructureDTO.cs" />
+    <Compile Include="IRoles.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="MeasurementBO.cs" />
+    <Compile Include="MeasurementDTO.cs" />
+    <Compile Include="MeasurementFuelBO.cs" />
+    <Compile Include="MeasurementFuelDTO.cs" />
+    <Compile Include="Member.cs" />
+    <Compile Include="MemberBO.cs" />
+    <Compile Include="MemberDTO.cs" />
+    <Compile Include="MenuLinks.cs" />
+    <Compile Include="Modules.cs" />
+    <Compile Include="Navigation.cs" />
+    <Compile Include="NewsApprovedComment.cs" />
+    <Compile Include="NewsCate.cs" />
+    <Compile Include="NewsComment.cs" />
+    <Compile Include="NewsEvent.cs" />
+    <Compile Include="NewsEventRelation.cs" />
+    <Compile Include="NewsGroup.cs" />
+    <Compile Include="NewsGroupFile.cs" />
+    <Compile Include="NewsLog.cs" />
+    <Compile Include="NewsRegister.cs" />
+    <Compile Include="NewsRelation.cs" />
+    <Compile Include="NewsTags.cs" />
+    <Compile Include="OfficeRelateBO.cs" />
+    <Compile Include="OfficeRelateDTO.cs" />
+    <Compile Include="Official.cs" />
+    <Compile Include="OfficialBO.cs" />
+    <Compile Include="OfficialDTO.cs" />
+    <Compile Include="OfficialFile.cs" />
+    <Compile Include="OperationAreaBO.cs" />
+    <Compile Include="OperationAreaDTO.cs" />
+    <Compile Include="Order.cs" />
+    <Compile Include="OrderDetail.cs" />
+    <Compile Include="OrganizationBO.cs" />
+    <Compile Include="OrganizationDTO.cs" />
+    <Compile Include="OtherFuelConsumeBO.cs" />
+    <Compile Include="OtherFuelConsumeDTO.cs" />
+    <Compile Include="PagingInfo.cs" />
+    <Compile Include="Permission.cs" />
+    <Compile Include="PhoneBook.cs" />
+    <Compile Include="Picture.cs" />
+    <Compile Include="PlanBO.cs" />
+    <Compile Include="PlanDTO.cs" />
+    <Compile Include="PlanTBBO.cs" />
+    <Compile Include="PlanTBDTO.cs" />
+    <Compile Include="PlanTKNLBO.cs" />
+    <Compile Include="PlanTKNLDTO.cs" />
+    <Compile Include="ProductBO.cs" />
+    <Compile Include="ProductCapacityBO.cs" />
+    <Compile Include="ProductCapacityDTO.cs" />
+    <Compile Include="ProductConsumeBO.cs" />
+    <Compile Include="ProductConsumeDTO.cs" />
+    <Compile Include="ProductDTO.cs" />
+    <Compile Include="ProductMeasurementBO.cs" />
+    <Compile Include="ProductMeasurementDTO.cs" />
+    <Compile Include="ProjectAreaBO.cs" />
+    <Compile Include="ProjectAreaDTO.cs" />
+    <Compile Include="ProjectArticleBO.cs" />
+    <Compile Include="ProjectArticleDTO.cs" />
+    <Compile Include="ProjectBO.cs" />
+    <Compile Include="ProjectDTO.cs" />
+    <Compile Include="ProjectTypeBO.cs" />
+    <Compile Include="ProjectTypeDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProTypeBO.cs" />
+    <Compile Include="ProTypeDTO.cs" />
+    <Compile Include="ProvinceBO.cs" />
+    <Compile Include="ProvinceDTO.cs" />
+    <Compile Include="RegionBO.cs" />
+    <Compile Include="RegionDTO.cs" />
+    <Compile Include="RegionProvinceBO.cs" />
+    <Compile Include="RegionProvinceDTO.cs" />
+    <Compile Include="Register.cs" />
+    <Compile Include="ReportAttachFileBO.cs" />
+    <Compile Include="ReportAttachFileDTO.cs" />
+    <Compile Include="ReportBO.cs" />
+    <Compile Include="ReportDTO.cs" />
+    <Compile Include="ReportFuelBO.cs" />
+    <Compile Include="ReportFuelDetailBO.cs" />
+    <Compile Include="ReportFuelDetailDTO.cs" />
+    <Compile Include="ReportFuelDTO.cs" />
+    <Compile Include="ReportLogBO.cs" />
+    <Compile Include="ReportLogDTO.cs" />
+    <Compile Include="ReportTemp2014BO.cs" />
+    <Compile Include="ReportTemp2014DTO.cs" />
+    <Compile Include="RoleCateBO.cs" />
+    <Compile Include="RoleCateDTO.cs" />
+    <Compile Include="SaveSolutionBO.cs" />
+    <Compile Include="SaveSolutionDTO.cs" />
+    <Compile Include="SYS_PageLayout.cs" />
+    <Compile Include="SYS_TemplatePage.cs" />
+    <Compile Include="SYS_Widget.cs" />
+    <Compile Include="SYS_WidgetPage.cs" />
+    <Compile Include="SYS_WidgetPageLayout.cs" />
+    <Compile Include="SYS_WidgetType.cs" />
+    <Compile Include="TestEquipmentBO.cs" />
+    <Compile Include="TestEquipmentDTO.cs" />
+    <Compile Include="TOEBO.cs" />
+    <Compile Include="TOEDTO.cs" />
+    <Compile Include="TOEYearBO.cs" />
+    <Compile Include="TOEYearDTO.cs" />
+    <Compile Include="UsingElectrictBO.cs" />
+    <Compile Include="UsingElectrictDTO.cs" />
+    <Compile Include="Videos.cs" />
+    <Compile Include="VideosCate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\ePower.Core.csproj">
+      <Project>{1B663B82-7DE8-42F2-91E5-66F69A24C824}</Project>
+      <Name>ePower.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

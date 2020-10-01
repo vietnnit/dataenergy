@@ -1,0 +1,451 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+
+
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+ 
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption 
+{
+    left:10%;
+    right:auto;
+    text-align:left;
+    padding:10px;
+    margin:0;
+    width:40%;
+    bottom:20px;
+  
+}
+
+.carousel-caption h1
+{
+    font: normal 22px Arial;
+    color: #fff;
+    padding: 7px 15px;
+    margin-bottom: 0px;
+    display: inline-block;
+    background: rgba(193,42,141,0.95);
+    width:100%;
+}
+
+.whitealpha {background:rgb(255,255,255); background:rgba(255,255,255,0.95); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff,endColorstr=#e5ffffff); -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff,endColorstr=#e5ffffff)";}
+.blurb { padding:10px 15px; color:#000; text-align:left;text-shadow:none;font:normal 16px Arial;line-height:25px;}
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 300px;
+  background-color: #ddd;
+  overflow:hidden;
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+}
+
+/* CSS used here will be applied after bootstrap.css */@-webkit-keyframes rotateInDownLeft {
+  0% {
+
+transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-webkit-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-moz-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-o-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-ms-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+opacity: 0;
+  }
+
+  100% {
+    -webkit-transform-origin: left right;
+                transform-origin: left right;
+    opacity: 1;
+  }
+}
+
+@keyframes rotateInDownLeft {
+  0% {
+      transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-webkit-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-moz-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-o-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+-ms-transform: rotate(0deg) scale(1) skew(1deg) translate(200%);
+    opacity: 0;
+  }
+
+  100% {
+    -webkit-transform-origin: left right;
+                transform-origin: left right;
+    opacity: 1;
+  }
+}
+
+.rotateInDownLeft {
+  -webkit-animation-name: rotateInDownLeft;
+          animation-name: rotateInDownLeft;
+  -webkit-animation-duration: 2s;  
+          animation-duration: 2s;       
+}
+
+
+.carousel-control.left
+{
+    z-index:9999 !important;
+    background:none;
+}
+
+.carousel-control.right
+{
+    z-index:9999 !important;
+    background:none;
+}
+a.carousel-control.left
+{
+    color:#f5f5f5;
+}
+a.carousel-control.right
+{
+    color:#f5f5f5;
+}
+.carousel-indicators
+{
+    z-index:9999 ;
+    bottom: -8px;
+}
+
+.carousel-control
+{
+    width:8%;
+}
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+@media (max-width: 480px) {
+  .carousel {
+      height: 180px;
+      overflow:hidden;
+    }
+    .carousel .item {
+  height: 180px;
+  overflow:hidden;
+
+}
+.carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+.carousel-caption 
+{
+    left:0;
+    width:100%;
+    padding:0;
+    bottom:0;
+  
+}
+
+.carousel-caption h1
+{
+    font: normal 16px Arial;
+    color: #fff;
+    padding: 5px 5px;
+    margin: 0px;
+    display: inline-block;
+    background: rgba(15,109,198,0.9);
+    width:100%;
+}
+.carousel-indicators
+{
+    display:none;
+}
+
+/*SliderNews*/
+.hotnews_Slider .carousel {
+      height: 200px;
+      overflow:hidden;
+    }
+.hotnews_Slider .carousel .item {
+  height: 200px;
+  overflow:hidden;
+
+}
+.hotnews_Slider .carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+
+
+
+
+}
+@media (min-width: 480px) and (max-width: 768px) {
+  .carousel {
+      height: 220px;
+      overflow:hidden;
+    }
+    .carousel .item {
+  height: 220px;
+  overflow:hidden;
+
+}
+ .carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+
+  /* Bump up size of carousel content */
+  
+  .carousel-caption 
+{
+    left:10%;
+    width:60%;
+    padding:0;
+    bottom:20px;
+  
+}
+
+.carousel-caption h1
+{
+    font: normal 18px Arial;
+    color: #fff;
+    padding: 5px 5px;
+    margin: 0px;
+    display: inline-block;
+    background: rgba(15,109,198,0.9);
+}
+
+
+/*Slider News*/
+.hotnews_Slider .carousel {
+      height: 300px;
+      overflow:hidden;
+    }
+.hotnews_Slider .carousel .item {
+  height: 300px;
+  overflow:hidden;
+
+}
+.hotnews_Slider .carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+
+  /* Bump up size of carousel content */
+  
+
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .carousel {
+      height: 270px;
+      overflow:hidden;
+    }
+    .carousel .item {
+  height: 270px;
+  overflow:hidden;
+
+}
+.carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+.carousel-caption 
+{
+    left:10%;
+    width:50%;
+    padding:0;
+}
+
+.carousel-caption h1
+{
+    font: normal 18px Arial;
+    color: #fff;
+    padding: 8px 15px;
+    margin-bottom: 5px;
+    display: inline-block;
+    background: rgba(15,109,198,0.9);
+}
+.blurb 
+{
+    padding: 8px 15px;
+}
+
+/*Slider News */
+.hotnews_Slider .carousel {
+      height: 270px;
+      overflow:hidden;
+    }
+.hotnews_Slider  .carousel .item {
+  height: 270px;
+  overflow:hidden;
+
+}
+.hotnews_Slider .carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+
+}
+@media (min-width: 992px) {
+  .carousel {
+      height: 300px;
+      overflow:hidden;
+    }
+    .carousel .item {
+  height: 300px;
+  overflow:hidden;
+
+}
+.carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+
+/*Slider News*/
+.hotnews_Slider .carousel {
+      height: 270px;
+      overflow:hidden;
+    }
+.hotnews_Slider  .carousel .item {
+  height: 270px;
+  overflow:hidden;
+
+}
+.hotnews_Slider .carousel .item img
+ {
+     height:100%;
+     max-width: none;
+ }
+}
+@media (min-width: 1200px) {
+  .carousel {
+      height: 300px;
+      overflow:hidden;
+    }
+    .carousel .item {
+  height: 300px;
+  overflow:hidden;
+
+}
+/*Slider News*/
+.hotnews_Slider .carousel {
+      height: 270px;
+      overflow:hidden;
+    }
+.hotnews_Slider .carousel .item {
+  height: 270px;
+  overflow:hidden;
+
+}
+
+}
+
+
+
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.hotnews_Slider .carousel {
+ 
+}
+/* Since positioning the image, we need to help out the caption */
+.hotnews_Slider .carousel-caption 
+{
+    left:0%;
+    right:auto;
+    text-align:left;
+    padding:5px;
+    margin:0;
+    width:100%;
+    bottom:0px;
+    z-index:9999 !important;
+  
+}
+
+.hotnews_Slider .carousel-caption h1
+{
+    font: normal 18px Arial;
+    color: #fff;
+    padding: 10px 15px 15px 15px;
+    margin-bottom: 0px;
+    display: inline-block;
+    background: rgba(33,33,33,0.55);
+    width:100%;
+}
+
+.hotnews_Slider .whitealpha {background:rgb(255,255,255); background:rgba(255,255,255,0.95); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff,endColorstr=#e5ffffff); -ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#e5ffffff,endColorstr=#e5ffffff)";}
+.hotnews_Slider .blurb { padding:10px 15px; color:#000; text-align:left;text-shadow:none;font:normal 16px Arial;line-height:25px;}
+/* Declare heights because of positioning of img element */
+.hotnews_Slider .carousel .item {
+  height: 270px;
+  background-color: #fff;
+  overflow:hidden;
+}
+.hotnews_Slider .carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+}
+
+
+.hotnews_Slider .carousel-control.left
+{
+    z-index:9999 !important;
+    background:none;
+}
+
+.hotnews_Slider .carousel-control.right
+{
+    z-index:9999 !important;
+    background:none;
+}
+.hotnews_Slider a.carousel-control.left
+{
+    color:#f5f5f5;
+}
+.hotnews_Slider a.carousel-control.right
+{
+    color:#f5f5f5;
+}
+.hotnews_Slider .carousel-indicators
+{
+    z-index:9999 ;
+    bottom: -10px;
+}
+
+.hotnews_Slider .carousel-control
+{
+    width:8%;
+}
+
+.hotnews_Slider .carousel-indicators li
+{
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+}
+.hotnews_Slider .carousel-indicators .active {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    margin-bottom:1px;
+}

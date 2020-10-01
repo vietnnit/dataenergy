@@ -1,0 +1,191 @@
+/*
+ * jQuery menulinkSlider v1.7
+ * http://menulink.madebymufffin.com
+ *
+ * Copyright 2011, Tyler Smith
+ * Free to use under the MIT license.
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
+/* Browser Resets */
+.menulink-container a:active, .menulinkslider a:active
+{
+	outline: none;
+}
+.slides_menulink, .menulink-control-nav, .menulink-direction-nav
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* menulinkSlider Necessary Styles
+*********************************/
+.menulinkslider
+{
+	margin: 0;
+	padding: 0;
+}
+.menulinkslider .slides_menulink > li
+{
+	display: none;
+}
+/* Hide the slides_menulink before the JS is loaded. Avoids image jumping */
+.menulinkslider .slides_menulink img
+{
+	width: 250px;
+	height: 188px;
+	display: block;
+}
+.menulink-pauseplay span
+{
+	text-transform: capitalize;
+}
+
+/* Clearfix for the .slides_menulink element */
+.slides_menulink:after
+{
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+html[xmlns] .slides_menulink
+{
+	display: block;
+}
+* html .slides_menulink
+{
+	height: 1%;
+}
+
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .slides_menulink > li:first-child
+{
+	display: block;
+}
+
+
+/* menulinkSlider Default Theme
+*********************************/
+.menulinkslider
+{
+	background: #fff;
+	border: 4px solid #fff;
+	position: relative;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
+	zoom: 1;
+}
+.menulinkslider img
+{
+	border: none;
+}
+.menulinkslider .slides_menulink
+{
+	zoom: 1;
+}
+.menulinkslider .slides_menulink > li
+{
+	position: relative;
+}
+/* Suggested container for "slide_menulink" animation setups. Can replace this with your own, if you wish */
+.menulink-container
+{
+	zoom: 1;
+	position: relative;
+}
+
+/* Caption style */
+/* IE rgba() hack */
+.menulink-caption
+{
+	background: none;
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);
+	zoom: 1;
+}
+.menulink-caption
+{
+	width: 98%;
+	padding: 5px 5px 25px 5px;
+	margin: 0px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background: rgba(0,0,0,.3);
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+}
+
+/* Direction Nav */
+.menulink-direction-nav li a
+{
+	width: 52px;
+	height: 52px;
+	margin: -13px 0 0;
+	display: block;
+	background: url(bg_direction_nav.png) no-repeat 0 0;
+	position: absolute;
+	top: 50%;
+	cursor: pointer;
+	text-indent: -9999px;
+}
+.menulink-direction-nav li a.next
+{
+	background-position: -52px 0;
+	right: -21px;
+}
+.menulink-direction-nav li a.prev
+{
+	background-position: 0 0;
+	left: -20px;
+}
+.menulink-direction-nav li a.disabled
+{
+	opacity: .3;
+	filter: alpha(opacity=30);
+	cursor: default;
+}
+
+/* Control Nav */
+.menulink-control-nav
+{
+	width: 100%;
+	position: absolute;
+	bottom: 5px;
+	text-align: center;
+}
+.menulink-control-nav li
+{
+	margin: 0 0 0 5px;
+	display: inline-block;
+	zoom: 1; *display:inline;}
+.menulink-control-nav li:first-child
+{
+	margin: 0;
+}
+.menulink-control-nav li a
+{
+	width: 13px;
+	height: 13px;
+	display: block;
+	background: url(bg_control_nav.png) no-repeat 0 0;
+	cursor: pointer;
+	text-indent: -9999px;
+}
+.menulink-control-nav li a:hover
+{
+	background-position: 0 -13px;
+}
+.menulink-control-nav li a.active
+{
+	background-position: 0 -26px;
+	cursor: default;
+}

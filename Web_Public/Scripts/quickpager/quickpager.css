@@ -1,0 +1,81 @@
+﻿ul.paging,
+ul.paging2 {
+    list-style:none;
+    margin:0px;
+    padding:0px;
+    height:380px;
+    overflow:hidden;
+}
+ul.paging li,
+ul.paging2 li {
+    
+}
+
+ul.paging-commnet {
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
+ul.paging-commnet li {
+    
+}
+
+ul.paging-relation {
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
+ul.paging-relation li {
+    
+}
+
+ul.paging-other {
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
+ul.paging-other li {
+    
+}
+
+ul.red {
+	outline:10px solid red;
+}
+
+ul.simplePagerNav{
+    font-size: 12px;
+    padding: 10px 5px 0 0;
+    float: right;
+    margin: 0;
+}
+ul.simplePagerNav li{
+    display:block;
+    floaT: left;
+    padding:0 1px;
+}
+
+ul.simplePagerNav li a{
+    color: #ffffff;
+    text-decoration: none;
+    background: #a4a4a4;
+    border:1px solid #858585;	
+    padding: 0px 5px;
+}
+
+li.currentPage 
+{
+	
+}
+
+ul.simplePagerNav li.currentPage a 
+{
+    color:#ffffff;
+	background: #c3000c !important;
+    border:1px solid #890001 !important;	
+}
+
+
+ul.paging  li.sticky {
+	background-color: red !important;
+	display: block !important
+}

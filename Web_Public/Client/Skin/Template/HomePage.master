@@ -1,0 +1,310 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="HomePage.master.cs" Inherits="HomePage" %>
+
+
+<%@ Register Src="~/Client/Admin/Control/Menu/Menutop.ascx" TagName="Menutop" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Admin/Control/Menu/MenuBarMulti.ascx" TagName="MenuBar" TagPrefix="uc2" %>
+<%@ Register src="~/Client/Admin/Control/Menu/MenuTree.ascx" tagname="MenuTree" tagprefix="uc4" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <title>Administrator - CMS 2.0</title>
+    <meta name="keywords" content="Administrator - CMS 2.0" />
+    <meta name="description" content="Administrator - CMS 2.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+</head>
+<!-- Font CSS (Via CDN) -->
+    <link rel='stylesheet' type='text/css' href='<%= ResolveUrl("~") %>CSS_Admins/fonts/cssfont.css' />
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/fonts/cssfont-1.css" />
+    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/skin/default_skin/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/skin/default_skin/css/Paging.css" />
+    <!-- Admin Forms CSS -->
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/admin-tools/admin-forms/css/admin-forms.css" />
+
+    <link type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/js/DatetimePicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/vendor/plugins/datepicker/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/vendor/plugins/daterange/daterangepicker.css" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<%= ResolveUrl("~") %>favicon.ico" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+   <script src="/CSS_Admins/js/html5shiv.js"></script>
+   <script src="/CSS_Admins/js/respond.min.js"></script>
+   <![endif]-->
+ 
+    <!-- jQuery -->
+   <%-- <script type="text/javascript" src="/CSS_Admins/vendor/jquery/jquery.js"></script>--%>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/vendor/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/vendor/jquery/jquery_ui/jquery-ui.min.js"></script>
+<body class="dashboard-page sb-l-o sb-r-c">
+    
+    
+
+    <!-- Start: Main -->
+    <div id="main">
+        <form id="form3" runat="server">
+        <!-- Start: Header -->
+        <header class="navbar navbar-fixed-top bg-primary">
+            <div class="navbar-branding">
+                <a class="navbar-brand" href="<%= ResolveUrl("~") %>Admin/home/Default.aspx"> <b>MOIT - </b>Data Energy
+                </a>
+                <span id="toggle_sidemenu_l" class="glyphicons glyphicons-show_lines"></span>
+                <ul class="nav navbar-nav pull-right hidden">
+                    <li>
+                        <a href="#" class="sidebar-menu-toggle">
+                            <span class="octicon octicon-ruby fs20 mr10 pull-right "></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a class="sidebar-menu-toggle" href="#">
+                        <span class="octicon octicon-ruby fs18"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="topbar-menu-toggle" href="#">
+                        <span class="glyphicons glyphicons-magic fs16"></span>
+                    </a>
+                </li>
+               
+               
+                <li>
+                    <a class="request-fullscreen toggle-active" href="#">
+                        <span class="octicon octicon-screen-full fs18"></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="toggle-active" href="/" target="_blank">
+                        <span class="glyphicons glyphicons-home fs16"></span>
+                    </a>
+                </li>
+            </ul>
+           
+            <uc1:Menutop ID="Menutop_cms" runat="server" />
+
+        </header>
+        <!-- End: Header -->
+
+        <!-- Start: Sidebar -->
+        <aside id="sidebar_left" class="nano nano-primary sidebar-light">
+            <div class="nano-content">
+
+                <!-- Start: Sidebar Header -->
+                <header class="sidebar-header">
+                    <div class="user-menu">
+                        <div class="row text-center mbn">
+                            <div class="col-xs-4">
+                                <a href="<%= ResolveUrl("~") %>Admin/home/Default.aspx" class="text-primary" data-toggle="tooltip" data-placement="top" title="Dashboard">
+                                    <span class="glyphicons glyphicons-home"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="<%= ResolveUrl("~") %>Admin/home/Default.aspx" class="text-info" data-toggle="tooltip" data-placement="top" title="Messages">
+                                    <span class="glyphicons glyphicons-inbox"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="<%= ResolveUrl("~") %>Admin/home/Default.aspx" class="text-alert" data-toggle="tooltip" data-placement="top" title="Tasks">
+                                    <span class="glyphicons glyphicons-bell"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="<%= ResolveUrl("~") %>" class="text-system" data-toggle="tooltip" data-placement="top" title="Trang Public">
+                                    <span class="glyphicons glyphicons-imac"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="<%= ResolveUrl("~") %>Admin/config/Default.aspx" class="text-danger" data-toggle="tooltip" data-placement="top" title="Cấu hình">
+                                    <span class="glyphicons glyphicons-settings"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <asp:LinkButton ID="LinkButton2" CssClass="text-warning" runat="server" OnClick="linkRemoveCache_Click" data-toggle="tooltip" data-placement="top" title="Xóa Cache">
+                                <span class="glyphicons glyphicons-restart"></span>
+                                </asp:LinkButton>
+
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- End: Sidebar Header -->
+
+                <!-- sidebar menu -->
+                <uc4:MenuTree ID="MenuTreeID" runat="server" />
+            </div>
+        </aside>
+
+        <!-- Start: Content -->
+        <section id="content_wrapper">
+
+            <!-- Start: Topbar-Dropdown -->
+            <div id="topbar-dropmenu">
+                <div class="topbar-menu row">
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/ListNewsbyUser/Default.aspx" class="metro-tile bg-success">
+                            <span class="metro-icon glyphicons glyphicons-edit"></span>
+                            <p class="metro-title">DS Tin</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/listadmin/Default.aspx" class="metro-tile bg-info">
+                            <span class="metro-icon glyphicons glyphicons-parents"></span>
+                            <p class="metro-title">Quản lý User</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/ListCateNewsGroup/Default.aspx" class="metro-tile bg-alert">
+                            <span class="metro-icon glyphicons glyphicons-headset"></span>
+                            <p class="metro-title">Quản lý chuyên mục</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/config/Default.aspx" class="metro-tile bg-primary">
+                            <span class="metro-icon glyphicons glyphicons-cogwheels"></span>
+                            <p class="metro-title">Cấu hình</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/ListVideosCate/Default.aspx" class="metro-tile bg-warning">
+                            <span class="metro-icon glyphicons glyphicons-facetime_video"></span>
+                            <p class="metro-title">Videos</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="<%= ResolveUrl("~") %>Admin/ListAlbumsCate/Default.aspx" class="metro-tile bg-system">
+                            <span class="metro-icon glyphicons glyphicons-picture"></span>
+                            <p class="metro-title">Albums ảnh</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- End: Topbar-Dropdown -->
+
+            <!-- Start: Topbar -->
+           
+            <!-- End: Topbar -->
+
+            <!-- Begin: Content -->
+           
+                <asp:contentplaceholder id="ContentPlaceHolderHomepage" runat="server">
+                </asp:contentplaceholder>
+
+                   
+            </section>
+            <!-- End: Content -->
+
+        </section>
+        <!-- End: Content-Wrapper -->
+
+     
+
+    
+    </form>
+    </div>
+    <!-- End: Main -->
+
+    <!-- BEGIN: PAGE SCRIPTS -->
+   
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Sparklines CDN -->
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Plugins -->
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/vendor/plugins/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/vendor/plugins/circles/circles.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/vendor/plugins/raphael/raphael.js"></script>
+    <%--<script type="text/javascript" src="/CSS_Admins/vendor/plugins/daterange/daterangepicker.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/vendor/plugins/datepicker/js/bootstrap-datetimepicker.js"></script>--%>
+
+  <%--  <!-- Holder js  -->
+    <script type="text/javascript" src="/CSS_Admins/assets/js/bootstrap/holder.min.js"></script>--%>
+
+    <!-- Theme Javascript -->
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/utility/utility.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/main.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/demo.js"></script>
+
+    <!-- Admin Panels  -->
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/admin-tools/admin-plugins/admin-panels/json2.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/admin-tools/admin-plugins/admin-panels/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/admin-tools/admin-plugins/admin-panels/adminpanels.js"></script>
+
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/Tooltips/tooltip.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/DatetimePicker/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="<%= ResolveUrl("~") %>ckfinder/ckfinder.js"></script>
+
+    <!-- Page Javascript -->
+    <script type="text/javascript" src="/CSS_Admins/js/pages/widgets.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            "use strict";
+
+            // Init Theme Core      
+            Core.init({
+                sbm: "sb-l-c",
+            });
+
+            // Init Demo JS
+            Demo.init();
+
+            // Init Widget Demo JS
+            // demoHighCharts.init();
+
+            // Because we are using Admin Panels we use the OnFinish 
+            // callback to activate the demoWidgets. It's smoother if
+            // we let the panels be moved and organized before 
+            // filling them with content from various plugins
+
+            // Init plugins used on this page
+            // HighCharts, JvectorMap, Admin Panels
+
+            // Init Admin Panels on widgets inside the ".admin-panels" container
+            $('.admin-panels').adminpanel({
+                grid: '.admin-grid',
+                draggable: true,
+                mobile: true,
+                callback: function() {
+                    bootbox.confirm('<h3>A Custom Callback!</h3>', function() {});
+                },
+                onFinish: function() {
+                    $('.admin-panels').addClass('animated fadeIn').removeClass('fade-onLoad');
+
+                    // Init the rest of the plugins now that the panels
+                    // have had a chance to be moved and organized.
+                    // It's less taxing to organize empty panels
+                    demoHighCharts.init();
+                    runVectorMaps();
+
+                    // We also refresh any "in-view" waypoints to ensure
+                    // the correct position is being calculated after the 
+                    // Admin Panels plugin moved everything
+                    Waypoint.refreshAll();
+
+                },
+                onSave: function() {
+                    $(window).trigger('resize');
+                }
+            });
+
+          
+
+        });
+    </script>
+
+    <!-- END: PAGE SCRIPTS -->
+
+</body>
+
+</html>
+

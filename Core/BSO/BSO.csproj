@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CD245D11-618A-416B-97E4-3F3B95835AF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BSO</RootNamespace>
+    <AssemblyName>BSO</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BusinessObjectHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=81a55434fd28b0bf, processorArchitecture=MSIL" />
+    <Reference Include="RadMenu.Net2, Version=4.0.0.0, Culture=neutral, PublicKeyToken=175e9829b585f1f6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\WebSupport\Bin\RadMenu.Net2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Web.UI, Version=2010.2.929.20, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Web_Public\Bin\Telerik.Web.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminBSO.cs" />
+    <Compile Include="AdminRolesBSO.cs" />
+    <Compile Include="AlbumsBSO.cs" />
+    <Compile Include="AlbumsCateBSO.cs" />
+    <Compile Include="AreaService.cs" />
+    <Compile Include="AuditReportService.cs" />
+    <Compile Include="BoilerService.cs" />
+    <Compile Include="BrandBSO.cs" />
+    <Compile Include="BusinessException.cs" />
+    <Compile Include="CateNewsBSO.cs" />
+    <Compile Include="CateNewsGroupBSO.cs" />
+    <Compile Include="CateNewsGroupPermissionBSO.cs" />
+    <Compile Include="CateNewsPermissionBSO.cs" />
+    <Compile Include="clsOfficialBSO.cs" />
+    <Compile Include="commonBSO.cs" />
+    <Compile Include="CompressorService.cs" />
+    <Compile Include="ConfigBSO.cs" />
+    <Compile Include="ContactBSO.cs" />
+    <Compile Include="ElectricMotorsService.cs" />
+    <Compile Include="ElectricSupplyingService.cs" />
+    <Compile Include="ElectrictConsumeService.cs" />
+    <Compile Include="EnergyQuotaService.cs" />
+    <Compile Include="EnterpriseHistoryService.cs" />
+    <Compile Include="DistrictService.cs" />
+    <Compile Include="DocumentTypeBSO.cs" />
+    <Compile Include="EmailBSO.cs" />
+    <Compile Include="EnterpriseService.cs" />
+    <Compile Include="EnterpriseYearService.cs" />
+    <Compile Include="FaqsBSO.cs" />
+    <Compile Include="FaqsCateBSO.cs" />
+    <Compile Include="FuelService.cs" />
+    <Compile Include="FurnacesService.cs" />
+    <Compile Include="GiaiPhapService.cs" />
+    <Compile Include="GroupFuelService.cs" />
+    <Compile Include="HitCounterBSO.cs" />
+    <Compile Include="InfrastructureService.cs" />
+    <Compile Include="MailBSO.cs" />
+    <Compile Include="MeasurementFuelService.cs" />
+    <Compile Include="MeasurementService.cs" />
+    <Compile Include="MemberBSO.cs" />
+    <Compile Include="MemberService.cs" />
+    <Compile Include="MenuLinksBSO.cs" />
+    <Compile Include="ModulesBSO.cs" />
+    <Compile Include="NewsApprovedCommentBSO.cs" />
+    <Compile Include="NewsCateBSO.cs" />
+    <Compile Include="NewsCommentBSO.cs" />
+    <Compile Include="NewsEventBSO.cs" />
+    <Compile Include="NewsEventRelationBSO.cs" />
+    <Compile Include="NewsGroupBSO.cs" />
+    <Compile Include="NewsGroupFileBSO.cs" />
+    <Compile Include="NewsLogBSO.cs" />
+    <Compile Include="NewsRegisterBSO.cs" />
+    <Compile Include="NewsRelationBSO.cs" />
+    <Compile Include="NewsTagsBSO.cs" />
+    <Compile Include="OfficeRelateBSO.cs" />
+    <Compile Include="OfficialBSO.cs" />
+    <Compile Include="OfficialFileBSO.cs" />
+    <Compile Include="OperationAreaService.cs" />
+    <Compile Include="OrderBSO.cs" />
+    <Compile Include="OrderDetailBSO.cs" />
+    <Compile Include="OrganizationService.cs" />
+    <Compile Include="OtherFuelConsumeService.cs" />
+    <Compile Include="PermissionBSO.cs" />
+    <Compile Include="PhoneBookBSO.cs" />
+    <Compile Include="PictureBSO.cs" />
+    <Compile Include="PlanService.cs" />
+    <Compile Include="PlanTBService.cs" />
+    <Compile Include="PlanTKNLService.cs" />
+    <Compile Include="ProductCapacityService.cs" />
+    <Compile Include="ProductConsumeService.cs" />
+    <Compile Include="ProductMeasurementService.cs" />
+    <Compile Include="ProductService.cs" />
+    <Compile Include="ProjectAreaService.cs" />
+    <Compile Include="ProjectArticleService.cs" />
+    <Compile Include="ProjectService.cs" />
+    <Compile Include="ProjectTypeService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ProTypeService.cs" />
+    <Compile Include="ProvinceService.cs" />
+    <Compile Include="RegionProvinceService.cs" />
+    <Compile Include="RegionService.cs" />
+    <Compile Include="RegisterBSO.cs" />
+    <Compile Include="ReportAttachFileService.cs" />
+    <Compile Include="ReportFuelDetailService.cs" />
+    <Compile Include="ReportFuelService.cs" />
+    <Compile Include="ReportLogService.cs" />
+    <Compile Include="ReportService.cs" />
+    <Compile Include="ReportTemp2014Service.cs" />
+    <Compile Include="RoleCateService.cs" />
+    <Compile Include="RolesBSO.cs" />
+    <Compile Include="SaveSolutionService.cs" />
+    <Compile Include="SecurityBSO.cs" />
+    <Compile Include="SiteMapBSO.cs" />
+    <Compile Include="SYS_PageLayoutBSO.cs" />
+    <Compile Include="SYS_TemplatePageBSO.cs" />
+    <Compile Include="SYS_WidgetBSO.cs" />
+    <Compile Include="SYS_WidgetPageBSO.cs" />
+    <Compile Include="SYS_WidgetPageLayoutBSO.cs" />
+    <Compile Include="SYS_WidgetTypeBSO.cs" />
+    <Compile Include="TestEquipmentService.cs" />
+    <Compile Include="TOEService.cs" />
+    <Compile Include="TOEYearService.cs" />
+    <Compile Include="UsingElectrictService.cs" />
+    <Compile Include="VideosBSO.cs" />
+    <Compile Include="VideosCateBSO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\ePower.Core.csproj">
+      <Project>{1B663B82-7DE8-42F2-91E5-66F69A24C824}</Project>
+      <Name>ePower.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{B7824CF4-F1B8-4BE2-82B8-DDA76358EFC3}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ePower.Dao\ePower.Dao.csproj">
+      <Project>{2F53390F-B718-413F-8696-47D5B6418FD3}</Project>
+      <Name>ePower.Dao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ETO\ETO.csproj">
+      <Project>{2B7A7366-6CD4-468D-848F-15A7045A445A}</Project>
+      <Name>ETO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

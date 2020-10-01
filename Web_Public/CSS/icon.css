@@ -1,0 +1,34 @@
+﻿.is_img
+{
+	vertical-align: middle;
+}
+
+.onLaw2-icon1 {
+	background-image: url("../images/onLaw-v2.png");
+    background-repeat: no-repeat;   
+    list-style: none outside none;
+}	
+.onLaw1-Information{background-position: -4px 0px; width: 16px; height: 16px; }
+.onLaw1-Telephone{background-position: -4px -26px; width: 16px; height: 16px; }
+.onLaw1-User-Add{background-position: -4px -52px; width: 16px; height: 16px; }
+.onLaw1-Windows-8-Login{background-position: -4px -78px; width: 16px; height: 16px; }
+.onLaw1-Home{background-position: 0px -104px; width: 24px; height: 24px; }
+.onLaw1-Submit-Arrow{background-position: 0px -668px; width: 24px; height: 24px; }
+.onLaw1-SMS{background-position: 0px -172px; width: 24px; height: 24px; }
+.onLaw1-Phone{background-position: 0px -206px; width: 24px; height: 24px; }
+.onLaw1-Yahoo{background-position: 0px -240px; width: 24px; height: 24px; }
+.onLaw1-Messages{background-position: 0px -274px; width: 24px; height: 24px; }
+.onLaw1-Submit-Arrow-1{background-position: -4px -308px; width: 16px; height: 16px; }
+.onLaw1-Date{background-position: -4px -334px; width: 16px; height: 16px; }
+.onLaw1-Messages-1{background-position: -4px -360px; width: 16px; height: 16px; }
+.onLaw1-Preview{background-position: -4px -386px; width: 16px; height: 16px; }
+.onLaw1-Media-Back{background-position: 0px -412px; width: 24px; height: 24px; }
+.onLaw1-Media-Back-1{background-position: 0px -446px; width: 24px; height: 24px; }
+.onLaw1-Play{background-position: 0px -480px; width: 24px; height: 24px; }
+.onLaw1-Play-1{background-position: 0px -514px; width: 24px; height: 24px; }
+.onLaw1-Previous{background-position: 0px -548px; width: 24px; height: 24px; }
+.onLaw1-Next{background-position: 0px -582px; width: 24px; height: 24px; }
+.onLaw1-Shape-Square{background-position: -4px -616px; width: 16px; height: 16px; }
+.onLaw1-Logout{background-position: -4px -642px; width: 16px; height: 16px; }
+.onLaw1-Submit-Arrow-2{background-position: 0px -138px; width: 24px; height: 24px; }
+

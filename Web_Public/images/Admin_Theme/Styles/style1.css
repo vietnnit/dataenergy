@@ -1,0 +1,67 @@
+
+/* --------------------*/
+.forum_header
+{
+	font-family:Tahoma;
+	font-size:11px;
+	font-weight:bold;
+	color:#000000;
+	text-align:center;
+	line-height:20px;
+	height:20px;
+}
+.forum_title
+{
+	font-family:Tahoma;
+	font-size:11px;
+	font-weight:normal;
+	color:#242424;
+	text-align:left;
+	text-decoration:none;
+
+}
+
+.forum_title:hover
+{
+	color:#c84000;
+	text-decoration:none;
+
+}
+
+.forum_title1
+{
+	font-family:Tahoma;
+	font-size:11px;
+	font-weight:normal;
+	color:#242424;
+	text-align:center;
+	text-decoration:none;
+
+}
+
+.forum_title1:hover
+{
+	color:#c84000;
+	text-decoration:none;
+
+}
+.forum_title2
+{
+	font-family:Tahoma;
+	font-size:11px;
+	font-weight:bold;
+	color:#ff0000;
+	text-align:center;
+	text-decoration:none;
+
+}
+
+.forum_title2:hover
+{
+	color:#c84000;
+	text-decoration:none;
+
+}
+
+
+

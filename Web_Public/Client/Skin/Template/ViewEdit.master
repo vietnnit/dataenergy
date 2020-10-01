@@ -1,0 +1,211 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="ViewEdit.master.cs" Inherits="ViewEdit" %>
+
+<%@ Register Src="~/Client/Admin/Control/Menu/Menutop.ascx" TagName="Menutop" TagPrefix="uc1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8" />
+    <title>Administrator - CMS 2.0</title>
+    <meta name="keywords" content="Administrator - CMS 2.0" />
+    <meta name="description" content="Administrator - CMS 2.0" />
+    <meta name="author" content="ducnm12@gmail.com - 096 236 999" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    
+</head>
+
+<body class="dashboard-page sb-l-c sb-r-c">
+ <!-- Font CSS (Via CDN) -->
+    <link rel='stylesheet' type='text/css' href='<%=ResolveUrl("~") %>CSS_Admins/fonts/cssfont.css' />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/fonts/cssfont-1.css" />
+    <!-- Theme CSS -->
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/skin/default_skin/css/theme.css" />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/skin/default_skin/css/Paging.css" />
+    <!-- Admin Forms CSS -->
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/admin-tools/admin-forms/css/admin-forms.css" />
+
+    <link type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/js/DatetimePicker/jquery.datetimepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/vendor/plugins/datepicker/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~") %>CSS_Admins/vendor/plugins/daterange/daterangepicker.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+   <script src="/CSS_Admins/js/html5shiv.js"></script>
+   <script src="/CSS_Admins/js/respond.min.js"></script>
+   <![endif]-->
+ 
+    <!-- jQuery -->
+   <%-- <script type="text/javascript" src="/CSS_Admins/vendor/jquery/jquery.js"></script>--%>
+    <script type="text/javascript" src="<%=ResolveUrl("~") %>CSS_Admins/vendor/jquery/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="<%=ResolveUrl("~") %>CSS_Admins/vendor/jquery/jquery_ui/jquery-ui.min.js"></script>
+    <!-- Start: Main -->
+    <div id="main">
+        <form id="form3" runat="server">
+        <!-- Start: Header -->
+        <header class="navbar navbar-fixed-top bg-primary" style="position:inherit;">
+            
+            <ul class="nav navbar-nav navbar-left">
+               
+                <li>
+                    <a class="request-fullscreen toggle-active" href="#">
+                        <span class="octicon octicon-screen-full fs18"></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="request-fullscreen toggle-active" href="/">
+                        <span class="octicon octicon-radio-tower fs18" style="color:#4A89DC;"></span>
+                    </a>
+                </li>
+            </ul>
+           
+            <uc1:Menutop ID="Menutop_cms" runat="server" />
+
+        </header>
+        <!-- End: Header -->
+
+       
+        <!-- Start: Content -->
+        <section id="content_wrapper">
+
+            <!-- Begin: Content -->
+           
+                <asp:contentplaceholder id="ContentPlaceHolderEdit" runat="server">
+                </asp:contentplaceholder>
+            <!-- End: Content -->
+
+        </section>
+        <!-- End: Content-Wrapper -->
+
+    </form>
+    </div>
+    <!-- End: Main -->
+
+    <!-- BEGIN: PAGE SCRIPTS -->
+
+    <!-- Bootstrap -->
+    <script type="text/javascript" src="/CSS_Admins/js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Sparklines CDN -->
+    <script type="text/javascript" src="/CSS_Admins/js/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Plugins -->
+    <script type="text/javascript" src="/CSS_Admins/vendor/plugins/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/vendor/plugins/circles/circles.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/vendor/plugins/raphael/raphael.js"></script>
+    <%--<script type="text/javascript" src="/CSS_Admins/vendor/plugins/daterange/daterangepicker.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/vendor/plugins/datepicker/js/bootstrap-datetimepicker.js"></script>--%>
+
+  <%--  <!-- Holder js  -->
+    <script type="text/javascript" src="/CSS_Admins/assets/js/bootstrap/holder.min.js"></script>--%>
+
+    <!-- Theme Javascript -->
+    <script type="text/javascript" src="/CSS_Admins/js/utility/utility.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/js/main.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/js/demo.js"></script>
+
+    <!-- Admin Panels  -->
+    <script type="text/javascript" src="/CSS_Admins/admin-tools/admin-plugins/admin-panels/json2.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/admin-tools/admin-plugins/admin-panels/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/admin-tools/admin-plugins/admin-panels/adminpanels.js"></script>
+
+    <script type="text/javascript" src="/CSS_Admin/js/Tooltips/tooltip.js"></script>
+    <script type="text/javascript" src="/CSS_Admins/js/DatetimePicker/jquery.datetimepicker.js"></script>
+    <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
+
+    <!-- Page Javascript -->
+    <script type="text/javascript" src="/CSS_Admins/js/pages/widgets.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+
+            "use strict";
+
+            // Init Theme Core      
+            Core.init({
+                sbm: "sb-l-c",
+            });
+
+            // Init Demo JS
+            Demo.init();
+
+            // Init Widget Demo JS
+            // demoHighCharts.init();
+
+            // Because we are using Admin Panels we use the OnFinish 
+            // callback to activate the demoWidgets. It's smoother if
+            // we let the panels be moved and organized before 
+            // filling them with content from various plugins
+
+            // Init plugins used on this page
+            // HighCharts, JvectorMap, Admin Panels
+
+            // Init Admin Panels on widgets inside the ".admin-panels" container
+            $('.admin-panels').adminpanel({
+                grid: '.admin-grid',
+                draggable: true,
+                mobile: true,
+                callback: function() {
+                    bootbox.confirm('<h3>A Custom Callback!</h3>', function() {});
+                },
+                onFinish: function() {
+                    $('.admin-panels').addClass('animated fadeIn').removeClass('fade-onLoad');
+
+                    // Init the rest of the plugins now that the panels
+                    // have had a chance to be moved and organized.
+                    // It's less taxing to organize empty panels
+                    demoHighCharts.init();
+                    runVectorMaps();
+
+                    // We also refresh any "in-view" waypoints to ensure
+                    // the correct position is being calculated after the 
+                    // Admin Panels plugin moved everything
+                    Waypoint.refreshAll();
+
+                },
+                onSave: function() {
+                    $(window).trigger('resize');
+                }
+            });
+
+          
+
+        });
+    </script>
+
+    <!-- END: PAGE SCRIPTS -->
+
+  <%-- <link href="<%= ResolveUrl("~/") %>CSS_Admin/style_master.css" rel="stylesheet" type="text/css" />
+   <script src="<%=ResolveUrl("~/Scripts/jQuery/jquery-1.7.1.min.js") %>" type="text/javascript"></script>
+    <form id="form3" runat="server">
+    <!-- START TOP CONTENT -->
+     <div id="taskbar_top">
+	    <div class="tasktop-ct">
+             <div class="logo">
+                <a href="<%= ResolveUrl("~/")%>/admin/login.aspx">
+                     <img alt="" src="<%= ResolveUrl("~/") %>CSS_Admin/images/logo.png" />
+                </a>
+                  
+            </div>
+		   
+             <div class="menu-right">
+                <uc1:Menutop ID="Menutop1" runat="server" />
+            </div>
+            <div style="clear:both;"></div>	
+	    </div>
+    </div>
+     <!-- End TOP CONTENT -->
+    <div id="vi_container" style="margin-top: 25px;">
+        <asp:contentplaceholder id="ContentPlaceHolderEdit" runat="server">
+                             
+            </asp:contentplaceholder>
+        <!-- end #container -->
+    </div>
+    </form>--%>
+</body>
+
+</html>
+

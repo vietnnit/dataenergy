@@ -1,0 +1,1392 @@
+/* Easy Slider */
+#slider_hotnews ul, #slider_hotnews li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_hotnews, #slider_hotnews li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 250px;
+	height: auto;
+	min-height:360px;
+	max-height:360px;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_hotnews
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_hotnews
+{
+	left:250px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_hotnews
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_hotnews a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_hotnews a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+/* Easy Slider */
+#slider_1 ul, #slider_1 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_1, #slider_1 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_1
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_1
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_1
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_1 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_1 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_2 ul, #slider_2 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_2, #slider_2 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_2
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_2
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_2
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_2 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_3 ul, #slider_3 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_3, #slider_3 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_3
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_3
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_3
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_3 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_3 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_4 ul, #slider_4 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_4, #slider_4 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_4
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_4
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_4
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_4 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_4 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_5 ul, #slider_5 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_5, #slider_5 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_5
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_5
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_5
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_5 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_5 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_6 ul, #slider_6 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_6, #slider_6 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_6
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_6
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_6
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_6 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_6 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_7 ul, #slider_7 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_7, #slider_7 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_7
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_7
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_7
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_7 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_7 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_8 ul, #slider_8 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_8, #slider_8 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_8
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_8
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_8
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_8 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_8 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_9 ul, #slider_9 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_9, #slider_9 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_9
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_9
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_9
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_9 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_9 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_10 ul, #slider_10 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_10, #slider_10 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_10
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_10
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_10
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_10 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_10 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_11 ul, #slider_11 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_11, #slider_11 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_11
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_11
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_11
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_11 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_11 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_12 ul, #slider_12 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_12, #slider_12 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_12
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_12
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_12
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_12 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_12 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_13 ul, #slider_13 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_13, #slider_13 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_13
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_13
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_13
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_13 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_13 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_14 ul, #slider_14 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_14, #slider_14 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_14
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_14
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_14
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_14 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_14 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_15 ul, #slider_15 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_15, #slider_15 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_15
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_15
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_15
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_15 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_15 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_16 ul, #slider_16 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_16, #slider_16 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_16
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_16
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_16
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_16 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_16 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_17 ul, #slider_17 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_17, #slider_17 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_17
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_17
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_17
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_17 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_17 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+
+/* Easy Slider */
+#slider_18 ul, #slider_18 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_18, #slider_18 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_18
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_18
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_18
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_18 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_18 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_19 ul, #slider_19 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_19, #slider_19 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_19
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_19
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_19
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_19 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_19 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+/* Easy Slider */
+#slider_20 ul, #slider_20 li
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#slider_20, #slider_20 li
+{
+	/*  			define width and height of container element and list item (slide) 			list items must be the same size as the slider area 		*/
+	width: 605px;
+	height: auto;
+	overflow: hidden;
+	margin:0 auto;
+}
+
+p#controls_20
+{
+	margin: 0;
+	position: relative;
+	height:20px;
+}
+
+
+
+#prevBtn_20
+{
+	left:560px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#nextBtn_20
+{
+	left:590px;
+	top:-21px;
+	display: block;
+	margin: 0;
+	overflow: hidden;
+	width: 21px;
+	height: 21px;
+	position: relative;
+	text-indent:-8000px;
+}
+
+#prevBtn_20 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_back1.jpg') no-repeat 0 0;
+}
+
+#nextBtn_20 a
+{
+	display: block;
+	width: 30px;
+	height: 21px;
+	background: url('btn_next1.jpg') no-repeat 0 0;
+}
+
+

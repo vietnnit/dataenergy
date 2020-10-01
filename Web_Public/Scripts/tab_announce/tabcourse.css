@@ -1,0 +1,88 @@
+.tab_title-course {
+    border-bottom:1px solid #009AD9;
+}
+
+
+.shadetabs-course
+{
+    padding: 5px 0;
+    margin:0 0 0 0px;
+    font-size:14px;
+    font-weight:normal;
+    list-style-type: none;
+    text-align: left; 
+    text-transform:uppercase;
+}
+
+.shadetabs-course li
+{
+    display: inline;
+    margin:0 2px 0 0;
+}
+
+.shadetabs-course li a
+{
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    padding: 5px 15px;
+    margin-right: 0px;
+    color: #333;
+    background:#f5f5f5;
+    border-left:1px solid #f5f5f5;
+    border-right:1px solid #f5f5f5;
+    position: relative;
+    top: 0px;
+}
+
+.shadetabs-course li a:visited
+{
+    color: #333333;
+}
+
+.shadetabs-course li a:hover
+{
+    text-decoration: none;
+    color: #333333;
+}
+
+.shadetabs-course li a.selected
+{
+    /*selected main tab style */
+    position: relative;
+    color:#333333;
+    padding: 5px 15px;
+}
+
+.shadetabs-course li a.selected
+{
+    /*selected main tab style */
+    background:#ffffff;
+    border-left:1px solid #009AD9;
+    border-right:1px solid #009AD9;
+    border-top:3px solid #009AD9;
+    border-bottom:1px solid #fff;
+    font-weight:bold;
+
+}
+
+.shadetabs-course li a.selected:hover
+{
+    /*selected main tab style */
+    text-decoration: none;
+}
+
+.tabcontent-course
+{
+    display: none;
+    padding:0;
+}
+
+@media print
+{
+    .tabcontent-course
+    {
+        display: block !important;
+    }
+}
+

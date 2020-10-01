@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B7824CF4-F1B8-4BE2-82B8-DDA76358EFC3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAO</RootNamespace>
+    <AssemblyName>DAO</AssemblyName>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="SgmlReaderDll, Version=1.7.2899.19202, Culture=neutral, PublicKeyToken=241ec7f03b2c34d1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\SgmlReaderDll.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminDAO.cs" />
+    <Compile Include="AdminRolesDAO.cs" />
+    <Compile Include="AlbumsCateDAO.cs" />
+    <Compile Include="AlbumsDAO.cs" />
+    <Compile Include="AreaDAO.cs" />
+    <Compile Include="AuditReportDao.cs" />
+    <Compile Include="BaseDAO.cs" />
+    <Compile Include="BoilerDao.cs" />
+    <Compile Include="BrandDAO.cs" />
+    <Compile Include="CateNewsDAO.cs" />
+    <Compile Include="CateNewsGroupDAO.cs" />
+    <Compile Include="CateNewsGroupPermissionDAO.cs" />
+    <Compile Include="CateNewsPermissionDAO.cs" />
+    <Compile Include="clsOfficialDao.cs" />
+    <Compile Include="CompressorDao.cs" />
+    <Compile Include="ConfigDAO.cs" />
+    <Compile Include="ContactDAO.cs" />
+    <Compile Include="ElectricMotorsDao.cs" />
+    <Compile Include="ElectricSupplyingDao.cs" />
+    <Compile Include="ElectrictConsumeDao.cs" />
+    <Compile Include="EnergyQuotaDao.cs" />
+    <Compile Include="EnterpriseHistoryDao.cs" />
+    <Compile Include="DistrictDao.cs" />
+    <Compile Include="DocumentTypeDAO.cs" />
+    <Compile Include="EnterpriseDao.cs" />
+    <Compile Include="EnterpriseYearDao.cs" />
+    <Compile Include="FaqsCateDAO.cs" />
+    <Compile Include="FaqsDAO.cs" />
+    <Compile Include="DataAccessException.cs" />
+    <Compile Include="EmailDAO.cs" />
+    <Compile Include="FuelDao.cs" />
+    <Compile Include="FurnacesDao.cs" />
+    <Compile Include="GiaiPhapDao.cs" />
+    <Compile Include="GroupFuelDao.cs" />
+    <Compile Include="HitCounterDAO.cs" />
+    <Compile Include="InfrastructureDao.cs" />
+    <Compile Include="LinhVucDAO.cs" />
+    <Compile Include="MeasurementDao.cs" />
+    <Compile Include="MeasurementFuelDao.cs" />
+    <Compile Include="MemberDao.cs" />
+    <Compile Include="MemberDAO1.cs" />
+    <Compile Include="MenuLinksDAO.cs" />
+    <Compile Include="ModulesDAO.cs" />
+    <Compile Include="NewsApprovedCommentDAO.cs" />
+    <Compile Include="NewsCateDAO.cs" />
+    <Compile Include="NewsCommentDAO.cs" />
+    <Compile Include="NewsEventDAO.cs" />
+    <Compile Include="NewsEventRelationDAO.cs" />
+    <Compile Include="NewsGroupDAO.cs" />
+    <Compile Include="NewsGroupFileDAO.cs" />
+    <Compile Include="NewsLogDAO.cs" />
+    <Compile Include="NewsRegisterDAO.cs" />
+    <Compile Include="NewsRelationDAO.cs" />
+    <Compile Include="NewsTagsDAO.cs" />
+    <Compile Include="OfficeRelateDAO.cs" />
+    <Compile Include="OfficialDAO.cs" />
+    <Compile Include="OfficialFileDAO.cs" />
+    <Compile Include="OperationAreaDao.cs" />
+    <Compile Include="OrderDAO.cs" />
+    <Compile Include="OrderDetailDAO.cs" />
+    <Compile Include="OrganizationDAO.cs" />
+    <Compile Include="OtherFuelConsumeDao.cs" />
+    <Compile Include="PermissionDAO.cs" />
+    <Compile Include="PhoneBookDAO.cs" />
+    <Compile Include="PictureDAO.cs" />
+    <Compile Include="PlanDao.cs" />
+    <Compile Include="PlanTBDao.cs" />
+    <Compile Include="PlanTKNLDao.cs" />
+    <Compile Include="ProductCapacityDao.cs" />
+    <Compile Include="ProductConsumeDao.cs" />
+    <Compile Include="ProductDao.cs" />
+    <Compile Include="ProductMeasurementDao.cs" />
+    <Compile Include="ProjectAreaDao.cs" />
+    <Compile Include="ProjectArticleDao.cs" />
+    <Compile Include="ProjectDao.cs" />
+    <Compile Include="ProjectTypeDao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProTypeDao.cs" />
+    <Compile Include="ProvinceDao.cs" />
+    <Compile Include="RegionDao.cs" />
+    <Compile Include="RegionProvinceDao.cs" />
+    <Compile Include="RegisterDAO.cs" />
+    <Compile Include="ReportAttachFileDao.cs" />
+    <Compile Include="ReportDao.cs" />
+    <Compile Include="ReportFuelDao.cs" />
+    <Compile Include="ReportFuelDetailDao.cs" />
+    <Compile Include="ReportLogDao.cs" />
+    <Compile Include="ReportTemp2014Dao.cs" />
+    <Compile Include="RoleCateDao.cs" />
+    <Compile Include="RolesDAO.cs" />
+    <Compile Include="SaveSolutionDao.cs" />
+    <Compile Include="SYS_PageLayoutDAO.cs" />
+    <Compile Include="SYS_TemplatePageDAO.cs" />
+    <Compile Include="SYS_WidgetDAO.cs" />
+    <Compile Include="SYS_WidgetPageDAO.cs" />
+    <Compile Include="SYS_WidgetPageLayoutDAO.cs" />
+    <Compile Include="SYS_WidgetTypeDAO.cs" />
+    <Compile Include="TestEquipmentDao.cs" />
+    <Compile Include="TOEDao.cs" />
+    <Compile Include="TOEYearDao.cs" />
+    <Compile Include="UsingElectrictDao.cs" />
+    <Compile Include="VideosCateDAO.cs" />
+    <Compile Include="VideosDAO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\ePower.Core.csproj">
+      <Project>{1B663B82-7DE8-42F2-91E5-66F69A24C824}</Project>
+      <Name>ePower.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ePower.Dao\ePower.Dao.csproj">
+      <Project>{2F53390F-B718-413F-8696-47D5B6418FD3}</Project>
+      <Name>ePower.Dao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ETO\ETO.csproj">
+      <Project>{2B7A7366-6CD4-468D-848F-15A7045A445A}</Project>
+      <Name>ETO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\DAO.dll" />
+    <Content Include="bin\Debug\DAO.pdb" />
+    <Content Include="bin\Release\DAO.dll" />
+    <Content Include="bin\Release\DAO.pdb" />
+    <Content Include="bin\Release\ETO.dll" />
+    <Content Include="bin\Release\ETO.pdb" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

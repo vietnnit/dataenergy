@@ -1,0 +1,91 @@
+.tab_title-tabdetail {
+    border-bottom:1px solid #b70004;
+    height:30px !important;
+    padding-top:5px;
+}
+
+
+.tabdetail
+{
+    padding: 8px 0;
+    margin:0 0 0px 0px;
+    font-size:13px;
+    font-weight:normal;
+    list-style-type: none;
+    text-align: left; 
+    text-transform:none;
+    font-weight:bold;
+}
+
+.tabdetail li
+{
+    display: inline;
+    margin:0 2px 0 0;
+}
+
+.tabdetail li a
+{
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    padding: 6px 25px;
+    margin-right: 0px;
+    color: #333;
+    background:#d6d6d6;
+    border-left:1px solid #d6d6d6;
+    border-right:1px solid #d6d6d6;
+    position: relative;
+    top: 0px;
+}
+
+.tabdetail li a:visited
+{
+    color: #333333;
+}
+
+.tabdetail li a:hover
+{
+    text-decoration: none;
+    color: #b70004;
+}
+
+.tabdetail li a.selected
+{
+    /*selected main tab style */
+    position: relative;
+    color:#b70004;
+    padding: 6px 25px;
+}
+
+.tabdetail li a.selected
+{
+    /*selected main tab style */
+    background:#f6f6f6;
+    border-left:1px solid #b70004;
+    border-right:1px solid #b70004;
+    border-top:3px solid #b70004;
+    border-bottom:1px solid #f6f6f6;
+    font-weight:bold;
+
+}
+
+.tabdetail li a.selected:hover
+{
+    /*selected main tab style */
+    text-decoration: none;
+}
+
+.tabcontent-detail
+{
+    display: none;
+    padding:0;
+}
+
+@media print
+{
+    .tabcontent
+    {
+        display: block !important;
+    }
+}
+

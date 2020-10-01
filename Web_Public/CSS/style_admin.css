@@ -1,0 +1,334 @@
+@charset "utf-8";
+body {
+	
+}
+.cssNLDC_admin
+{
+	font: 12px Arial;
+	background: #ffffff;
+	margin: 0; 
+	padding: 0;
+	text-align: center; 
+	color: #000000;
+	background-image:url(../images/admin_bg.png);
+	background-repeat:repeat-x;
+	background-position:top;
+}
+.cssNLDC_admin #container {
+	width: 1000px;  
+	margin: 0 auto; 
+	text-align: left; 
+	
+}
+
+/* Header */
+.cssNLDC_admin #header { 
+	padding: 0;
+	margin: 0;
+
+} 
+.cssNLDC_admin #header #banner { 
+	background-image:url(../images/Banner_logo_text.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	height:84px;
+} 
+
+.cssNLDC_admin #header #banner #menutop { 
+	background-image:url(../images/banner_top_bg.png);
+	background-position:left top;
+	background-repeat:no-repeat;
+	height:24px;
+	position:relative;
+	left:560px;
+	width:430px;
+	top:-10px;
+} 
+
+/* Menutop in Header */
+/*------------------------------*/
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop
+{
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	list-style-type: none;
+	font-size: 100%;
+	cursor: default;
+	margin-left:8px;
+	
+}
+.cssNLDC_admin #header #banner #menutop ul.MenuBarActive
+{
+	z-index: 1000;
+}
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop li
+{
+
+	list-style-type: none;
+
+
+	cursor: pointer;
+	float: left;
+	font-size: 10px;
+	font-weight:normal;
+	font-family:Arial;
+	font-weight:normal;
+	height:23px;
+	line-height:23px;
+	vertical-align:middle;
+	
+}
+
+
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop a
+{
+	display: block;
+	cursor: pointer;
+	padding-left:6px;
+	padding-right:6px;
+	color: #ffffff;
+	text-decoration: none;
+	text-align:center;
+	
+	
+}
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop a:hover, ul.MenuBarTop a:focus
+{
+	color: #ffff00;
+	background-position:center;
+	background-repeat:no-repeat;
+	text-align:center;
+
+}
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop a.MenuBarItemHover
+{
+
+	color: #ffffff;
+}
+
+.cssNLDC_admin #header #banner #menutop ul.MenuBarTop iframe
+{
+	position: absolute;
+	z-index: 1010;
+	filter:alpha(opacity:0.1);
+}
+@media screen, projection
+{
+	.cssNLDC_admin #header #banner #menutop ul.MenuBarTop li.MenuBarItemIE
+	{
+		display: inline;
+		float: left;
+		background: #FFF;
+	}
+}
+
+/* End Menutop */
+
+
+.cssNLDC_admin #mainContent {
+	padding: 15px 6px;
+	background-image:url(../images/admin_main_bg.png);
+	background-repeat:no-repeat;
+	background-position:top;
+
+	
+}
+.cssNLDC_admin #footer 
+{
+	margin: 0 auto;
+	padding: 10px 0; 
+	height: 50px;
+	font-family: tahoma,arial,verdana;
+	font-size: 8pt;
+	color:#005773;
+	width: 1000px;
+}
+
+
+/********************* Sidebar *****************/
+#sidebar{
+	/*border: 1px solid green;*/
+	width: 978px;
+	margin-left: 5px;
+	_margin-left: 5px;
+	padding-top:10px;
+
+	background-color:#ffffff;
+}
+#sidebar div.headerText span.MainNavLink{
+	color: #123891;
+	font-family: tahoma, arial, verdana;
+	font-size: 10pt;
+	font-weight: bold;
+	line-height: 30px;
+	padding-left:15px;
+}
+#sidebar div.headerText span.subNavLink{
+	color: #ffa700;
+	font-family: tahoma, arial, verdana;
+	font-size: 16pt;
+	font-weight: bold;
+}
+#sidebar div.headerText span.subNavLink a{
+	color: #ffa700;
+	text-decoration:none;
+}
+#sidebar div.headerText span.subNavLink a:hover{
+	color: #ff0000;
+	text-decoration:none;
+}
+#sidebar div.container_ListProduct{
+	background: url(../images/container_main_admin.png) no-repeat;
+	background-position:top;
+	width: 950px;
+	/* border: 1px solid red;*/
+	min-height: 50px;
+	
+	padding-top:10px;
+	padding-right:15px;
+	padding-left:15px;
+
+}
+/*********************end Sidebar1 *****************/
+
+.icon_image{
+	vertical-align:middle;
+	margin-left:10px;
+	margin-right:5px;
+	margin-bottom:5px;
+	
+}
+
+.icon_menutop{
+	padding-right:5px;
+	vertical-align:middle;
+	padding-bottom:2px;
+	border:none;
+}
+
+.main_panel_homepage
+{
+	vertical-align:top;
+	padding:5px 5px 5px 5px;
+}
+
+.main_linecate
+{
+	background-image:url(../images/main_linecate.png);
+	background-repeat:no-repeat;
+	height:2px;
+	margin-left:10px;
+	margin-right:10px;
+	margin-bottom:5px;
+}
+.main_line
+{
+	background-image:url(../images/main_line.png);
+	background-repeat:no-repeat;
+	height:1px;
+	margin-left:10px;
+	margin-right:10px;
+	
+}
+
+.main_title_catenews
+{
+	padding-left:2px;
+	margin-left:10px;
+	margin-top:5px;
+	margin-bottom:6px;
+	
+	font-family:Tahoma;
+	font-size:13px;
+	font-weight:bold;
+	color:#ff0000;
+	text-decoration:none;
+	text-transform:uppercase;
+	
+}
+.main_title_catenews a
+{
+	
+	font-family:Tahoma;
+	font-size:13px;
+	font-weight:bold;
+	color:#ff0000;
+	text-decoration:none;
+	text-transform:uppercase;
+	
+}
+.main_title_catenews a:hover
+{
+
+	
+	font-family:Tahoma;
+	font-size:13px;
+	font-weight:bold;
+	color:#034676;
+	text-decoration:none;
+	
+}
+
+
+/*PAGGING*/
+.paging-div
+{
+	font-size: 9px;
+	position: relative;
+	text-align: left;
+	color: rgb(128, 128, 128);
+	padding-bottom: 5px;
+	padding-top: 10px;
+	line-height: 100%;
+	font-family: Verdana;
+	float: right;
+}
+.paging-div div
+{
+	font-size: 9px;
+	font-weight: normal;
+	display: inline;
+	list-style: none;
+	text-align: center;
+	margin: 2px;
+	font-family: Verdana;
+}
+.paging-div div span
+{
+	font-size: 9px;
+	font-weight: normal;
+	color: #CC0000;
+	border: 1px #CC0000 solid;
+	padding: 3px 3px 3px 3px;
+	font-family: Verdana;
+}
+.paging-div div a
+{
+	font-size: 9px;
+	font-weight: normal;
+	color: #000000;
+	border: 1px #CDDCED solid;
+	padding: 3px 3px 3px 3px;
+	font-family: Verdana;
+	text-decoration: none;
+}
+.paging-div div a:hover
+{
+	font-size: 9px;
+	font-weight: normal;
+	color: #FFFFFF;
+	border: 1px #000000 solid;
+	padding: 3px 3px 3px 3px;
+	font-family: Verdana;
+	background-color: #5F8FC5;
+	text-decoration: none;
+}
+.paging-div .nav
+{
+	font-size: 9px;
+	font-weight: normal;
+	color: #CCCCCC;
+	border: 1px #CCCCCC solid;
+	padding: 3px 3px 3px 3px;
+	font-family: Verdana;
+}

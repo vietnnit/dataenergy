@@ -1,0 +1,544 @@
+
+/* CSS Document */
+
+img {
+	border:0;
+	margin:0;
+	padding:0;
+}
+p {
+	line-height:150%;
+}
+
+a:link    { color: #0B55C4; text-decoration: none; }
+a:visited { color: #0B55C4; text-decoration: none; }
+a:hover   { text-decoration: underline; }
+
+.border_image
+{
+	
+	
+}
+/*---------------------------------Banner------------------------------*/
+
+#page{
+	padding:10px;
+	width:100%;
+}
+#banner{
+	width:100%;
+	height:49px;
+	padding:10px 0 0 0;
+}
+.banner-left{
+	background:url(../images/banner-left.png) top left no-repeat;
+	height:49px;
+	margin:0;
+	padding:0;
+}
+.bg-banner{
+	background: url(../images/banner-bg.gif) top left repeat-x;
+	height:49px;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+.banner-rig{
+	background:url(../images/banner-rig.gif) top left no-repeat;
+	width:12px;
+	height:49px;
+	float:right;
+	padding:0;
+	margin:0
+}
+
+
+/*---------------------------------Content-----------------------------*/
+
+#border-bottom 			{ background:url(../images/boder-bottom.gif) repeat-x; }
+#border-bottom div  	{ background:url(../images/rig-bottom.png) 100% 0 no-repeat; }
+#border-bottom div div 	{ background: url(../images/left-bottom.png) no-repeat; height: 6px; }
+
+
+#boder-content {
+	text-align:left;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+#boder-content .padding  { padding: 10px 10px 5px 10px; }
+#login{
+	background:#fff;
+	width:491px;
+	padding-top:20px;
+	padding-bottom:3px;
+
+}
+.login-top{
+	background:url(../images/login-top.gif) top left no-repeat;
+	width:493px;
+	height:10px;
+	padding:0;
+	margin:0;
+}
+.login-bg{
+	border-left: 1px solid #cdcdcd;
+	border-right: 1px solid #cdcdcd;
+	width:491px;
+	padding:0;
+	margin-bottom:-10px;
+	margin-top:-5px;
+}
+*html.login-bg{
+	padding:0;
+	margin:0;
+}
+.txt-title{
+	font-size:20px;
+	font-family:Tahoma;
+	color:#0b55c4;
+	padding:10px;
+	font-weight:700;
+}
+.login-bottom{
+	background:url(../images/login-bottom.gif) bottom left no-repeat;
+	width:493px;
+	height:10px;
+}
+*html.login-bottom{
+	padding:0;
+	margin:0;
+}
+
+.from-login{
+	width:300px;
+	padding:10px 10px 10px 20px;
+	margin:0;
+	float:right;
+	height:auto;
+}
+.bg-top-from{
+	background:url(../images/boder-top.gif) top left repeat-x;
+	width:300px;
+	padding:0;
+	margin:0;
+	height:6px;
+}
+.left-top-from{
+	background:url(../images/left-top.png) top left no-repeat;
+	width:6px;
+	height:6px;
+	float:left;
+}
+.rig-top-from{
+	background:url(../images/rig-top.png) top right no-repeat;
+	width:6px;
+	height:6px;
+	float:right;
+}
+.bg-bottom-from{
+	background:url(../images/boder-bottom.gif) top left repeat-x;
+	width:300px;
+	padding:0;
+	margin:0;
+	height:6px;
+}
+.left-botoom-from{
+	background:url(../images/left-bottom.png) top left no-repeat;
+	width:6px;
+	height:6px;
+	float:left;
+}
+.rig-bottom-from{
+	background:url(../images/rig-bottom.png) top right no-repeat;
+	width:6px;
+	height:6px;
+	float:left;
+}
+.bg-line-from{
+	width:300px;
+	margin-top:-7px;
+	padding-right:20px;
+}
+
+.dieu-kien-login{
+	width:135px;
+	font-size:11px;
+	color:#000;
+	margin:10px;
+	font-weight:normal;
+}
+.back-hone{
+	color:#0b55c4;
+	width:135px;
+	font-size:11px;
+	margin:10px;
+	font-weight:normal;
+}
+#lock{
+	background:url(../images/login_lock.jpg) 50% 0 no-repeat;
+	width:120px;
+	height:137px;
+}
+#from-center-login{
+	padding:10px;
+	margin-bottom:20px;
+}
+.txt-from{
+	color:#666;
+	font-size:11px;
+	font-weight:bold;
+	width:125px;
+	text-align:right;
+	margin:5px;
+	padding:5px 0;
+
+}
+.use-input{
+	width:120px;
+	height:15px;
+	float:right;
+	margin-top:3px;
+}
+.use-input  input{
+	border: 1px solid #cdcdcd;
+	width:120px;
+	height:15px;
+	margin-right:10px;
+}
+.use-input  select{
+	border: 1px solid #cdcdcd;
+	width:120px;
+	height:20px;
+	font-size:12px;
+	margin-right:10px;
+}
+
+.button-login{
+	float:right;
+	width:92px;
+	height:26px;
+	padding:5px;
+}
+
+/*------------------------Footer-----------------------------*/
+.footer{
+	font-size:11px;
+	color:#000;
+	text-align:center;
+	font-weight:normal;
+	padding:5px;
+}
+
+.footer  span {
+	color:#0b55c4;
+}
+
+/*------------------------------------------Home--------------------------------------------*/
+
+.bg-hello-exit{
+	background:#eaeff2;
+	height:25px;
+	border-bottom:1px solid #cdcdcd;
+	width:100%;
+}
+.hello-exit{
+	width:200px;
+	padding:0 5px;
+	float:right;
+	height:25px;
+	line-height:25px;
+}
+.hello-exit  span {
+	font-weight:bold;
+}
+
+.hello-exit  img {
+	padding: 0 5px;
+	margin-bottom:-3px;
+}
+
+.bg-home{
+	background:#f9f9f9;
+	border:1px solid #cdcdcd;
+	padding:5px;
+}
+.bg-icon-home{
+	width:120px;
+	height:95px;
+	border:1px solid #f0f0f0;
+	margin:5px;
+	cursor:pointer;
+	color:#666;
+}
+.bg-icon-home	a,
+.bg-icon-home	a:visited,
+.bg-icon-home	a:after,
+.bg-icon-home	a:before		{
+	margin:5px;
+	cursor:pointer;
+	color:#666;
+	text-decoration:none;
+}
+.bg-icon-home	a:hover,
+.bg-icon-home	a:focus,
+.bg-icon-home	a:active	{
+	margin:5px;
+	cursor:pointer;
+	color:#0b55c4;
+	text-decoration:none;
+}
+.bg-icon-home  img {
+	padding:5px 5px 10px 5px;
+
+}
+.bg-rig-home{
+	background:#f6f6f6;
+	border:1px solid #cdcdcd;
+	width:277px;
+	margin:5px;
+}
+.txt-title-home{
+	border-bottom:1px solid #cdcdcd;
+	background:#eaeff2;
+	font-weight:bold;
+	color:#666;
+	text-indent:10px;
+	height:22px;
+}
+.txt-gt-home{
+	color:#000;
+	padding:5px;
+	font-weight:normal;
+}
+.txt-gt-home  span {
+	font-weight:bold;
+}
+.txt-gt-home  img {
+	padding-right:10px;
+	padding-left:10px;
+}
+
+
+/*------------------------------------------Tao moi--------------------------------------------*/
+
+#icon-titlet{
+	background:#f9f9f9;
+	border:1px solid #cdcdcd;
+	height:62px;
+	width:100%;
+	padding:5px;
+	margin-bottom:10px;
+}
+#icon-titlet  img {
+	margin:5px
+}
+
+.txt-big-title{
+	color:#0b55c4;
+	font-size:22px;
+	text-indent:5px;
+	font-weight:normal;
+}
+.txt-big-title  span {
+	font-size:12px;
+	font-weight:bold;
+	color:#0b55c4;
+	padding-left:5px;
+}
+#icon-small{
+	width:450px;
+	padding:0 5px;
+	margin:0;
+	float:right;
+	text-align:center;
+}
+#icon-small{
+	cursor:pointer;
+}
+
+.bg-line-cham{
+	background:#fff;
+	border:1px #cdcdcd dashed;
+	margin:5px;
+}
+.txt-from-taomoi{
+	
+	font-weight:bold;
+	padding:10px 5px 5px 10px;
+	text-decoration:none;
+	text-align:left;
+}
+.btn_search{
+	padding:-2px;
+}
+.txt-form-create-input{
+	border: 1px solid #cdcdcd;
+	height:15px;
+	margin-right:0px;
+}
+.txt-form-create-select{
+	border: 1px solid #cdcdcd;
+	height:20px;
+	margin-right:10px;
+}
+.txt-form-create-file{
+	border: 1px solid #cdcdcd;
+	height:23px;
+	margin-right:10px;
+	background-color:#ffffff;
+}
+
+.txt-form-create-input-number{
+	border: 1px solid #cdcdcd;
+	height:15px;
+	margin-right:0px;
+	text-align:right;
+}
+
+.pad-left-list{
+	padding-left:20px;
+}
+.pad-left-list-sub{
+	padding-left:40px;
+}
+/*-------------------- List page------------------*/
+
+
+.txt-from-lable-search{
+	
+	font-weight:bold;
+	padding:10px 5px 5px 10px;
+	text-decoration:none;
+}
+.txt-form-list-input{
+	border: 1px solid #cdcdcd;
+	height:15px;
+	margin-right:0px;
+}
+.gridviewBorder{
+	border:1px solid #cdcdcd;
+	font-family:Tahoma;
+	font-size:11px;
+}
+
+.gridviewTitleBg{
+	background-color:#EAEFF2;
+	line-height:23px;
+	height:23px;
+	font-weight:bold;
+	padding-left:0px;
+	text-decoration:none;
+}
+.gridviewCellBottom{
+	border-bottom:1px solid #cdcdcd;
+}
+.gridviewCellRight{
+	border-right:1px solid #cdcdcd;
+}
+.search_panel{
+/*	line-height:50px;
+	height:50px;  */
+}
+
+
+
+
+
+
+
+table.toolbar span { float: none; width: 32px; height: 32px; margin: 0 auto; display: block; }
+
+table.toolbar a {
+   display: block; float: left;
+    white-space: nowrap;
+    border: 1px solid #fbfbfb;
+    padding: 1px 5px;
+    cursor: pointer;
+}
+
+table.toolbar a:hover {
+    border-left: 1px solid #eee;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-decoration: none;
+    color: #0B55C4;
+}
+
+
+.icon-32-send           { background-image: url(../Icons/icon-32-send.png); }
+.icon-32-delete         { background-image: url(../Icons/icon-32-delete.png); }
+.icon-32-help           { background-image: url(../Icons/icon-32-help.png); }
+.icon-32-cancel         { background-image: url(../Icons/icon-32-cancel.png); }
+.icon-32-config         { background-image: url(../Icons/icon-32-config.png); }
+.icon-32-apply			{ background-image: url(../Icons/icon-32-apply.png); }
+.icon-32-back           { background-image: url(../Icons/icon-32-back.png); }
+.icon-32-forward        { background-image: url(../Icons/icon-32-forward.png); }
+.icon-32-save           { background-image: url(../Icons/icon-32-save.png); }
+.icon-32-edit           { background-image: url(../Icons/icon-32-edit.png); }
+.icon-32-copy           { background-image: url(../Icons/icon-32-copy.png); }
+.icon-32-move           { background-image: url(../Icons/icon-32-move.png); }
+.icon-32-new            { background-image: url(../Icons/icon-32-new.png); }
+.icon-32-upload         { background-image: url(../Icons/icon-32-upload.png); }
+.icon-32-assign         { background-image: url(../Icons/icon-32-publish.png); }
+.icon-32-html           { background-image: url(../Icons/icon-32-html.png); }
+.icon-32-css            { background-image: url(../Icons/icon-32-css.png); }
+.icon-32-menus          { background-image: url(../Icons/icon-32-menu.png); }
+.icon-32-publish        { background-image: url(../Icons/icon-32-publish.png); }
+.icon-32-unpublish  { background-image: url(../Icons/icon-32-unpublish.png);}
+.icon-32-restore        { background-image: url(../Icons/icon-32-revert.png); }
+.icon-32-trash      { background-image: url(../Icons/icon-32-trash.png); }
+.icon-32-archive        { background-image: url(../Icons/icon-32-archive.png); }
+.icon-32-unarchive  { background-image: url(../Icons/icon-32-unarchive.png); }
+.icon-32-preview        { background-image: url(../Icons/icon-32-preview.png); }
+.icon-32-default        { background-image: url(../Icons/icon-32-default.png); }
+.icon-32-home        { background-image: url(../Icons/icon-32-homepage.png); }
+
+
+/** cpanel settings **/
+
+#cpanel div.icon_admin {
+    text-align: center;
+    margin-right: 8px;
+    float: left;
+    margin-bottom: 8px;
+
+}
+
+#cpanel div.icon_admin a {
+    display: block;
+    float: left;
+    border: 1px solid #f0f0f0;
+    height: 112px;
+    width: 112px;
+    color: #666;
+    vertical-align: middle;
+    text-decoration: none;
+        padding-left:5px;
+    padding-right:5px;
+}
+
+#cpanel div.icon_admin a:hover {
+    border-left: 1px solid #eee;
+    border-top: 1px solid #eee;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    background: #f9f9f9;
+    color: #0B55C4;
+}
+
+#cpanel img  { padding: 10px 0; margin: 0 auto; }
+#cpanel span { display: block; text-align: center; }
+
+img_button {
+	vertical-align:middle;
+}
+
+.title_User{
+	color: #ffa700;
+	font-family: Tahoma;
+	font-size: 11pt;
+	font-weight: bold;
+	padding:0px 0px 0px 20px;
+}
+

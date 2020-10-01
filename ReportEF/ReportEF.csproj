@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{342E1684-2FD8-475B-B0AE-FD923688D84E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReportEF</RootNamespace>
+    <AssemblyName>ReportEF</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BC_SDNL_DS_TheoNam_Comment.cs" />
+    <Compile Include="BC_SDNL_HangNam.cs" />
+    <Compile Include="BC_SDNL_DS_TheoNam.cs" />
+    <Compile Include="DE_Area.cs" />
+    <Compile Include="DE_AuditReport.cs" />
+    <Compile Include="DE_Boiler.cs" />
+    <Compile Include="DE_Compressor.cs" />
+    <Compile Include="DE_District.cs" />
+    <Compile Include="DE_ElectricMotors.cs" />
+    <Compile Include="DE_ElectricSupplying.cs" />
+    <Compile Include="DE_ElectrictConsume.cs" />
+    <Compile Include="DE_EnergyQuota.cs" />
+    <Compile Include="DE_Enterprise.cs" />
+    <Compile Include="DE_EnterpriseHistory.cs" />
+    <Compile Include="DE_EnterpriseLog.cs" />
+    <Compile Include="DE_EnterpriseYear.cs" />
+    <Compile Include="DE_Fuel.cs" />
+    <Compile Include="DE_Furnaces.cs" />
+    <Compile Include="DE_GiaiPhap.cs" />
+    <Compile Include="DE_GroupFuel.cs" />
+    <Compile Include="DE_Infrastructure.cs" />
+    <Compile Include="DE_Measurement.cs" />
+    <Compile Include="DE_MeasurementFuel.cs" />
+    <Compile Include="DE_Member.cs" />
+    <Compile Include="DE_OperationArea.cs" />
+    <Compile Include="DE_Organization.cs" />
+    <Compile Include="DE_OtherFuelConsume.cs" />
+    <Compile Include="DE_Plan.cs" />
+    <Compile Include="DE_PlanTB.cs" />
+    <Compile Include="DE_PlanTKNL.cs" />
+    <Compile Include="DE_Product.cs" />
+    <Compile Include="DE_ProductCapacity.cs" />
+    <Compile Include="DE_ProductConsume.cs" />
+    <Compile Include="DE_ProductMeasurement.cs" />
+    <Compile Include="DE_ProductPlan.cs" />
+    <Compile Include="DE_Province.cs" />
+    <Compile Include="DE_Region.cs" />
+    <Compile Include="DE_RegionProvince.cs" />
+    <Compile Include="DE_ReportAttachFile.cs" />
+    <Compile Include="DE_ReportFuel.cs" />
+    <Compile Include="DE_ReportFuelDetail.cs" />
+    <Compile Include="DE_ReportLog.cs" />
+    <Compile Include="DE_ReportTemp2014.cs" />
+    <Compile Include="DE_ReportTemplate.cs" />
+    <Compile Include="DE_SaveSolution.cs" />
+    <Compile Include="DE_SubAreaEnterprise.cs" />
+    <Compile Include="DE_TestEquipment.cs" />
+    <Compile Include="DE_TOE.cs" />
+    <Compile Include="DE_TOEYear.cs" />
+    <Compile Include="DE_UsingElectrict.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PR_Project.cs" />
+    <Compile Include="PR_ProjectArea.cs" />
+    <Compile Include="PR_ProjectArticle.cs" />
+    <Compile Include="PR_ProjectType.cs" />
+    <Compile Include="Pr_ProType.cs" />
+    <Compile Include="ReportModels.cs" />
+    <Compile Include="sysdiagram.cs" />
+    <Compile Include="SYS_PageLayout.cs" />
+    <Compile Include="SYS_TemplatePage.cs" />
+    <Compile Include="SYS_Widget.cs" />
+    <Compile Include="SYS_WidgetPage.cs" />
+    <Compile Include="SYS_WidgetPageLayout.cs" />
+    <Compile Include="SYS_WidgetType.cs" />
+    <Compile Include="tblAdmin.cs" />
+    <Compile Include="tblAdminRole.cs" />
+    <Compile Include="tblAlbum.cs" />
+    <Compile Include="tblAlbumsCate.cs" />
+    <Compile Include="tblBrand.cs" />
+    <Compile Include="tblCateNew.cs" />
+    <Compile Include="tblCateNewsGroup.cs" />
+    <Compile Include="tblCateNewsGroupPermission.cs" />
+    <Compile Include="tblCateNewsPermission.cs" />
+    <Compile Include="tblConfig.cs" />
+    <Compile Include="tblContact.cs" />
+    <Compile Include="tblDocumentOrg.cs" />
+    <Compile Include="tblDocumentType.cs" />
+    <Compile Include="tblEmail.cs" />
+    <Compile Include="tblFaqsCate.cs" />
+    <Compile Include="tblMailContent.cs" />
+    <Compile Include="tblMember.cs" />
+    <Compile Include="tblMenuLink.cs" />
+    <Compile Include="tblModule.cs" />
+    <Compile Include="tblNewsApprovedComment.cs" />
+    <Compile Include="tblNewsCate.cs" />
+    <Compile Include="tblNewsComment.cs" />
+    <Compile Include="tblNewsEvent.cs" />
+    <Compile Include="tblNewsEventRelation.cs" />
+    <Compile Include="tblNewsGroup.cs" />
+    <Compile Include="tblNewsGroupFile.cs" />
+    <Compile Include="tblNewsLog.cs" />
+    <Compile Include="tblNewsRegister.cs" />
+    <Compile Include="tblNewsRelation.cs" />
+    <Compile Include="tblNewsTag.cs" />
+    <Compile Include="tblOfficial.cs" />
+    <Compile Include="tblOfficialFile.cs" />
+    <Compile Include="tblPermission.cs" />
+    <Compile Include="tblPicture.cs" />
+    <Compile Include="tblProduct.cs" />
+    <Compile Include="tblRegister.cs" />
+    <Compile Include="tblReport.cs" />
+    <Compile Include="tblRole.cs" />
+    <Compile Include="tblRoleCate.cs" />
+    <Compile Include="tblTag.cs" />
+    <Compile Include="tblVideo.cs" />
+    <Compile Include="tblVideosCate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

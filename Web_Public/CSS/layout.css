@@ -1,0 +1,240 @@
+﻿
+/* create: Ducnm */
+
+.container_16f {
+    margin-left: auto;
+    margin-right: auto;
+    width: 980px;
+    background-color: #f6f6f6;
+}
+
+
+.top-block 
+{
+    height: 90px;
+	margin-top:0px;
+	background: #f4f4f2 url(../images/bg_tcnl.jpg) repeat-x top center; 
+}
+
+.menubar-block
+{
+
+   background: #fff;
+box-shadow: 0 .32rem .32rem 0 rgba(0,0,0,.3);
+	
+	height: 40px;
+}
+.adv-block
+{
+}
+.adv-block-panel
+{
+	padding:5px 0;
+}
+.detail-panel
+{
+	border-top:1px solid #009AD9;
+	padding:5px 0;
+}
+
+
+.container_list
+{
+   background: #f4f5f6 url(../images/bgBody.gif) repeat-x 0px 27px;
+}
+.container_slider
+{
+    
+}
+.container_news
+{
+   
+}
+.bg_content_news
+{
+   background: #f5f5f5; 
+}
+.adv-block-footer
+{
+	
+}
+.footer-block
+{
+	display:block;
+	border-top: 2px solid #aaaaaa;
+	background: #f1f1f1;
+}
+.footer-block-more
+{
+	display:block;
+	border-top: 1px solid #e5e5e5;
+	background: #e5e5e5;
+}
+.main-col1
+{
+	display:block;
+	width:49%;
+	float:left;
+	margin-right:2%;
+}
+.main-col2
+{
+	display:block;
+	width:49%;
+	float:right;
+}
+
+.main-col31
+{
+	display:block;
+	width:32%;
+	float:left;
+	margin-right:2%;
+}
+.main-col32
+{
+	display:block;
+	width:32%;
+	float:left;
+	margin-right:2%;
+}
+.main-col33
+{
+	display:block;
+	width:32%;
+	float:right;
+
+}
+
+.mainf-col31
+{
+	display:block;
+	width:33%;
+	float:left;
+	margin-right:1%;
+}
+.mainf-col32
+{
+	display:block;
+	width:33%;
+	float:left;
+}
+.mainf-col33
+{
+	display:block;
+	width:32%;
+	float:right;
+
+}
+
+.mainf-col41
+{
+	display:block;
+	width:24%;
+	float:left;
+	margin-right:1%;
+}
+.mainf-col42
+{
+	display:block;
+	width:24%;
+	float:left;
+	margin-right:1%;
+}
+.mainf-col43
+{
+	display:block;
+	width:24%;
+	float:left;
+	margin-right:1%;
+}
+.mainf-col44
+{
+	display:block;
+	width:24%;
+	float:right;
+
+}
+
+.tintuc-col1
+{
+	display:block;
+	width:465px;
+	float:left;
+	margin-right:25px;
+}
+.tintuc-col2
+{
+	display:block;
+	width:185px;
+	float:right;
+
+}
+.tintuc-col-main
+{
+	display:block;
+	width:100%;
+}
+
+.container_16 .grid_4_1 {
+	width:246px;
+}
+
+
+.container_16 .grid_8_1 {
+	width:502px;
+}
+
+
+.grid_4_1,
+.grid_8_1
+{
+	display:inline;
+	float: left;
+	position: relative;
+	margin-left: 2px;
+	margin-right: 3px;
+}
+
+.container_16 .grid_4_2 {
+	width:246px;
+}
+.grid_4_2
+{
+	display:inline;
+	float: left;
+	position: relative;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+
+.header-bg-r
+{
+     
+}
+
+.container_menuFooter
+{
+   background:#ffffff url(../images/bg_menungang.jpg) repeat-x top center;
+}
+.container_Footer
+{
+   background: #d5d5d5 url("../images/footer_underbg.jpg") no-repeat scroll center top;
+}
+
+.container_Footer_bottom
+{
+    background: #b7b7b7; /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2I3YjdiNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkNWQ1ZDUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  #b7b7b7 0%, #d5d5d5 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b7b7b7), color-stop(100%,#d5d5d5)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #b7b7b7 0%,#d5d5d5 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #b7b7b7 0%,#d5d5d5 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #b7b7b7 0%,#d5d5d5 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #b7b7b7 0%,#d5d5d5 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7b7b7', endColorstr='#d5d5d5',GradientType=0 ); /* IE6-8 */
+
+ padding:10px 0;
+}
+
