@@ -138,6 +138,24 @@
                                 runat="server" ControlToValidate="ddlOwner" Display="Dynamic" ErrorMessage="RequiredFieldValidator"><span class="append-icon right text-danger"><i class="fa fa-exclamation-triangle"></i></span></asp:RequiredFieldValidator>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-lg-5 control-label pt5" for="inputSmall">
+                            Cơ sở đã áp dụng mô hình quản lý năng lượng chưa?</label>
+                        <div class="col-lg-5">
+                            <div class="form-check">
+                                <asp:CheckBox ID="cbMoHinhQLNL_ChuaAD" runat="server" class="form-check-input" />
+                                <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_ChuaAD">Chưa áp dụng</label>
+                            </div>
+                            <div class="form-check">
+                                <asp:CheckBox ID="cbMoHinhQLNL_DaAD" runat="server" class="form-check-input" />
+                                <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_DaAD">Đã áp dụng mô hình quản lý năng lượng</label>
+                            </div>
+                            <div class="form-check">
+                                <asp:CheckBox ID="cbMoHinhQLNL_DaAD_ISO" runat="server" class="form-check-input" />
+                                <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_DaAD_ISO">Đã áp dụng mô hình QLNL theo TCVN:ISO 50001</label>
+                            </div>
+                        </div>
+                    </div>
                     <b>THÔNG TIN CÔNG TY MẸ</b>
                     <hr class="hr-danger" />
                     <div class="form-group">
@@ -289,18 +307,16 @@
             </div>
             <div id="tabImportant">
                 <p>
-                    <asp:Literal ID="ltrTotalImportant" runat="server"></asp:Literal></p>
+                    <asp:Literal ID="ltrTotalImportant" runat="server"></asp:Literal>
+                </p>
                 <div class="table-responsive mb20">
                     <table class="table table-bordered table-hover mbn" width="100%">
                         <tr class="primary fs12">
-                            <th style="width: 5%" class="text-center">
-                                STT
+                            <th style="width: 5%" class="text-center">STT
                             </th>
-                            <th style="width: 10%" class="text-center">
-                                Năm
+                            <th style="width: 10%" class="text-center">Năm
                             </th>
-                            <th>
-                                TOE
+                            <th>TOE
                             </th>
                         </tr>
                         <asp:Repeater ID="rptImportantYear" runat="server">
@@ -387,4 +403,35 @@
     tabReport.setselectedClassTarget("link");
     tabReport.currentTabIndex = 0;
     tabReport.init();
+
+    //checkbox cbMoHinhQLNL
+    var cbMoHinhQLNL_ChuaAD = $('#<%=cbMoHinhQLNL_ChuaAD.ClientID%>');
+    var cbMoHinhQLNL_DaAD = $('#<%=cbMoHinhQLNL_DaAD.ClientID%>');
+    var cbMoHinhQLNL_DaAD_ISO = $('#<%=cbMoHinhQLNL_DaAD_ISO.ClientID%>');
+
+    function cbMoHinhQLNL_CheckedChange(obj) {
+        if ($(obj).is(":checked")) {
+            if ($(obj).attr('id') != $(cbMoHinhQLNL_ChuaAD).attr('id'))
+                $(cbMoHinhQLNL_ChuaAD).prop('checked', false);
+
+            if ($(obj).attr('id') != $(cbMoHinhQLNL_DaAD).attr('id'))
+                $(cbMoHinhQLNL_DaAD).prop('checked', false);
+
+            if ($(obj).attr('id') != $(cbMoHinhQLNL_DaAD_ISO).attr('id'))
+                $(cbMoHinhQLNL_DaAD_ISO).prop('checked', false);
+        }
+    }
+    $(cbMoHinhQLNL_ChuaAD).change(function () {
+        cbMoHinhQLNL_CheckedChange($(this));
+    });
+
+    $(cbMoHinhQLNL_DaAD).change(function () {
+        cbMoHinhQLNL_CheckedChange($(this));
+    });
+
+    $(cbMoHinhQLNL_DaAD_ISO).change(function () {
+        cbMoHinhQLNL_CheckedChange($(this));
+    });
+
+
 </script>

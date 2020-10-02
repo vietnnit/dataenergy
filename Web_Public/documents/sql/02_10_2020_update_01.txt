@@ -1,0 +1,10 @@
+﻿ALTER TABLE DE_Enterprise ADD MoHinhQLNL int
+ALTER TABLE DE_Enterprise add CONSTRAINT df_DE_Enterprise_MoHinhQLNL default 0 for MoHinhQLNL
+
+go
+ALTER TABLE DE_EnterpriseHistory ADD MoHinhQLNL int default 0
+ALTER TABLE DE_EnterpriseHistory add CONSTRAINT df_DE_EnterpriseHistory_MoHinhQLNL default 0 for MoHinhQLNL
+go
+update DE_Enterprise set MoHinhQLNL=0;
+go
+update DE_EnterpriseHistory set MoHinhQLNL=0;

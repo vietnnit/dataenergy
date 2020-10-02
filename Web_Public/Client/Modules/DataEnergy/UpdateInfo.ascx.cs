@@ -244,6 +244,20 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                 txtFaxReporter.Text = obj.ManFax;
                 txtManEmail.Text = obj.ManEmail;
 
+                int _MoHinhQLNL = obj.MoHinhQLNL;
+                switch (_MoHinhQLNL)
+                {
+                    case 0:
+                        cbMoHinhQLNL_ChuaAD.Checked = true;
+                        break;
+                    case 1:
+                        cbMoHinhQLNL_DaAD.Checked = true;
+                        break;
+                    case 2:
+                        cbMoHinhQLNL_DaAD_ISO.Checked = true;
+                        break;
+                }
+
                 ePower.DE.Domain.Member member = new ePower.DE.Domain.Member();
                 member = new MemberService().FindByKey(memVal.UserId);
                 if (member != null)
@@ -310,6 +324,15 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                 obj.ManEmail = txtManEmail.Text;
                 if (txtActiveYear.Text.Trim() != "")
                     obj.ActiveYear = Convert.ToInt32(txtActiveYear.Text.Trim());
+
+                int _MoHinhQLNL = 0;
+                if (cbMoHinhQLNL_DaAD.Checked)
+                    _MoHinhQLNL = 1;
+                if (cbMoHinhQLNL_DaAD_ISO.Checked)
+                    _MoHinhQLNL = 2;
+
+                obj.MoHinhQLNL = _MoHinhQLNL;
+                int tmpMoHinhQLNL = obj.MoHinhQLNL;
                 if (memVal.OrgId > 0)
                 {
                     if (objlogic.Update(obj) != null)
@@ -344,6 +367,8 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                             objHist.ShortName = obj.ShortName;
                             objHist.SubAreaId = obj.SubAreaId;
                             objHist.Title = obj.Title;
+                            objHist.MoHinhQLNL = tmpMoHinhQLNL;
+
                             new EnterpriseHistoryService().Insert(objHist);
                         }
                         catch { }
