@@ -1,1 +1,2 @@
 ﻿update tblMenuLinks set menuLinksName=N'Kế hoạch sử dụng năng lượng hằng năm' where MenuLinksID=145 and MenuLinksParent=143
+update tblMenuLinks set isView=0 where MenuLinksID=207 and MenuLinksParent=143
