@@ -1,0 +1,1 @@
+﻿update tblMenuLinks set menuLinksName=N'Kế hoạch sử dụng năng lượng hằng năm' where MenuLinksID=145 and MenuLinksParent=143
