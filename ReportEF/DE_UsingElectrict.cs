@@ -36,5 +36,7 @@ namespace ReportEF
         public decimal? PriceBuy { get; set; }
 
         public decimal? AvgPrice { get; set; }
+        public decimal? CongSuatBan { get; set; }
+        public decimal? SanLuongBan { get; set; }
     }
 }

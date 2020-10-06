@@ -1,0 +1,62 @@
+﻿--1. Bổ sung bảng DE_ElectrictTechnology chứa danh mục công nghệ sản xuất điện
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DE_ElectrictTechnology](
+	[TechKey] [nvarchar](50) NOT NULL,
+	[TechName] [nvarchar](255) NOT NULL,
+	[TechDesc] [nvarchar](1000) NULL,
+	[TechState] [int] NOT NULL,
+ CONSTRAINT [PK_DE_ElectrictTechnology] PRIMARY KEY CLUSTERED 
+(
+	[TechKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[DE_ElectrictTechnology] ADD  CONSTRAINT [DF_DE_ElectrictTechnology_TechState]  DEFAULT ((0)) FOR [TechState]
+GO
+
+--2. Bổ sung bảng DE_ElectrictProduce lưu thông tin điện tự sản xuất
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DE_ElectrictProduce](
+	[AutoId] [int] IDENTITY(1,1) NOT NULL,
+	[ReportId] [int] NULL,
+	[ReportYear] [int] NULL,
+	[ElectrictTechId] [int] NULL,
+	[InstalledCapacity] [decimal](20, 2) NULL,
+	[ProduceQty] [decimal](20, 2) NULL,
+	[State] [int] NOT NULL,
+ CONSTRAINT [PK_DE_ElectrictProduce] PRIMARY KEY CLUSTERED 
+(
+	[AutoId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[DE_ElectrictProduce] ADD  CONSTRAINT [DF_DE_ElectrictProduce_State]  DEFAULT ((0)) FOR [State]
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Sử dụng công nghệ(DE_ElectrictTechnology)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'DE_ElectrictProduce', @level2type=N'COLUMN',@level2name=N'ElectrictTechId'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Công suất lắp đặt' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'DE_ElectrictProduce', @level2type=N'COLUMN',@level2name=N'InstalledCapacity'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Điện năng sản xuất' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'DE_ElectrictProduce', @level2type=N'COLUMN',@level2name=N'ProduceQty'
+GO
+
+--3. Bổ sung 2 cột vào bảng DE_UsingElectrict
+  ALTER TABLE DE_UsingElectrict ADD CongSuatBan decimal(20, 2);
+  go
+  ALTER TABLE DE_UsingElectrict ADD SanLuongBan decimal(20, 2);
+  go

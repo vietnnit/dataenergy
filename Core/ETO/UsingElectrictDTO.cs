@@ -29,6 +29,8 @@ namespace ePower.DE.Domain
 			this.Technology = usingelectrictBO.Technology;
 			this.PriceBuy = usingelectrictBO.PriceBuy;
 			this.AvgPrice = usingelectrictBO.AvgPrice;
+			this.CongSuatBan = usingelectrictBO.CongSuatBan;
+			this.SanLuongBan = usingelectrictBO.SanLuongBan;
 	}
 	#endregion
 
@@ -47,6 +49,8 @@ namespace ePower.DE.Domain
 	private string _Technology;
 	private decimal _PriceBuy;
 	private decimal _AvgPrice;
+	private decimal _CongSuatBan;
+	private decimal _SanLuongBan;
 	private int _Total;
 	#endregion
 
@@ -128,7 +132,19 @@ namespace ePower.DE.Domain
 	get { return _Total; }
 	set { _Total = value; }
 	}
-	#endregion Public Properties
+
+		public decimal CongSuatBan
+		{
+			get { return _CongSuatBan; }
+			set { _CongSuatBan = value; }
+		}
+
+		public decimal SanLuongBan
+		{
+			get { return _SanLuongBan; }
+			set { _SanLuongBan = value; }
+		}
+		#endregion Public Properties
 
 	}
 }

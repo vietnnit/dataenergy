@@ -61,6 +61,8 @@
     <Compile Include="DE_ElectricMotors.cs" />
     <Compile Include="DE_ElectricSupplying.cs" />
     <Compile Include="DE_ElectrictConsume.cs" />
+    <Compile Include="DE_ElectrictProduce.cs" />
+    <Compile Include="DE_ElectrictTechnology.cs" />
     <Compile Include="DE_EnergyQuota.cs" />
     <Compile Include="DE_Enterprise.cs" />
     <Compile Include="DE_EnterpriseHistory.cs" />
@@ -160,6 +162,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModelUpdate\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

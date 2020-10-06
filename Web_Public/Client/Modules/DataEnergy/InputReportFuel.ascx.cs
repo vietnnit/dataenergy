@@ -19,6 +19,7 @@ using ePower.DE.Service;
 using PR.Domain;
 using PR.Service;
 using System.Net;
+using ReportEF;
 
 public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.UserControl
 {
@@ -351,7 +352,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                     if (report.SendDate != null && report.SendDate.Year > 1)
                         txtReportDate.Text = String.Format("{0:dd/MM/yyyy}", report.SendDate);//DateTime.Parse(faqs.PostDate.ToString()).ToString("dd/MM/yyyy hh:mm", ci); // faqs.PostDate.ToString();               
                     ltDataCurrentTitle.Text = "1. Nhiên liệu tiêu thụ năm " + (report.Year - 1);
-                    ltDataNextYearTitle.Text = "2. Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
+                    //ltDataNextYearTitle.Text = "2. Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
+                    ltDataNextYearTitle.Text = "Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
                     txtEnterpriseName.Text = report.CompanyName;
                     txtResponsible.Text = report.Responsible;
                     txtMST.Text = report.TaxCode;
@@ -409,6 +411,25 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                         else
                             ltOwner.Text = "Doanh nghiệp nhà nước";
                     }
+                    ReportModels reportModels = new ReportModels();
+                    var deEnterprise = reportModels.DE_Enterprise.FirstOrDefault(o => o.Id == report.EnterpriseId);
+                    int _MoHinhQLNL = deEnterprise.MoHinhQLNL.Value;
+                    switch (_MoHinhQLNL)
+                    {
+                        case 0:
+                            cbMoHinhQLNL_ChuaAD.Checked = true;
+                            break;
+                        case 1:
+                            cbMoHinhQLNL_DaAD.Checked = true;
+                            break;
+                        case 2:
+                            cbMoHinhQLNL_DaAD_ISO.Checked = true;
+                            break;
+                    }
+                    cbMoHinhQLNL_ChuaAD.Enabled = false;
+                    cbMoHinhQLNL_DaAD.Enabled = false;
+                    cbMoHinhQLNL_DaAD_ISO.Enabled = false;
+
 
                     BindReportDetail();
                     BindReportDetailNext();

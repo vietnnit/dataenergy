@@ -30,7 +30,8 @@
                 <b>THÔNG TIN CHUNG BÁO CÁO</b>
                 <div style="float: right">
                     <asp:LinkButton ID="btnEditBasicInfo" runat="server" Text="Thêm kế hoạch" ToolTip="Sửa thông tin"
-                        OnClientClick='javascript:showformInfo(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton></div>
+                        OnClientClick='javascript:showformInfo(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton>
+                </div>
             </div>
             <div class="form-horizontal">
                 <div class="form-group">
@@ -141,6 +142,25 @@
                                 <asp:Literal ID="ltOwner" runat="server"></asp:Literal>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-lg-6" for="inputSmall">
+                                Cơ sở đã áp dụng mô hình quản lý năng lượng chưa</label>
+                            <div class="col-lg-5">
+                                <div class="form-check">
+                                    <asp:CheckBox ID="cbMoHinhQLNL_ChuaAD" runat="server" class="form-check-input" />
+                                    <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_ChuaAD">Chưa áp dụng</label>
+                                </div>
+                                <div class="form-check">
+                                    <asp:CheckBox ID="cbMoHinhQLNL_DaAD" runat="server" class="form-check-input" />
+                                    <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_DaAD">Đã áp dụng mô hình quản lý năng lượng</label>
+                                </div>
+                                <div class="form-check">
+                                    <asp:CheckBox ID="cbMoHinhQLNL_DaAD_ISO" runat="server" class="form-check-input" />
+                                    <label class="form-check-label" style="font-weight: normal;" for="cbMoHinhQLNL_DaAD_ISO">Đã áp dụng mô hình QLNL theo TCVN:ISO 50001</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="panel">
                         </div>
                         <div class="form-group">
@@ -202,8 +222,8 @@
                                 <li><a rel="tabReport" href="#" class=""><i class="fa fa-info-circle">&nbsp;</i>THÔNG
                                     TIN CHI TIẾT BÁO CÁO</a></li>
                                 <li><a rel="tabAttachFile" href="#" class=""><i class="fa fa-file-pdf-o">&nbsp;</i>FILE
-                                    BÁO CÁO</a></li><li><a rel="tabHistory" href="#" class=""><i class="fa fa-comments-o">
-                                        &nbsp;</i>Ý KIẾN, PHẢN HỒI PHÊ DUYỆT</a></li>
+                                    BÁO CÁO</a></li>
+                                <li><a rel="tabHistory" href="#" class=""><i class="fa fa-comments-o">&nbsp;</i>Ý KIẾN, PHẢN HỒI PHÊ DUYỆT</a></li>
                             </ul>
                         </div>
                     </div>
@@ -226,41 +246,34 @@
                             </div>
                             <div id="tabData" class="">
                                 <div class="form-horizontal">
-                                    <div class="form-group">
+                                    <div class="form-group" style="display: none;">
                                         <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataCurrentTitle" runat="server"></asp:Literal><div style="float: right">
                                                     <asp:LinkButton ID="btnAddFuel" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
-                                                        data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton></div>
+                                                        data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                </div>
                                             </div>
                                             <table class="table table-bordered table-hover mbn" width="100%">
                                                 <tr class="primary fs12">
-                                                    <th style="width: 5%">
-                                                        STT
+                                                    <th style="width: 5%">STT
                                                     </th>
-                                                    <th style="width: 15%">
-                                                        Nhiên liệu
+                                                    <th style="width: 15%">Nhiên liệu
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Mức tiêu thụ
+                                                    <th style="width: 10%">Mức tiêu thụ
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Đơn vị tính
+                                                    <th style="width: 10%">Đơn vị tính
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Giá (đồng)
+                                                    <th style="width: 10%">Giá (đồng)
                                                     </th>
                                                     <%--<th style="width: 10%">
                                                     Hệ số TOE
                                                 </th>--%>
-                                                    <th style="width: 10%">
-                                                        Năng lượng tiêu thụ (TOE)
+                                                    <th style="width: 10%">Năng lượng tiêu thụ (TOE)
                                                     </th>
-                                                    <th style="width: 30%">
-                                                        Mục đích sử dụng
+                                                    <th style="width: 30%">Mục đích sử dụng
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Thao tác
+                                                    <th style="width: 10%">Thao tác
                                                     </th>
                                                 </tr>
                                                 <asp:Repeater ID="rptNoFuelCurrent" runat="server" OnItemDataBound="rptNoFuelCurrent_ItemDataBound">
@@ -309,37 +322,30 @@
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataNextYearTitle" runat="server"></asp:Literal><div style="float: right">
                                                     <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
-                                                        data-target="#dlgFuelConsume" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:addReportDetail(1); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton></div>
+                                                        data-target="#dlgFuelConsume" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:addReportDetail(1); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                </div>
                                             </div>
                                             <asp:Literal ID="ltNoFuelFuture" runat="server"></asp:Literal>
                                             <table class="table table-bordered table-hover mbn" width="100%">
                                                 <tr class="primary fs12">
-                                                    <th style="width: 5%">
-                                                        STT
+                                                    <th style="width: 5%">STT-------
                                                     </th>
-                                                    <th style="width: 15%">
-                                                        Nhiên liệu
+                                                    <th style="width: 15%">Nhiên liệu
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Mức tiêu thụ dự kiến
+                                                    <th style="width: 10%">Mức tiêu thụ dự kiến
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Đơn vị tính
+                                                    <th style="width: 10%">Đơn vị tính
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Giá dự kiến (đồng)
+                                                    <th style="width: 10%">Giá dự kiến (đồng)
                                                     </th>
                                                     <%-- <th style="width: 10%">
                                                     Hệ số TOE
                                                 </th>--%>
-                                                    <th style="width: 10%">
-                                                        Năng lượng tiêu thụ (TOE)
+                                                    <th style="width: 10%">Năng lượng tiêu thụ (TOE)
                                                     </th>
-                                                    <th style="width: 30%">
-                                                        Mục đích sử dụng
+                                                    <th style="width: 30%">Mục đích sử dụng
                                                     </th>
-                                                    <th style="width: 10%">
-                                                        Thao tác
+                                                    <th style="width: 10%">Thao tác
                                                     </th>
                                                 </tr>
                                                 <asp:Repeater ID="rptNoFuelFuture" runat="server" OnItemDataBound="rptNoFuelFuture_ItemDataBound">
@@ -385,6 +391,8 @@
                                             </div>
                                             <%--<asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
                                         </div>
+                                        
+                                        
                                     </div>
                                     <asp:Literal ID="error" runat="server"></asp:Literal>
                                 </div>
@@ -407,20 +415,16 @@
                                 <table class="table table-bordered table-hover mbn" width="100%">
                                     <thead>
                                         <tr class="primary fs12">
-                                            <th style="width: 15%">
-                                                Hoạt động
+                                            <th style="width: 15%">Hoạt động
                                             </th>
-                                            <th style="width: 60%">
-                                                Nội dung
+                                            <th style="width: 60%">Nội dung
                                             </th>
                                             <%-- <th style="width: 15%">
                                                 Trạng thái
                                             </th>--%>
-                                            <th style="width: 15%">
-                                                Thời gian cập nhật
+                                            <th style="width: 15%">Thời gian cập nhật
                                             </th>
-                                            <th style="width: 10%">
-                                                Người cập nhật
+                                            <th style="width: 10%">Người cập nhật
                                             </th>
                                         </tr>
                                     </thead>
@@ -472,20 +476,15 @@
                                 <table class="table table-bordered table-hover mbn" width="100%">
                                     <thead>
                                         <tr class="primary fs12">
-                                            <th style="width: 25%">
-                                                Tên file
+                                            <th style="width: 25%">Tên file
                                             </th>
-                                            <th style="width: 50%">
-                                                Ghi chú
+                                            <th style="width: 50%">Ghi chú
                                             </th>
-                                            <th style="width: 15%">
-                                                Thời gian cập nhật
+                                            <th style="width: 15%">Thời gian cập nhật
                                             </th>
-                                            <th>
-                                                Người cập nhật
+                                            <th>Người cập nhật
                                             </th>
-                                            <th>
-                                                Tải về
+                                            <th>Tải về
                                             </th>
                                         </tr>
                                     </thead>
@@ -889,26 +888,25 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Lựa chọn mẫu báo cáo hàng năm</h4>
+                <h4 class="modal-title">Lựa chọn mẫu báo cáo hàng năm</h4>
             </div>
             <div class="modal-body">
                 <section class="mbn">
                     <label class="select">
-                    <asp:DropDownList runat="server" ID="drpmaubaocao">
-                        <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
-                        <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
-                        <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
-                        <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
-                        <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
-                        <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
-                        <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
-                        <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
-                        <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
-                        <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                        <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                    </asp:DropDownList>
-                    <i></i>
+                        <asp:DropDownList runat="server" ID="drpmaubaocao">
+                            <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
+                            <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
+                            <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
+                            <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
+                            <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
+                            <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
+                            <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
+                            <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
+                            <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
+                            <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
+                            <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
+                        </asp:DropDownList>
+                        <i></i>
                     </label>
                 </section>
             </div>
@@ -929,26 +927,25 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Chọn mẫu báo cáo 5 năm</h4>
+                <h4 class="modal-title">Chọn mẫu báo cáo 5 năm</h4>
             </div>
             <div class="modal-body">
                 <section class="mbn">
                     <label class="select">
-                    <asp:DropDownList runat="server" ID="ddlReportType5">
-                        <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
-                        <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
-                        <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
-                        <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
-                        <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
-                        <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
-                        <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
-                        <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
-                        <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
-                        <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                        <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                    </asp:DropDownList>
-                    <i></i>
+                        <asp:DropDownList runat="server" ID="ddlReportType5">
+                            <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
+                            <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
+                            <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
+                            <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
+                            <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
+                            <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
+                            <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
+                            <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
+                            <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
+                            <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
+                            <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
+                        </asp:DropDownList>
+                        <i></i>
                     </label>
                 </section>
             </div>
@@ -969,14 +966,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Gửi báo cáo</h4>
+                <h4 class="modal-title">Gửi báo cáo</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-lg-3">
-                            File báo cáo hàng năm</div>
+                            File báo cáo hàng năm
+                        </div>
                         <div class="col-lg-9 col-md-9 col-sm-9">
                             <asp:FileUpload runat="server" ID="fAttach"></asp:FileUpload>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator19" runat="server" ControlToValidate="fAttach"
@@ -986,7 +983,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-3">
-                            File báo cáo 5 năm</div>
+                            File báo cáo 5 năm
+                        </div>
                         <div class="col-lg-9 col-md-9 col-sm-9">
                             <asp:FileUpload runat="server" ID="fAttach5year"></asp:FileUpload>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="fAttach5year"
@@ -996,7 +994,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-3">
-                            Nội dung ý kiến <span class="append-icon right text-danger">*</span></div>
+                            Nội dung ý kiến <span class="append-icon right text-danger">*</span>
+                        </div>
                         <div class="col-lg-9 col-md-9 col-sm-9">
                             <asp:TextBox runat="server" class="form-control" ID="txtContent" TextMode="MultiLine"
                                 MaxLength="500" ValidationGroup="vgSend" Rows="3" placeholder="Mục đích sử dụng tối đa 500 ký tự"></asp:TextBox>
@@ -1024,14 +1023,14 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Bổ sung báo cáo</h4>
+                <h4 class="modal-title">Bổ sung báo cáo</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-lg-3">
-                            File báo cáo hàng năm</div>
+                            File báo cáo hàng năm
+                        </div>
                         <div class="col-lg-9">
                             <asp:FileUpload runat="server" ID="fAttachResend"></asp:FileUpload>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server" ControlToValidate="fAttachResend"
@@ -1041,7 +1040,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-3">
-                            File 5 năm</div>
+                            File 5 năm
+                        </div>
                         <div class="col-lg-9">
                             <asp:FileUpload runat="server" ID="fAttachResend5"></asp:FileUpload>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="fAttachResend5"
@@ -1066,7 +1066,8 @@ right text-danger">*</span></label>
             <div class="modal-footer">
                 <asp:LinkButton ID="btnSaveResend" runat="server" Visible="true" OnClick="btnReSend_Click"
                     Text="Gửi" CssClass="btn-u
-btn-u-primary mr10" ValidationGroup="valResend"></asp:LinkButton>
+btn-u-primary mr10"
+                    ValidationGroup="valResend"></asp:LinkButton>
                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">
                     Hủy</button>
             </div>
@@ -1142,9 +1143,9 @@ btn-u-primary mr10" ValidationGroup="valResend"></asp:LinkButton>
     }
     $(document).ready(function () {
         $("#<%=txtReportDate.ClientID%>").datetimepicker
-    ({
-        format: 'd/m/Y', timepicker: false
-    });
+            ({
+                format: 'd/m/Y', timepicker: false
+            });
     });
 
     function ShowDialogExportword() {
@@ -1164,15 +1165,15 @@ btn-u-primary mr10" ValidationGroup="valResend"></asp:LinkButton>
     } 
 </script>
 <script type="text/javascript"> 
-var tabReport = new ddtabcontent("Reporttabs"); 
-tabReport.setpersist(true); 
-tabReport.setselectedClassTarget("link");
-tabReport.currentTabIndex=<%=activeTab %>; 
-tabReport.init(); 
-var tabReportAll =new ddtabcontent("tabGeneral"); 
-tabReportAll.setpersist(true); 
-tabReportAll.setselectedClassTarget("link");
-tabReportAll.currentTabIndex=<%=activeTab %>; 
-tabReportAll.init(); 
+    var tabReport = new ddtabcontent("Reporttabs");
+    tabReport.setpersist(true);
+    tabReport.setselectedClassTarget("link");
+    tabReport.currentTabIndex =<%=activeTab %>;
+    tabReport.init();
+    var tabReportAll = new ddtabcontent("tabGeneral");
+    tabReportAll.setpersist(true);
+    tabReportAll.setselectedClassTarget("link");
+    tabReportAll.currentTabIndex =<%=activeTab %>;
+    tabReportAll.init(); 
 </script>
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>

@@ -4,7 +4,7 @@
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="display:none;">
             <div class="">
                 <div class="control-label pt5" style="width: 100%" for="inputSmall">
                     <b>2.1. Thông tin cơ sở hạ tầng</b>
@@ -63,7 +63,7 @@
         </div>
         <div class="col-lg-12">
             <label class="control-label">
-                <asp:Literal ID="ltOldYear" runat="server" Text="2.2. Năng lực sản xuất"></asp:Literal></label>
+                <asp:Literal ID="ltOldYear" runat="server" Text="2.1. Năng lực sản xuất"></asp:Literal></label>
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
@@ -195,7 +195,7 @@
         </div>
         <div class="col-lg-12">
             <label class="control-label">
-                <asp:Literal ID="ltNextYear" runat="server" Text="2.3. Điện năng mua ngoài và tự sản xuất"></asp:Literal></label>
+                <asp:Literal ID="ltNextYear" runat="server" Text="2.2. Điện năng mua ngoài và tự sản xuất"></asp:Literal></label>
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">

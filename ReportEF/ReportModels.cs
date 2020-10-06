@@ -12,6 +12,8 @@ namespace ReportEF
         {
         }
 
+        public virtual DbSet<DE_ElectrictProduce> DE_ElectrictProduce { get; set; }
+        public virtual DbSet<DE_ElectrictTechnology> DE_ElectrictTechnology { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam_Comment> BC_SDNL_DS_TheoNam_Comment { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam> BC_SDNL_DS_TheoNam { get; set; }
         public virtual DbSet<BC_SDNL_HangNam> BC_SDNL_HangNam { get; set; }
@@ -119,6 +121,14 @@ namespace ReportEF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DE_ElectrictProduce>()
+              .Property(e => e.InstalledCapacity)
+              .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ElectrictProduce>()
+                .Property(e => e.ProduceQty)
+                .HasPrecision(20, 2);
+
             modelBuilder.Entity<DE_Boiler>()
                 .Property(e => e.CapacityInstalled)
                 .HasPrecision(15, 2);
@@ -298,6 +308,13 @@ namespace ReportEF
             modelBuilder.Entity<DE_UsingElectrict>()
                 .Property(e => e.AvgPrice)
                 .HasPrecision(20, 2);
+            modelBuilder.Entity<DE_UsingElectrict>()
+                .Property(e => e.CongSuatBan)
+                .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_UsingElectrict>()
+               .Property(e => e.SanLuongBan)
+               .HasPrecision(20, 2);
 
             modelBuilder.Entity<SYS_PageLayout>()
                 .Property(e => e.Language)
