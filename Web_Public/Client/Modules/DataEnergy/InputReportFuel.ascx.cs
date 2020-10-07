@@ -23,7 +23,7 @@ using ReportEF;
 
 public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.UserControl
 {
-    string specifier = "0,0.0";
+    string specifier = "0";
     int ReportId
     {
         get
@@ -2220,23 +2220,25 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         htmlTable += "<table class='table table-bordered table-hover mbn' width='100%'>";
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>I. Điện năng mua từ lưới: </td>";
-        htmlTable += string.Format("<td>Công suất đăng ký: {0:0.0} kW</td>", DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
-        htmlTable += string.Format("<td>Điện năng: {0:0.0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan.Quantity != null ? DienMuaBan.Quantity : 0);
+        htmlTable += string.Format("<td>Công suất đăng ký: {0:0} kW</td>", DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
+        htmlTable += string.Format("<td>Điện năng: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan.Quantity != null ? DienMuaBan.Quantity : 0);
         htmlTable += "</tr>";
 
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>II. Điện tự sản xuất(nếu có):</td>";
-        htmlTable += string.Format("<td>Công suất lắp đặt: {0:0.0} kW</td>", _DSXCongSuatLapDat);
-        htmlTable += string.Format("<td>Điện năng sản xuất: {0:0.0} 10<sup>6</sup> kWh/năm</td>", _DSXSanLuongBan);
+        htmlTable += string.Format("<td>Công suất lắp đặt: {0:0} kW</td>", _DSXCongSuatLapDat);
+        htmlTable += string.Format("<td>Điện năng sản xuất: {0:0} 10<sup>6</sup> kWh/năm</td>", _DSXSanLuongBan);
         htmlTable += "</tr>";
         //Lặp danh mục công nghệ
         int i = 1;
-        foreach (var item in DienSX)
+        foreach (var item in reportModels.DE_ElectrictTechnology.ToList())
         {
+            var tmp = DienSX.FirstOrDefault(o => o.TechKey == item.TechKey);
+
             htmlTable += "<tr class='primary fs12'>";
-            htmlTable += string.Format("<td>{0}.{1}:<td>", i, item.TechName);
-            htmlTable += string.Format("<td>{0}</td>", item.InstalledCapacity.Value);
-            htmlTable += string.Format("<td>Điện năng sản xuất: {0:0.0} 10<sup>6</sup> kWh/năm</td>", item.ProduceQty.Value);
+            htmlTable += string.Format("<td>{0}.{1}:</td>", i, item.TechName);
+            htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.InstalledCapacity.Value : 0);
+            htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.ProduceQty.Value : 0);
             htmlTable += "</tr>";
             i++;
         }
@@ -2244,8 +2246,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         //Điện bán ra
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>III. Điện bán ra(nếu có):</td>";
-        htmlTable += string.Format("<td>Công suất bán ra: {0:0.0} kW</td>", DienMuaBan.CongSuatBan);
-        htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0.0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan.SanLuongBan);
+        htmlTable += string.Format("<td>Công suất bán ra: {0:0} kW</td>", DienMuaBan.CongSuatBan);
+        htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan.SanLuongBan);
         htmlTable += "</tr>";
 
         //close table
@@ -2263,7 +2265,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ddlElectrictTechnology.DataTextField = "TechName";
         ddlElectrictTechnology.DataSource = list;
         ddlElectrictTechnology.DataBind();
-
+        ddlElectrictTechnology.Items.Insert(0, new ListItem("", ""));
     }
 
     protected void btBindTieuThuSXDien_Click(object sender, EventArgs e)
@@ -2271,11 +2273,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ReportModels reportModels = new ReportModels();
         var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId);
 
-        txtDienDkMua.Text = DienMuaBan.InstalledCapacity != null ? DienMuaBan.InstalledCapacity.Value.ToString(specifier) : "0.0";
-        txtDienTieuThu.Text = DienMuaBan.Capacity != null ? DienMuaBan.Capacity.Value.ToString(specifier) : "0.0";
+        txtDienDkMua.Text = DienMuaBan.InstalledCapacity != null ? DienMuaBan.InstalledCapacity.Value.ToString(specifier) : "0";
+        txtDienTieuThu.Text = DienMuaBan.Capacity != null ? DienMuaBan.Capacity.Value.ToString(specifier) : "0";
 
-        txtCongSuaBanRa.Text = DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan.Value.ToString(specifier) : "0.0";
-        txtSanLuongBanRa.Text = DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan.Value.ToString(specifier) : "0.0";
+        txtCongSuaBanRa.Text = DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan.Value.ToString(specifier) : "0";
+        txtSanLuongBanRa.Text = DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan.Value.ToString(specifier) : "0";
 
         string ElectrictTech = ddlElectrictTechnology.SelectedValue;
         BindElectrictTechData(ReportId, ElectrictTech);
@@ -2287,25 +2289,20 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         var DienSX = reportModels.DE_ElectrictProduce.FirstOrDefault(o => o.ReportId == ReportId && o.State == 0 && o.TechKey == TeckKey);
         if (DienSX != null)
         {
-            txtInstalledCapacityPlan.Text = DienSX.InstalledCapacity != null ? DienSX.InstalledCapacity.Value.ToString(specifier) : "0.0";
-            txtProduceQty.Text = DienSX.ProduceQty != null ? DienSX.ProduceQty.Value.ToString(specifier) : "0.0";
+            txtInstalledCapacityPlan.Text = DienSX.InstalledCapacity != null ? DienSX.InstalledCapacity.Value.ToString(specifier) : "0";
+            txtProduceQty.Text = DienSX.ProduceQty != null ? DienSX.ProduceQty.Value.ToString(specifier) : "0";
+        }
+        else
+        {
+            txtInstalledCapacityPlan.Text = "0";
+            txtProduceQty.Text = "0";
         }
     }
     protected void btnSaveElectrictPlan_Click(object sender, EventArgs e)
     {
-        ReportModels reportModels = new ReportModels();
-        string TeckKey = ddlElectrictTechnology.SelectedValue;
 
-        var DienSX = reportModels.DE_ElectrictProduce.FirstOrDefault(o => o.ReportId == ReportId && o.State == 0 && o.TechKey == TeckKey);
-        if (DienSX != null)
-        {
-            txtInstalledCapacityPlan.Text = DienSX.InstalledCapacity != null ? DienSX.InstalledCapacity.Value.ToString(specifier) : "0.0";
-            txtProduceQty.Text = DienSX.ProduceQty != null ? DienSX.ProduceQty.Value.ToString(specifier) : "0.0";
-        }
-        else
-        {
-
-        }    
+        if (ddlElectrictTechnology.SelectedValue != "")
+            TieuThuSXDien_Update();
     }
     protected void ddlElectrictTechnology_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -2315,7 +2312,35 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
     private void TieuThuSXDien_Update()
     {
+        ReportModels reportModels = new ReportModels();
+        string TeckKey = ddlElectrictTechnology.SelectedValue;
+        DE_ElectrictProduce _dienSX = new DE_ElectrictProduce();
 
+        _dienSX = reportModels.DE_ElectrictProduce.FirstOrDefault(o => o.ReportId == ReportId && o.State == 0 && o.TechKey == TeckKey);
+
+        decimal _InstalledCapacity = 0;
+        if (txtInstalledCapacityPlan.Text.Trim() != string.Empty)
+            decimal.TryParse(txtInstalledCapacityPlan.Text.Trim(), out _InstalledCapacity);
+
+        decimal _ProduceQty = 0;
+        if (txtProduceQty.Text.Trim() != string.Empty)
+            decimal.TryParse(txtProduceQty.Text.Trim(), out _ProduceQty);
+
+        if (_dienSX == null)
+            _dienSX = new DE_ElectrictProduce();
+
+        _dienSX = new DE_ElectrictProduce();
+        _dienSX.ReportId = ReportId;
+        _dienSX.ReportYear = ReportYear;
+        _dienSX.TechKey = ddlElectrictTechnology.SelectedValue;
+        _dienSX.InstalledCapacity = _InstalledCapacity;
+        _dienSX.ProduceQty = _ProduceQty;
+        _dienSX.State = 0;
+
+        if (_dienSX.AutoId == 0)
+            reportModels.DE_ElectrictProduce.Add(_dienSX);
+
+        reportModels.SaveChanges();
     }
 }
 #endregion

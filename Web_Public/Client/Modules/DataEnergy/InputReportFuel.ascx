@@ -394,8 +394,9 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
-                                                <asp:Literal ID="Literal7" runat="server"></asp:Literal><div style="float: right">
-                                                    <asp:LinkButton ID="LinkButton1" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
+                                                <div style="float: right">
+                                                    <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</a>
+                                                    <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
                                                         data-target="#dlgTieuThuSXDien" ToolTip="Sửa thông tin" OnClientClick='javascript:openDlgTieuThuSXDien(); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
                                                 </div>
                                             </div>
@@ -1225,9 +1226,9 @@ btn-u-primary mr10"
                 </div>
             </div>
             <div class="modal-footer">
-                <asp:LinkButton ID="btnSaveElectrictPlan" runat="server" Visible="true" Text="Lưu lại"
-                    CssClass="btn btn-sm btn-primary mr10" ValidationGroup="valElectrictPlan"
-                    AutoPostback="false" OnClick="btnSaveElectrictPlan_Click" UseSubmitBehavior="false"></asp:LinkButton>
+                <asp:LinkButton ID="btnSaveElectrictPlan" runat="server" Text="Lưu lại"
+                    CssClass="btn btn-sm btn-primary mr10"
+                    OnClick="btnSaveElectrictPlan_Click"></asp:LinkButton>
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
                     Đóng</button>
             </div>
@@ -1236,7 +1237,7 @@ btn-u-primary mr10"
 </div>
 
 <div style="display: none;">
-    <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click" OnClientClick="alert('aaa');" />
+    <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click"/>
 </div>
 
 <script type="text/javascript">
@@ -1293,8 +1294,13 @@ btn-u-primary mr10"
     tabReportAll.init(); 
 </script>
 <script type="text/javascript">
+    $('#dlgTieuThuSXDien').on('shown.bs.modal', function () {
+        $('#<%=btBindTieuThuSXDien.ClientID%>').click();
+    });
+
     function openDlgTieuThuSXDien() {
         $('#dlgTieuThuSXDien').on('shown.bs.modal', function () {
+            alert('x');
             $('#<%=btBindTieuThuSXDien.ClientID%>').click();
         });
     }
