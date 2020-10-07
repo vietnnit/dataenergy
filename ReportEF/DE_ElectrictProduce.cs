@@ -15,7 +15,7 @@ namespace ReportEF
 
         public int? ReportYear { get; set; }
 
-        public int? ElectrictTechId { get; set; }
+        public string TechKey { get; set; }
 
         public decimal? InstalledCapacity { get; set; }
 

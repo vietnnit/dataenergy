@@ -11,6 +11,7 @@
 <asp:HiddenField ID="hdnReport" Value="" runat="server" />
 <asp:HiddenField ID="hdnNextYear" Value="" runat="server" />
 <asp:HiddenField ID="hdnDetailId" Value="" runat="server" />
+<asp:ScriptManager ID="scriptServer" runat="server"></asp:ScriptManager>
 <link type="text/css" href="<%= ResolveUrl("~") %>CSS_Admins/js/DatetimePicker/jquery.datetimepicker.css"
     rel="stylesheet" />
 <script type="text/javascript" src="<%= ResolveUrl("~") %>CSS_Admins/js/DatetimePicker/jquery.datetimepicker.js"></script>
@@ -391,8 +392,15 @@
                                             </div>
                                             <%--<asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
                                         </div>
-                                        
-                                        
+                                        <div class="col-lg-12">
+                                            <div class="control-label pt5" style="width: 100%">
+                                                <asp:Literal ID="Literal7" runat="server"></asp:Literal><div style="float: right">
+                                                    <asp:LinkButton ID="LinkButton1" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
+                                                        data-target="#dlgTieuThuSXDien" ToolTip="Sửa thông tin" OnClientClick='javascript:openDlgTieuThuSXDien(); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <asp:Literal ID="ltTieuThuDien" runat="server"></asp:Literal>
+                                        </div>
                                     </div>
                                     <asp:Literal ID="error" runat="server"></asp:Literal>
                                 </div>
@@ -1123,6 +1131,114 @@ btn-u-primary mr10"
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<%--dialog cap nhat Tiêu thụ điện--%>
+<div class="modal" tabindex="-1" role="dialog" id="dlgTieuThuSXDien" data-backdrop="static">
+    <div class="modal-dialog large">
+        <div class="modal-content">
+            <div class="modal-header panel-heading  ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">Kế hoạch mua điện và điện tự sản xuất</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <asp:UpdatePanel ID="updateTieuThuSXDien" runat="server">
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btBindTieuThuSXDien" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="ddlElectrictTechnology" EventName="SelectedIndexChanged" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSaveElectrictPlan" EventName="Click" />
+                        </Triggers>
+                        <ContentTemplate>
+                            <table class="table table-bordered table-hover mbn" width="100%">
+                                <tbody>
+                                    <tr class="primary fs12">
+                                        <td style="width: 10%">Điện năng mua từ lưới
+                                        </td>
+                                        <td style="width: 10%">Công suất (kW)<span class="append-icon right text-danger">*</span>:
+                                    <asp:TextBox ID="txtDienDkMua" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator39" runat="server" ControlToValidate="txtDienDkMua" CssClass="text-danger"
+                                                ValidationGroup="valElectrictPlan" Text="Vui lòng nhập công suất" Display="Dynamic"></asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtDienDkMua"
+                                                CssClass="text-danger" ValidationGroup="valElectrictPlan" Text="Chỉ nhập số"
+                                                ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td style="width: 10%;" colspan="2">Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
+                                    <asp:TextBox ID="txtDienTieuThu" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator40" runat="server" ControlToValidate="txtDienTieuThu" CssClass="text-danger"
+                                                ValidationGroup="valElectrictPlan" Text="Vui lòng nhập điện năng mua ngoài" Display="Dynamic"></asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="txtDienTieuThu"
+                                                CssClass="text-danger" ValidationGroup="valElectrictPlan" Text="Chỉ nhập số"
+                                                ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Điện năng bán ra(nếu có)
+                                        </td>
+                                        <td>Công suất bán ra(kW)
+                                    <asp:TextBox ID="txtCongSuaBanRa" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"
+                                                ControlToValidate="txtCongSuaBanRa" CssClass="text-danger"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td>Sản lượng bán ra(10<sup>6</sup> kWh/năm)
+                                    <asp:TextBox ID="txtSanLuongBanRa" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server"
+                                                ControlToValidate="txtSanLuongBanRa" CssClass="text-danger"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="3">Điện tự sản xuất(nếu có)
+                                        </td>
+                                        <td>Công nghệ
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlElectrictTechnology" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlElectrictTechnology_SelectedIndexChanged" CssClass="form-control input-sm"></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Công suất lắp đặt (kW)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtInstalledCapacityPlan" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator11" runat="server"
+                                                ControlToValidate="txtInstalledCapacityPlan" CssClass="text-danger" ValidationGroup="valElectrictPlan"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Điện năng sản xuất (10<sup>6</sup> kWh/năm)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtProduceQty" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator12" runat="server"
+                                                ControlToValidate="txtProduceQty" CssClass="text-danger" ValidationGroup="valElectrictPlan"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:LinkButton ID="btnSaveElectrictPlan" runat="server" Visible="true" Text="Lưu lại"
+                    CssClass="btn btn-sm btn-primary mr10" ValidationGroup="valElectrictPlan"
+                    AutoPostback="false" OnClick="btnSaveElectrictPlan_Click" UseSubmitBehavior="false"></asp:LinkButton>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none;">
+    <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click" OnClientClick="alert('aaa');" />
+</div>
+
 <script type="text/javascript">
     function addReportDetail(isnext) { // alert($("#<%=hdnNextYear.ClientID%>").val()); 
         $("#<%=hdnNextYear.ClientID%>").val(isnext);
@@ -1176,4 +1292,12 @@ btn-u-primary mr10"
     tabReportAll.currentTabIndex =<%=activeTab %>;
     tabReportAll.init(); 
 </script>
+<script type="text/javascript">
+    function openDlgTieuThuSXDien() {
+        $('#dlgTieuThuSXDien').on('shown.bs.modal', function () {
+            $('#<%=btBindTieuThuSXDien.ClientID%>').click();
+        });
+    }
+</script>
+
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>
