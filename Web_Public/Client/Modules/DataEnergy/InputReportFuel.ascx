@@ -331,20 +331,18 @@
                                                 <tr class="primary fs12">
                                                     <th style="width: 5%">STT-------
                                                     </th>
-                                                    <th style="width: 15%">Nhiên liệu
+                                                    <th style="width: 20%">Loại năng lượng
                                                     </th>
-                                                    <th style="width: 10%">Mức tiêu thụ dự kiến
+                                                    <th style="width: 15%">Đơn vị tính
                                                     </th>
-                                                    <th style="width: 10%">Đơn vị tính
+                                                    <th style="width: 15%">Lượng tiêu thụ
                                                     </th>
-                                                    <th style="width: 10%">Giá dự kiến (đồng)
-                                                    </th>
-                                                    <%-- <th style="width: 10%">
-                                                    Hệ số TOE
-                                                </th>--%>
-                                                    <th style="width: 10%">Năng lượng tiêu thụ (TOE)
-                                                    </th>
-                                                    <th style="width: 30%">Mục đích sử dụng
+                                                    <%--    <th style="width: 10%">Giá dự kiến (đồng)
+                                                    </th>--%>
+
+                                                    <%--<th style="width: 10%">Năng lượng tiêu thụ (TOE)
+                                                    </th>--%>
+                                                    <th>Ghi chú
                                                     </th>
                                                     <th style="width: 10%">Thao tác
                                                     </th>
@@ -358,21 +356,20 @@
                                                             <td>
                                                                 <%#Eval("FuelName") %>
                                                             </td>
-                                                            <td style="text-align: right">
-                                                                <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
-                                                            </td>
+
                                                             <td>
                                                                 <%#Eval("MeasurementName")%>
                                                             </td>
                                                             <td style="text-align: right">
+                                                                <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
+                                                            </td>
+                                                            <%--<td style="text-align: right">
                                                                 <%#Eval("Price") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("Price"),0) : ""%>
-                                                            </td>
-                                                            <%--<td>
-                                                            <%#Eval("No_RateTOE")!=null?((float)Convert.ToDecimal(Eval("No_RateTOE"))).ToString():""%>
-                                                        </td>--%>
-                                                            <td style="text-align: right">
+                                                            </td>--%>
+
+                                                            <%--   <td style="text-align: right">
                                                                 <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
-                                                            </td>
+                                                            </td>--%>
                                                             <td>
                                                                 <%#Eval("Reason")%>
                                                             </td>
@@ -1232,8 +1229,6 @@ btn-u-primary mr10"
                 </div>
             </div>
             <div class="modal-footer">
-
-
                 <asp:LinkButton ID="btnSaveElectrictPlan" runat="server" Text="Lưu lại"
                     CssClass="btn btn-sm btn-primary mr10"
                     OnClick="btnSaveElectrictPlan_Click"></asp:LinkButton>
@@ -1304,9 +1299,8 @@ btn-u-primary mr10"
 <script type="text/javascript">
     $('#dlgTieuThuSXDien').on('shown.bs.modal', function () {
         $('#<%=btBindTieuThuSXDien.ClientID%>').click();
-        $('#update_message').text('');
+
     });
-   
 </script>
 
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>

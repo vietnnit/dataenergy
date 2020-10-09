@@ -2220,8 +2220,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         htmlTable += "<table class='table table-bordered table-hover mbn' width='100%'>";
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>I. Điện năng mua từ lưới: </td>";
+
         htmlTable += string.Format("<td>Công suất đăng ký: {0:0} kW</td>", DienMuaBan != null && DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
         htmlTable += string.Format("<td>Điện năng: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan != null && DienMuaBan.Quantity != null ? DienMuaBan.Quantity : 0);
+
         htmlTable += "</tr>";
 
         htmlTable += "<tr class='primary fs12'>";
@@ -2246,8 +2248,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         //Điện bán ra
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>III. Điện bán ra(nếu có):</td>";
+
         htmlTable += string.Format("<td>Công suất bán ra: {0:0} kW</td>", DienMuaBan != null && DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan : 0);
         htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan != null && DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan : 0);
+
         htmlTable += "</tr>";
 
         //close table
@@ -2272,6 +2276,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         ReportModels reportModels = new ReportModels();
         var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId);
+
 
         if (DienMuaBan != null)
         {
@@ -2306,6 +2311,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
     protected void btnSaveElectrictPlan_Click(object sender, EventArgs e)
     {
+
         try
         {
             TieuThuDien_Update();
