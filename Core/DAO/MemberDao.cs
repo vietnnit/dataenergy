@@ -56,9 +56,14 @@ namespace ePower.DE.Dao
             DbParameter[] parameter = new DbParameter[2];
             parameter[0] = new DbParameter("@AccountName", accountName);
             parameter[1] = new DbParameter("@Password", passwordEncrypt);
+
             try
             {
-                return new Db().GetList<Member>("SELECT * FROM  DE_Member WHERE AccountName=@AccountName AND Password=@Password AND IsActive=1 AND IsDelete=0", parameter, System.Data.CommandType.Text);
+                string sql = "SELECT a.* FROM  DE_Member a inner join DE_Enterprise b on a.EnterpriseId = b.Id WHERE ";
+                sql += "(b.TaxCode=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0 and isnull(b.TaxCode,'') <> '') or ";
+                sql += "(a.AccountName=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0 and isnull(b.TaxCode,'') = '')";
+                return new Db().GetList<Member>(sql, parameter, System.Data.CommandType.Text);
+                //return new Db().GetList<Member>("SELECT * FROM  DE_Member WHERE AccountName=@AccountName AND Password=@Password AND IsActive=1 AND IsDelete=0", parameter, System.Data.CommandType.Text);
             }
             catch (Exception ex)
             {
