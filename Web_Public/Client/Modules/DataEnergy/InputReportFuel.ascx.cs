@@ -783,205 +783,205 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
 
 
-        UsingElectrict usingElectrict = new UsingElectrict();
-        UsingElectrictService usingElectrictService = new UsingElectrictService();
+        //UsingElectrict usingElectrict = new UsingElectrict();
+        //UsingElectrictService usingElectrictService = new UsingElectrictService();
 
-        usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, false);
-        if (usingElectrict != null)
-        {
-            //Su dung dien 2
-            if (usingElectrict.Quantity > 0)
-                ex.WriteToMergeField("QuantityResult2", usingElectrict.Quantity.ToString());
-            else
-                ex.WriteToMergeField("QuantityResult2", "");
-            if (usingElectrict.InstalledCapacity > 0)
-                ex.WriteToMergeField("InstalledCapacityResult2", usingElectrict.InstalledCapacity.ToString());
-            else
-                ex.WriteToMergeField("InstalledCapacityResult2", "");
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("CapacityResult2", usingElectrict.Capacity.ToString());
-            else
-                ex.WriteToMergeField("CapacityResult2", "");
-            if (usingElectrict.BuyCost > 0)
-                ex.WriteToMergeField("BuyCostResult2", usingElectrict.BuyCost.ToString());
-            else
-                ex.WriteToMergeField("BuyCostResult2", "");
-            if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("BuyPriceResult2", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
-            else
-                ex.WriteToMergeField("BuyPriceResult2", "");
-            if (usingElectrict.ProduceQty > 0)
-                ex.WriteToMergeField("ProduceQtyResult2", usingElectrict.ProduceQty.ToString());
-            else
-                ex.WriteToMergeField("ProduceQtyResult2", "");
-            if (usingElectrict.Technology != null)
-                ex.WriteToMergeField("TechnologyResult2", usingElectrict.Technology.ToString());
-            else
-                ex.WriteToMergeField("TechnologyResult2", "");
-            if (usingElectrict.FuelId > 0)
-            {
+        //usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, false);
+        //if (usingElectrict != null)
+        //{
+        //    //Su dung dien 2
+        //    if (usingElectrict.Quantity > 0)
+        //        ex.WriteToMergeField("QuantityResult2", usingElectrict.Quantity.ToString());
+        //    else
+        //        ex.WriteToMergeField("QuantityResult2", "");
+        //    if (usingElectrict.InstalledCapacity > 0)
+        //        ex.WriteToMergeField("InstalledCapacityResult2", usingElectrict.InstalledCapacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("InstalledCapacityResult2", "");
+        //    if (usingElectrict.Capacity > 0)
+        //        ex.WriteToMergeField("CapacityResult2", usingElectrict.Capacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("CapacityResult2", "");
+        //    if (usingElectrict.BuyCost > 0)
+        //        ex.WriteToMergeField("BuyCostResult2", usingElectrict.BuyCost.ToString());
+        //    else
+        //        ex.WriteToMergeField("BuyCostResult2", "");
+        //    if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
+        //        ex.WriteToMergeField("BuyPriceResult2", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
+        //    else
+        //        ex.WriteToMergeField("BuyPriceResult2", "");
+        //    if (usingElectrict.ProduceQty > 0)
+        //        ex.WriteToMergeField("ProduceQtyResult2", usingElectrict.ProduceQty.ToString());
+        //    else
+        //        ex.WriteToMergeField("ProduceQtyResult2", "");
+        //    if (usingElectrict.Technology != null)
+        //        ex.WriteToMergeField("TechnologyResult2", usingElectrict.Technology.ToString());
+        //    else
+        //        ex.WriteToMergeField("TechnologyResult2", "");
+        //    if (usingElectrict.FuelId > 0)
+        //    {
 
-                Fuel fuel = new Fuel();
+        //        Fuel fuel = new Fuel();
 
-                fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-                if (fuel != null)
-                {
-                    ex.WriteToMergeField("FuelNameResult2", fuel.FuelName);
-                    ex.WriteToMergeField("FuelNameResult", fuel.FuelName);
-                }
-                else
-                {
-                    ex.WriteToMergeField("FuelNameResult2", "");
-                    ex.WriteToMergeField("FuelNameResult", "");
-                }
-            }
-            else
-            {
-                ex.WriteToMergeField("FuelNameResult2", "");
-                ex.WriteToMergeField("FuelNameResult", "");
-            }
-            if (usingElectrict.PriceProduce > 0)
-                ex.WriteToMergeField("PriceProduceResult2", usingElectrict.PriceProduce.ToString());
-            else
-                ex.WriteToMergeField("PriceProduceResult2", "");
-
-
-            //Su dung dien 1
-            if (usingElectrict.Quantity > 0)
-                ex.WriteToMergeField("QuantityResult", usingElectrict.Quantity.ToString());
-            else
-                ex.WriteToMergeField("QuantityResult", "");
-            if (usingElectrict.InstalledCapacity > 0)
-                ex.WriteToMergeField("InstalledCapacityResult", usingElectrict.InstalledCapacity.ToString());
-            else
-                ex.WriteToMergeField("InstalledCapacityResult", "");
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("CapacityResult", usingElectrict.Capacity.ToString());
-            else
-                ex.WriteToMergeField("CapacityResult", "");
-            if (usingElectrict.BuyCost > 0)
-                ex.WriteToMergeField("BuyCostResult", usingElectrict.BuyCost.ToString());
-            else
-                ex.WriteToMergeField("BuyCostResult", "");
-
-            if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("BuyPriceResult", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
-            else
-                ex.WriteToMergeField("BuyPriceResult", "");
-            if (usingElectrict.ProduceQty > 0)
-                ex.WriteToMergeField("ProduceQtyResult", usingElectrict.ProduceQty.ToString());
-            else
-                ex.WriteToMergeField("ProduceQtyResult", "");
-            if (usingElectrict.Technology != null)
-                ex.WriteToMergeField("TechnologyResult", usingElectrict.Technology.ToString());
-            else
-                ex.WriteToMergeField("TechnologyResult", "");
-            if (usingElectrict.FuelId > 0)
-                ex.WriteToMergeField("FuelNameResult", usingElectrict.FuelId.ToString());
-            else
-                ex.WriteToMergeField("FuelNameResult", "");
-        }
-        else
-        {
-            ex.WriteToMergeField("QuantityResult2", "");
-            ex.WriteToMergeField("InstalledCapacityResult2", "");
-            ex.WriteToMergeField("CapacityResult2", "");
-            ex.WriteToMergeField("BuyCostResult2", "");
-            ex.WriteToMergeField("ProduceQtyResult2", "");
-            ex.WriteToMergeField("TechnologyResult2", "");
-            ex.WriteToMergeField("FuelNameResult2", "");
-            ex.WriteToMergeField("PriceProduceResult2", "");
-            ex.WriteToMergeField("BuyPriceResult2", "");
-
-            ex.WriteToMergeField("QuantityResult", "");
-            ex.WriteToMergeField("InstalledCapacityResult", "");
-            ex.WriteToMergeField("CapacityResult", "");
-            ex.WriteToMergeField("BuyCostResult", "");
-            ex.WriteToMergeField("ProduceQtyResult", "");
-            ex.WriteToMergeField("TechnologyResult", "");
-            ex.WriteToMergeField("FuelNameResult", "");
-            ex.WriteToMergeField("BuyPriceResult", "");
-        }
+        //        fuel = new FuelService().FindByKey(usingElectrict.FuelId);
+        //        if (fuel != null)
+        //        {
+        //            ex.WriteToMergeField("FuelNameResult2", fuel.FuelName);
+        //            ex.WriteToMergeField("FuelNameResult", fuel.FuelName);
+        //        }
+        //        else
+        //        {
+        //            ex.WriteToMergeField("FuelNameResult2", "");
+        //            ex.WriteToMergeField("FuelNameResult", "");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ex.WriteToMergeField("FuelNameResult2", "");
+        //        ex.WriteToMergeField("FuelNameResult", "");
+        //    }
+        //    if (usingElectrict.PriceProduce > 0)
+        //        ex.WriteToMergeField("PriceProduceResult2", usingElectrict.PriceProduce.ToString());
+        //    else
+        //        ex.WriteToMergeField("PriceProduceResult2", "");
 
 
-        usingElectrict = new UsingElectrict();
+        //    //Su dung dien 1
+        //    if (usingElectrict.Quantity > 0)
+        //        ex.WriteToMergeField("QuantityResult", usingElectrict.Quantity.ToString());
+        //    else
+        //        ex.WriteToMergeField("QuantityResult", "");
+        //    if (usingElectrict.InstalledCapacity > 0)
+        //        ex.WriteToMergeField("InstalledCapacityResult", usingElectrict.InstalledCapacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("InstalledCapacityResult", "");
+        //    if (usingElectrict.Capacity > 0)
+        //        ex.WriteToMergeField("CapacityResult", usingElectrict.Capacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("CapacityResult", "");
+        //    if (usingElectrict.BuyCost > 0)
+        //        ex.WriteToMergeField("BuyCostResult", usingElectrict.BuyCost.ToString());
+        //    else
+        //        ex.WriteToMergeField("BuyCostResult", "");
 
-        usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
-        if (usingElectrict != null)
-        {
-            //Su dung dien 2
-            if (usingElectrict.Quantity > 0)
-                ex.WriteToMergeField("QuantityPlan", usingElectrict.Quantity.ToString());
-            else
-                ex.WriteToMergeField("QuantityPlan", "");
-            if (usingElectrict.InstalledCapacity > 0)
-                ex.WriteToMergeField("InstalledCapacityPlan", usingElectrict.InstalledCapacity.ToString());
-            else
-                ex.WriteToMergeField("InstalledCapacityPlan", "");
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("CapacityPlan", usingElectrict.Capacity.ToString());
-            else
-                ex.WriteToMergeField("CapacityPlan", "");
-            if (usingElectrict.BuyCost > 0)
-                ex.WriteToMergeField("BuyCostPlan", usingElectrict.BuyCost.ToString());
-            else
-                ex.WriteToMergeField("BuyCostPlan", "");
+        //    if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
+        //        ex.WriteToMergeField("BuyPriceResult", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
+        //    else
+        //        ex.WriteToMergeField("BuyPriceResult", "");
+        //    if (usingElectrict.ProduceQty > 0)
+        //        ex.WriteToMergeField("ProduceQtyResult", usingElectrict.ProduceQty.ToString());
+        //    else
+        //        ex.WriteToMergeField("ProduceQtyResult", "");
+        //    if (usingElectrict.Technology != null)
+        //        ex.WriteToMergeField("TechnologyResult", usingElectrict.Technology.ToString());
+        //    else
+        //        ex.WriteToMergeField("TechnologyResult", "");
+        //    if (usingElectrict.FuelId > 0)
+        //        ex.WriteToMergeField("FuelNameResult", usingElectrict.FuelId.ToString());
+        //    else
+        //        ex.WriteToMergeField("FuelNameResult", "");
+        //}
+        //else
+        //{
+        //    ex.WriteToMergeField("QuantityResult2", "");
+        //    ex.WriteToMergeField("InstalledCapacityResult2", "");
+        //    ex.WriteToMergeField("CapacityResult2", "");
+        //    ex.WriteToMergeField("BuyCostResult2", "");
+        //    ex.WriteToMergeField("ProduceQtyResult2", "");
+        //    ex.WriteToMergeField("TechnologyResult2", "");
+        //    ex.WriteToMergeField("FuelNameResult2", "");
+        //    ex.WriteToMergeField("PriceProduceResult2", "");
+        //    ex.WriteToMergeField("BuyPriceResult2", "");
 
-            if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-            {
-                decimal buypricePlan = Math.Round(usingElectrict.BuyCost / usingElectrict.Capacity, 2);
-                ex.WriteToMergeField("BuyPricePlan", buypricePlan.ToString());
-            }
-            else
-            {
-                ex.WriteToMergeField("BuyPricePlan", " ");
-            }
+        //    ex.WriteToMergeField("QuantityResult", "");
+        //    ex.WriteToMergeField("InstalledCapacityResult", "");
+        //    ex.WriteToMergeField("CapacityResult", "");
+        //    ex.WriteToMergeField("BuyCostResult", "");
+        //    ex.WriteToMergeField("ProduceQtyResult", "");
+        //    ex.WriteToMergeField("TechnologyResult", "");
+        //    ex.WriteToMergeField("FuelNameResult", "");
+        //    ex.WriteToMergeField("BuyPriceResult", "");
+        //}
 
-            if (usingElectrict.ProduceQty > 0)
-                ex.WriteToMergeField("ProduceQtyPlan", usingElectrict.ProduceQty.ToString());
-            else
-                ex.WriteToMergeField("ProduceQtyPlan", "");
-            if (usingElectrict.Technology != null)
-                ex.WriteToMergeField("TechnologyPlan", usingElectrict.Technology.ToString());
-            else
-                ex.WriteToMergeField("TechnologyPlan", "");
-            if (usingElectrict.FuelId > 0)
-            {
-                Fuel fuel = new Fuel();
 
-                fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-                if (fuel != null)
-                {
-                    ex.WriteToMergeField("FuelNamePlan", fuel.FuelName);
+        //usingElectrict = new UsingElectrict();
 
-                }
-                else
-                {
-                    ex.WriteToMergeField("FuelNamePlan", "");
+        //usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
+        //if (usingElectrict != null)
+        //{
+        //    //Su dung dien 2
+        //    if (usingElectrict.Quantity > 0)
+        //        ex.WriteToMergeField("QuantityPlan", usingElectrict.Quantity.ToString());
+        //    else
+        //        ex.WriteToMergeField("QuantityPlan", "");
+        //    if (usingElectrict.InstalledCapacity > 0)
+        //        ex.WriteToMergeField("InstalledCapacityPlan", usingElectrict.InstalledCapacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("InstalledCapacityPlan", "");
+        //    if (usingElectrict.Capacity > 0)
+        //        ex.WriteToMergeField("CapacityPlan", usingElectrict.Capacity.ToString());
+        //    else
+        //        ex.WriteToMergeField("CapacityPlan", "");
+        //    if (usingElectrict.BuyCost > 0)
+        //        ex.WriteToMergeField("BuyCostPlan", usingElectrict.BuyCost.ToString());
+        //    else
+        //        ex.WriteToMergeField("BuyCostPlan", "");
 
-                }
-            }
-            else
-            {
-                ex.WriteToMergeField("FuelNamePlan", "");
-            }
-            if (usingElectrict.PriceProduce > 0)
-                ex.WriteToMergeField("PriceProducePlan", usingElectrict.PriceProduce.ToString());
-            else
-                ex.WriteToMergeField("PriceProducePlan", "");
-        }
-        else
-        {
-            ex.WriteToMergeField("QuantityPlan", "");
-            ex.WriteToMergeField("InstalledCapacityPlan", "");
-            ex.WriteToMergeField("CapacityPlan", "");
-            ex.WriteToMergeField("BuyCostPlan", "");
-            ex.WriteToMergeField("ProduceQtyPlan", "");
-            ex.WriteToMergeField("TechnologyPlan", "");
-            ex.WriteToMergeField("FuelNamePlan", "");
-            ex.WriteToMergeField("PriceProducePlan", "");
-            ex.WriteToMergeField("BuyPricePlan", " ");
-        }
+        //    if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
+        //    {
+        //        decimal buypricePlan = Math.Round(usingElectrict.BuyCost / usingElectrict.Capacity, 2);
+        //        ex.WriteToMergeField("BuyPricePlan", buypricePlan.ToString());
+        //    }
+        //    else
+        //    {
+        //        ex.WriteToMergeField("BuyPricePlan", " ");
+        //    }
+
+        //    if (usingElectrict.ProduceQty > 0)
+        //        ex.WriteToMergeField("ProduceQtyPlan", usingElectrict.ProduceQty.ToString());
+        //    else
+        //        ex.WriteToMergeField("ProduceQtyPlan", "");
+        //    if (usingElectrict.Technology != null)
+        //        ex.WriteToMergeField("TechnologyPlan", usingElectrict.Technology.ToString());
+        //    else
+        //        ex.WriteToMergeField("TechnologyPlan", "");
+        //    if (usingElectrict.FuelId > 0)
+        //    {
+        //        Fuel fuel = new Fuel();
+
+        //        fuel = new FuelService().FindByKey(usingElectrict.FuelId);
+        //        if (fuel != null)
+        //        {
+        //            ex.WriteToMergeField("FuelNamePlan", fuel.FuelName);
+
+        //        }
+        //        else
+        //        {
+        //            ex.WriteToMergeField("FuelNamePlan", "");
+
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ex.WriteToMergeField("FuelNamePlan", "");
+        //    }
+        //    if (usingElectrict.PriceProduce > 0)
+        //        ex.WriteToMergeField("PriceProducePlan", usingElectrict.PriceProduce.ToString());
+        //    else
+        //        ex.WriteToMergeField("PriceProducePlan", "");
+        //}
+        //else
+        //{
+        //    ex.WriteToMergeField("QuantityPlan", "");
+        //    ex.WriteToMergeField("InstalledCapacityPlan", "");
+        //    ex.WriteToMergeField("CapacityPlan", "");
+        //    ex.WriteToMergeField("BuyCostPlan", "");
+        //    ex.WriteToMergeField("ProduceQtyPlan", "");
+        //    ex.WriteToMergeField("TechnologyPlan", "");
+        //    ex.WriteToMergeField("FuelNamePlan", "");
+        //    ex.WriteToMergeField("PriceProducePlan", "");
+        //    ex.WriteToMergeField("BuyPricePlan", " ");
+        //}
 
         DataTable dthientai = new DataTable();
         DataTable dtdukien = new DataTable();
@@ -1024,10 +1024,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         dt = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, true);
         dt.Columns.Add("dvnhietnang", typeof(string));
         dt.Columns.Add("dvnhieulieu", typeof(string));
+        dt.Columns.Add("stt", typeof(string));
         dtdukien = dt.Clone();
+        int counter = 0;
         foreach (DataRow item in dt.Rows)
         {
-
+            counter++;
             DataRow workRow = null;
             workRow = dtdukien.NewRow();
             workRow = item;
@@ -1047,6 +1049,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             {
                 workRow["dvnhieulieu"] = "đ/m3";
             }
+            workRow["stt"] = counter.ToString();
             workRow.AcceptChanges();
             dtdukien.ImportRow(workRow);
             dtdukien.AcceptChanges();
@@ -1293,10 +1296,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
         else
             ex.WriteToMergeField("BC_FaxP", "");
-        if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_EmailP", "");
+        //if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
+        //    ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
+        //else
+        //    ex.WriteToMergeField("BC_EmailP", "");
 
         if (or.ActiveYear > 0)
             ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
