@@ -108,6 +108,7 @@
     <Compile Include="PR_ProjectArticle.cs" />
     <Compile Include="PR_ProjectType.cs" />
     <Compile Include="Pr_ProType.cs" />
+    <Compile Include="ReportEF.cs" />
     <Compile Include="ReportModels.cs" />
     <Compile Include="sysdiagram.cs" />
     <Compile Include="SYS_PageLayout.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="tblDocumentType.cs" />
     <Compile Include="tblEmail.cs" />
     <Compile Include="tblFaqsCate.cs" />
+    <Compile Include="tblHitCounter.cs" />
     <Compile Include="tblMailContent.cs" />
     <Compile Include="tblMember.cs" />
     <Compile Include="tblMenuLink.cs" />

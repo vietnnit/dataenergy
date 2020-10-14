@@ -10,17 +10,10 @@ namespace ReportEF
     public partial class tblCateNewsGroupPermission
     {
         [Key]
-        [Column(Order = 0)]
         public int CateNewsGroupPermissionID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RolesID { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CateNewsGroupID { get; set; }
 
         [StringLength(500)]

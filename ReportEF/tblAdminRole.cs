@@ -9,16 +9,11 @@ namespace ReportEF
     public partial class tblAdminRole
     {
         [Key]
-        [Column(Order = 0)]
         public int AdminRolesID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RolesID { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        [Required]
         [StringLength(50)]
         public string Admin_UserName { get; set; }
 

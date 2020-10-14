@@ -10,21 +10,15 @@ namespace ReportEF
     public partial class tblNewsComment
     {
         [Key]
-        [Column(Order = 0)]
         public int CommentNewsID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NewsID { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        [Required]
         [StringLength(50)]
         public string FullName { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
+        [Required]
         [StringLength(50)]
         public string Email { get; set; }
 

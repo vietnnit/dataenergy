@@ -22,7 +22,6 @@ namespace ReportEF
         public DateTime? NgayGuiBC { get; set; }
 
         public DateTime? NgayDuyetBC { get; set; }
-        public DateTime? NgayCapNhat { get; set; }
 
         [StringLength(1000)]
         public string MoTaBaoCao { get; set; }
@@ -32,5 +31,7 @@ namespace ReportEF
 
         [StringLength(1000)]
         public string FilePath { get; set; }
+
+        public DateTime? NgayCapNhat { get; set; }
     }
 }

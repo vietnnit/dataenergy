@@ -319,7 +319,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12" >
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataNextYearTitle" runat="server"></asp:Literal><div style="float: right">
                                                     <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"

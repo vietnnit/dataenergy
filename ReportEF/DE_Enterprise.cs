@@ -88,6 +88,7 @@ namespace ReportEF
 
         [StringLength(200)]
         public string CustomerCode { get; set; }
+
         public int? MoHinhQLNL { get; set; }
     }
 }

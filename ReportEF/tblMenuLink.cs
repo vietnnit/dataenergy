@@ -9,7 +9,6 @@ namespace ReportEF
     public partial class tblMenuLink
     {
         [Key]
-        [Column(Order = 0)]
         public int MenuLinksID { get; set; }
 
         public int? MenuLinksParent { get; set; }
@@ -17,8 +16,7 @@ namespace ReportEF
         [StringLength(250)]
         public string MenuLinksName { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
+        [Required]
         [StringLength(250)]
         public string MenuLinksUrl { get; set; }
 

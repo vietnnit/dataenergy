@@ -11,9 +11,9 @@ namespace ReportEF
         [Key]
         public int AutoId { get; set; }
 
-        public int IdDN { get; set; }
-
         public int ReportId { get; set; }
+
+        public int IdDN { get; set; }
 
         public int NamBaoCao { get; set; }
 

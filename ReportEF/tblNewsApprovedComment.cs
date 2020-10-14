@@ -10,12 +10,8 @@ namespace ReportEF
     public partial class tblNewsApprovedComment
     {
         [Key]
-        [Column(Order = 0)]
         public int ApprovedCommentNewsID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NewsID { get; set; }
 
         public string Content { get; set; }

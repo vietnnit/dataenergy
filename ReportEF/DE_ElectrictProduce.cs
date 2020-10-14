@@ -15,6 +15,8 @@ namespace ReportEF
 
         public int? ReportYear { get; set; }
 
+        [Required]
+        [StringLength(50)]
         public string TechKey { get; set; }
 
         public decimal? InstalledCapacity { get; set; }

@@ -9,7 +9,6 @@ namespace ReportEF
     public partial class tblModule
     {
         [Key]
-        [Column(Order = 0)]
         public int Modules_ID { get; set; }
 
         public int? Modules_Parent { get; set; }
@@ -17,13 +16,11 @@ namespace ReportEF
         [StringLength(250)]
         public string Modules_Name { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
+        [Required]
         [StringLength(250)]
         public string Modules_Dir { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        [Required]
         [StringLength(250)]
         public string Modules_Url { get; set; }
 

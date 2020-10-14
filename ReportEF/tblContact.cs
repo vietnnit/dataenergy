@@ -10,11 +10,9 @@ namespace ReportEF
     public partial class tblContact
     {
         [Key]
-        [Column(Order = 0)]
         public int ContactID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
+        [Required]
         [StringLength(50)]
         public string Name { get; set; }
 

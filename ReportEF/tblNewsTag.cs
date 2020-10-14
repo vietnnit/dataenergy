@@ -9,17 +9,10 @@ namespace ReportEF
     public partial class tblNewsTag
     {
         [Key]
-        [Column(Order = 0)]
         public int NewsTagsID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TagsID { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NewsGroupID { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace ReportEF
 
         public int ReportID { get; set; }
 
+        [Required]
         [StringLength(255)]
         public string TaiKhoan { get; set; }
 
