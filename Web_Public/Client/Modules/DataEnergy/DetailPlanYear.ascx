@@ -28,7 +28,10 @@
                                 Nhiên liệu
                             </th>
                             <th style="width: 15%">
-                                Mục đích của giải pháp
+                                Giải pháp tiết kiệm năng lượng đối với hệ thống
+                            </th>
+                            <th style="width: 15%">
+                                Mô tả giải pháp
                             </th>
                             <th style="width: 20%">
                                 Kết quả đạt được
@@ -56,9 +59,13 @@
                                     <td>
                                         <%# Eval("FuelName")%>
                                     </td>
-                                    <td>
+                                     <td>
+                                        <%# Eval("HeThongSuDung")%>
+                                    </td>
+                                     <td>
                                         <%# Eval("MucTieuGP")%>
                                     </td>
+                                   
                                     <td>
                                         Mức TK:
                                         <%# Eval("MucTKThucTe") != null ? (Tool.ConvertDecimalToString(Eval("MucTKThucTe"),2) + "(" + Eval("MeasurementName"))+")" : ""%>
@@ -183,21 +190,24 @@
                                     Nhiên liệu
                                 </th>
                                 <th style="width: 300px">
-                                    Mục đích của giải pháp
+                                    Giải pháp tiết kiệm năng lượng đối với hệ thống
+                                </th>
+                                <th style="width: 300px">
+                                    Mô tả giải pháp
                                 </th>
                                 <th style="width: 300px">
                                     Dự kiến kết quả
                                 </th>
                                 <th style="width: 100px">
-                                    Dự kiến C.Phí<br />
+                                    Chi phí<br />
                                     (Tr.đồng)
                                 </th>
                                 <th style="width: 200px">
                                     Ghi chú
                                 </th>
-                                <th style="width: 200px">
+                              <%--  <th style="width: 200px">
                                     Cam kết & khả năng thực hiện
-                                </th>
+                                </th>--%>
                                 <th style="width: 50px">
                                     Thao tác
                                 </th>
@@ -213,6 +223,9 @@
                                         </td>
                                         <td>
                                             <%# Eval("FuelName")%>
+                                        </td>
+                                         <td>
+                                            <%# Eval("HeThongSuDung")%>
                                         </td>
                                         <td>
                                             <%# Eval("MucTieuGP")%>
@@ -236,13 +249,13 @@
                                         <td>
                                             <%# Eval("GhiChu")%>
                                         </td>
-                                        <td>
+                                       <%-- <td>
                                             Khả năng:
                                             <%# Eval("KhaNangThucHien") != DBNull.Value && Eval("KhaNangThucHien").ToString() != "" ? Eval("KhaNangThucHien") + "%" : ""%>
                                             <br />
                                             Cam kết:
                                             <%# Eval("MucCamKet")%>
-                                        </td>
+                                        </td>--%>
                                         <td>
                                             <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
                                                 CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
@@ -399,6 +412,14 @@
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" Display="Dynamic" runat="server"
                                 CssClass="text-danger" ControlToValidate="ddlSolution" ValidationGroup="valAddSolutionTKNLOne"
                                 Text="Vui lòng chọn giải pháp"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Hệ thống sử dụng <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList ID="ddlUseSysNamePlan" runat="server" CssClass="form-control input-sm">
+                            </asp:DropDownList>
                         </div>
                     </div>
                     <div class="form-group">
@@ -579,8 +600,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Hệ thống sử dụng <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList ID="ddlUseSysName" runat="server" CssClass="form-control input-sm">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-lg-3">
-                            Mục đích<span class="append-icon right text-danger">*</span>:</label>
+                            Mô tả giải pháp<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtMucDichGPTT" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="txtMucDichGPTT"

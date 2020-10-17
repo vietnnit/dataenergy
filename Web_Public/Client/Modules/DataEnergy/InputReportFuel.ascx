@@ -236,7 +236,7 @@
                                 <li><a rel="tabProduct" href="#" class="">Cơ sở hạ tầng và sản phẩm</a></li>
                                 <li><a rel="tabData" href="#" class="">Mức nhiên liệu tiêu thụ năm</a></li>
                                 <li><a rel="tabPlan" href="#" class="">Giải pháp TKNL năm</a></li>
-                                <li><a rel="tabPlan5Year" href="#" class="">Giải pháp TKNL 5 năm</a></li>
+                                <li><a rel="tabPlan5Year" style="display:none;" href="#" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
                     </div>
@@ -329,7 +329,7 @@
                                             <asp:Literal ID="ltNoFuelFuture" runat="server"></asp:Literal>
                                             <table class="table table-bordered table-hover mbn" width="100%">
                                                 <tr class="primary fs12">
-                                                    <th style="width: 5%">STT-------
+                                                    <th style="width: 5%">STT
                                                     </th>
                                                     <th style="width: 20%">Loại năng lượng
                                                     </th>
@@ -1153,7 +1153,7 @@ btn-u-primary mr10"
                                     <tr class="primary fs12">
                                         <td style="width: 10%">Điện năng mua từ lưới
                                         </td>
-                                        <td style="width: 10%">Công suất (kW)<span class="append-icon right text-danger">*</span>:
+                                        <td style="width: 10%">Công suất đăng ký (kW)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtDienDkMua" runat="server" CssClass="form-control"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator39" runat="server" ControlToValidate="txtDienDkMua" CssClass="text-danger"
                                                 ValidationGroup="valElectrictPlan" Text="Vui lòng nhập công suất" Display="Dynamic"></asp:RequiredFieldValidator>

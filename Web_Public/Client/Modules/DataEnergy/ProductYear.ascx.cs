@@ -133,6 +133,11 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         ddlFuelPlan.DataBind();
         ddlFuelPlan.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
 
+        ddlProductFuel.DataSource = listSearch;
+        ddlProductFuel.DataValueField = "Id";
+        ddlProductFuel.DataTextField = "FuelName";
+        ddlProductFuel.DataBind();
+        ddlProductFuel.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
     }
     void BindProduct()
     {
@@ -301,6 +306,9 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         product.Note = txtDescription.Text.Trim();
         product.EnterpriseId = memVal.OrgId;
         product.IsProduct = true;
+        if (ddlProductFuel.SelectedIndex > 0)
+            product.FuelId = Convert.ToInt32(ddlProductFuel.SelectedValue);
+
         int i = productService.Insert(product);
         if (i <= 0)
         {
@@ -322,6 +330,13 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesign.Text);
         if (txtMaxQty.Text.Trim() != "")
             productCapacity.MaxQuantity = Convert.ToDecimal(txtMaxQty.Text.Trim());
+
+        if (txtTieuThuNLTheoSP.Text.Trim() != "")
+            productCapacity.TieuThuNLTheoSP = Convert.ToDecimal(txtTieuThuNLTheoSP.Text.Trim());
+
+        if (txtDoanhThuTheoSP.Text.Trim() != "")
+            productCapacity.DoanhThuTheoSP = Convert.ToDecimal(txtDoanhThuTheoSP.Text.Trim());
+
         productCapacity.IsPlan = false;
         productCapacity.ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
         productCapacity.ReportId = ReportId;
@@ -354,8 +369,8 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
     {
         ProductCapacityService productCapacityService = new ProductCapacityService();
         ProductCapacity productCapacity = new ProductCapacity();
-        if (txtQtyByDesign.Text != "")
-            productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesign.Text);
+        if (txtQtyByDesignPlan.Text != "")
+            productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesignPlan.Text);
         if (txtMaxQtyPlan.Text.Trim() != "")
             productCapacity.MaxQuantity = Convert.ToDecimal(txtMaxQtyPlan.Text.Trim());
         productCapacity.IsPlan = true;
@@ -416,6 +431,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
                 try
                 {
                     txtMaxQtyPlan.Text = productCapacity.MaxQuantity.ToString();
+                    txtQtyByDesignPlan.Text= productCapacity.DesignQuantity.ToString();
                     txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
                     txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
                     ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();

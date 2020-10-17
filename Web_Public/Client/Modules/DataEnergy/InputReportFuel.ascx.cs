@@ -1000,10 +1000,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         DataTable dthientai = new DataTable();
         DataTable dtdukien = new DataTable();
 
-        
+
 
         DataSet dshientai = new DataSet("tbl1");
-        
+
         DataTable dt = new DataTable();
 
         dt = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
@@ -2235,7 +2235,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                           TechName = a.TechName,
                           InstalledCapacity = b.InstalledCapacity,
                           ProduceQty = b.ProduceQty
-                      }).ToList();
+                      }).Distinct().ToList();
 
         decimal _DSXCongSuatLapDat = 0, _DSXSanLuongBan = 0;
         foreach (var item in DienSX)
@@ -2252,15 +2252,15 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>I. Điện năng mua từ lưới: </td>";
 
-        htmlTable += string.Format("<td>Công suất đăng ký: {0:0} kW</td>", DienMuaBan != null && DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
-        htmlTable += string.Format("<td>Điện năng: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan != null && DienMuaBan.Quantity != null ? DienMuaBan.Quantity : 0);
+        htmlTable += string.Format("<td>Công suất đăng ký: {0:0} (kW)</td>", DienMuaBan != null && DienMuaBan.InstalledCapacity != null ? DienMuaBan.InstalledCapacity : 0);
+        htmlTable += string.Format("<td>Điện năng: {0:0} (10<sup>6</sup>kWh/năm)</td>", DienMuaBan != null && DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
 
         htmlTable += "</tr>";
 
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>II. Điện tự sản xuất(nếu có):</td>";
-        htmlTable += string.Format("<td>Công suất lắp đặt: {0:0} kW</td>", _DSXCongSuatLapDat);
-        htmlTable += string.Format("<td>Điện năng sản xuất: {0:0} 10<sup>6</sup> kWh/năm</td>", _DSXSanLuongBan);
+        htmlTable += string.Format("<td>Công suất lắp đặt: {0:0} (kW)</td>", _DSXCongSuatLapDat);
+        htmlTable += string.Format("<td>Điện năng sản xuất: {0:0} (10<sup>6</sup>kWh/năm)</td>", _DSXSanLuongBan);
         htmlTable += "</tr>";
         //Lặp danh mục công nghệ
         int i = 1;
@@ -2269,7 +2269,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             var tmp = DienSX.FirstOrDefault(o => o.TechKey == item.TechKey);
 
             htmlTable += "<tr class='primary fs12'>";
-            htmlTable += string.Format("<td>{0}.{1}:</td>", i, item.TechName);
+            htmlTable += string.Format("<td>{0}. {1}:</td>", i, item.TechName);
             htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.InstalledCapacity.Value : 0);
             htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.ProduceQty.Value : 0);
             htmlTable += "</tr>";
@@ -2280,8 +2280,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         htmlTable += "<tr class='primary fs12'>";
         htmlTable += "<td>III. Điện bán ra(nếu có):</td>";
 
-        htmlTable += string.Format("<td>Công suất bán ra: {0:0} kW</td>", DienMuaBan != null && DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan : 0);
-        htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0} 10<sup>6</sup> kWh/năm</td>", DienMuaBan != null && DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan : 0);
+        htmlTable += string.Format("<td>Công suất bán ra: {0:0} (kW)</td>", DienMuaBan != null && DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan : 0);
+        htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0} (10<sup>6</sup>kWh/năm)</td>", DienMuaBan != null && DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan : 0);
 
         htmlTable += "</tr>";
 
@@ -2306,7 +2306,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     protected void btBindTieuThuSXDien_Click(object sender, EventArgs e)
     {
         ReportModels reportModels = new ReportModels();
-        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId);
+        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId && o.IsPlan == true);
 
 
         if (DienMuaBan != null)
@@ -2405,7 +2405,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
         _sudungdien.ReportYear = ReportYear;
         _sudungdien.ReportId = ReportId;
-
+        _sudungdien.IsPlan = true;
 
         //txtDienDkMua
         decimal _InstalledCapacity = 0;

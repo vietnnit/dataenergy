@@ -11,6 +11,7 @@ using ePower.DE.Service;
 using PR.Domain;
 using PR.Service;
 using System.Data;
+using ReportEF;
 
 public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.UserControl
 {
@@ -76,6 +77,7 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
             BindThietBi();
             BindResultTB();
             BindResultTKNL();
+            BindUsingEnerySystem();
         }
     }
     void BindMeasurement()
@@ -106,7 +108,7 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
             list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuelType2.SelectedValue));
         }
 
-        ddlMeasure2.DataSource = list;        
+        ddlMeasure2.DataSource = list;
         ddlMeasure2.DataValueField = "Id";
         ddlMeasure2.DataTextField = "MeasurementName";
         ddlMeasure2.DataBind();
@@ -117,12 +119,31 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
         }
     }
 
+
+
+    protected void BindUsingEnerySystem()
+    {
+        ReportModels reportModels = new ReportModels();
+        var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0).ToList();
+
+        ddlUseSysName.DataValueField = "SysCode";
+        ddlUseSysName.DataTextField = "SysName";
+        ddlUseSysName.DataSource = res;
+        ddlUseSysName.DataBind();
+
+
+        ddlUseSysNamePlan.DataValueField = "SysCode";
+        ddlUseSysNamePlan.DataTextField = "SysName";
+        ddlUseSysNamePlan.DataSource = res;
+        ddlUseSysNamePlan.DataBind();
+    }
+
     void BindData()
     {
         //ReportFuel report = new ReportFuelService().FindByKey(ReportId);
         //if (report != null)
         //{
-        ltOldYear.Text = ("I. Kết quả thực hiện năm " + (ReportYear-1).ToString()).ToUpper();
+        ltOldYear.Text = ("I. Kết quả thực hiện năm " + (ReportYear - 1).ToString()).ToUpper();
         ltNextYear.Text = ("II. Kế hoạch thực hiện năm " + ReportYear.ToString()).ToUpper();
         //}
         btnAddDevice.Visible = btnAddPlan.Visible = btnAddPlanDeviceNext.Visible = btnAddPlanNext.Visible = btnAddSolution.Visible = btnAddSolution2.Visible = AllowEdit; ;
@@ -352,6 +373,9 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
             txtChiPhiThucTe.Text = rpt.CPThucTe;
             txtGhiChuTT.Text = rpt.GhiChuTT;
             txtTuongDuongTT.Text = rpt.TuongDuongTT;
+            if (!string.IsNullOrEmpty(rpt.HeThongSuDung))
+                ddlUseSysName.SelectedValue = rpt.HeThongSuDung;
+
             if (rpt.LoaiNhienLieu > 0)
             {
                 ddlFuelType2.SelectedValue = rpt.LoaiNhienLieu.ToString();
@@ -461,6 +485,8 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
         plantknl.GhiChu = txtGhiChu.Text.Trim();
         plantknl.IsFiveYear = false;
         plantknl.IsPlan = true;
+        plantknl.HeThongSuDung = ddlUseSysNamePlan.SelectedValue;
+
         plantknl.EnterpriseId = memVal.OrgId;
         if (ddlSolution.SelectedIndex > 0)
             plantknl.IdGiaPhap = Convert.ToInt32(ddlSolution.SelectedValue);
@@ -571,6 +597,7 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
         plantknl.ReportId = ReportId;
         plantknl.IdPlan = ReportId;
         plantknl.EnterpriseId = memVal.OrgId;
+        plantknl.HeThongSuDung = ddlUseSysName.SelectedValue;
         if (ddlSolution2.SelectedIndex > 0)
             plantknl.IdGiaPhap = Convert.ToInt32(ddlSolution2.SelectedValue);
         if (ddlFuelType2.SelectedIndex > 0)

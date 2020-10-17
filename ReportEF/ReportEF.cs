@@ -12,6 +12,7 @@ namespace ReportEF
         {
         }
 
+        public virtual DbSet<DE_UsingSystem> DE_UsingSystem { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam> BC_SDNL_DS_TheoNam { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam_Comment> BC_SDNL_DS_TheoNam_Comment { get; set; }
         public virtual DbSet<BC_SDNL_HangNam> BC_SDNL_HangNam { get; set; }

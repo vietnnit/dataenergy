@@ -4,41 +4,38 @@
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
+
         <div class="col-lg-12" style="display:none;">
             <div class="">
                 <div class="control-label pt5" style="width: 100%" for="inputSmall">
                     <b>2.1. Thông tin cơ sở hạ tầng</b>
                     <div style="float: right">
                         <asp:LinkButton ID="btnEditInfo" runat="server" Text="Sửa thông tin" ToolTip="Sửa thông tin"
-                            OnClientClick='javascript:UpdateInfratructure(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton></div>
+                            OnClientClick='javascript:UpdateInfratructure(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton>
+                    </div>
                 </div>
             </div>
             <table class="table table-bordered table-hover mbn" width="100%">
                 <thead>
                     <tr>
-                        <td style="width: 10%">
-                            Năm đưa cơ sở vào hoạt động:
+                        <td style="width: 10%">Năm đưa cơ sở vào hoạt động:
                         </td>
                         <td style="width: 10%;" colspan="2">
                             <asp:Literal ID="ltActiveYear" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <th style="width: 10%">
-                            Số lao động/diện tích mặt bằng
+                        <th style="width: 10%">Số lao động/diện tích mặt bằng
                         </th>
-                        <th style="width: 10%">
-                            Khu vực sản xuất
+                        <th style="width: 10%">Khu vực sản xuất
                         </th>
-                        <th style="width: 15%">
-                            Khu vực văn phòng
+                        <th style="width: 15%">Khu vực văn phòng
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            Tổng số lao động hiện tại
+                        <td>Tổng số lao động hiện tại
                         </td>
                         <td>
                             <asp:Literal ID="ltProduceEmployeeNo" runat="server"></asp:Literal>
@@ -48,8 +45,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Diện tích mặt bằng(m<sup>2</sup>)
+                        <td>Diện tích mặt bằng(m<sup>2</sup>)
                         </td>
                         <td>
                             <asp:Literal ID="ltProduceArea" runat="server"></asp:Literal>
@@ -61,6 +57,8 @@
                 </tbody>
             </table>
         </div>
+
+        <%--1.1 Năng lực sản xuất của cơ sở năm [N-1]--%>
         <div class="col-lg-12">
             <label class="control-label">
                 <asp:Literal ID="ltOldYear" runat="server" Text="2.1. Năng lực sản xuất"></asp:Literal></label>
@@ -70,29 +68,29 @@
                         <i>a. Năng lực sản xuất năm hiện tại<asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddProductResult" runat="server" Text="Thêm mới" ToolTip="Thêm mới"
-                                OnClientClick='javascript:AddProductQty(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton></div>
+                                OnClientClick='javascript:AddProductQty(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 15%">
-                                Tên sản phẩm
+                            <th style="width: 15%">Tên sản phẩm
                                 <br />
                                 <asp:LinkButton ID="btnAddProductNext" runat="server" CssClass="fs9 btn btn-primary"
                                     Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
                             </th>
-                            <th style="width: 10%">
-                                Đơn vị đo
+                            <th style="width: 10%">Đơn vị đo
                             </th>
-                            <th style="width: 15%">
-                                Theo thiết kế
+                            <th style="width: 15%">Theo thiết kế
                             </th>
-                            <th style="width: 20%">
-                                Mức sản xuất cao nhất hiện tại
+                            <th style="width: 20%">Mức sản xuất hiện tại
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 20%">Tiêu thụ năng lượng theo sản phẩm
+                            </th>
+                            <th style="width: 20%">Doanh thu
+                            </th>
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -113,6 +111,12 @@
                                     <td class="text-right">
                                         <%# Eval("MaxQuantity")%>
                                     </td>
+                                    <td class="text-right">
+                                        <%# Eval("TieuThuNLTheoSP")%>
+                                    </td>
+                                    <td class="text-right">
+                                        <%# Eval("DoanhThuTheoSP ")%>
+                                    </td>
                                     <td>
                                         <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
                                             CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
@@ -128,10 +132,12 @@
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
-                        <i>b. Kế hoạch sản xuất năm tiếp theo <b>Năm <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></b></i>
+                        <i>b. Kế hoạch sản xuất năm tiếp theo <b>Năm
+                            <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></b></i>
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddProductNextResult" runat="server" Text="Thêm mới" ToolTip="Thêm sản phẩm"
-                                OnClientClick='javascript:AddProductQtyPlan(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton></div>
+                                OnClientClick='javascript:AddProductQtyPlan(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
@@ -140,23 +146,22 @@
                             <%--<th style="width: 5%">
                                             Năm
                                         </th>--%>
-                            <th style="width: 15%">
-                                Tên sản phẩm<br />
+                            <th style="width: 15%">Tên sản phẩm<br />
                                 <asp:LinkButton ID="btnAddProductPlan" runat="server" CssClass="fs9 btn btn-primary"
                                     Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
                             </th>
-                            <%--      <th style="width:10%">Mô tả</th>--%>
-                            <th style="width: 15%">
-                                Dự kiến sản xuất
+                                  <th style="width:10%">Đơn vị đo</th>
+                             <th style="width: 15%">Theo thiết kế
                             </th>
-                            <th style="width: 10%">
-                                Tỷ lệ so với chi phí sản xuất (%)
+                             <th style="width: 15%">Mức sản suất dự kiến
                             </th>
-                            <th style="width: 15%">
-                                Tỷ lệ doanh thu (%)
+<%--                            <th style="width: 15%">Dự kiến sản xuất
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 10%">Tỷ lệ so với chi phí sản xuất (%)
+                            </th>
+                            <th style="width: 15%">Tỷ lệ doanh thu (%)
+                            </th>--%>
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -172,13 +177,13 @@
                                         <%# Eval("ProductName")%>
                                     </td>
                                     <td class="text-right">
-                                        <%# Eval("MaxQuantity")%>(<%# Eval("Measurement")%>)
+                                        <%# Eval("Measurement")%>
                                     </td>
                                     <td class="text-right">
-                                        <%# Eval("RateOfCost")%>
+                                        <%# Eval("DesignQuantity")%>
                                     </td>
                                     <td class="text-right">
-                                        <%# Eval("RateOfRevenue")%>
+                                        <%# Eval("MaxQuantity")%>
                                     </td>
                                     <td>
                                         <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
@@ -193,6 +198,7 @@
                 </table>
             </div>
         </div>
+
         <div class="col-lg-12">
             <label class="control-label">
                 <asp:Literal ID="ltNextYear" runat="server" Text="2.2. Điện năng mua ngoài và tự sản xuất"></asp:Literal></label>
@@ -201,67 +207,57 @@
                     <div class="control-label pt5" style="width: 100%">
                         <i>a. Điện mua ngoài và tự sản xuất năm hiện tại</i><div style="float: right">
                             <asp:LinkButton ID="btnEditElecttrict" runat="server" Text="Sửa thông tin" ToolTip="Sửa thông tin"
-                                OnClientClick='javascript:UpdateElectrict(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton></div>
+                                OnClientClick='javascript:UpdateElectrict(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton>
+                        </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <tbody>
                         <tr class="primary fs12">
-                            <td style="width: 10%">
-                                Điện năng mua ngoài
+                            <td style="width: 10%">Điện năng mua ngoài
                             </td>
-                            <td style="width: 10%">
-                                Công suất:
+                            <td style="width: 10%">Công suất:
                                 <asp:Literal ID="ltCapacityResult" runat="server"></asp:Literal>
                             </td>
-                            <td style="width: 10%;" colspan="2">
-                                Điện năng:
+                            <td style="width: 10%;" colspan="2">Điện năng:
                                 <asp:Literal ID="ltQuantityResult" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr class="primary fs12">
-                            <td style="width: 10%">
-                                Giá mua điện ngoài
+                            <td style="width: 10%">Giá mua điện ngoài
                             </td>
-                            <td style="width: 10%">
-                                Giá trung bình theo công suất:
+                            <td style="width: 10%">Giá trung bình theo công suất:
                                 <asp:Literal ID="ltPriceAvgResult" runat="server"></asp:Literal>
                             </td>
-                            <td style="width: 10%;" colspan="2">
-                                Giá theo hóa đơn:
+                            <td style="width: 10%;" colspan="2">Giá theo hóa đơn:
                                 <asp:Literal ID="ltPriceBuy" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr>
-                            <td rowspan="4">
-                                Điện tự sản xuất
+                            <td rowspan="4">Điện tự sản xuất
                             </td>
-                            <td>
-                                Công suất lắp đặt
+                            <td>Công suất lắp đặt
                             </td>
                             <td>
                                 <asp:Literal ID="ltInstalledResult" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Điện năng sản xuất
+                            <td>Điện năng sản xuất
                             </td>
                             <td>
                                 <asp:Literal ID="ltQuantityProduceResult" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Công nghệ
+                            <td>Công nghệ
                             </td>
                             <td>
                                 <asp:Literal ID="ltTechnologyResult" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Nhiên liệu sử dụng
+                            <td>Nhiên liệu sử dụng
                             </td>
                             <td>
                                 <asp:Literal ID="ltFuelResult" runat="server"></asp:Literal>
@@ -273,72 +269,62 @@
             <div class="control-label pt5" style="width: 100%" for="inputSmall">
                 <i>b. Kế hoạch mua điện và tự sản xuất năm sau</i><div style="float: right">
                     <asp:LinkButton ID="btnEditElectrictPlan" runat="server" Text="Sửa thông tin" ToolTip="Sửa thông tin"
-                        OnClientClick='javascript:UpdateElectrictPlan(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton></div>
+                        OnClientClick='javascript:UpdateElectrictPlan(); return false;'><i class="fa fa-edit"></i>&nbsp;Sửa thông tin</asp:LinkButton>
+                </div>
             </div>
             <table class="table table-bordered table-hover mbn" width="100%">
                 <tbody>
                     <tr class="primary fs12">
-                        <td style="width: 10%">
-                            Điện năng mua ngoài
+                        <td style="width: 10%">Điện năng mua ngoài
                         </td>
-                        <td style="width: 10%">
-                            Công suất:
+                        <td style="width: 10%">Công suất:
                             <asp:Literal ID="ltCapacityPlan" runat="server"></asp:Literal>
                         </td>
-                        <td style="width: 10%;" colspan="2">
-                            Điện năng:
+                        <td style="width: 10%;" colspan="2">Điện năng:
                             <asp:Literal ID="ltQuantityElectrictPlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Giá mua điện
+                        <td>Giá mua điện
                         </td>
-                        <td>
-                            Giá điện dự kiến
+                        <td>Giá điện dự kiến
                         </td>
                         <td>
                             <asp:Literal ID="ltPriceBuyPlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td rowspan="5">
-                            Điện tự sản xuất(Nếu có)
+                        <td rowspan="5">Điện tự sản xuất(Nếu có)
                         </td>
-                        <td>
-                            Công suất lắp đặt
+                        <td>Công suất lắp đặt
                         </td>
                         <td>
                             <asp:Literal ID="ltInstalledCapacityPlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Điện năng sản xuất
+                        <td>Điện năng sản xuất
                         </td>
                         <td>
                             <asp:Literal ID="ltQuantityProducePlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Giá điện sản xuất
+                        <td>Giá điện sản xuất
                         </td>
                         <td>
                             <asp:Literal ID="ltPriceProducePlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Công nghệ
+                        <td>Công nghệ
                         </td>
                         <td>
                             <asp:Literal ID="ltTecnologyPlan" runat="server"></asp:Literal>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Nhiên liệu sử dụng
+                        <td>Nhiên liệu sử dụng
                         </td>
                         <td>
                             <asp:Literal ID="ltFuelPlan" runat="server"></asp:Literal>
@@ -361,8 +347,7 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Cập nhật danh mục sản phẩm sản xuất</h3>
+                <h3 class="modal-title">Cập nhật danh mục sản phẩm sản xuất</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -420,6 +405,14 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-lg-3">
+                            Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList ID="ddlProductFuel" CssClass="form-control input-sm" runat="server">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-lg-3 control-label">
                             Ghi chú:</label>
                         <div class="col-lg-9">
@@ -444,8 +437,7 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Sản phẩm sản xuất năm báo cáo</h3>
+                <h3 class="modal-title">Sản phẩm sản xuất năm báo cáo</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -467,13 +459,14 @@
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtQtyByDesign" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator16" runat="server" ControlToValidate="txtQtyByDesign"
-                                        CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
-                                        Display="Dynamic"></asp:RegularExpressionValidator>
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
                         </div>
                         <div class="col-lg-3">
-                            <asp:Literal ID="ltMearsurement2" runat="server"></asp:Literal></div>
+                            <asp:Literal ID="ltMearsurement2" runat="server"></asp:Literal>
+                        </div>
                     </div>
-                    <div class="form-group">
+                     <div class="form-group">
                         <label class="col-lg-3">
                             Mức sản xuất cao nhất<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
@@ -488,7 +481,44 @@
                         <div class="col-lg-3">
                             <asp:Literal ID="ltMeasurement" runat="server"></asp:Literal>
                         </div>
-                    </div>                    
+                    </div>             
+
+                
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Tiêu thụ năng lượng theo sản phẩm<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtTieuThuNLTheoSP" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
+                                ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
+                                CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
+
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div class="col-lg-3">
+                            <asp:Literal ID="Literal1" runat="server"></asp:Literal>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Doanh thu theo sản phẩm<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtDoanhThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtDoanhThuTheoSP"
+                                ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
+                                CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
+
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator19" runat="server" ControlToValidate="txtDoanhThuTheoSP"
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div class="col-lg-3">
+                            <asp:Literal ID="Literal2" runat="server"></asp:Literal>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -500,7 +530,7 @@
                     Đóng</button>
             </div>
         </div>
-    </div>    
+    </div>
 </div>
 <div class="modal" tabindex="-1" role="dialog" id="divProductPlan" data-backdrop="static">
     <div class="modal-dialog large">
@@ -508,8 +538,7 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Kế hoạch sản xuất năm tiếp theo</h3>
+                <h3 class="modal-title">Kế hoạch sản xuất năm tiếp theo</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -525,6 +554,19 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            Năng lực SX theo thiết kế:</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtQtyByDesignPlan" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator20" runat="server" ControlToValidate="txtQtyByDesignPlan"
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div class="col-lg-3">
+                            <asp:Literal ID="Literal3" runat="server"></asp:Literal>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-lg-3">
                             Dự kiến sản xuất<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
@@ -533,10 +575,12 @@
                                 CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập dự kiến sản xuất"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator14" runat="server" ControlToValidate="txtMaxQtyPlan"
-                                        CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
-                                        Display="Dynamic"></asp:RegularExpressionValidator>
+                                CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
                         </div>
-                        <div class="col-lg-6"><asp:Literal ID="ltMeasurementPlan" runat="server"></asp:Literal></div>
+                        <div class="col-lg-6">
+                            <asp:Literal ID="ltMeasurementPlan" runat="server"></asp:Literal>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3">
@@ -550,7 +594,7 @@
                                 CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập tỷ lệ so với chi phí"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
-                    <%--</div>
+                        <%--</div>
                     <div class="form-group">--%>
                         <label class="col-lg-3">
                             Tỷ lệ so với Doanh thu(%)<span class="append-icon right text-danger">*</span></label>
@@ -582,8 +626,7 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Cập nhật thông tin cơ sở</h3>
+                <h3 class="modal-title">Cập nhật thông tin cơ sở</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -598,21 +641,17 @@
                                 </td>
                             </tr>--%>
                             <tr class="primary fs12">
-                                <th style="width: 30%">
-                                    Số lao động/diện tích MB
+                                <th style="width: 30%">Số lao động/diện tích MB
                                 </th>
-                                <th style="width: 35%">
-                                    Khu vực sản xuất
+                                <th style="width: 35%">Khu vực sản xuất
                                 </th>
-                                <th style="width: 35%">
-                                    Khu vực văn phòng
+                                <th style="width: 35%">Khu vực văn phòng
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    Tổng số lao động hiện tại
+                                <td>Tổng số lao động hiện tại
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtProduceEmployeeNo" runat="server" CssClass="form-control"></asp:TextBox>
@@ -634,8 +673,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Diện tích mặt bằng(m<sup>2</sup>)
+                                <td>Diện tích mặt bằng(m<sup>2</sup>)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtProduceArea" runat="server" CssClass="form-control"></asp:TextBox>
@@ -675,19 +713,16 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Điện mua ngoài và điện tự sản xuất</h3>
+                <h3 class="modal-title">Điện mua ngoài và điện tự sản xuất</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <table class="table table-bordered table-hover mbn" width="100%">
                         <tbody>
                             <tr class="primary fs12">
-                                <td style="width: 10%">
-                                    Điện năng mua ngoài
+                                <td style="width: 10%">Điện năng mua ngoài
                                 </td>
-                                <td style="width: 10%">
-                                    Công suất (kW)<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%">Công suất (kW)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtCapacity" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="txtCapacity" CssClass="text-danger"
                                         ValidationGroup="valElectrict" Text="Vui lòng nhập công suất" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -695,8 +730,7 @@
                                         CssClass="text-danger" ValidationGroup="valElectrict" Text="Công suất chỉ nhập số"
                                         ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
                                 </td>
-                                <td style="width: 10%;" colspan="2">
-                                    Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%;" colspan="2">Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtQuantity" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator20" runat="server" ControlToValidate="txtQuantity" CssClass="text-danger"
                                         ValidationGroup="valElectrict" Text="Vui lòng nhập điện năng mua" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -706,34 +740,29 @@
                                 </td>
                             </tr>
                             <tr class="primary fs12">
-                                <td style="width: 10%">
-                                    Giá mua điện
+                                <td style="width: 10%">Giá mua điện
                                 </td>
-                                <td style="width: 10%">
-                                    Theo TB công suất (đồng/kW)<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%">Theo TB công suất (đồng/kW)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtAvgPrice" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="txtAvgPrice" CssClass="text-danger" SetFocusOnError="true"
                                         ValidationGroup="valElectrict" Text="Vui lòng nhập giá TB theo công suất" Display="Dynamic"></asp:RequiredFieldValidator>
-                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator17" runat="server" ControlToValidate="txtAvgPrice"  SetFocusOnError="true"
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator17" runat="server" ControlToValidate="txtAvgPrice" SetFocusOnError="true"
                                         CssClass="text-danger" ValidationGroup="valElectrict" Text="Chi phí chỉ nhập số"
                                         ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
                                 </td>
-                                <td style="width: 10%;" colspan="2">
-                                    Theo hóa đơn(đồng/kWh):<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%;" colspan="2">Theo hóa đơn(đồng/kWh):<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtPriceBuy" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="txtPriceBuy" CssClass="text-danger" SetFocusOnError="true"
                                         ValidationGroup="valElectrict" Text="Vui lòng nhập giá mua điện theo hóa đơn" Display="Dynamic"></asp:RequiredFieldValidator>
-                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtPriceBuy"  SetFocusOnError="true"
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="txtPriceBuy" SetFocusOnError="true"
                                         CssClass="text-danger" ValidationGroup="valElectrict" Text="Chi phí chỉ nhập số"
                                         ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
-                                <td rowspan="4">
-                                    Điện tự sản xuất
+                                <td rowspan="4">Điện tự sản xuất
                                 </td>
-                                <td>
-                                    Công suất lắp đặt (kW)
+                                <td>Công suất lắp đặt (kW)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtInstalledCapacity" runat="server" CssClass="form-control"></asp:TextBox>
@@ -745,8 +774,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Điện năng sản xuất (10<sup>6</sup> kWh/năm)
+                                <td>Điện năng sản xuất (10<sup>6</sup> kWh/năm)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtProduceQty" runat="server" CssClass="form-control"></asp:TextBox>
@@ -758,8 +786,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Công nghệ
+                                <td>Công nghệ
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtTenologyElectrict" runat="server" CssClass="form-control"></asp:TextBox>
@@ -768,8 +795,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Nhiên liệu sử dụng
+                                <td>Nhiên liệu sử dụng
                                 </td>
                                 <td>
                                     <asp:DropDownList runat="server" ID="ddlFuel" CssClass="form-control input-sm">
@@ -798,19 +824,16 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">
-                    Kế hoạch mua điện và điện tự sản xuất</h3>
+                <h3 class="modal-title">Kế hoạch mua điện và điện tự sản xuất</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <table class="table table-bordered table-hover mbn" width="100%">
                         <tbody>
                             <tr class="primary fs12">
-                                <td style="width: 10%">
-                                    Điện năng mua ngoài
+                                <td style="width: 10%">Điện năng mua ngoài
                                 </td>
-                                <td style="width: 10%">
-                                    Công suất (kW)<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%">Công suất (kW)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtCapacityPlan" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator39" runat="server" ControlToValidate="txtCapacityPlan" CssClass="text-danger"
                                         ValidationGroup="valElectrictPlan" Text="Vui lòng nhập công suất" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -818,8 +841,7 @@
                                         CssClass="text-danger" ValidationGroup="valElectrictPlan" Text="Chỉ nhập số"
                                         ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
                                 </td>
-                                <td style="width: 10%;" colspan="2">
-                                    Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
+                                <td style="width: 10%;" colspan="2">Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
                                     <asp:TextBox ID="txtElectrictQuantityPlan" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator40" runat="server" ControlToValidate="txtElectrictQuantityPlan" CssClass="text-danger"
                                         ValidationGroup="valElectrictPlan" Text="Vui lòng nhập điện năng mua ngoài" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -829,28 +851,24 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Giá mua điện
+                                <td>Giá mua điện
                                 </td>
-                                <td>
-                                    Giá mua TB dự kiến (đồng/ kW)<span class="append-icon right text-danger">*</span>
+                                <td>Giá mua TB dự kiến (đồng/ kW)<span class="append-icon right text-danger">*</span>
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtCostPlan" runat="server" CssClass="form-control"></asp:TextBox>
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtCostPlan" CssClass="text-danger"
                                         ValidationGroup="valElectrictPlan" Text="Vui lòng nhập giá mua điện dự kiến"
                                         Display="Dynamic"></asp:RequiredFieldValidator>
-                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" 
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server"
                                         ControlToValidate="txtCostPlan" CssClass="text-danger" ValidationGroup="valElectrictPlan"
                                         Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
-                                <td rowspan="5">
-                                    Điện tự sản xuất(Nếu có)
+                                <td rowspan="5">Điện tự sản xuất(Nếu có)
                                 </td>
-                                <td>
-                                    Công suất lắp đặt (kW)
+                                <td>Công suất lắp đặt (kW)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtInstalledCapacityPlan" runat="server" CssClass="form-control"></asp:TextBox>
@@ -862,8 +880,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Điện năng sản xuất (10<sup>6</sup> kWh/năm)
+                                <td>Điện năng sản xuất (10<sup>6</sup> kWh/năm)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtProduceQtyPlan" runat="server" CssClass="form-control"></asp:TextBox>
@@ -875,8 +892,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Giá điện sản xuất (đồng/ kW)
+                                <td>Giá điện sản xuất (đồng/ kW)
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtPriceProducePlan" runat="server" CssClass="form-control"></asp:TextBox>
@@ -888,8 +904,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Công nghệ
+                                <td>Công nghệ
                                 </td>
                                 <td>
                                     <asp:TextBox ID="txtTenologyPlan" runat="server" CssClass="form-control"></asp:TextBox>
@@ -898,8 +913,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    Nhiên liệu sử dụng
+                                <td>Nhiên liệu sử dụng
                                 </td>
                                 <td>
                                     <asp:DropDownList runat="server" ID="ddlFuelPlan" CssClass="form-control input-sm">
@@ -978,11 +992,10 @@
 
         $('#divProductPlan').modal('toggle');
     }
-   
+
 </script>
 <style type="text/css">
-    .modal-dialog
-    {
+    .modal-dialog {
         z-index: 9999 !important;
     }
 </style>
