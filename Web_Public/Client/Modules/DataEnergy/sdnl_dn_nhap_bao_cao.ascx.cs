@@ -1,6 +1,9 @@
-﻿using ReportEF;
+﻿using ePower.DE.Domain;
+using ePower.DE.Service;
+using ReportEF;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -8,143 +11,294 @@ using System.Web.UI.WebControls;
 
 public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web.UI.UserControl
 {
-    MemberValidation memberVal = new MemberValidation();
+    private int CurrentPage
+    {
+        get
+        {
+            if (ViewState["CurrentPage"] != null)
+                return Convert.ToInt32(ViewState["CurrentPage"].ToString());
+            else
+                return 1;
+        }
+        set
+        {
+            ViewState["CurrentPage"] = value;
+        }
+    }
+    private int CurrentPageApp
+    {
+        get
+        {
+            if (ViewState["CurrentPageApp"] != null)
+                return Convert.ToInt32(ViewState["CurrentPageApp"].ToString());
+            else
+                return 1;
+        }
+        set
+        {
+            ViewState["CurrentPageApp"] = value;
+        }
+    }
+    private int PageSize
+    {
+        get
+        {
+            if (ViewState["PageSize"] != null)
+                return Convert.ToInt32(ViewState["PageSize"].ToString());
+            else
+                return 20;
+        }
+        set
+        {
+            ViewState["PageSize"] = value;
+        }
+    }
+    MemberValidation memVal = new MemberValidation();
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request["__EVENTTARGET"] != null)
-        {
-            string target = Request["__EVENTTARGET"].ToString();
-            if (target == btDelete.ClientID)
-            {
-                string parameter = Request["__EVENTARGUMENT"];
-                DeleteReport(Convert.ToInt32(parameter));
-            }
-        }
-
         if (!IsPostBack)
         {
-            ListBC_DangDuyet_ChuaGui();
-            ListBC_DaDuyet();
+            if (memVal.IsSigned())
+            {
+                //BindYear();
+                Tool.BindYear(ddlYear, "Chọn năm", "");
+                BindData();
+                BindDataApproved();
+            }
+            else
+                Response.Redirect(ResolveUrl("~"));
         }
 
     }
-
-    protected void btNhapBaoCao_Click(object sender, EventArgs e)
+    void BindYear()
     {
-        Response.Redirect("~/dn-lap-bao-cao.aspx");
+        IList<EnterpriseYear> list = new List<EnterpriseYear>();
+        list = new EnterpriseYearService().GetYearByEnterprise(memVal.OrgId);
+        ddlYear.DataSource = list;
+        ddlYear.DataTextField = "Year";
+        ddlYear.DataValueField = "Year";
+        ddlYear.DataBind();
+        ddlYear.Items.Insert(0, new ListItem("---Chọn năm---"));
+        if (list.Count > 0)
+            ddlYear.SelectedIndex = 2;
     }
-
-    //List đang duyệt và chưa gửi
-    private void ListBC_DangDuyet_ChuaGui()
+    private void BindData()
     {
-        List<int> choDuyet = new List<int>();
-        choDuyet.Add(0); choDuyet.Add(1); choDuyet.Add(2); choDuyet.Add(4); choDuyet.Add(5);
-
-        //Hiển thị view
-        List<int> viewStatus = new List<int>();
-        viewStatus.Add(1); viewStatus.Add(2); viewStatus.Add(5);
-
-        using (var db = new ReportModels())
+        ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
+        if (memVal.OrgId > 0)
         {
-            string rp = string.Empty;
-            int OrgId = memberVal.OrgId;
-            var srcExisted = db.BC_SDNL_DS_TheoNam.Any(o => o.IdDN == OrgId && choDuyet.Contains(o.TrangThai));
-
-            if (srcExisted)
+            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging);
+            rptReport.DataSource = list;
+            rptReport.DataBind();
+            if (list.Rows.Count > 0)
             {
-                var src = db.BC_SDNL_DS_TheoNam.Where(o => o.IdDN == OrgId && choDuyet.Contains(o.TrangThai)).OrderByDescending(o => o.NgayLapBC).ToList();
-                int counter = 1;
-                foreach (var item in src)
+                Paging.TotalRecord = Convert.ToInt32(list.Rows[0]["Total"]);
+                Paging.PageSize = PageSize;
+                Paging.DataLoad();
+                if (Paging.TotalPages > 1)
                 {
-                    rp += "<tr>";
-                    rp += string.Format("<td>{0}</td>", counter);
-                    rp += string.Format("<td>{0}</td>", item.NamBaoCao);
-                    rp += string.Format("<td>{0:dd/MM/yyyy}</td>", item.NgayLapBC);
-                    if (item.NgayGuiBC == null)
-                        rp += string.Format("<td>{0}</td>", "");
-                    else
-                        rp += string.Format("<td>{0:dd/MM/yyyy}</td>", item.NgayGuiBC);
-
-                    rp += string.Format("<td>{0}</td>", Tool.TrangThaiBaoCao(item.TrangThai));
-
-                    string editUrl = string.Format("dn-lap-bao-cao.aspx?RpId={0}", item.AutoID);
-                    string btnEdit = string.Format("<a href='{0}'><i class=\"fa fa-edit\"></i></a>", editUrl);
-                    string btnDelete = string.Format("<a href='javascript:DeleteBCChoGui({0})'><i class=\"fa fa-trash-o\"></i></a>", item.AutoID);
-                    //
-                    string viewUrl = string.Format("dn-lap-bao-cao.aspx?RpId={0}&act=", item.AutoID);
-                    string btnView = string.Format("<a href='{0}'><i class=\"fa fa-search\"></i></a>", viewUrl);
-
-                    if (viewStatus.Contains(item.TrangThai))
-                        rp += string.Format("<td class=\"tex-center\" >{0}&nbsp</td>", btnView);
-                    else
-                        rp += string.Format("<td class=\"tex-center\" >{0}&nbsp;&nbsp;{1}</td>", btnEdit, btnDelete);
-                    rp += "</tr>";
-                    counter++;
+                    Paging.Visible = true;
+                }
+                else
+                {
+                    Paging.Visible = false;
                 }
             }
-            ltBaoCaoChuaGui.Text = rp;
+            else
+            {
+                Paging.Visible = false;
+            }
         }
     }
-
-    private void ListBC_DaDuyet()
+    private void BindDataApproved()
     {
-        List<int> choDuyet = new List<int>();
-        choDuyet.Add(3);
-        using (var db = new ReportModels())
+        ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPageApp);
+        if (memVal.OrgId > 0)
         {
-            string rp = string.Empty;
-            int OrgId = memberVal.OrgId;
-            var srcExisted = db.BC_SDNL_DS_TheoNam.Any(o => o.IdDN == OrgId && choDuyet.Contains(o.TrangThai));
-
-            if (srcExisted)
+            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
+            rptApproved.DataSource = list;
+            rptApproved.DataBind();
+            if (list.Rows.Count > 0)
             {
-                var src = db.BC_SDNL_DS_TheoNam.Where(o => o.IdDN == OrgId && choDuyet.Contains(o.TrangThai)).OrderByDescending(o => o.NgayLapBC).ToList();
-                int counter = 1;
-                foreach (var item in src)
+                PagingApproved.TotalRecord = Convert.ToInt32(list.Rows[0]["Total"]);
+                PagingApproved.PageSize = PageSize;
+                PagingApproved.DataLoad();
+                if (PagingApproved.TotalPages > 1)
                 {
-                    rp += "<tr>";
-                    rp += string.Format("<td>{0}</td>", counter);
-                    rp += string.Format("<td>{0}</td>", item.NamBaoCao);
-                    rp += string.Format("<td>{0:dd/MM/yyyy}</td>", item.NgayLapBC);
-                    if (item.NgayGuiBC == null)
-                        rp += string.Format("<td>{0}</td>", "");
-                    else
-                        rp += string.Format("<td>{0:dd/MM/yyyy}</td>", item.NgayGuiBC);
-
-                    if (item.NgayDuyetBC == null)
-                        rp += string.Format("<td>{0}</td>", "");
-                    else
-                        rp += string.Format("<td>{0:dd/MM/yyyy}</td>", item.NgayDuyetBC);
-
-                    rp += string.Format("<td>{0}</td>", Tool.TrangThaiBaoCao(item.TrangThai));
-
-
-                    //string editUrl = string.Format("dn-lap-bao-cao.aspx?RpId={0}", item.AutoID);
-                    //string btnEdit = string.Format("<a href='{0}'><i class=\"fa fa-edit\"></i></a>", editUrl);
-                    //string btnDelete = string.Format("<a href='javascript:DeleteBCChoGui({0})'><i class=\"fa fa-trash-o\"></i></a>", item.AutoID);
-                    //rp += string.Format("<td class=\"tex-center\" >{0}&nbsp;&nbsp;{1}</td>", btnEdit, btnDelete);
-
-                    string viewUrl = string.Format("dn-lap-bao-cao.aspx?RpId={0}&act=", item.AutoID);
-                    string btnView = string.Format("<a href='{0}'><i class=\"fa fa-search\"></i></a>", viewUrl);
-                    rp += string.Format("<td class=\"tex-center\" >{0}&nbsp</td>", btnView);
-                    rp += "</tr>";
-                    counter++;
+                    PagingApproved.Visible = true;
+                }
+                else
+                {
+                    PagingApproved.Visible = false;
                 }
             }
-            ltBaoCaoDaDuyet.Text = rp;
+            else
+            {
+                PagingApproved.Visible = false;
+            }
+        }
+
+    }
+
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        BindData();
+    }
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        LinkButton btnDelete = (LinkButton)sender;
+        ReportFuelService faqsBSO = new ReportFuelService();
+        ReportFuel report = faqsBSO.FindByKey(Convert.ToInt32(btnDelete.CommandArgument));
+        if (report != null && report.SendSatus < 1)
+        {
+            if (faqsBSO.Delete(Convert.ToInt32(btnDelete.CommandArgument)) > 0)
+                BindData();
+            else
+            {
+                Tool.Message(this.Page, "Xóa không thành công. Vui lòng thử lại");
+            }
+        }
+        else
+        {
+            Tool.Message(this.Page, "Báo cáo đã được gửi đi đang được duyệt, bạn không thể xóa báo cáo này.");
         }
     }
 
-
-    private void DeleteReport(int ReportId)
+    protected void btnAddReport_Click(object sender, EventArgs e)
     {
-        using (var db = new ReportModels())
+        ltErr.Text = "";
+        if (memVal.OrgId > 0)
         {
-            var rp = db.BC_SDNL_DS_TheoNam.Where(o => o.AutoID == ReportId).FirstOrDefault();
-            db.BC_SDNL_HangNam.Where(o => o.IdDN == rp.IdDN && o.NamBaoCao == rp.NamBaoCao).FirstOrDefault().TrangThai = -1;
-            rp.TrangThai = -1;
-            db.SaveChanges();
-            ListBC_DangDuyet_ChuaGui();
+            ReportFuelService reportService = new ReportFuelService();
+            int ReportYear = Convert.ToInt32(ddlYear.SelectedValue);
+            int iReportNo = reportService.CheckReport(ReportYear, memVal.OrgId);
+            if (iReportNo > 0)
+            {
+                ltErr.Text = "<span style='color:red'>Đã có báo cáo hàng năm của năm " + ddlYear.SelectedValue + ". Vui lòng chọn năm báo cáo khác.</span>";
+                ScriptManager.RegisterStartupScript(this, GetType(), "addReport", "ShowDialogInitReport();", true);
+            }
+            else
+            {
+                ReportFuel report = new ReportFuel();
+                report.EnterpriseId = Convert.ToInt32(memVal.OrgId);
+                Enterprise enter = new EnterpriseService().FindByKey(report.EnterpriseId);
+                if (enter != null)
+                {
+                    if (enter.ProvinceId > 0)
+                        report.ProviceId = enter.ProvinceId;
+                    if (enter.DistrictId > 0)
+                        report.DistrictId = enter.DistrictId;
+                    if (enter.AreaId > 0)
+                        report.AreaId = enter.AreaId;
+                    if (enter.SubAreaId > 0)
+                        report.SubAreaId = enter.SubAreaId;
+                    report.ReporterName = enter.ManPerson;
+                    IFormatProvider culture = new System.Globalization.CultureInfo("en-US", true);
+
+                    report.ReportDate = DateTime.Now;
+                    report.Address = enter.Address;
+                    report.Email = enter.Email;
+                    report.Phone = enter.Phone;
+                    report.Fax = enter.Fax;
+                    report.ParentName = enter.ParentName;
+                    report.TaxCode = enter.TaxCode;
+                    report.FaxParent = enter.ManFax;
+                    report.PhoneParent = enter.ManPhone;
+                    report.EmailParent = enter.ManEmail;
+                    report.AddressParent = enter.ManAddress;
+                    report.ProvinceParentId = enter.ManProvinceId;
+                    report.DistrictParentId = enter.ManDistrictId;
+                    report.CompanyName = enter.Title;
+                    report.Responsible = enter.ManPerson;
+                    if (enter != null)
+                    {
+                        report.OrganizationId = enter.OrganizationId;
+                    }
+                }
+                if (ddlYear.SelectedIndex > 0)
+                    report.Year = Convert.ToInt32(ddlYear.SelectedValue);
+                report.IsFiveYear = false;
+                int ret = reportService.Insert(report);
+
+                if (ret > 0)
+                {
+                    EnterpriseYearService yearService = new EnterpriseYearService();
+                    if (yearService.UpdateTOE(memVal.OrgId, report.Year, ret, 0, 0) <= 0)
+                    {
+                        EnterpriseYear year = new EnterpriseYear();
+                        year.EnterpriseId = memVal.OrgId;
+                        year.Year = report.Year;
+                        year.No_TOE = 0;
+                        year.NoTOE_Plan = 0;
+                        year.IsKey = true;
+                        yearService.Insert(year);
+                    }
+                    //Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam-r" + ret + ".aspx");
+                    Response.Redirect(ResolveUrl("~") + "dn-lap-bao-cao" + ret + ".aspx");
+                }
+                else
+                {
+                    ltErr.Text = "Chưa tạo được báo cáo. Vui lòng thử lại.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "addReport", "ShowDialogInitReport();", true);
+                }
+            }
         }
+    }
+
+    protected void rptReport_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView item = (DataRowView)e.Item.DataItem;
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            Literal ltEdit = (Literal)e.Item.FindControl("ltEdit");
+            if (Convert.ToBoolean(item["ApprovedSatus"]))
+            {
+                btnDelete.Visible = false;
+            }
+            else
+            {
+                int iStatus = Convert.ToInt32(item["SendSatus"]);
+
+                if (iStatus == 5 || iStatus == 1 || iStatus == 2 || iStatus == 4)
+                {
+                    btnDelete.Visible = false;
+                    // bak----ltEdit.Text = "<a href='" + ResolveUrl("~") + "bao-cao-so-lieu-hang-nam-r" + item["Id"] + ".aspx'><i class='fa fa-search'></i></a>";
+                    //Response.Redirect(ResolveUrl("~") + "dn-lap-bao-cao" + ret + ".aspx");
+                    ltEdit.Text = "<a href='" + ResolveUrl("~") + "dn-lap-bao-cao" + item["Id"] + ".aspx'><i class='fa fa-search'></i></a>";
+                }
+                else
+                {
+                    if (iStatus == 0)
+                    {
+                        btnDelete.Visible = true;
+                        //ltEdit.Text = "<a href='" + ResolveUrl("~") + "bao-cao-so-lieu-hang-nam-r" + item["Id"] + ".aspx'><i class='fa fa-edit'></i></a>";
+                        ltEdit.Text = "<a href='" + ResolveUrl("~") + "dn-lap-bao-cao" + item["Id"] + ".aspx'><i class='fa fa-edit'></i></a>";
+                    }
+                    else
+                    {
+                        btnDelete.Visible = false;
+                        //ltEdit.Text = "<a href='" + ResolveUrl("~") + "bao-cao-so-lieu-hang-nam-r" + item["Id"] + ".aspx'><i class='fa fa-edit'></i></a>";
+                        ltEdit.Text = "<a href='" + ResolveUrl("~") + "dn-lap-bao-cao" + item["Id"] + ".aspx'><i class='fa fa-edit'></i></a>";
+                    }
+                }
+            }
+        }
+    }
+    public void PagingApp_Click(object sender, CommandEventArgs e)
+    {
+        CurrentPageApp = Convert.ToInt32(e.CommandArgument);
+        BindDataApproved();
+
+    }
+    public void Paging_Click(object sender, CommandEventArgs e)
+    {
+        CurrentPage = Convert.ToInt32(e.CommandArgument);
+        BindData();
+    }
+
+    protected void rptReport_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+
     }
 }

@@ -649,8 +649,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_NextYear", NextYear);
             ex.WriteToMergeField("BC_NextYear1", NextYear);
             ex.WriteToMergeField("BC_NextYear2", NextYear);
-            ex.WriteToMergeField("BC_Year", (iCurrentYear - 1).ToString());
-            ex.WriteToMergeField("BC_NextYear3", NextYear);
+            ex.WriteToMergeField("BC_Year_1", (iCurrentYear - 1).ToString());
+            ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
+            ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
+
+            //ex.WriteToMergeField("BC_NextYear3", NextYear);
         }
         if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
         {
@@ -848,18 +851,21 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
 
             //Su dung dien 1
-            if (usingElectrict.Quantity > 0)
-                ex.WriteToMergeField("QuantityResult", usingElectrict.Quantity.ToString());
+            if (usingElectrict.Capacity > 0)
+                ex.WriteToMergeField("QuantityResult", usingElectrict.Capacity.ToString());
             else
                 ex.WriteToMergeField("QuantityResult", "");
+
             if (usingElectrict.InstalledCapacity > 0)
-                ex.WriteToMergeField("InstalledCapacityResult", usingElectrict.InstalledCapacity.ToString());
-            else
-                ex.WriteToMergeField("InstalledCapacityResult", "");
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("CapacityResult", usingElectrict.Capacity.ToString());
+                ex.WriteToMergeField("CapacityResult", usingElectrict.InstalledCapacity.ToString());
             else
                 ex.WriteToMergeField("CapacityResult", "");
+
+
+            //if (usingElectrict.Capacity > 0)
+            //    ex.WriteToMergeField("CapacityResult", usingElectrict.Capacity.ToString());
+            //else
+            //    ex.WriteToMergeField("CapacityResult", "");
             //if (usingElectrict.BuyCost > 0)
             //    ex.WriteToMergeField("BuyCostResult", usingElectrict.BuyCost.ToString());
             //else
@@ -869,10 +875,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             //    ex.WriteToMergeField("BuyPriceResult", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
             //else
             //    ex.WriteToMergeField("BuyPriceResult", "");
-            if (usingElectrict.ProduceQty > 0)
-                ex.WriteToMergeField("ProduceQtyResult", usingElectrict.ProduceQty.ToString());
-            else
-                ex.WriteToMergeField("ProduceQtyResult", "");
+            //if (usingElectrict.ProduceQty > 0)
+            //    ex.WriteToMergeField("ProduceQtyResult", usingElectrict.ProduceQty.ToString());
+            //else
+            //    ex.WriteToMergeField("ProduceQtyResult", "");
             //if (usingElectrict.Technology != null)
             //    ex.WriteToMergeField("TechnologyResult", usingElectrict.Technology.ToString());
             //else
@@ -1181,6 +1187,29 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         dshientai.Tables[11].TableName = "tbl12";
         dshientai.Merge(dtDienTuSX);
 
+        //Tính toán điện tổng điện tự sx
+        decimal _InstalledCapacityResult = 0;
+        decimal _ProduceQtyResult = 0;
+        decimal _temp = 0;
+        foreach(DataRow r in dtDienTuSX.Rows)
+        {
+            _temp = 0;
+            if (decimal.TryParse(r["CongSuatLapDat"].ToString(), out _temp))
+                _InstalledCapacityResult += _temp;
+            _temp = 0;
+            if (decimal.TryParse(r["DienNangSanXuat"].ToString(), out _temp))
+                _ProduceQtyResult += _temp;
+        }
+
+        if (_InstalledCapacityResult > 0)
+            ex.WriteToMergeField("InstalledCapacityResult", _InstalledCapacityResult.ToString());
+        else
+            ex.WriteToMergeField("InstalledCapacityResult", "");
+
+        if (_ProduceQtyResult > 0)
+            ex.WriteToMergeField("ProduceQtyResult", _ProduceQtyResult.ToString());
+        else
+            ex.WriteToMergeField("ProduceQtyResult", "");
 
 
         ex.WriteDataSetToMergeField(dshientai);
@@ -2449,7 +2478,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                         on a.TechKey equals b.TechKey
                         where b.ReportId == ReportId
                         select new { TenNhienLieu = a.TechName, CongSuatLapDat = b.InstalledCapacity, DienNangSanXuat = b.ProduceQty }
-                        ).ToList();
+                        ).Distinct().ToList();
             int counter = 1;
             foreach (var item in data)
             {

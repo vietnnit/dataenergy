@@ -8,370 +8,562 @@ using ReportEF;
 using ReportBUS;
 using ReportBUS.CustomModels;
 using System.Web.Script.Serialization;
+using ePower.DE.Service;
+using ePower.DE.Domain;
+using System.Data;
 
 public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI.UserControl
 {
-    MemberValidation memberVal = new MemberValidation();
+    int ReportId
+    {
+        get
+        {
+            if (ViewState["ReportId"] != null && ViewState["ReportId"].ToString() != "")
+                return (int)ViewState["ReportId"];
+            else
+                return 0;
+        }
+        set { ViewState["ReportId"] = value; }
+    }
+
+    decimal No_TOE
+    {
+        get
+        {
+            if (ViewState["No_TOE"] != null && ViewState["No_TOE"].ToString() != "")
+                return (decimal)ViewState["No_TOE"];
+            else
+                return 0;
+        }
+        set { ViewState["No_TOE"] = value; }
+    }
+    decimal No_TOE_Future
+    {
+        get
+        {
+            if (ViewState["No_TOE_Future"] != null && ViewState["No_TOE_Future"].ToString() != "")
+                return (decimal)ViewState["No_TOE_Future"];
+            else
+                return 0;
+        }
+        set { ViewState["No_TOE_Future"] = value; }
+    }
+    protected int activeTab
+    {
+        get
+        {
+            if (ViewState["activeTab"] != null && ViewState["activeTab"].ToString() != "")
+                return (int)ViewState["activeTab"];
+            else
+                return 0;
+        }
+        set { ViewState["activeTab"] = value; }
+    }
+    public int ReportYear
+    {
+        get
+        {
+            if (ViewState["ReportYear"] != null && ViewState["ReportYear"].ToString() != "")
+                return (int)ViewState["ReportYear"];
+            else
+                return 0;
+        }
+        set { ViewState["ReportYear"] = value; }
+    }
+    public bool AllowEdit
+    {
+        get
+        {
+            if (ViewState["AllowEdit"] != null && ViewState["AllowEdit"].ToString() != "")
+                return (bool)ViewState["AllowEdit"];
+            else
+                return true;
+        }
+        set { ViewState["AllowEdit"] = value; }
+    }
+    MemberValidation memVal = new MemberValidation();
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            ListNamBaoCao();
-            int Year = DateTime.Now.Year;
-            int RpId = 0;
-            if (Request.QueryString["RpId"] != null)
-                int.TryParse(Request.QueryString["RpId"], out RpId);
+            int Id = 0;
+            if (!string.IsNullOrEmpty(Request["ReportId"]))
+                int.TryParse(Request["ReportId"].Replace(",", ""), out Id);
+            ReportId = Id;
 
-            /*SetYear(memberVal.OrgId, RpId);
-            if (RpId > 0)
-                ddlNamBaoCao.Enabled = false;
-            else
-                ddlNamBaoCao.Enabled = true;
-            */
-            if (RpId == 0)//Them moi bao cao
-            {
-                ListDefautlReport();
-            }
-            else //Hieu chinh bao cao
-            {
-                CreateListFuel(RpId);
-                BindComment(RpId);
-            }
+            BindReportInfo();
+            BindFuel();
+            BindReportDetail();
+        }
+    }
 
-            if (Request.QueryString["act"] != null)
+    private void BindReportInfo()
+    {
+        if (ReportId > 0)
+        {
+            ReportFuel report = new ReportFuel();
+            ReportFuelService reportBSO = new ReportFuelService();
+            report = reportBSO.FindByKey(ReportId);
+            if (report != null)
             {
-                pnNoneAction.Visible = true;
-                pnAction.Visible = false;
+                ltDataCurrentTitle.Text = "Nhiên liệu tiêu thụ năm " + (report.Year);
             }
-            else
+        }
+    }
+
+    void BindReportDetail()
+    {
+        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
+        rptNoFuelCurrent.DataSource = dtCurrent;
+        rptNoFuelCurrent.DataBind();
+        ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
+    }
+    protected void rptNoFuelCurrent_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemIndex == 0) No_TOE = 0;
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView item = (DataRowView)e.Item.DataItem;
+            if (item["NoFuel_TOE"] != DBNull.Value)
             {
-                pnNoneAction.Visible = false;
-                pnAction.Visible = true;
+                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
             }
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+            btnDelete.Visible = AllowEdit;
+            btnEdit.Visible = AllowEdit;
+            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",true); return false;");            
 
         }
     }
 
-
-    private void ListDefautlReport()
+    protected void btnDelete_Click(object sender, EventArgs e)
     {
-        int rpYear = Convert.ToInt32(ddlNamBaoCao.SelectedValue);
-        int OrgId = memberVal.OrgId;
-        hdReportId.Value = "0";
-        using (var db = new ReportModels())
+        LinkButton btnDelete = (LinkButton)sender;
+        ReportFuelDetailService faqsBSO = new ReportFuelDetailService();
+        faqsBSO.Delete(Convert.ToInt32(btnDelete.CommandArgument));
+        BindReportDetail();
+    }
+    protected void btnEditDetail_Click(object sender, EventArgs e)
+    {
+        LinkButton btnEdit = (LinkButton)sender;
+        if (btnEdit != null)
         {
-            if (db.BC_SDNL_DS_TheoNam.Any(o => o.IdDN == OrgId && o.NamBaoCao == rpYear))
+            hdnDetailId.Value = btnEdit.CommandArgument;
+            BindDataDetail();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail(" + hdnNextYear.Value + ");", true);
+        }
+    }
+
+    private void BindDataDetail()
+    {
+
+        if (hdnDetailId.Value != "")
+        {
+            ReportFuelDetail reportDetail = new ReportFuelDetailService().FindByKey(Convert.ToInt32(hdnDetailId.Value));
+            if (reportDetail != null)
             {
-                var Rp = db.BC_SDNL_DS_TheoNam.Where(o => o.IdDN == OrgId && o.NamBaoCao == rpYear).FirstOrDefault();
-                if (Rp != null)
+                try
                 {
-                    CreateListFuel(Rp.AutoID);
-                    ddlNamBaoCao.SelectedValue = Rp.NamBaoCao.ToString();
+                    if (reportDetail.FuelId > 0)
+                    {
+                        ddlFuel.SelectedValue = reportDetail.FuelId.ToString();
+                        BindMeasurement();
+                    }
+                    if (reportDetail.MeasurementId > 0)
+                    {
+                        ddlMeasure.SelectedValue = reportDetail.MeasurementId.ToString();
+                        BindTOE();
+                    }
+                }
+                catch { }
+                txtPropose.Text = reportDetail.Reason;
+                if (reportDetail.NoFuel > 0)
+                    txtNoFuel.Text = reportDetail.NoFuel.ToString();
+                if (reportDetail.Price > 0)
+                    txtPrice.Text = reportDetail.Price.ToString();
+
+                if (reportDetail.No_RateTOE > 0)
+                    txtNoTOE.Text = Tool.ConvertDecimalToString(reportDetail.No_RateTOE);
+                hdnNextYear.Value = reportDetail.IsNextYear ? "1" : "0";
+
+                if (reportDetail.IsNextYear)
+                    ltTitle.Text = "Mức nhiên liệu tiêu thụ dự kiến năm " + (reportDetail.Year + 1).ToString();
+                else
+                    ltTitle.Text = "Mức nhiên liệu tiêu thụ năm " + reportDetail.Year;
+            }
+        }
+
+    }
+
+    void BindMeasurement()
+    {
+        ddlMeasure.Items.Clear();
+        DataTable list = new DataTable();
+        if (ddlFuel.SelectedIndex > 0)
+        {
+            list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuel.SelectedValue));
+        }
+
+        ddlMeasure.DataSource = list;
+        ddlMeasure.DataValueField = "Id";
+        ddlMeasure.DataTextField = "MeasurementName";
+        ddlMeasure.DataBind();
+        ddlMeasure.Items.Insert(0, new ListItem("---Chọn đơn vị tính---", ""));
+        if (ddlMeasure.Items.Count == 2)
+        {
+            ddlMeasure.SelectedIndex = 1;
+            BindTOE();
+        }
+    }
+    void BindTOE()
+    {
+
+        txtNoTOE.Enabled = false;
+        if (ddlMeasure.SelectedIndex > 0)
+        {
+
+            DataTable mea = new MeasurementFuelService().GetTOE(Convert.ToInt32(ddlFuel.SelectedValue), Convert.ToInt32(ddlMeasure.SelectedValue));
+            if (mea != null && mea.Rows.Count > 0)
+            {
+
+                txtNoTOE.Text = TypeHelper.ToDecimal(mea.Rows[0]["TOE"].ToString()).ToString();
+                txtNoTOE.Enabled = false;
+                if (mea.Rows[0]["From_TOE"].ToString() != mea.Rows[0]["To_TOE"].ToString())
+                {
+                    rvNoTOE.Enabled = true;
+                    txtNoTOE.Enabled = true;
+                    //rvNoTOE.Text = "Nhập hệ số chuyển đổi từ " + mea.From_TOE + " đến " + mea.To_TOE;
+                    rvNoTOE.MaximumValue = mea.Rows[0]["To_TOE"].ToString();
+                    rvNoTOE.MinimumValue = mea.Rows[0]["From_TOE"].ToString();
+                    rvNoTOE.Text = string.Format("Nhập hệ số chuyển đổi từ {0} đến {1}", TypeHelper.ToDecimal(mea.Rows[0]["From_TOE"].ToString()), TypeHelper.ToDecimal(mea.Rows[0]["To_TOE"].ToString()));
+
+                }
+                else
+                {
+                    txtNoTOE.Enabled = false;
+                    if (mea.Rows[0]["TOE"] != DBNull.Value)
+                    {
+                        rvNoTOE.Enabled = false;
+                        rvNoTOE.MaximumValue = mea.Rows[0]["TOE"].ToString();
+                        rvNoTOE.MinimumValue = rvNoTOE.MaximumValue;
+                        rvNoTOE.Text = "Nhập hệ số chuyển đổi từ " + rvNoTOE.MinimumValue;
+                    }
+
+                }
+            }
+
+        }
+    }
+    protected void ddlFuel_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        txtNoTOE.Enabled = false;
+        txtNoTOE.Text = "";
+        BindMeasurement();
+
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
+
+    }
+    protected void ddlMeasure_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindTOE();
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail(" + hdnNextYear.Value + ");", true);
+    }
+    private ReportFuelDetail ReceiveHtmlDetail()
+    {
+        ReportFuelDetail rep = new ReportFuelDetail();
+        if (ddlFuel.SelectedIndex > 0)
+            rep.FuelId = Convert.ToInt32(ddlFuel.SelectedValue);
+        if (rep.FuelId > 0)
+        {
+            Fuel fuel = new FuelService().FindByKey(rep.FuelId);
+            if (fuel != null)
+            {
+                rep.GroupFuelId = fuel.GroupFuelId;
+            }
+        }
+        //if (ddlFuel.SelectedIndex > 0)
+        //    rep.GroupFuelId = Convert.ToInt32(ddlFuelType.SelectedValue);
+        if (ddlMeasure.SelectedIndex > 0)
+            rep.MeasurementId = Convert.ToInt32(ddlMeasure.SelectedValue);
+        if (txtNoFuel.Text.Trim() != "")
+            rep.NoFuel = Convert.ToDecimal(txtNoFuel.Text.Trim());
+        if (txtNoTOE.Text.Trim() != "")
+            rep.No_RateTOE = Convert.ToDecimal(txtNoTOE.Text.Trim());
+        rep.Reason = txtPropose.Text.Trim();
+
+        if (txtPrice.Text.Trim() != "")
+            rep.Price = Convert.ToDecimal(txtPrice.Text.Trim());
+        rep.IsNextYear = (hdnNextYear.Value == "1");
+        rep.Year = ReportYear;
+        rep.ReportId = ReportId;
+        rep.EnterpriseId = memVal.OrgId;
+        rep.NoFuel_TOE = rep.NoFuel * rep.No_RateTOE;
+        return rep;
+
+    }
+    protected void btnSaveFuel_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ReportFuelDetail faqs = ReceiveHtmlDetail();
+            ReportFuelDetailService faqsBSO = new ReportFuelDetailService();
+            if (hdnDetailId.Value != "")
+            {
+                //faqs = faqsBSO.FindByKey(ReportDetailId);
+                faqs.Id = Convert.ToInt32(hdnDetailId.Value);
+                if (faqsBSO.Update(faqs) != null)
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
+                    if (hdnNextYear.Value == "0")
+                        BindReportDetail();
+                }
+                else
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
                 }
             }
             else
             {
-                CreateListFuel(0);
+                if (faqsBSO.Insert(faqs) > 0)
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
+                    if (hdnNextYear.Value == "0")
+                        BindReportDetail();
+                }
+                else
+                    clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
             }
+        }
+        catch (Exception ex)
+        {
+            clientview.Text = ex.Message.ToString();
         }
     }
-
-    private void CreateListFuel(int RpId)
+    void BindFuel()
     {
-        MemberValidation memberVal = new MemberValidation();
-        //memberVal.OrgId
-        hdReportId.Value = RpId.ToString();
-
-        string temp = string.Empty;
-        temp += "<table id='tableTOE' style='border-collapse:collapse;' class='table table-striped table-bordered table-hover mbn' cellspacing='0' rules='all' border='1' >";
-
-        temp += "<tr class='primary fs12'>";
-        temp += "<th>STT</th>";
-        temp += "<th>Dạng năng lượng sử dụng</th>";
-        temp += "<th>Đơn vị tính</th>";
-        temp += "<th>Mức tiêu thụ</th>";
-        temp += "<th>Năng lượng quy đổi TOE</th>";
-        temp += "</tr>";
-        //string trTemp = "<tr>";
-        //trTemp += "<td>{0}</td>";
-        //trTemp += "<td>{1}</td>";
-        //trTemp += "<td>{2}</td>";
-        //trTemp += "<td>{3}</td>";
-        //trTemp += "<td>{4}</td>";
-        //trTemp += "</tr>";
-        if (RpId > 0)
+        ddlFuel.Items.Clear();
+        IList<Fuel> list = new List<Fuel>();
+        if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
         {
-            using (var db = new ReportModels())
-            {
-                var rp = db.BC_SDNL_DS_TheoNam.Where(o => o.AutoID == RpId).FirstOrDefault();
-                ddlNamBaoCao.SelectedValue = rp.NamBaoCao.ToString();
-            }
+            list = new FuelService().FindAll();
+            AspNetCache.SetCache(Constants.Cache_ReportFuel_Fuel_All, list);
+        }
+        else
+            list = (IList<Fuel>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Fuel_All);
+        //int GroupId = 0;
+        //if (ddlFuelType.SelectedIndex > 0)
+        //    GroupId = Convert.ToInt32(ddlFuelType.SelectedValue);
+
+        //ddlFuelType.DataSource = list;
+        var listSearch = from o in list orderby o.FuelName ascending select o;
+        ddlFuel.DataSource = listSearch;
+        ddlFuel.DataValueField = "Id";
+        ddlFuel.DataTextField = "FuelName";
+        ddlFuel.DataBind();
+        ddlFuel.Items.Insert(0, new ListItem("---Chọn nhiên liệu---", ""));
+        if (ddlFuel.Items.Count == 2)
+            ddlFuel.SelectedIndex = 1;
+        BindMeasurement();
+    }
+
+    protected void btnExportWord_Click(object sender, EventArgs e)
+    {
+        #region get data
+        WordExtend ex = new WordExtend();
+        string temp = "TempReport/TemMauBaoCao1_1.doc";
+        ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
+        Enterprise or = new Enterprise();
+        EnterpriseService orser = new EnterpriseService();
+        or = orser.FindByKey(Convert.ToInt32(memVal.OrgId));
+
+        DataTable dtinfo = new DataTable();
+        ex.WriteToMergeField("BC_MaDN", memVal.UserName);
+        if (memVal.OrgId > 0)
+        {
+            dtinfo = new ReportFuelService().GetInfoReportFuel(ReportId);
         }
 
-        SDNLHangNam bus = new SDNLHangNam();
-        List<rpSDNLHangNam> dataSource = bus.DN_Get_BaoCao(RpId);
-        List<int> fuels = dataSource.Select(o => o.FuelId).Distinct().ToList();
-
-        decimal TotalTOE = 0;
-        int i = 0;
-        foreach (int fuelid in fuels)
+        if (or != null)
         {
+            ex.WriteToMergeField("BC_Title", or.Title);
+            ex.WriteToMergeField("BC_TenCoSo", or.Title);
+            ex.WriteToMergeField("BC_TenCoSo1", or.Title);
+            ex.WriteToMergeField("BC_TenCoSo2", or.Title);
+        }
+        else
+            ex.WriteToMergeField("BC_TenCoSo", "");
+
+        if (dtinfo.Rows[0]["Year"] != DBNull.Value)
+        {
+            int iCurrentYear = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
+            string NextYear = dtinfo.Rows[0]["Year"].ToString();
+            ex.WriteToMergeField("BC_NextYear", NextYear);
+        }
+        if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
+        {
+            ex.WriteToMergeField("BC_ChiuTrachNhiem", dtinfo.Rows[0]["Responsible"].ToString());
+        }
+        else
+            ex.WriteToMergeField("BC_ChiuTrachNhiem", "");
+
+        if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
+        {
+            ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+            //ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+        }
+        if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
+            ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
+        else
+            ex.WriteToMergeField("BC_NgayNhan", "");
+        if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
+            ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
+        else
+            ex.WriteToMergeField("BC_NgayXacNhan", "");
+        if (dtinfo.Rows[0]["SubAreaName"] != DBNull.Value)
+            ex.WriteToMergeField("BC_PhanNganh", dtinfo.Rows[0]["SubAreaName"].ToString());
+        else
+            ex.WriteToMergeField("BC_PhanNganh", "");
+
+        if (dtinfo.Rows[0]["TaxCode"] != DBNull.Value)
+            ex.WriteToMergeField("BC_TaxCode", dtinfo.Rows[0]["TaxCode"].ToString());
+        else
+            ex.WriteToMergeField("BC_TaxCode", "");
+
+        //ex.WriteToMergeField("BC_Owner", ltOwner.Text);
+        ex.WriteToMergeField("BC_Owner", "");
+
+        if (or.Address != null)
+            ex.WriteToMergeField("BC_DiaChi", or.Address);
+        if (dtinfo.Rows[0]["DistrictName"] != DBNull.Value)
+            ex.WriteToMergeField("BC_Huyen", dtinfo.Rows[0]["DistrictName"].ToString());
+        else
+            ex.WriteToMergeField("BC_Huyen", "");
+        if (dtinfo.Rows[0]["ProvinceName"] != DBNull.Value)
+            ex.WriteToMergeField("BC_Tinh", dtinfo.Rows[0]["ProvinceName"].ToString());
+        else
+            ex.WriteToMergeField("BC_Tinh", "");
+        if (dtinfo.Rows[0]["ReporterName"] != DBNull.Value)
+            ex.WriteToMergeField("BC_NguoiBC", dtinfo.Rows[0]["ReporterName"].ToString());
+        else
+            ex.WriteToMergeField("BC_NguoiBC", "");
+
+        if (dtinfo.Rows[0]["Fax"] != DBNull.Value)
+            ex.WriteToMergeField("BC_Fax", dtinfo.Rows[0]["Fax"].ToString());
+        else
+            ex.WriteToMergeField("BC_Fax", "");
+        if (dtinfo.Rows[0]["Email"] != DBNull.Value)
+            ex.WriteToMergeField("BC_Email", dtinfo.Rows[0]["Email"].ToString());
+        else
+            ex.WriteToMergeField("BC_Email", "");
+
+        if (dtinfo.Rows[0]["Phone"] != DBNull.Value)
+            ex.WriteToMergeField("BC_DienThoai", dtinfo.Rows[0]["Phone"].ToString());
+        else
+            ex.WriteToMergeField("BC_DienThoai", "");
+        if (dtinfo.Rows[0]["ParentName"] != DBNull.Value)
+            ex.WriteToMergeField("BC_TenCtyMe", dtinfo.Rows[0]["ParentName"].ToString());
+        else
+            ex.WriteToMergeField("BC_TenCtyMe", "");
+
+        if (dtinfo.Rows[0]["AddressParent"] != null)
+            ex.WriteToMergeField("BC_DiaChiP", dtinfo.Rows[0]["AddressParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_DiaChiP", "");
+
+        if (dtinfo.Rows[0]["DistrictNameP"] != null)
+            ex.WriteToMergeField("BC_HuyenP", dtinfo.Rows[0]["DistrictNameP"].ToString());
+        else
+            ex.WriteToMergeField("BC_HuyenP", "");
+
+        if (dtinfo.Rows[0]["ProvinceNameP"] != DBNull.Value)
+            ex.WriteToMergeField("BC_TinhP", dtinfo.Rows[0]["ProvinceNameP"].ToString());
+        else
+            ex.WriteToMergeField("BC_TinhP", "");
+
+        if (dtinfo.Rows[0]["PhoneParent"] != DBNull.Value)
+            ex.WriteToMergeField("BC_DienThoaiP", dtinfo.Rows[0]["PhoneParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_DienThoaiP", "");
+
+        if (dtinfo.Rows[0]["FaxParent"] != DBNull.Value)
+            ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_FaxP", "");
+        if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
+            ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_EmailP", "");
+
+        if (or.ActiveYear > 0)
+            ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
+        else
+            ex.WriteToMergeField("ActiveYear", "");
+
+        DataTable dthientai = new DataTable();
+        DataSet dshientai = new DataSet("tbl1");
+        
+        DataTable tblProductResult = CreateFuelData();
+        dshientai.Merge(tblProductResult);
+        dshientai.Tables[0].TableName = "tbl1";
+        dshientai.Merge(dthientai);
+        ex.WriteDataSetToMergeField(dshientai);
+        #endregion
+        ex.Save(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc"));
+        HttpContext.Current.Response.Redirect(string.Format("~/Download.aspx?fp={0}&fn={1}",
+              System.IO.Path.GetFileName(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc")),
+              ""
+          ));
+    }
+
+    private DataTable CreateFuelData()
+    {
+        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
+
+        ReportModels rp = new ReportModels();
+        var allFuel = (from a in rp.DE_Fuel
+                       join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                       select new
+                       {
+                           a.Id,
+                           a.GroupFuelId,
+                           a.FuelName,
+                           b.MeasurementName
+                       }).ToList();
+        DataTable res = new DataTable();
+        res.Columns.Add("stt", typeof(string));
+        res.Columns.Add("FuelName", typeof(string));
+        res.Columns.Add("MeasurementName", typeof(string));
+        res.Columns.Add("NoFuel", typeof(string));
+        res.Columns.Add("Reason", typeof(string));
+        int i = 1;
+        foreach (var item in allFuel)
+        {
+            DataRow r = res.NewRow();
+            r["stt"] = i.ToString();
+            r["FuelName"] = item.FuelName;
+            r["MeasurementName"] = item.MeasurementName;
+
+            bool check = false;
+            foreach (DataRow x in dtCurrent.Rows)
+            {
+                if (x["FuelId"].ToString() == item.Id.ToString())
+                {
+                    check = true;
+                    r["NoFuel"] = x["NoFuel"];
+                    r["Reason"] = x["Reason"];
+                    break;
+                }
+            }
+            if(check==false)
+            {
+                r["NoFuel"] = "";
+                r["Reason"] = "";
+            }    
+            res.Rows.Add(r);
             i++;
-            var rowData = dataSource.Where(o => o.FuelId == fuelid).ToList();
-
-            //{0}: = i.tostring
-            int par0Val = i;
-            string par0Temp = string.Format("<td rowspan='{0}'>{1}</td>", rowData.Count(), par0Val);
-            //{1}: 
-            string par1Val = rowData[0].FuelName;
-            string par1Temp = string.Format("<td rowspan='{0}'>{1}</td>", rowData.Count(), par1Val);
-
-            //{2}:
-
-            int k = 0;
-            foreach (var j in rowData)
-            {
-                string par2Temp = string.Empty;
-                string par3Temp = string.Empty;
-                string par4Temp = string.Empty;
-
-                par2Temp += string.Format("<td>{0}</td>", j.MeasurementName);
-                //id='id_{0}_{1}_{2}':id_fuelId_measurementId_toe
-                string MucTieuThu = j.MucTieuThu > 0 ? j.MucTieuThu.ToString() : "";
-                MucTieuThu = MucTieuThu.Replace(",", ".");
-
-                par3Temp += string.Format("<td><input value='{3}' onkeyup='TOEChanged(this)' id=\"id_{0}_{1}_{2}\" TOEattr=\"{2}\" type=\"text\" oninput=\"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');\" /></td>", j.FuelId, j.MeasurementId, j.TOE, MucTieuThu);
-
-                string NangLuongQuyDoi = "";
-                if (j.NangLuongQuyDoi > 0)
-                {
-                    TotalTOE += j.NangLuongQuyDoi;
-                    NangLuongQuyDoi = j.NangLuongQuyDoi.ToString();
-                }
-                par4Temp += string.Format("<td><label>{0}</label></td>", NangLuongQuyDoi.Replace(",", "."));
-                //tạo dữ liệu cho tr bằng cách gộp 5 giá trị par4Temp
-                if (k == 0)
-                    temp += string.Format("<tr>{0}{1}{2}{3}{4}</tr>", par0Temp, par1Temp, par2Temp, par3Temp, par4Temp);
-                else//chỉ thêm par0Temp, par1Temp 01 lần vì có thuộc tính rowspan
-                    temp += string.Format("<tr>{0}{1}{2}</tr>", par2Temp, par3Temp, par4Temp);
-                k++;
-            }
         }
-
-        string lastRow = string.Format("<tr><td colspan='4' style='font-weight:bold; text-align:center;'>TỔNG NĂNG LƯỢNG TIÊU THỤ QUY ĐỔI TOE</td><td><label id='lbTongNLTTQuyDoiTOE'>{0}</label></td><tr>", TotalTOE > 0 ? TotalTOE.ToString() : "");
-        temp += lastRow;
-        temp += "</table>";
-
-        ltReport.Text = temp;
-    }
-
-    private void ListNamBaoCao()
-    {
-        if (memberVal.IsSigned())
-        {
-            int startYear = 2010;
-            int endYear = DateTime.Now.Year;
-            SDNLHangNam ctx = new SDNLHangNam();
-            List<int> source = ctx.DN_Get_NamBaoCao(memberVal.OrgId);
-            for (int i = startYear; i <= endYear; i++)
-            {
-                ListItem item = new ListItem(i.ToString(), i.ToString());
-                ddlNamBaoCao.Items.Add(item);
-            }
-        }
-    }
-
-    private int GetData()
-    {
-        int ReportId = 0;
-        if (Request.QueryString["RpId"] != null)
-            int.TryParse(Request.QueryString["RpId"], out ReportId);
-
-
-        using (var ctx = new ReportModels())
-        {
-            int OrgId = memberVal.OrgId;
-            int NamBaoCao = Convert.ToInt32(ddlNamBaoCao.SelectedValue);
-
-            if (ctx.BC_SDNL_DS_TheoNam.Any(o => o.AutoID == ReportId) == false)
-            {
-                var OrgInfoRp = new BC_SDNL_DS_TheoNam();
-                OrgInfoRp.IdDN = OrgId;
-                OrgInfoRp.NamBaoCao = NamBaoCao;
-                OrgInfoRp.NgayLapBC = DateTime.Now;
-                OrgInfoRp.TrangThai = 0;
-                ctx.BC_SDNL_DS_TheoNam.Add(OrgInfoRp);
-                ctx.SaveChanges();
-
-                ReportId = OrgInfoRp.AutoID;
-            }
-
-            string jsonData = ltDuLieuNhap.Value;
-            if (jsonData.Length > 10)
-            {
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                List<formdata> dataObject = js.Deserialize<List<formdata>>(jsonData);
-                List<BC_SDNL_HangNam> listData = new List<BC_SDNL_HangNam>();
-                var oldData = ctx.BC_SDNL_HangNam.Where(o => o.ReportId == ReportId && o.TrangThai >= 0).ToList();
-
-                foreach (formdata item in dataObject)
-                {
-                    if (item.MucTieuThu > 0)
-                    {
-                        //Dữ liệu chưa tồn tại =>Thêm
-                        if (!oldData.Any(o => o.FuelId == item.FuelId && o.MeasurementId == item.MeasurementId))
-                        {
-                            listData.Add(new BC_SDNL_HangNam
-                            {
-                                IdDN = OrgId,
-                                ReportId = ReportId,
-                                TrangThai = 0,
-                                NamBaoCao = NamBaoCao,
-                                FuelId = item.FuelId,
-                                MeasurementId = item.MeasurementId,
-                                MucTieuThu = item.MucTieuThu,
-                                NangLuongQuyDoi = item.NangLuongQuyDoi,
-                                NgayCapNhat = DateTime.Now
-                            });
-                        }
-                        //else if (oldData.Any(o => o.FuelId == item.FuelId && o.MeasurementId == item.MeasurementId && o.MucTieuThu != item.MucTieuThu))
-                        else //Đã tồn tại=>Update
-                        {
-                            var x = oldData.Where(o => o.FuelId == item.FuelId && o.MeasurementId == item.MeasurementId).FirstOrDefault();
-                            x.MucTieuThu = item.MucTieuThu;
-                            x.NangLuongQuyDoi = item.NangLuongQuyDoi;
-                        }
-                    }
-                }
-
-                ctx.BC_SDNL_HangNam.AddRange(listData);
-                //Save all changed
-                ctx.SaveChanges();
-            }
-
-            return ReportId;
-        }
-    }
-
-    private void SetYear(int id_dn, int ReportId)
-    {
-        using (var db = new ReportModels())
-        {
-            if (db.BC_SDNL_DS_TheoNam.Any(o => o.IdDN == id_dn && o.AutoID == ReportId && o.TrangThai == 0))
-            {
-                var rp = db.BC_SDNL_DS_TheoNam.Where(o => o.IdDN == id_dn && o.AutoID == ReportId && o.TrangThai == 0).FirstOrDefault();
-                ddlNamBaoCao.SelectedValue = rp.NamBaoCao.ToString();
-            }
-            else
-                ddlNamBaoCao.SelectedValue = DateTime.Now.Year.ToString();
-        }
-    }
-
-    public class formdata
-    {
-        public int FuelId { get; set; }
-        public int MeasurementId { get; set; }
-        public decimal TOE { get; set; }
-        public decimal MucTieuThu { get; set; }
-        public decimal NangLuongQuyDoi { get; set; }
-    }
-
-    protected void btLuu_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            int ReportId = GetData();
-
-            int RpId = 0;
-            if (Request.QueryString["RpId"] != null)
-                int.TryParse(Request.QueryString["RpId"], out RpId);
-            if (RpId > 0)
-                CreateListFuel(RpId);
-            else
-                ListDefautlReport();
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
-    protected void btnSendReport_Click(object sender, EventArgs e)
-    {
-        int Result = 0;
-        string YKien = txtNoiDungYKien.Text.Trim();
-        int rpYear = Convert.ToInt32(ddlNamBaoCao.SelectedValue);
-        int OrgId = memberVal.OrgId;
-
-        int RpId = 0;
-        if (Request.QueryString["RpId"] != null)
-            int.TryParse(Request.QueryString["RpId"], out RpId);
-
-        RpId = GetData();
-
-        try
-        {
-            using (var db = new ReportModels())
-            {
-                if (db.BC_SDNL_DS_TheoNam.Any(o => o.IdDN == OrgId && o.NamBaoCao == rpYear && o.AutoID == RpId))
-                {
-                    var Rp = db.BC_SDNL_DS_TheoNam.Where(o => o.AutoID == RpId).FirstOrDefault();
-                    if (Rp != null)
-                    {
-                        Rp.MoTaBaoCao = YKien;
-                        if (Rp.TrangThai == 0)
-                            Rp.TrangThai = 1;
-                        if (Rp.TrangThai == 4)
-                            Rp.TrangThai = 5;
-                        Rp.NgayGuiBC = DateTime.Now;
-
-                        //Nội dung comment
-                        BC_SDNL_DS_TheoNam_Comment comment = new BC_SDNL_DS_TheoNam_Comment();
-                        comment.ReportID = RpId;
-                        comment.NoiDung = YKien;
-                        comment.TaiKhoan = memberVal.UserName.ToUpper().Trim();
-                        comment.ThoiGian = DateTime.Now;
-                        db.BC_SDNL_DS_TheoNam_Comment.Add(comment);
-
-                        Result = db.SaveChanges();
-
-                        txtNoiDungYKien.Text = string.Empty;
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-
-        if (Result > 0)
-        {
-            string viewUrl = string.Format("dn-lap-bao-cao.aspx?RpId={0}&act=", RpId);
-            Response.Redirect(viewUrl);
-        }
-    }
-
-    protected void ddlNamBaoCao_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        ListDefautlReport();
-    }
-
-    protected void btnQuayLai_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("~/dn-su-dung-nang-luong.aspx");
-    }
-
-    private void BindComment(int ReportID)
-    {
-        using (var db = new ReportModels())
-        {
-            var comment = db.BC_SDNL_DS_TheoNam_Comment.Where(o => o.ReportID == ReportID && o.NoiDung != null).ToList();
-            if (comment != null && comment.Count > 0)
-            {
-                rptComment.DataSource = comment;
-                rptComment.DataBind();
-            }
-        }
+        return res;
     }
 }

@@ -527,7 +527,7 @@
                         <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
                             Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
-                        <asp:LinkButton runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
+                        <asp:LinkButton style="display:none;" runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnReSend" CssClass="btn btn-sm btn-danger mr10"

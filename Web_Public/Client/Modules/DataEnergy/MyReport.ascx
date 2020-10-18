@@ -3,37 +3,36 @@
 <div class="row box-white mb10 pl10 pr10 pb10">
     <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
     <asp:Literal ID="ltNoFuelCurrent" runat="server"></asp:Literal>
+    <div class="panel panel-blue" style="margin-bottom: 0;">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span>KẾ HOẠCH SỬ DỤNG NĂNG LƯỢNG HÀNG NĂM</span>
+            </h3>
+        </div>
+    </div>
     <div class="control-label pt5" style="width: 100%">
         <i class="fa fa-tasks"></i>&nbsp;Báo cáo đang duyệt và chưa gửi<div style="float: right">
-            <a title="Thêm báo cáo" href='javascript:ShowDialogInitReport();'><i class="fa fa-plus">
-            </i>&nbsp;Thêm báo cáo</a></div>
+            <a title="Thêm báo cáo" href='javascript:ShowDialogInitReport();'><i class="fa fa-plus"></i>&nbsp;Thêm báo cáo</a>
+        </div>
     </div>
     <table class="table table-bordered table-hover mb10">
         <thead>
             <tr class="primary fs12 text-center">
-                <th style="width: 5%" class="text-center">
-                    STT
+                <th style="width: 5%" class="text-center">STT
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Kế hoạch năm
+                <th style="width: 10%" class="text-center">Kế hoạch năm
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày lập báo cáo
+                <th style="width: 10%" class="text-center">Ngày lập báo cáo
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày gửi báo cáo
+                <th style="width: 10%" class="text-center">Ngày gửi báo cáo
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày nhận báo cáo
+                <th style="width: 10%" class="text-center">Ngày nhận báo cáo
                 </th>
-                <th style="width: 20%" class="text-center">
-                    Người lập BC
+                <th style="width: 20%" class="text-center">Người lập BC
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Trạng thái
+                <th style="width: 10%" class="text-center">Trạng thái
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Thao tác
+                <th style="width: 10%" class="text-center">Thao tác
                 </th>
             </tr>
         </thead>
@@ -65,7 +64,7 @@
                         <td>
                             <%#Tool.TrangThaiGui(Convert.ToInt32(Eval("SendSatus")), Convert.ToBoolean(Eval("ApprovedSatus")))%>
                         </td>
-                        <td class="text-center">                            
+                        <td class="text-center">
                             <asp:Literal ID="ltEdit" runat="server"></asp:Literal>
                             <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandName="Delete"
                                 CommandArgument='<%#Eval("Id") %>' CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa ???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
@@ -92,26 +91,19 @@
     <table class="table table-bordered table-hover mb10">
         <thead>
             <tr class="primary fs12 text-center">
-                <th style="width: 5%" class="text-center">
-                    STT
+                <th style="width: 5%" class="text-center">STT
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Kế hoạch năm
+                <th style="width: 10%" class="text-center">Kế hoạch năm
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày báo cáo
+                <th style="width: 10%" class="text-center">Ngày báo cáo
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày xác nhận
+                <th style="width: 10%" class="text-center">Ngày xác nhận
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Ngày nhận báo cáo
+                <th style="width: 10%" class="text-center">Ngày nhận báo cáo
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Người lập BC
+                <th style="width: 10%" class="text-center">Người lập BC
                 </th>
-                <th style="width: 10%" class="text-center">
-                    Thao tác
+                <th style="width: 10%" class="text-center">Thao tác
                 </th>
             </tr>
         </thead>
@@ -166,8 +158,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Khởi tạo báo cáo tình hình sử dụng năng lượng hàng năm</h4>
+                <h4 class="modal-title">Khởi tạo báo cáo tình hình sử dụng năng lượng hàng năm</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -178,7 +169,8 @@
                     </div>
                     <div class="form-group">
                         <div class="col-lg-3">
-                            Kế hoạch năm</div>
+                            Kế hoạch năm
+                        </div>
                         <div class="select col-lg-3">
                             <asp:DropDownList runat="server" ID="ddlYear">
                             </asp:DropDownList>
@@ -204,5 +196,5 @@
 <asp:HiddenField ID="hddma" runat="server" />
 <!-- /.modal -->
 <script type="text/javascript"> 
-function ShowDialogInitReport() { $('#dlgReport').modal('toggle'); }
+    function ShowDialogInitReport() { $('#dlgReport').modal('toggle'); }
 </script>

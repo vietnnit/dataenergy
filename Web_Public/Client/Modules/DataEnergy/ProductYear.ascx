@@ -199,7 +199,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="display:none;">
             <label class="control-label">
                 <asp:Literal ID="ltNextYear" runat="server" Text="2.2. Điện năng mua ngoài và tự sản xuất"></asp:Literal></label>
             <div class="margin-bottom-10">

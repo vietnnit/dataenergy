@@ -97,7 +97,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10">
+            <div class="margin-bottom-10" style="display:none;">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kết quả thực hiện thay thế nâng cấp, bổ sung thiết bị công nghệ
@@ -269,7 +269,7 @@
                     </table>
                 </div>
             </div>
-            <div class="">
+            <div class="" style="display:none;">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kế hoạch thay thế nâng cấp, bổ sung thiết bị công nghệ
