@@ -245,6 +245,7 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
                     txtNoTOE.Enabled = false;
                     if (mea.Rows[0]["TOE"] != DBNull.Value)
                     {
+                        txtNoTOE.Text = string.Format("{0:0.#########}", mea.Rows[0]["TOE"]);
                         rvNoTOE.Enabled = false;
                         rvNoTOE.MaximumValue = mea.Rows[0]["TOE"].ToString();
                         rvNoTOE.MinimumValue = rvNoTOE.MaximumValue;

@@ -171,13 +171,21 @@
                         <label class="col-lg-3" for="inputSmall">
                             Hệ số chuyển đổi(TOE)<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:TextBox ID="txtNoTOE" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
-                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                            <asp:RangeValidator ID="rvNoTOE" MaximumValue="10" Type="Double" MinimumValue="0"
-                                CssClass="text-danger" ControlToValidate="txtNoTOE" ValidationGroup="viewFuelOne"
-                                runat="server" Display="Dynamic"></asp:RangeValidator>
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlFuel" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox ID="txtNoTOE" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
+                                        CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
+                                        Display="Dynamic"></asp:RequiredFieldValidator>
+                                    <asp:RangeValidator ID="rvNoTOE" MaximumValue="10" Type="Double" MinimumValue="0"
+                                        CssClass="text-danger" ControlToValidate="txtNoTOE" ValidationGroup="viewFuelOne"
+                                        runat="server" Display="Dynamic"></asp:RangeValidator>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -211,5 +219,24 @@
     function updateReportDetail(isnext) {
         $("#<%=hdnNextYear.ClientID%>").val(isnext);
         $('#dlgFuelConsume').modal('toggle');
+    }
+
+    function addReportDetail(isnext) {
+        dlgFuelConsume_Init();
+        $("#dlgFuelConsume").on('shown.bs.modal', function () { });
+    }
+
+    $("#dlgFuelConsume").on('hide.bs.modal', function () {
+        dlgFuelConsume_Init();
+    });
+
+    function dlgFuelConsume_Init() {
+        $("#<%=hdnNextYear.ClientID%>").val(0);
+        $("#<%=hdnDetailId.ClientID%>").val(''); // 
+        $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
+        $("#<%=ddlMeasure.ClientID%>").selectedIndex = 0;
+        $("#<%=txtNoFuel.ClientID%>").val('');
+        $("#<%=txtPrice.ClientID%>").val('');
+        $("#<%=txtPropose.ClientID%>").val('');
     }
 </script>
