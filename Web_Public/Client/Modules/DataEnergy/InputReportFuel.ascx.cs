@@ -639,6 +639,34 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_TenCoSo", or.Title);
             ex.WriteToMergeField("BC_TenCoSo1", or.Title);
             ex.WriteToMergeField("BC_TenCoSo2", or.Title);
+
+            //Mô hình quản lý năng lượng
+            string emptyBoxImgUrl = Server.MapPath(ResolveUrl("~") + "TempReport/icons/unchecked-checkbox.png");
+            string checkedBoxImgUrl = Server.MapPath(ResolveUrl("~") + "TempReport/icons/checked-checkbox.png");
+
+            switch (or.MoHinhQLNL)
+            {
+                case 0:
+                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
+                    break;
+                case 1:
+                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD2", checkedBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
+                    break;
+                case 2:
+                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD3", checkedBoxImgUrl);
+                    break;
+                default:
+                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
+                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
+                    break;
+            }
         }
         else
             ex.WriteToMergeField("BC_TenCoSo", "");
@@ -649,9 +677,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_NextYear", NextYear);
             ex.WriteToMergeField("BC_NextYear1", NextYear);
             ex.WriteToMergeField("BC_NextYear2", NextYear);
+            ex.WriteToMergeField("BC_NextYear3", NextYear);
+            ex.WriteToMergeField("BC_Year1", NextYear);
             ex.WriteToMergeField("BC_Year_1", (iCurrentYear - 1).ToString());
             ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
             ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
+
 
             //ex.WriteToMergeField("BC_NextYear3", NextYear);
         }
@@ -1191,7 +1222,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         decimal _InstalledCapacityResult = 0;
         decimal _ProduceQtyResult = 0;
         decimal _temp = 0;
-        foreach(DataRow r in dtDienTuSX.Rows)
+        foreach (DataRow r in dtDienTuSX.Rows)
         {
             _temp = 0;
             if (decimal.TryParse(r["CongSuatLapDat"].ToString(), out _temp))
@@ -2018,7 +2049,18 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         IList<Fuel> list = new List<Fuel>();
         if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
         {
-            list = new FuelService().FindAll();
+            ReportModels rp = new ReportModels();
+            list = (from a in rp.DE_Fuel
+                    join b in rp.DE_GroupFuel on a.GroupFuelId equals b.Id
+                    where b.GroupCode != "POWER"
+                    select new Fuel
+                    {
+                        Id = a.Id,
+                        MeasurementId = a.MeasurementId.Value,
+                        GroupFuelId = a.GroupFuelId.Value,
+                        FuelName = a.FuelName
+                    }).ToList();
+            //list = new FuelService().FindAll();
             AspNetCache.SetCache(Constants.Cache_ReportFuel_Fuel_All, list);
         }
         else
@@ -2250,7 +2292,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         //1. Get data: Điện năng mua và Điện năng bán từ bảng DE_UsingElectrict
         ReportModels reportModels = new ReportModels();
-        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == reportId);
+        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == reportId && o.IsPlan == true);
         //2. Get data: Điện tự sản suất
         var DienSX = (from a in reportModels.DE_ElectrictTechnology
                       join b in reportModels.DE_ElectrictProduce
@@ -2369,6 +2411,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
     }
 
+    protected void btBindListTieuThuSXDien_Click(object sender, EventArgs e)
+    {
+        CreateTable_TieuThuDien(ReportId);
+    }
     protected void btnSaveElectrictPlan_Click(object sender, EventArgs e)
     {
 
@@ -2377,6 +2423,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             TieuThuDien_Update();
             if (ddlElectrictTechnology.SelectedValue != "")
                 SanXatDien_Update();
+
             ltmsg.Text = "Cập nhật thành công!";
         }
         catch (Exception ex)
@@ -2428,7 +2475,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         ReportModels reportModels = new ReportModels();
         DE_UsingElectrict _sudungdien = new DE_UsingElectrict();
-        _sudungdien = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId && o.ReportYear == ReportYear && o.IsPlan == false);
+        _sudungdien = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId && o.ReportYear == ReportYear && o.IsPlan == true);
         if (_sudungdien == null)
             _sudungdien = new DE_UsingElectrict();
 

@@ -65,7 +65,7 @@
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
-                        <i>a. Năng lực sản xuất năm hiện tại<asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
+                        <i>a. Năng lực sản xuất năm <asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddProductResult" runat="server" Text="Thêm mới" ToolTip="Thêm mới"
                                 OnClientClick='javascript:AddProductQty(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
@@ -132,8 +132,8 @@
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
-                        <i>b. Kế hoạch sản xuất năm tiếp theo <b>Năm
-                            <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></b></i>
+                        <i>b. Kế hoạch sản xuất năm 
+                            <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></i>
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddProductNextResult" runat="server" Text="Thêm mới" ToolTip="Thêm sản phẩm"
                                 OnClientClick='javascript:AddProductQtyPlan(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
@@ -153,7 +153,7 @@
                                   <th style="width:10%">Đơn vị đo</th>
                              <th style="width: 15%">Theo thiết kế
                             </th>
-                             <th style="width: 15%">Mức sản suất dự kiến
+                             <th style="width: 15%">Mức sản xuất dự kiến
                             </th>
 <%--                            <th style="width: 15%">Dự kiến sản xuất
                             </th>
@@ -404,7 +404,7 @@
                                 Display="Dynamic"></asp:RangeValidator>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none;">
                         <label class="col-lg-3">
                             Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
@@ -486,13 +486,9 @@
                 
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Tiêu thụ năng lượng theo sản phẩm<span class="append-icon right text-danger">*</span></label>
+                            Tiêu thụ năng lượng theo sản phẩm</label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtTieuThuNLTheoSP" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
-                                ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
-                                CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
@@ -504,13 +500,9 @@
 
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Doanh thu theo sản phẩm<span class="append-icon right text-danger">*</span></label>
+                            Doanh thu theo sản phẩm</label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtDoanhThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtDoanhThuTheoSP"
-                                ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
-                                CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator19" runat="server" ControlToValidate="txtDoanhThuTheoSP"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
@@ -582,17 +574,11 @@
                             <asp:Literal ID="ltMeasurementPlan" runat="server"></asp:Literal>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none;">
                         <label class="col-lg-3">
                             Tỷ lệ so với CPSX(%)<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtRateOfCost" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtRateOfCost"
-                                CssClass="text-danger" Text="Vui lòng nhập trong khoảng từ 0% đến 100%" ValidationGroup="valProductYearPlan"
-                                Type="Double" MinimumValue="0" MaximumValue="100" Display="Dynamic"></asp:RangeValidator>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtRateOfCost"
-                                CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập tỷ lệ so với chi phí"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <%--</div>
                     <div class="form-group">--%>
@@ -600,12 +586,6 @@
                             Tỷ lệ so với Doanh thu(%)<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtRateOfRevenue" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RangeValidator ID="RangeValidator2" runat="server" ControlToValidate="txtRateOfRevenue"
-                                CssClass="text-danger" Text="Vui lòng nhập trong khoảng từ 0% đến 100%" ValidationGroup="valProductYearPlan"
-                                Type="Double" MinimumValue="0" MaximumValue="100" Display="Dynamic"></asp:RangeValidator>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtRateOfRevenue"
-                                CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập tỷ lệ so với doanh thu"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>

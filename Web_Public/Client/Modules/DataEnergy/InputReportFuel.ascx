@@ -383,14 +383,12 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </table>
-                                            <div style="text-align: right">
-                                                <b>
-                                                    <asp:Literal ID="ltTotal_TOE_Future" runat="server"></asp:Literal></b>
-                                            </div>
+                                           
                                             <%--<asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
+                                                <asp:Literal ID="ltKeHoachTieuThuDien" runat ="server" Text="Tiêu thụ điện"></asp:Literal>
                                                 <div style="float: right">
                                                     <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</a>
                                                     <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
@@ -399,6 +397,10 @@
                                             </div>
                                             <asp:Literal ID="ltTieuThuDien" runat="server"></asp:Literal>
                                         </div>
+                                         <div class="col-lg-12" style="text-align: right; margin-top:10px; margin-right:10px;">
+                                                <b>
+                                                    <asp:Literal ID="ltTotal_TOE_Future" runat="server"></asp:Literal></b>
+                                            </div>
                                     </div>
                                     <asp:Literal ID="error" runat="server"></asp:Literal>
                                 </div>
@@ -1241,6 +1243,8 @@ btn-u-primary mr10"
 
 <div style="display: none;">
     <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click" />
+
+    <asp:Button ID="btBindListTieuThuSXDien" runat ="server" OnClick="btBindListTieuThuSXDien_Click" />
 </div>
 
 <script type="text/javascript">
@@ -1301,6 +1305,12 @@ btn-u-primary mr10"
         $('#<%=btBindTieuThuSXDien.ClientID%>').click();
 
     });
+    $('#dlgTieuThuSXDien').on('hide.bs.modal', function () {
+        $('#<%=btBindListTieuThuSXDien.ClientID%>').click();
+
+    });
+
+    
 </script>
 
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>

@@ -21,14 +21,14 @@
                     <div class="control-label pt5" style="width: 100%">
                         <asp:Literal ID="ltDataCurrentTitle" runat="server"></asp:Literal><div style="float: right">
                             <asp:LinkButton ID="btnAddFuel" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
-                                data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm loại năng lượng</asp:LinkButton>
                         </div>
                     </div>
                     <table class="table table-bordered table-hover mbn" width="100%">
                         <tr class="primary fs12">
                             <th style="width: 5%">STT
                             </th>
-                            <th style="width: 15%">Nhiên liệu
+                            <th style="width: 15%">Loại năng lượng
                             </th>
                             <th style="width: 10%">Mức tiêu thụ
                             </th>

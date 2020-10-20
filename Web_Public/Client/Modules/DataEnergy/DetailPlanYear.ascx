@@ -60,7 +60,7 @@
                                         <%# Eval("FuelName")%>
                                     </td>
                                      <td>
-                                        <%# Eval("HeThongSuDung")%>
+                                        <%# Eval("SysName")%>
                                     </td>
                                      <td>
                                         <%# Eval("MucTieuGP")%>
@@ -225,7 +225,7 @@
                                             <%# Eval("FuelName")%>
                                         </td>
                                          <td>
-                                            <%# Eval("HeThongSuDung")%>
+                                            <%# Eval("SysName")%>
                                         </td>
                                         <td>
                                             <%# Eval("MucTieuGP")%>
@@ -516,9 +516,9 @@
                             <asp:RangeValidator ID="rvCamKet" runat="server" ControlToValidate="txtKhaNangTKNL"
                                 Text="Vui lòng nhập khả năng thực hiện trong khoảng từ 0% đến 100%" ValidationGroup="valAddSolutionTKNLOne"
                                 CssClass="text-danger" Type="Double" MinimumValue="0" MaximumValue="100" Display="Dynamic"></asp:RangeValidator>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtKhaNangTKNL"
+                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtKhaNangTKNL"
                                 CssClass="text-danger" ValidationGroup="valAddSolutionTKNLOne" Text="Vui lòng nhập khả năng thực hiện"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
+                                Display="Dynamic"></asp:RequiredFieldValidator>--%>
                         </div>
                         <label class="col-lg-3">
                             Mức cam kết<span class="append-icon right text-danger">*</span>:</label>
@@ -529,9 +529,9 @@
                                 <asp:ListItem Value="Trung bình" Text="Trung bình"></asp:ListItem>
                                 <asp:ListItem Value="Thấp" Text="Thấp"></asp:ListItem>
                             </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="ddlCamKet"
+                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="ddlCamKet"
                                 CssClass="text-danger" ValidationGroup="valAddSolutionTKNLOne" Text="Vui lòng chọn mức cam kết"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
+                                Display="Dynamic"></asp:RequiredFieldValidator>--%>
                         </div>
                     </div>
                     <div class="form-group">

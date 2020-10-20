@@ -41,8 +41,7 @@ namespace ePower.DE.Service
                 foreach (FuelBO obj in listBO)
                     list.Add(new Fuel(obj));
             return list;
-        }        
-
+        }
         public DataTable FindAll(int GroupFuelId)
         {
             return fuelDao.FindAll(GroupFuelId);
