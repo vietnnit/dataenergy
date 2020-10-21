@@ -103,6 +103,7 @@
     <Compile Include="DE_TOEYear.cs" />
     <Compile Include="DE_UsingElectrict.cs" />
     <Compile Include="DE_UsingSystem.cs" />
+    <Compile Include="DE_ProductCapacityFuel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PR_Project.cs" />
     <Compile Include="PR_ProjectArea.cs" />

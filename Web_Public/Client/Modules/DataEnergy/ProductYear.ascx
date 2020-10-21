@@ -5,7 +5,7 @@
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
 
-        <div class="col-lg-12" style="display:none;">
+        <div class="col-lg-12" style="display: none;">
             <div class="">
                 <div class="control-label pt5" style="width: 100%" for="inputSmall">
                     <b>2.1. Thông tin cơ sở hạ tầng</b>
@@ -65,7 +65,8 @@
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
-                        <i>a. Năng lực sản xuất năm <asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
+                        <i>a. Năng lực sản xuất năm
+                            <asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddProductResult" runat="server" Text="Thêm mới" ToolTip="Thêm mới"
                                 OnClientClick='javascript:AddProductQty(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
@@ -150,12 +151,12 @@
                                 <asp:LinkButton ID="btnAddProductPlan" runat="server" CssClass="fs9 btn btn-primary"
                                     Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
                             </th>
-                                  <th style="width:10%">Đơn vị đo</th>
-                             <th style="width: 15%">Theo thiết kế
+                            <th style="width: 10%">Đơn vị đo</th>
+                            <th style="width: 15%">Theo thiết kế
                             </th>
-                             <th style="width: 15%">Mức sản xuất dự kiến
+                            <th style="width: 15%">Mức sản xuất dự kiến
                             </th>
-<%--                            <th style="width: 15%">Dự kiến sản xuất
+                            <%--                            <th style="width: 15%">Dự kiến sản xuất
                             </th>
                             <th style="width: 10%">Tỷ lệ so với chi phí sản xuất (%)
                             </th>
@@ -199,7 +200,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12" style="display:none;">
+        <div class="col-lg-12" style="display: none;">
             <label class="control-label">
                 <asp:Literal ID="ltNextYear" runat="server" Text="2.2. Điện năng mua ngoài và tự sản xuất"></asp:Literal></label>
             <div class="margin-bottom-10">
@@ -404,7 +405,7 @@
                                 Display="Dynamic"></asp:RangeValidator>
                         </div>
                     </div>
-                    <div class="form-group" style="display:none;">
+                    <div class="form-group" style="display: none;">
                         <label class="col-lg-3">
                             Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
@@ -466,40 +467,68 @@
                             <asp:Literal ID="ltMearsurement2" runat="server"></asp:Literal>
                         </div>
                     </div>
-                     <div class="form-group">
+                    <div class="form-group">
                         <label class="col-lg-3">
                             Mức sản xuất cao nhất<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtMaxQty" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtMaxQty" 
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtMaxQty"
                                 ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
                                 CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator15" runat="server" ControlToValidate="txtMaxQty"
-                                        CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
-                                        Display="Dynamic"></asp:RegularExpressionValidator>
-                        </div>                        
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
                         <div class="col-lg-3">
                             <asp:Literal ID="ltMeasurement" runat="server"></asp:Literal>
                         </div>
-                    </div>             
+                    </div>
 
-                
+
                     <div class="form-group">
                         <label class="col-lg-3">
                             Tiêu thụ năng lượng theo sản phẩm</label>
                         <div class="col-lg-3">
+                            <asp:DropDownList ID="ddlLoaiNangLuong" CssClass="form-control input-sm" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlLoaiNangLuong_SelectedIndexChanged"></asp:DropDownList>
+                        </div>
+                        <div class="col-lg-2">
+                            <asp:UpdatePanel ID="updateDonVitinh" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlLoaiNangLuong" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="ddlLoaiNangLuong_DVT" runat="server" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlLoaiNangLuong_DVT_SelectedIndexChanged" ></asp:DropDownList>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <asp:UpdatePanel ID="updatetxtTieuThuTheoSP" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlLoaiNangLuong_DVT" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtTieuThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                            
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator21" runat="server" ControlToValidate="txtTieuThuTheoSP"
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div style="display:none;">
                             <asp:TextBox runat="server" ID="txtTieuThuNLTheoSP" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-3">
+                         <label class="col-lg-3">
                             Doanh thu theo sản phẩm</label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtDoanhThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
@@ -574,7 +603,7 @@
                             <asp:Literal ID="ltMeasurementPlan" runat="server"></asp:Literal>
                         </div>
                     </div>
-                    <div class="form-group" style="display:none;">
+                    <div class="form-group" style="display: none;">
                         <label class="col-lg-3">
                             Tỷ lệ so với CPSX(%)<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">

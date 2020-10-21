@@ -1,0 +1,3 @@
+﻿Bổ sung bảng DE_ProductCapacityFuel
+Lưu thông tin: Khi tạo mới năng lực sản xuất theo sản phẩm.
+1 sản phẩm => sản suất theo năng lực + sử dụng loại năng lượng nào + lượng tiêu thụ bao nhiêu

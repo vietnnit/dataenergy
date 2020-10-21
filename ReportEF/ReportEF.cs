@@ -11,7 +11,7 @@ namespace ReportEF
             : base("name=ReportEF")
         {
         }
-
+        public virtual DbSet<DE_ProductCapacityFuel> DE_ProductCapacityFuel { get; set; }
         public virtual DbSet<DE_UsingSystem> DE_UsingSystem { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam> BC_SDNL_DS_TheoNam { get; set; }
         public virtual DbSet<BC_SDNL_DS_TheoNam_Comment> BC_SDNL_DS_TheoNam_Comment { get; set; }
@@ -123,6 +123,10 @@ namespace ReportEF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DE_ProductCapacityFuel>()
+              .Property(e => e.ConsumeQty)
+              .HasPrecision(20, 2);
+
             modelBuilder.Entity<BC_SDNL_HangNam>()
                 .Property(e => e.MucTieuThu)
                 .HasPrecision(20, 10);

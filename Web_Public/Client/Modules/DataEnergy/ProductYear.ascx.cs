@@ -11,6 +11,8 @@ using ePower.DE.Service;
 using PR.Domain;
 using PR.Service;
 using System.Data;
+using Telerik.Web.Data.Extensions;
+using ReportEF;
 
 public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserControl
 {
@@ -125,19 +127,25 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         ddlFuel.DataValueField = "Id";
         ddlFuel.DataTextField = "FuelName";
         ddlFuel.DataBind();
-        ddlFuel.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
+        ddlFuel.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
 
         ddlFuelPlan.DataSource = listSearch;
         ddlFuelPlan.DataValueField = "Id";
         ddlFuelPlan.DataTextField = "FuelName";
         ddlFuelPlan.DataBind();
-        ddlFuelPlan.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
+        ddlFuelPlan.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
 
         ddlProductFuel.DataSource = listSearch;
         ddlProductFuel.DataValueField = "Id";
         ddlProductFuel.DataTextField = "FuelName";
         ddlProductFuel.DataBind();
-        ddlProductFuel.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
+        ddlProductFuel.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
+
+        ddlLoaiNangLuong.DataSource = listSearch;
+        ddlLoaiNangLuong.DataValueField = "Id";
+        ddlLoaiNangLuong.DataTextField = "FuelName";
+        ddlLoaiNangLuong.DataBind();
+        ddlLoaiNangLuong.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
     }
     void BindProduct()
     {
@@ -352,6 +360,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         else
         {
             i = productCapacityService.Insert(productCapacity);
+
         }
         if (i <= 0)
         {
@@ -431,7 +440,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
                 try
                 {
                     txtMaxQtyPlan.Text = productCapacity.MaxQuantity.ToString();
-                    txtQtyByDesignPlan.Text= productCapacity.DesignQuantity.ToString();
+                    txtQtyByDesignPlan.Text = productCapacity.DesignQuantity.ToString();
                     txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
                     txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
                     ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();
@@ -1104,4 +1113,61 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         }
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQty(0);", true);
     }
+    protected void ddlLoaiNangLuong_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlLoaiNangLuong.SelectedIndex > 0)
+        {
+            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+            ReportModels rp = new ReportModels();
+            var data = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == _selectedFuel select a).ToList();
+            Binding_ddlLoaiNangLuong_DVT(data);
+        }
+        else
+        {
+            ddlLoaiNangLuong_DVT.Items.Clear();
+        }
+    }
+
+    private void Binding_ddlLoaiNangLuong_DVT(List<DE_Measurement> data)
+    {
+        ddlLoaiNangLuong_DVT.DataValueField = "Id";
+        ddlLoaiNangLuong_DVT.DataTextField = "MeasurementName";
+        ddlLoaiNangLuong_DVT.DataSource = data;
+        ddlLoaiNangLuong_DVT.DataBind();
+    }
+    protected void ddlLoaiNangLuong_DVT_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+        ReportModels rp = new ReportModels();
+    }
+
+    private void Binding_SuDungNangLuongTheoSP(int ProductCapacityId)
+    {
+        if (ProductCapacityId > 0)
+        {
+            ReportModels rp = new ReportModels();
+            if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
+            {
+                var data = rp.DE_ProductCapacityFuel.Where(o => o.ProductCapacityId == ProductCapacityId).First();
+                if (data.FuelId > 0)
+                {
+                    ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
+                    if (data.MeasurementId > 0)
+                    {
+                        var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
+                        Binding_ddlLoaiNangLuong_DVT(meList);
+                        ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
+                        txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void Update_ProductCapacityFuel(int ProductCapacityId)
+    {
+        ReportModels rp = new ReportModels();
+    }
+
 }
