@@ -222,6 +222,22 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
                     ltMeasurement.Text = product.Measurement;
                     txtQtyByDesign.Text = product.Quantity.ToString();
                     ltMearsurement2.Text = "(" + product.Measurement + ")";
+                    txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
+
+                    ReportModels rp = new ReportModels();
+                    if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
+                    {
+                        var data = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == ProductCapacityId && o.ConsumeQty > 0);
+                        if (data != null)
+                        {
+                            txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
+                            ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
+                            var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
+                            Binding_ddlLoaiNangLuong_DVT(meList);
+                            ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
+                        }
+                    }
+
                 }
                 catch { }
             }
@@ -355,12 +371,22 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         {
             productCapacity.Id = Convert.ToInt32(hdnId.Value);
             productCapacity = productCapacityService.Update(productCapacity);
+
+            if (txtTieuThuTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0)
+            {
+                InsertUpdate_ProductCapacityFuel(productCapacity.Id);
+            }
+
             if (productCapacity != null) i = 1;
         }
         else
         {
             i = productCapacityService.Insert(productCapacity);
 
+            if (txtTieuThuNLTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0 && i > 0)
+            {
+                InsertUpdate_ProductCapacityFuel(i);
+            }
         }
         if (i <= 0)
         {
@@ -372,6 +398,30 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             BindProductCapacity();
         }
 
+    }
+
+    private void InsertUpdate_ProductCapacityFuel(int _ProductCapacityId)
+    {
+        int _fuelId = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+        int _meId = Convert.ToInt32(ddlLoaiNangLuong_DVT.SelectedValue);
+        ReportModels rp = new ReportModels();
+        if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == _ProductCapacityId)) //update
+        {
+            var _fuel = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _fuelId && o.MeasurementId == _meId);
+            if (_fuel != null)
+                _fuel.ConsumeQty = Convert.ToDecimal(txtTieuThuTheoSP.Text);
+            rp.SaveChanges();
+        }
+        else //Insert
+        {
+            var _insertedFuel = new DE_ProductCapacityFuel();
+            _insertedFuel.ProductCapacityId = _ProductCapacityId;
+            _insertedFuel.FuelId = _fuelId;
+            _insertedFuel.MeasurementId = _meId;
+            _insertedFuel.ConsumeQty = Convert.ToDecimal(txtTieuThuTheoSP.Text);
+            rp.DE_ProductCapacityFuel.Add(_insertedFuel);
+            rp.SaveChanges();
+        }
     }
 
     public void btnSaveProductPlan_Click(object sender, EventArgs e)
@@ -444,6 +494,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
                     txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
                     txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
                     ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();
+                    txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
                     Product product = new Product();
                     ProductService productService = new ProductService();
                     product = productService.FindByKey(productCapacity.ProductId);

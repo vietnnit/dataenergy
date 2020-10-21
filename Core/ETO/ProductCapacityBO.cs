@@ -125,11 +125,11 @@ namespace ePower.DE.Domain
             set { _TieuThuNLTheoSP = value; SetDirty("TieuThuNLTheoSP"); }
         }
 
-        [FieldName("DoanhThuTheoSP ", FieldAccessMode.ReadWrite, FieldType.String)]
+        [FieldName("DoanhThuTheoSP", FieldAccessMode.ReadWrite, FieldType.String)]
         public decimal DoanhThuTheoSP
         {
             get { return _DoanhThuTheoSP; }
-            set { _DoanhThuTheoSP = value; SetDirty("TieuThuNLTheoSP"); }
+            set { _DoanhThuTheoSP = value; SetDirty("DoanhThuTheoSP"); }
         }
         #endregion
 

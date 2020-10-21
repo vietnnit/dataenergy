@@ -458,7 +458,14 @@
                         <label class="col-lg-3 control-label">
                             Năng lực SX theo thiết kế:</label>
                         <div class="col-lg-3">
-                            <asp:TextBox runat="server" ID="txtQtyByDesign" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:UpdatePanel ID="update_txtQtyByDesign" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProduct" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtQtyByDesign" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator16" runat="server" ControlToValidate="txtQtyByDesign"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
@@ -471,7 +478,14 @@
                         <label class="col-lg-3">
                             Mức sản xuất cao nhất<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:TextBox runat="server" ID="txtMaxQty" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:UpdatePanel ID="update_txtMaxQty" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProduct" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtMaxQty" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtMaxQty"
                                 ValidationGroup="valProductYear" Text="Vui lòng nhập mức sản xuất cao nhất"
                                 CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
@@ -497,7 +511,7 @@
                                     <asp:AsyncPostBackTrigger ControlID="ddlLoaiNangLuong" EventName="SelectedIndexChanged" />
                                 </Triggers>
                                 <ContentTemplate>
-                                    <asp:DropDownList ID="ddlLoaiNangLuong_DVT" runat="server" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlLoaiNangLuong_DVT_SelectedIndexChanged" ></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlLoaiNangLuong_DVT" runat="server" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlLoaiNangLuong_DVT_SelectedIndexChanged"></asp:DropDownList>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
 
@@ -511,12 +525,12 @@
                                     <asp:TextBox runat="server" ID="txtTieuThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
-                            
+
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator21" runat="server" ControlToValidate="txtTieuThuTheoSP"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
                         </div>
-                        <div style="display:none;">
+                        <div style="display: none;">
                             <asp:TextBox runat="server" ID="txtTieuThuNLTheoSP" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
@@ -528,7 +542,7 @@
                     </div>
 
                     <div class="form-group">
-                         <label class="col-lg-3">
+                        <label class="col-lg-3">
                             Doanh thu theo sản phẩm</label>
                         <div class="col-lg-3">
                             <asp:TextBox runat="server" ID="txtDoanhThuTheoSP" CssClass="form-control input-sm"></asp:TextBox>
