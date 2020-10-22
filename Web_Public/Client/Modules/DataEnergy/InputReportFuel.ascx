@@ -989,7 +989,7 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none;">
                         <div class="col-lg-3">
                             File báo cáo 5 năm
                         </div>

@@ -124,7 +124,8 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
     protected void BindUsingEnerySystem()
     {
         ReportModels reportModels = new ReportModels();
-        var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0).ToList();
+        var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0 && o.SysGroup == ddlPhanLoaiHeThong.SelectedValue).ToList();
+        //var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0).ToList();
 
         ddlUseSysName.DataValueField = "SysCode";
         ddlUseSysName.DataTextField = "SysName";
@@ -707,4 +708,12 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
 
     }
 
+    protected void ddlPhanLoaiHeThong_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindUsingEnerySystem();
+    }
+    protected void ddlPhanLoaiHeThongPlan_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindUsingEnerySystem();
+    }
 }

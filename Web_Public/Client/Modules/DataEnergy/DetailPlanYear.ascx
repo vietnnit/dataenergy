@@ -2,6 +2,7 @@
     Inherits="Client_Module_DataEngery_DetailPlanYear" %>
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
+
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
         <div class="col-lg-12">
@@ -416,10 +417,25 @@
                     </div>
                      <div class="form-group">
                         <label class="col-lg-3" for="inputSmall">
-                            Hệ thống sử dụng <span class="append-icon right text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <asp:DropDownList ID="ddlUseSysNamePlan" runat="server" CssClass="form-control input-sm">
+                            Phân loại <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:DropDownList ID="ddlPhanLoaiHeThongPlan" CssClass="form-control input-sm"  AutoPostBack="true" OnSelectedIndexChanged="ddlPhanLoaiHeThongPlan_SelectedIndexChanged" runat="server">
+                                <asp:ListItem Text="Hệ thống sử dụng điện" Value="E"></asp:ListItem>
+                                <asp:ListItem Text="Hệ thống sử dụng nhiên liệu nhiệt" Value="T"></asp:ListItem>
                             </asp:DropDownList>
+                        </div>
+                        <label class="col-lg-3" for="inputSmall">
+                            Hệ thống sử dụng <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_ddlPhanLoaiHeThongPlan" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlPhanLoaiHeThongPlan" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="ddlUseSysNamePlan" runat="server" CssClass="form-control input-sm">
+                                    </asp:DropDownList>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                     <div class="form-group">
@@ -599,12 +615,27 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <div class="form-group">
+                  <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Phânloại <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:DropDownList ID="ddlPhanLoaiHeThong" CssClass="form-control input-sm" AutoPostBack="true" OnSelectedIndexChanged="ddlPhanLoaiHeThong_SelectedIndexChanged" runat="server">
+                                <asp:ListItem Text="Hệ thống sử dụng điện" Value="E"></asp:ListItem>
+                                <asp:ListItem Text="Hệ thống sử dụng nhiên liệu nhiệt" Value="T"></asp:ListItem>
+                            </asp:DropDownList>
+                        </div>
                         <label class="col-lg-3" for="inputSmall">
                             Hệ thống sử dụng <span class="append-icon right text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <asp:DropDownList ID="ddlUseSysName" runat="server" CssClass="form-control input-sm">
-                            </asp:DropDownList>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_ddlUseSysName" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlPhanLoaiHeThong"  EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="ddlUseSysName" runat="server" CssClass="form-control input-sm">
+                                    </asp:DropDownList>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                     <div class="form-group">

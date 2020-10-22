@@ -136,20 +136,28 @@
                                     <asp:DropDownList ID="ddlMeasure" runat="server" AppendDataBoundItems="True" ValidationGroup="viewFuelOne"
                                         AutoPostBack="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMeasure_SelectedIndexChanged">
                                     </asp:DropDownList>
-                                    <asp:RequiredFieldValidator ID="rfvMeasurement" runat="server" ControlToValidate="ddlMeasure"
-                                        CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn đơn vị tính"
-                                        Display="Dynamic"></asp:RequiredFieldValidator>
+
                                 </ContentTemplate>
                             </asp:UpdatePanel>
-
+                            <asp:RequiredFieldValidator ID="rfvMeasurement" runat="server" ControlToValidate="ddlMeasure"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn đơn vị tính"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                         <%--</div>
                     <div class="form-group">--%>
                         <label class="col-lg-3" for="inputSmall">
                             Lượng tiêu thụ<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:TextBox ID="txtNoFuel" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
-                                MaxLength="20" placeholder="Lượng tiêu thụ tối đa 20 ký tự"></asp:TextBox>
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlFuel" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox ID="txtNoFuel" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
+                                        MaxLength="20" placeholder="Lượng tiêu thụ tối đa 20 ký tự"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="txtNoFuel"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập Lượng tiêu thụ"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -162,8 +170,16 @@
                         <label class="col-lg-3" for="inputSmall">
                             Đơn giá(<i>đồng</i>)</label>
                         <div class="col-lg-3">
-                            <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control input-sm" placeholder="Nhập tối đa 15 ký tự"
-                                MaxLength="15" ValidationGroup="viewFuelOne"></asp:TextBox>
+                            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlFuel" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control input-sm" placeholder="Nhập tối đa 15 ký tự"
+                                        MaxLength="15" ValidationGroup="viewFuelOne"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtPrice"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Đơn giá nhập số và từ 0 đến 9.999.999.999.999,99"
                                 ValidationExpression="^[0-9]{1,13}(\,[0-9]{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
@@ -177,23 +193,30 @@
                                 </Triggers>
                                 <ContentTemplate>
                                     <asp:TextBox ID="txtNoTOE" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
-                                        CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
-                                        Display="Dynamic"></asp:RequiredFieldValidator>
-                                    <asp:RangeValidator ID="rvNoTOE" MaximumValue="10" Type="Double" MinimumValue="0"
-                                        CssClass="text-danger" ControlToValidate="txtNoTOE" ValidationGroup="viewFuelOne"
-                                        runat="server" Display="Dynamic"></asp:RangeValidator>
+
                                 </ContentTemplate>
                             </asp:UpdatePanel>
-
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:RangeValidator ID="rvNoTOE" MaximumValue="10" Type="Double" MinimumValue="0"
+                                CssClass="text-danger" ControlToValidate="txtNoTOE" ValidationGroup="viewFuelOne"
+                                runat="server" Display="Dynamic"></asp:RangeValidator>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3">
                             Mục đích sử dụng <span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-9">
-                            <asp:TextBox ID="txtPropose" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
-                                MaxLength="255" placeholder="Mục đích sử dụng tối đa 255 ký tự"></asp:TextBox>
+                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlFuel" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox ID="txtPropose" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
+                                        MaxLength="255" placeholder="Mục đích sử dụng tối đa 255 ký tự"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="txtPropose"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng mục đích sử dụng"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -217,20 +240,26 @@
 
 <script type="text/javascript">
     function updateReportDetail(isnext) {
-        $("#<%=hdnNextYear.ClientID%>").val(isnext);
         $('#dlgFuelConsume').modal('toggle');
     }
 
     function addReportDetail(isnext) {
-        dlgFuelConsume_Init();
-        $("#dlgFuelConsume").on('shown.bs.modal', function () { });
+        $('#<%=ddlFuel.ClientID%>').val("");
+        dlgFuelConsume_Init(isnext);
     }
 
     $("#dlgFuelConsume").on('hide.bs.modal', function () {
-        dlgFuelConsume_Init();
+        $('#<%=ddlFuel.ClientID%>').val("");
+        $("#<%=hdnNextYear.ClientID%>").val(0);
+        $("#<%=hdnDetailId.ClientID%>").val(''); // 
+        $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
+        $("#<%=ddlMeasure.ClientID%>").selectedIndex = 0;
+        $("#<%=txtNoFuel.ClientID%>").val('');
+        $("#<%=txtPrice.ClientID%>").val('');
+        $("#<%=txtPropose.ClientID%>").val('');
     });
 
-    function dlgFuelConsume_Init() {
+    function dlgFuelConsume_Init(isnext) {
         $("#<%=hdnNextYear.ClientID%>").val(0);
         $("#<%=hdnDetailId.ClientID%>").val(''); // 
         $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
@@ -239,4 +268,5 @@
         $("#<%=txtPrice.ClientID%>").val('');
         $("#<%=txtPropose.ClientID%>").val('');
     }
+
 </script>

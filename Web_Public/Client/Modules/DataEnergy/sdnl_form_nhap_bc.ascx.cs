@@ -107,6 +107,7 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             report = reportBSO.FindByKey(ReportId);
             if (report != null)
             {
+                ReportYear = report.Year;
                 ltDataCurrentTitle.Text = "Nhiên liệu tiêu thụ năm " + (report.Year);
             }
         }
@@ -115,6 +116,7 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
     void BindReportDetail()
     {
         DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
+
         rptNoFuelCurrent.DataSource = dtCurrent;
         rptNoFuelCurrent.DataBind();
         ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
@@ -191,7 +193,9 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
                 if (reportDetail.IsNextYear)
                     ltTitle.Text = "Mức nhiên liệu tiêu thụ dự kiến năm " + (reportDetail.Year + 1).ToString();
                 else
-                    ltTitle.Text = "Mức nhiên liệu tiêu thụ năm " + reportDetail.Year;
+                    //ltTitle.Text = "Mức nhiên liệu tiêu thụ năm " + reportDetail.Year;
+                    ltTitle.Text = "Mức nhiên liệu tiêu thụ năm " + ReportYear.ToString();
+
             }
         }
 
@@ -259,11 +263,20 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
     }
     protected void ddlFuel_SelectedIndexChanged(object sender, EventArgs e)
     {
+        if (ddlFuel.SelectedIndex == 0)
+            return;
         txtNoTOE.Enabled = false;
         txtNoTOE.Text = "";
         BindMeasurement();
-
-        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
+        int _fuelId = Convert.ToInt32(ddlFuel.SelectedValue);
+        ReportModels rp = new ReportModels();
+        if (rp.DE_ReportFuelDetail.Any(x => x.FuelId == _fuelId && x.ReportId == ReportId && x.IsNextYear == false))
+        {
+            var fuelData = rp.DE_ReportFuelDetail.First(x => x.FuelId == _fuelId && x.ReportId == ReportId && x.IsNextYear == false);
+            hdnDetailId.Value = fuelData.Id.ToString();
+            BindDataDetail();
+        }
+        //ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
 
     }
     protected void ddlMeasure_SelectedIndexChanged(object sender, EventArgs e)
@@ -504,7 +517,7 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
 
         DataTable dthientai = new DataTable();
         DataSet dshientai = new DataSet("tbl1");
-        
+
         DataTable tblProductResult = CreateFuelData();
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
@@ -557,11 +570,11 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
                     break;
                 }
             }
-            if(check==false)
+            if (check == false)
             {
                 r["NoFuel"] = "";
                 r["Reason"] = "";
-            }    
+            }
             res.Rows.Add(r);
             i++;
         }
