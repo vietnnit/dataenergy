@@ -1111,6 +1111,33 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
         tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        //Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
+        tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
+
+        ReportModels rp = new ReportModels();
+        foreach (DataRow r in tblProductResult.Rows)
+        {
+            int _ProductCapacityId = (int)r["Id"];
+            var data = (from a in rp.DE_ProductCapacityFuel
+                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                        join c in rp.DE_Fuel on a.FuelId equals c.Id
+                        where a.ProductCapacityId == _ProductCapacityId
+                        select new
+                        {
+                            c.FuelName,
+                            a.ConsumeQty,
+                            b.MeasurementName
+                        }).ToList();
+
+            string tmp = string.Empty;
+            foreach (var item in data)
+            {
+                tmp += string.Format("{0}: {1}({2})\n", item.FuelName, item.ConsumeQty, item.MeasurementName);
+            }
+
+            r["TTNLTHEOSP"] = tmp;
+        }
+
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 

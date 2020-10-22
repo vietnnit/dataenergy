@@ -113,7 +113,8 @@
                                         <%# Eval("MaxQuantity")%>
                                     </td>
                                     <td class="text-right">
-                                        <%# Eval("TieuThuNLTheoSP")%>
+                                        <asp:HiddenField ID="hdTieuThuNLTheoSP" runat="server" Value='<%#Eval("Id")%>' />
+                                        <asp:Literal ID="ltTieuThuNLTheoSP" runat="server"></asp:Literal>
                                     </td>
                                     <td class="text-right">
                                         <%# Eval("DoanhThuTheoSP ")%>
@@ -592,7 +593,14 @@
                         <label class="col-lg-3 control-label">
                             Năng lực SX theo thiết kế:</label>
                         <div class="col-lg-3">
-                            <asp:TextBox runat="server" ID="txtQtyByDesignPlan" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:UpdatePanel ID="update_txtQtyByDesignPlan" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProductPlan" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtQtyByDesignPlan" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                             <asp:RegularExpressionValidator ID="RegularExpressionValidator20" runat="server" ControlToValidate="txtQtyByDesignPlan"
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
@@ -605,7 +613,14 @@
                         <label class="col-lg-3">
                             Dự kiến sản xuất<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:TextBox runat="server" ID="txtMaxQtyPlan" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:UpdatePanel ID="update_txtMaxQtyPlan" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProductPlan" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtMaxQtyPlan" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtMaxQtyPlan"
                                 CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập dự kiến sản xuất"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -1011,11 +1026,20 @@
         }
         else {
             $("#<%=hdnId.ClientID%>").val(id);
+
         }
 
         $('#divProductPlan').modal('toggle');
     }
 
+
+    $('#divProductPlan').on('hidden.bs.modal', function () {
+        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', '');
+    });
+
+    $('#divProductPlan').on('show.bs.modal', function () {
+        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', 'disabled');
+    });
 </script>
 <style type="text/css">
     .modal-dialog {

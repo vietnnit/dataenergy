@@ -182,11 +182,31 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             //}
             LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
             LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+
             btnDelete.Visible = AllowEdit;
             btnEdit.Visible = AllowEdit;
-
             //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",false); return false;");
+            Literal ltTieuThuNLTheoSP = (Literal)e.Item.FindControl("ltTieuThuNLTheoSP");
+            HiddenField hdTieuThuNLTheoSP = (HiddenField)e.Item.FindControl("hdTieuThuNLTheoSP");
+            int _ProductCapacityId = Convert.ToInt32(hdTieuThuNLTheoSP.Value);
+            ReportModels rp = new ReportModels();
+            var data = (from a in rp.DE_ProductCapacityFuel
+                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                        join c in rp.DE_Fuel on a.FuelId equals c.Id
+                        where a.ProductCapacityId == _ProductCapacityId
+                        select new
+                        {
+                            c.FuelName,
+                            a.ConsumeQty,
+                            b.MeasurementName
+                        }).ToList();
 
+            string tmp = string.Empty;
+            foreach (var item in data)
+            {
+                tmp += string.Format("{0}: {1}({2})<br/>", item.FuelName, item.ConsumeQty, item.MeasurementName);
+            }
+            ltTieuThuNLTheoSP.Text = tmp;
         }
     }
     protected void rptProductResult_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -210,39 +230,51 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             ProductCapacityService productCapacityService = new ProductCapacityService();
             int ProductCapacityId = int.Parse(((LinkButton)e.CommandSource).CommandArgument);
             productCapacity = productCapacityService.FindByKey(ProductCapacityId);
-            if (productCapacity != null)
-            {
-                try
-                {
-                    txtMaxQty.Text = productCapacity.MaxQuantity.ToString();
-                    ddlProduct.SelectedValue = productCapacity.ProductId.ToString();
-                    Product product = new Product();
-                    ProductService productService = new ProductService();
-                    product = productService.FindByKey(productCapacity.ProductId);
-                    ltMeasurement.Text = product.Measurement;
-                    txtQtyByDesign.Text = product.Quantity.ToString();
-                    ltMearsurement2.Text = "(" + product.Measurement + ")";
-                    txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
-
-                    ReportModels rp = new ReportModels();
-                    if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
-                    {
-                        var data = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == ProductCapacityId && o.ConsumeQty > 0);
-                        if (data != null)
-                        {
-                            txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
-                            ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
-                            var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
-                            Binding_ddlLoaiNangLuong_DVT(meList);
-                            ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
-                        }
-                    }
-
-                }
-                catch { }
-            }
+            Load_ProductCapacity(ProductCapacityId);
             hdnId.Value = ProductCapacityId.ToString();
             ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "AddProductQty(" + hdnId.Value + ");", true);
+        }
+    }
+
+    private void Load_ProductCapacity(int ProductCapacityId)
+    {
+        ProductCapacity productCapacity = new ProductCapacity();
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        productCapacity = productCapacityService.FindByKey(ProductCapacityId);
+        if (productCapacity != null)
+        {
+            try
+            {
+                txtMaxQty.Text = productCapacity.MaxQuantity.ToString();
+                ddlProduct.SelectedValue = productCapacity.ProductId.ToString();
+                Product product = new Product();
+                ProductService productService = new ProductService();
+                product = productService.FindByKey(productCapacity.ProductId);
+                ltMeasurement.Text = product.Measurement;
+                txtQtyByDesign.Text = product.Quantity.ToString();
+                ltMearsurement2.Text = "(" + product.Measurement + ")";
+                txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
+
+                ReportModels rp = new ReportModels();
+                if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
+                {
+                    var data = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == ProductCapacityId);
+                    if (data != null)
+                    {
+                        ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
+                        var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
+                        Binding_ddlLoaiNangLuong_DVT(meList);
+
+                        ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
+                        txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
     public void btnSaveDevice_Click(object sender, EventArgs e)
@@ -349,6 +381,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
     {
         ProductCapacityService productCapacityService = new ProductCapacityService();
         ProductCapacity productCapacity = new ProductCapacity();
+        int _ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
 
         if (txtQtyByDesign.Text != "")
             productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesign.Text);
@@ -362,12 +395,17 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             productCapacity.DoanhThuTheoSP = Convert.ToDecimal(txtDoanhThuTheoSP.Text.Trim());
 
         productCapacity.IsPlan = false;
-        productCapacity.ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
+        productCapacity.ProductId = _ProductId;
         productCapacity.ReportId = ReportId;
         productCapacity.ReportYear = ReportYear;
 
+        ReportModels rp = new ReportModels();
+        var oldData = rp.DE_ProductCapacity.FirstOrDefault(x => x.ReportId == ReportId && x.ProductId == _ProductId && x.IsPlan == false);
+        if (oldData != null)
+            hdnId.Value = oldData.Id.ToString();
+
         int i = 0;
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0)
+        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //Cần sửa lại đoạn này
         {
             productCapacity.Id = Convert.ToInt32(hdnId.Value);
             productCapacity = productCapacityService.Update(productCapacity);
@@ -405,7 +443,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         int _fuelId = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
         int _meId = Convert.ToInt32(ddlLoaiNangLuong_DVT.SelectedValue);
         ReportModels rp = new ReportModels();
-        if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == _ProductCapacityId)) //update
+        if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _fuelId && o.MeasurementId == _meId)) //update
         {
             var _fuel = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _fuelId && o.MeasurementId == _meId);
             if (_fuel != null)
@@ -428,6 +466,8 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
     {
         ProductCapacityService productCapacityService = new ProductCapacityService();
         ProductCapacity productCapacity = new ProductCapacity();
+        int _ProductId = Convert.ToInt32(ddlProductPlan.SelectedValue);
+
         if (txtQtyByDesignPlan.Text != "")
             productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesignPlan.Text);
         if (txtMaxQtyPlan.Text.Trim() != "")
@@ -437,9 +477,14 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
             productCapacity.RateOfRevenue = Convert.ToDecimal(txtRateOfRevenue.Text.Trim());
         if (txtRateOfCost.Text.Trim() != "")
             productCapacity.RateOfCost = Convert.ToDecimal(txtRateOfCost.Text.Trim());
-        productCapacity.ProductId = Convert.ToInt32(ddlProductPlan.SelectedValue);
+        productCapacity.ProductId = _ProductId;
         productCapacity.ReportId = ReportId;
         productCapacity.ReportYear = ReportYear;
+
+        ReportModels rp = new ReportModels();
+        var check = rp.DE_ProductCapacity.FirstOrDefault(o => o.ReportId == ReportId && o.IsPlan == true && o.ProductId == _ProductId);
+        if (check != null)
+            hdnId.Value = check.Id.ToString();
 
         int i = 0;
         if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0)
@@ -715,7 +760,28 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         tbl = productCapacityService.GetDataCapacity(ReportId, false);
         rptProductResult.DataSource = tbl;
         rptProductResult.DataBind();
+        //GetData_ProductCapacity();
     }
+    private void GetData_ProductCapacity()
+    {
+        ReportModels rp = new ReportModels();
+        var data1 = (from a in rp.DE_ProductCapacity
+                     join b in rp.DE_Product on a.ProductId equals b.Id
+                     where a.ReportId == ReportId && a.IsPlan == false
+                     select new { a, b }).ToList();
+
+
+        var ListProductCapacityId = data1.Select(o => o.a.Id).ToList();
+        var data2 = rp.DE_ProductCapacityFuel.Where(o => ListProductCapacityId.Contains(o.ProductCapacityId))
+            .GroupBy(x => x.FuelId).Select(g => new
+            {
+                FuelId = g.Key,
+                total = g.Sum(s => s.ConsumeQty)
+            }).ToList();
+        Console.WriteLine(data2);
+
+    }
+
     private void BindProductCapacityPlan()
     {
         ProductCapacityService productCapacityService = new ProductCapacityService();
@@ -1150,32 +1216,64 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         {
             Product product = new Product();
             ProductService productService = new ProductService();
-            product = productService.FindByKey(Convert.ToInt32(ddlProduct.SelectedValue));
+            int _ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
+            product = productService.FindByKey(_ProductId);
             ltMeasurement.Text = product.Measurement;
             txtQtyByDesign.Text = product.Quantity.ToString();
             ltMearsurement2.Text = "(" + product.Measurement + ")";
+
+            //Nếu đã nhập sản phẩm này lúc trước => cần load lại dữ liệu đã nhập
+            ReportModels rp = new ReportModels();
+            if (rp.DE_ProductCapacity.Any(o => o.ReportId == ReportId && o.ProductId == _ProductId && o.IsPlan == false))
+            {
+                var oldData = rp.DE_ProductCapacity.FirstOrDefault(o => o.ReportId == ReportId && o.ProductId == _ProductId && o.IsPlan == false);
+                if (oldData != null)
+                {
+                    Load_ProductCapacity(oldData.Id);
+                }
+            }
         }
         else
         {
             txtQtyByDesign.Text = "";
             ltMeasurement.Text = "";
             ltMearsurement2.Text = "";
-
+            txtTieuThuTheoSP.Text = "";
+            txtMaxQty.Text = "";
         }
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQty(0);", true);
     }
     protected void ddlLoaiNangLuong_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (ddlLoaiNangLuong.SelectedIndex > 0)
-        {
-            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-            ReportModels rp = new ReportModels();
-            var data = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == _selectedFuel select a).ToList();
-            Binding_ddlLoaiNangLuong_DVT(data);
-        }
-        else
+        if (ddlLoaiNangLuong.SelectedIndex == 0)
         {
             ddlLoaiNangLuong_DVT.Items.Clear();
+            txtTieuThuTheoSP.Text = "";
+            return;
+        }
+
+        ReportModels rp = new ReportModels();
+        int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+        var data = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == _selectedFuel select a).ToList();
+        Binding_ddlLoaiNangLuong_DVT(data);
+
+        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
+        {
+            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
+            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel);
+            if (oldData != null)
+            {
+                ddlLoaiNangLuong_DVT.SelectedValue = oldData.MeasurementId.ToString();
+                txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
+            }
+            else
+            {
+                txtTieuThuTheoSP.Text = "";
+            }
+        }
+        else // dữ liệu mới
+        {
+
         }
     }
 
@@ -1185,11 +1283,43 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         ddlLoaiNangLuong_DVT.DataTextField = "MeasurementName";
         ddlLoaiNangLuong_DVT.DataSource = data;
         ddlLoaiNangLuong_DVT.DataBind();
+
+        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
+        {
+            ReportModels rp = new ReportModels();
+            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
+            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel);
+            if (oldData != null)
+            {
+                ddlLoaiNangLuong_DVT.SelectedValue = oldData.MeasurementId.ToString();
+                txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
+            }
+            else
+            {
+                txtTieuThuTheoSP.Text = "";
+            }
+        }
+        else // dữ liệu mới
+        {
+
+        }
     }
     protected void ddlLoaiNangLuong_DVT_SelectedIndexChanged(object sender, EventArgs e)
     {
-        int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-        ReportModels rp = new ReportModels();
+        int _selectedMearsement = Convert.ToInt32(ddlLoaiNangLuong_DVT.SelectedValue);
+        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
+        {
+            ReportModels rp = new ReportModels();
+            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
+            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
+            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel && o.MeasurementId == _selectedMearsement);
+            txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
+        }
+        else // dữ liệu mới
+        {
+
+        }
     }
 
     private void Binding_SuDungNangLuongTheoSP(int ProductCapacityId)
