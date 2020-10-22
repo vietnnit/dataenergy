@@ -1034,11 +1034,14 @@
 
 
     $('#divProductPlan').on('hidden.bs.modal', function () {
-        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', '');
+        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', false);
     });
 
     $('#divProductPlan').on('show.bs.modal', function () {
-        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', 'disabled');
+        if ($("#<%=hdnId.ClientID%>").val() != "")
+            $("#<%=ddlProductPlan.ClientID%>").prop('disabled', true);
+        else
+            $("#<%=ddlProductPlan.ClientID%>").prop('disabled', false);
     });
 </script>
 <style type="text/css">
