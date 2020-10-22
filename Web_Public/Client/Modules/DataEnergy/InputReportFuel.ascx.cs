@@ -1841,6 +1841,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                     }
                     catch (Exception ex) { ScriptManager.RegisterStartupScript(this, GetType(), "sendreport", "ShowDialogSend();", true); return; }
                 }
+
                 if (faqsBSO.UpdateStatusEnterprise(ReportId, 1) != null)
                 {
                     ReportLog log = new ReportLog();

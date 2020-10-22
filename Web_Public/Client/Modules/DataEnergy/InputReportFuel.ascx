@@ -251,7 +251,7 @@
                                         <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataCurrentTitle" runat="server"></asp:Literal><div style="float: right">
-                                                    <asp:LinkButton ID="btnAddFuel" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
+                                                    <asp:LinkButton ID="btnAddFuel" runat="server" Text="Nhập số liệu" data-toggle="modal"
                                                         data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
                                                 </div>
                                             </div>
@@ -322,8 +322,8 @@
                                         <div class="col-lg-12" >
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataNextYearTitle" runat="server"></asp:Literal><div style="float: right">
-                                                    <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
-                                                        data-target="#dlgFuelConsume" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:addReportDetail(1); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                    <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Nhập số liệu" data-toggle="modal"
+                                                        data-target="#dlgFuelConsume" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:addReportDetail(1); return 0;'><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</asp:LinkButton>
                                                 </div>
                                             </div>
                                             <asp:Literal ID="ltNoFuelFuture" runat="server"></asp:Literal>
