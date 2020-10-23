@@ -54,6 +54,10 @@ namespace ePower.DE.Service
         {
             return reportfuelDao.FindList(blReportType, AreaId, SubAreaId, OrgId, EnterpriseId, ProvinceId, DistrictId, SendStatus, blApproved, Year, FromDate, ToDate, keyword, paging);
         }
+        public DataTable FindListWithType(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, int SendStatus, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, PagingInfo paging, string ReportType)
+        {
+            return reportfuelDao.FindListWithType(blReportType, AreaId, SubAreaId, OrgId, EnterpriseId, ProvinceId, DistrictId, SendStatus, blApproved, Year, FromDate, ToDate, keyword, paging, ReportType);
+        }
 
         public DataTable TongHopMucNLTT(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, int SendStatus, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, PagingInfo paging)
         {
@@ -104,6 +108,21 @@ namespace ePower.DE.Service
             parameter[0] = new DbParameter("@ReportYear", ReportYear);
             parameter[1] = new DbParameter("@EnterpriseId", EnterpriseId);
             DataTable dt = new Db().GetDataTable("CheckReport", parameter, System.Data.CommandType.StoredProcedure);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                return Convert.ToInt32(dt.Rows[0]["ReportNo"]);
+            }
+            else
+                return -1;
+        }
+
+        public int CheckReportWithType(int ReportYear, int EnterpriseId, string ReportType)
+        {
+            DbParameter[] parameter = new DbParameter[3];
+            parameter[0] = new DbParameter("@ReportYear", ReportYear);
+            parameter[1] = new DbParameter("@EnterpriseId", EnterpriseId);
+            parameter[2] = new DbParameter("@ReportType", ReportType);
+            DataTable dt = new Db().GetDataTable("CheckReportWithType", parameter, System.Data.CommandType.StoredProcedure);
             if (dt != null && dt.Rows.Count > 0)
             {
                 return Convert.ToInt32(dt.Rows[0]["ReportNo"]);

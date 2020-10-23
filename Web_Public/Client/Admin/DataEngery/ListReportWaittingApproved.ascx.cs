@@ -312,4 +312,15 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
             Response.ContentType = "application/octet-stream"; // download […]
         }
     }
+
+    public string GetUrl(string input, int id)
+    {
+        //<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'
+        string url = "";
+        if (input.ToUpper() == ReportKey.ANNUAL)
+            url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+        else
+            url = ResolveUrl("~") + "Admin/ViewReportDetail/" + id.ToString() + "/Default.aspx";
+        return url;
+    }
 }

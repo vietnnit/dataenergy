@@ -20,7 +20,7 @@ using PR.Domain;
 using PR.Service;
 
 
-public partial class Client_Admin_DataEnergy_ViewReportDetail : System.Web.UI.UserControl
+public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web.UI.UserControl
 {
     int ReportId
     {
@@ -150,14 +150,14 @@ public partial class Client_Admin_DataEnergy_ViewReportDetail : System.Web.UI.Us
                         }
                     }
                     ReportYear = report.Year;
-                    ucViewPlanOneYear.ReportId = ReportId;
-                    ucViewPlanOneYear.ReportYear = ReportYear;
+                    //ucViewPlanOneYear.ReportId = ReportId;
+                    //ucViewPlanOneYear.ReportYear = ReportYear;
 
-                    ucProduct.ReportId = ReportId;
-                    ucProduct.ReportYear = ReportYear;
+                    //ucProduct.ReportId = ReportId;
+                    //ucProduct.ReportYear = ReportYear;
 
-                    ucViewPlan5Year.ReportId = ReportId;
-                    ucViewPlan5Year.ReportYear = ReportYear;
+                    //ucViewPlan5Year.ReportId = ReportId;
+                    //ucViewPlan5Year.ReportYear = ReportYear;
                     ltEnterpriseName.Text = report.ReporterName;
                     if (report.OwnerId == 0)
                         ltOwner.Text = "";
@@ -165,8 +165,8 @@ public partial class Client_Admin_DataEnergy_ViewReportDetail : System.Web.UI.Us
                         ltOwner.Text = "";
                     ltDataCurrentTitle.Text = "1. Nhiên liệu tiêu thụ năm " + (report.Year - 1);
                     ltDataNextYearTitle.Text = "2. Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
-                    BindReportDetail();
-                    BindReportDetailNext();
+                    //BindReportDetail();
+                    //BindReportDetailNext();
                     //ltReportYear.Text = ddlYear.SelectedItem.Text;
                     ltReportDate.Text = report.ReportDate.ToString("dd/MM/yyyy");
                     ltEnterpriseName.Text = report.CompanyName;
@@ -234,6 +234,8 @@ public partial class Client_Admin_DataEnergy_ViewReportDetail : System.Web.UI.Us
                     ltFaxParent.Text = report.FaxParent;
                     ltAddressParent.Text = report.AddressParent;
                     ltPhoneParent.Text = report.PhoneParent;
+
+                    BindReportDetail_11();
                     BindLog();
                     BindReportFile();
                 }
@@ -1027,4 +1029,35 @@ public partial class Client_Admin_DataEnergy_ViewReportDetail : System.Web.UI.Us
             Response.End();
         }
     }
+
+    #region Report 1.1
+    void BindReportDetail_11()
+    {
+        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
+        rptNoFuelCurrent_11.DataSource = dtCurrent;
+        rptNoFuelCurrent_11.DataBind();
+        ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
+    }
+    protected void rptNoFuelCurrent_11_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemIndex == 0) No_TOE = 0;
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView item = (DataRowView)e.Item.DataItem;
+            HiddenField hdDenotation = (HiddenField)e.Item.FindControl("hdDenotation");
+            int _denotation = Convert.ToInt32(hdDenotation.Value);
+            if (item["NoFuel_TOE"] != DBNull.Value)
+            {
+                //No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
+                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]) * _denotation;
+            }
+
+            //LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            //LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+
+            //btnDelete.Visible = false;
+            //btnEdit.Visible = false;
+        }
+    }
+    #endregion
 }

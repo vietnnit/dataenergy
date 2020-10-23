@@ -87,10 +87,11 @@ public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
         if (memVal.OrgId > 0)
         {
-            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging);
+            //DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging);
+            DataTable list = new ReportFuelService().FindListWithType(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging, ReportKey.ANNUAL);
             rptReport.DataSource = list;
             rptReport.DataBind();
-            if (list.Rows.Count > 0)
+            if (list != null && list.Rows.Count > 0)
             {
                 Paging.TotalRecord = Convert.ToInt32(list.Rows[0]["Total"]);
                 Paging.PageSize = PageSize;
@@ -116,10 +117,11 @@ public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web
         if (memVal.OrgId > 0)
         {
             //Danh sách báo cáo đã được phê duyệt
-            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
+            //DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
+            DataTable list = new ReportFuelService().FindListWithType(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging, ReportKey.ANNUAL);
             rptApproved.DataSource = list;
             rptApproved.DataBind();
-            if (list.Rows.Count > 0)
+            if (list != null && list.Rows.Count > 0)
             {
                 PagingApproved.TotalRecord = Convert.ToInt32(list.Rows[0]["Total"]);
                 PagingApproved.PageSize = PageSize;
@@ -172,7 +174,8 @@ public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web
         {
             ReportFuelService reportService = new ReportFuelService();
             int ReportYear = Convert.ToInt32(ddlYear.SelectedValue);
-            int iReportNo = reportService.CheckReport(ReportYear, memVal.OrgId);
+            //int iReportNo = reportService.CheckReport(ReportYear, memVal.OrgId);
+            int iReportNo = reportService.CheckReportWithType(ReportYear, memVal.OrgId, ReportKey.ANNUAL);
             if (iReportNo > 0)
             {
                 ltErr.Text = "<span style='color:red'>Đã có báo cáo hàng năm của năm " + ddlYear.SelectedValue + ". Vui lòng chọn năm báo cáo khác.</span>";
@@ -211,6 +214,8 @@ public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web
                     report.DistrictParentId = enter.ManDistrictId;
                     report.CompanyName = enter.Title;
                     report.Responsible = enter.ManPerson;
+                    report.ReportType = ReportKey.ANNUAL;
+
                     if (enter != null)
                     {
                         report.OrganizationId = enter.OrganizationId;
