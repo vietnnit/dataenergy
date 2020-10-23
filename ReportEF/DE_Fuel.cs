@@ -16,5 +16,7 @@ namespace ReportEF
 
         [StringLength(50)]
         public string FuelName { get; set; }
+        public int? FuelOrder { get; set; }
+        public int? Denotation { get; set; }
     }
 }

@@ -115,6 +115,7 @@ public partial class Client_Modules_DataEnergy_sdnl_dn_nhap_bao_cao : System.Web
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPageApp);
         if (memVal.OrgId > 0)
         {
+            //Danh sách báo cáo đã được phê duyệt
             DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
             rptApproved.DataSource = list;
             rptApproved.DataBind();

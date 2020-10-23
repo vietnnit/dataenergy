@@ -1,11 +1,12 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="sdnl_form_nhap_bc.ascx.cs" Inherits="Client_Modules_DataEnergy_sdnl_form_nhap_bc" %>
 <link rel="stylesheet" type="text/css" href="<%= ResolveUrl("~") %>Scripts/tab_announce/tabcontent.css" />
 <script type="text/javascript" src="<%= ResolveUrl("~") %>Scripts/tab_announce/tabcontent.js"></script>
+<asp:ScriptManager ID="clientScript" runat="server"></asp:ScriptManager>
 <asp:HiddenField ID="hdnNewsUrl" Value="" runat="server" />
 <asp:HiddenField ID="hdnReport" Value="" runat="server" />
 <asp:HiddenField ID="hdnNextYear" Value="" runat="server" />
-<asp:HiddenField ID="hdnDetailId" Value="" runat="server" />
-<asp:ScriptManager ID="clientScript" runat="server"></asp:ScriptManager>
+
+
 <div class="row mb10">
     <div class="tab-block mb25">
         <div class="panel panel-blue" style="margin-bottom: 0;">
@@ -66,6 +67,7 @@
                                     </td>
                                     <td style="text-align: right">
                                         <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
+                                        <asp:HiddenField ID="hdDenotation" runat="server" Value='<%#Eval("Denotation")%>' />
                                     </td>
                                     <td>
                                         <%#Eval("Reason")%>
@@ -92,6 +94,11 @@
         <div class="row">
             <div class="col-lg-12 text-left">
                 <asp:LinkButton runat="server" ID="btnExportWord" OnClick="btnExportWord_Click" CssClass="btn btn-sm btn-success mr10"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo</asp:LinkButton>
+                <asp:LinkButton runat="server" ID="btnSend" CssClass="btn btn-sm btn-danger mr10"
+                            OnClientClick="ShowDialogSend();return false;" data-toggle="modal" data-target="#dlgSend"
+                            Text="Hoàn thành lập và Gửi báo cáo"  ValidationGroup="view"><i class="fa fa-send-o"></i>&nbsp;Hoàn thành lập và Gửi báo cáo</asp:LinkButton>
+                 <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/dn-su-dung-nang-luong.aspx" CssClass="btn btn-sm btn-primary mr10"
+                            Text="Danh sách" />
             </div>
         </div>
     </div>
@@ -235,8 +242,77 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-
+<div class="modal fade" tabindex="-1" role="dialog" id="dlgSend">
+    <div class="modal-dialog">
+        <div class="modal-content sky-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Gửi báo cáo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            File báo cáo hàng năm
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <asp:FileUpload runat="server" ID="fAttach"></asp:FileUpload>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator19" runat="server" ControlToValidate="fAttach"
+                                CssClass="text-danger" ValidationGroup="vgSend" Text="Vui lòng chọn file báo cáo hàng năm"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;">
+                        <div class="col-lg-3">
+                            File báo cáo 5 năm
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <asp:FileUpload runat="server" ID="fAttach5year"></asp:FileUpload>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="fAttach5year"
+                                CssClass="text-danger" ValidationGroup="vgSend" Text="Vui lòng chọn file báo cáo 5 năm"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-3">
+                            Nội dung ý kiến <span class="append-icon right text-danger">*</span>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9">
+                            <asp:TextBox runat="server" class="form-control" ID="txtContent" TextMode="MultiLine"
+                                MaxLength="500" ValidationGroup="vgSend" Rows="3" placeholder="Mục đích sử dụng tối đa 500 ký tự"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator22" runat="server" ControlToValidate="txtContent"
+                                CssClass="text-danger" ValidationGroup="vgSend" Text="Vui lòng nhập nội dung ý kiến"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton ID="btnSaveSend" runat="server" Visible="true" OnClick="btnSend_Click"
+                         Text="Gửi" CssClass="btn-u btn-u-primary mr10"></asp:LinkButton>
+                    <button type="button" class="btn-u btn-u-default" data-dismiss="modal">
+                        Hủy</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+</div>
 <asp:Literal ID="clientview" runat="server"></asp:Literal>
+
+
+
+<div style="display: none;">
+    <asp:UpdatePanel ID="update_hdnDetailId" runat="server">
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="ddlFuel" EventName="SelectedIndexChanged" />
+        </Triggers>
+        <ContentTemplate>
+            <asp:HiddenField ID="hdnDetailId" Value="" runat="server" />
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</div>
 
 <script type="text/javascript">
     function updateReportDetail(isnext) {
@@ -244,15 +320,13 @@
     }
 
     function addReportDetail(isnext) {
-        $('#<%=ddlFuel.ClientID%>').val("");
         dlgFuelConsume_Init(isnext);
     }
 
     $("#dlgFuelConsume").on('hide.bs.modal', function () {
-        $('#<%=ddlFuel.ClientID%>').val("");
+        $("#<%=ddlFuel.ClientID%>#elem").prop('selectedIndex', 0);
         $("#<%=hdnNextYear.ClientID%>").val(0);
-        $("#<%=hdnDetailId.ClientID%>").val(''); // 
-        $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
+        //$("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
         $("#<%=ddlMeasure.ClientID%>").selectedIndex = 0;
         $("#<%=txtNoFuel.ClientID%>").val('');
         $("#<%=txtPrice.ClientID%>").val('');
@@ -260,9 +334,9 @@
     });
 
     function dlgFuelConsume_Init(isnext) {
+        $("#<%=ddlFuel.ClientID%>#elem").prop('selectedIndex', 0);
         $("#<%=hdnNextYear.ClientID%>").val(0);
-        $("#<%=hdnDetailId.ClientID%>").val(''); // 
-        $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
+        //$("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
         $("#<%=ddlMeasure.ClientID%>").selectedIndex = 0;
         $("#<%=txtNoFuel.ClientID%>").val('');
         $("#<%=txtPrice.ClientID%>").val('');
@@ -270,3 +344,5 @@
     }
 
 </script>
+
+

@@ -107,6 +107,16 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             report = reportBSO.FindByKey(ReportId);
             if (report != null)
             {
+                AllowEdit = report.ApprovedSatus;
+                if (!AllowEdit)
+                {
+                    int iStatus = report.SendSatus;
+                    if (iStatus == 5 || iStatus == 1 || iStatus == 2 || iStatus == 4)
+                        AllowEdit = false;
+                    else
+                        AllowEdit = true;
+                }
+
                 ReportYear = report.Year;
                 ltDataCurrentTitle.Text = "Nhiên liệu tiêu thụ năm " + (report.Year);
             }
@@ -116,7 +126,6 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
     void BindReportDetail()
     {
         DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
-
         rptNoFuelCurrent.DataSource = dtCurrent;
         rptNoFuelCurrent.DataBind();
         ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
@@ -127,16 +136,19 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
         {
             DataRowView item = (DataRowView)e.Item.DataItem;
+            HiddenField hdDenotation = (HiddenField)e.Item.FindControl("hdDenotation");
+            int _denotation = Convert.ToInt32(hdDenotation.Value);
             if (item["NoFuel_TOE"] != DBNull.Value)
             {
-                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
+                //No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
+                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]) * _denotation;
             }
+
             LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
             LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+
             btnDelete.Visible = AllowEdit;
             btnEdit.Visible = AllowEdit;
-            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",true); return false;");            
-
         }
     }
 
@@ -160,7 +172,6 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
 
     private void BindDataDetail()
     {
-
         if (hdnDetailId.Value != "")
         {
             ReportFuelDetail reportDetail = new ReportFuelDetailService().FindByKey(Convert.ToInt32(hdnDetailId.Value));
@@ -267,7 +278,9 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             return;
         txtNoTOE.Enabled = false;
         txtNoTOE.Text = "";
+
         BindMeasurement();
+
         int _fuelId = Convert.ToInt32(ddlFuel.SelectedValue);
         ReportModels rp = new ReportModels();
         if (rp.DE_ReportFuelDetail.Any(x => x.FuelId == _fuelId && x.ReportId == ReportId && x.IsNextYear == false))
@@ -276,8 +289,8 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             hdnDetailId.Value = fuelData.Id.ToString();
             BindDataDetail();
         }
-        //ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
-
+        else
+            hdnDetailId.Value = "";
     }
     protected void ddlMeasure_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -580,4 +593,65 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         }
         return res;
     }
+
+    protected void btnSend_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ReportFuelService faqsBSO = new ReportFuelService();
+
+            if (ReportId > 0)
+            {
+                string strPath = Server.MapPath("~/UserFile/Report/");
+                if (fAttach.HasFile)
+                {
+                    try
+                    {
+                        Random rand = new Random();
+                        string strFilename = "";
+                        strFilename = memVal.UserName + "_BC1_" + ReportYear + "_" + rand.Next(100) + System.IO.Path.GetExtension(fAttach.FileName).ToLower();
+
+                        if (System.IO.File.Exists(strPath + strFilename))
+                        {
+                            strFilename = memVal.UserName + "_BC1_" + ReportYear + "_" + rand.Next(100) + System.IO.Path.GetExtension(fAttach.FileName).ToLower();
+                        }
+                        fAttach.PostedFile.SaveAs(strPath + strFilename);
+
+                        ReportAttachFile reportAtt = new ReportAttachFile();
+                        reportAtt.ReportId = ReportId;
+                        reportAtt.PathFile = strFilename;
+                        reportAtt.Created = DateTime.Now;
+                        reportAtt.ActionName = "DN đã gửi báo cáo cho SCT";
+                        reportAtt.Comment = txtContent.Text;
+                        reportAtt.UserId = memVal.UserId;
+                        reportAtt.UserName = memVal.UserName;
+                        reportAtt.ReportType = Convert.ToInt32(LogType.ANNUALREPORT);
+                        new ReportAttachFileService().Insert(reportAtt);
+                    }
+                    catch (Exception ex) { ScriptManager.RegisterStartupScript(this, GetType(), "sendreport", "ShowDialogSend();", true); return; }
+                }
+
+                if (faqsBSO.UpdateStatusEnterprise(ReportId, 1) != null)
+                {
+                    ReportLog log = new ReportLog();
+                    log.ActionName = "DN đã gửi báo cáo cho SCT";
+                    //log.Comment = txtNote.Text;
+                    log.ReportId = ReportId;
+                    log.Created = DateTime.Now;
+                    log.MemberId = memVal.UserId;
+                    log.UserName = memVal.UserName;
+                    log.Status = "Đã gửi báo cáo";
+                    log.LogType = Convert.ToInt32(LogType.ANNUALREPORT);
+                    new ReportLogService().Insert(log);
+                    Response.Redirect(ResolveUrl("~") + "dn-su-dung-nang-luong.aspx");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            clientview.Text = ex.Message.ToString();
+        }
+    }
+
+
 }
