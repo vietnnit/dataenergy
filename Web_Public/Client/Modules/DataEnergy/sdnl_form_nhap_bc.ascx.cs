@@ -95,6 +95,19 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             BindReportInfo();
             BindFuel();
             BindReportDetail();
+
+            if(AllowEdit==false)
+            {
+                btnSend.Visible = false;
+                btnSaveSend.Enabled = false;
+                btnAddFuel.Visible = false;
+            }    
+            else
+            {
+                btnSaveSend.Enabled = true;
+                btnSend.Visible = true;
+                btnAddFuel.Visible = true;
+            }    
         }
     }
 
