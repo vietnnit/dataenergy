@@ -409,7 +409,7 @@
                                 <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" />
                             </div>
                             <div id="tabPlan5Year" style="display:none;">
-                                <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
+                                <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="false" />
                             </div>
                         </div>
                     </div>

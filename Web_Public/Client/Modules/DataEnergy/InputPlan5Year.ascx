@@ -264,7 +264,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10">
+            <div class="margin-bottom-10" style="display:none;">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kế hoạch thay thế nâng cấp, bổ sung thiết bị công nghệ
@@ -338,9 +338,9 @@
                     </tbody>
                 </table>
             </div>
-            <label class="control-label" style="display:none">
+            <label class="control-label" >
                 <asp:Literal ID="ltPeriod" runat="server" Text="Kết quả thực hiện kế hoạch 5 năm"></asp:Literal></label>
-            <div class="margin-bottom-10" style="display:none">
+            <div class="margin-bottom-10" >
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         1. Kết quả thực hiện tiết kiệm năng lượng
@@ -353,6 +353,9 @@
                                 Năm
                             </th>
                             <th style="width: 10%">
+                                <%=ReportYear - 5%>
+                            </th>
+                            <th style="width: 10%">
                                 <%=ReportYear - 4%>
                             </th>
                             <th style="width: 10%">
@@ -362,10 +365,7 @@
                                 <%=ReportYear - 2%>
                             </th>
                             <th style="width: 10%">
-                                <%=ReportYear - 1%>
-                            </th>
-                            <th style="width: 10%">
-                                <%=ReportYear%>
+                                <%=ReportYear -1 %>
                             </th>
                         </tr>
                     </thead>
@@ -397,7 +397,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10" style="display:none">
+            <div class="margin-bottom-10" style="display:none;" >
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kết quả thay thế nâng cấp, bổ sung thiết bị công nghệ

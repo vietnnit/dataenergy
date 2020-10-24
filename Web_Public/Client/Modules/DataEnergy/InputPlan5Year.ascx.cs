@@ -86,8 +86,8 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
         //ReportFuel report = new ReportFuelService().FindByKey(ReportId);
         //if (report != null)
         //{
-        ltNextPeriod.Text = ("Kế hoạch, mục tiêu tiết kiệm và sử dụng hiệu quả năng lượng trong 5 năm tới (" + ReportYear.ToString() + " - " + (ReportYear + 5).ToString() + ")").ToUpper();
-        ltPeriod.Text = ("Kết quả thực hiện kế hoạch 5 năm (" + (ReportYear - 5).ToString() + " - " + ReportYear.ToString() + ")").ToUpper();
+        ltNextPeriod.Text = ("Kế hoạch, mục tiêu tiết kiệm và sử dụng hiệu quả năng lượng trong 5 năm tới (" + ReportYear.ToString() + " - " + (ReportYear + 4).ToString() + ")").ToUpper();
+        ltPeriod.Text = ("Kết quả thực hiện kế hoạch 5 năm (" + (ReportYear - 5).ToString() + " - " + (ReportYear - 1).ToString() + ")").ToUpper();
         btnAddDevice.Visible = btnAddPlan.Visible = btnAddSolution.Visible = AllowEdit;
         //}
 
@@ -183,6 +183,7 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
         }
         DataTable dtSolution = new DataTable();
         dtSolution = new GiaiPhapService().GetSolutionYear(ReportYear - 4, ReportYear, memVal.OrgId);
+        
 
         DataTable dtSolutionResult = new DataTable();
         dtSolutionResult = new PlanTKNLService().GetResultSolution5Year(ReportYear - 4, ReportYear, memVal.OrgId);
@@ -473,7 +474,7 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
             list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuelType.SelectedValue));
         }
 
-        ddlMeasure.DataSource = list;        
+        ddlMeasure.DataSource = list;
         ddlMeasure.DataValueField = "Id";
         ddlMeasure.DataTextField = "MeasurementName";
         ddlMeasure.DataBind();
