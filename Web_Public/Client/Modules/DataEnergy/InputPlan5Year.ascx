@@ -9,7 +9,7 @@
         Visible="false"></asp:Literal></label>
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0;">
-        <div class="col-lg-12" style="display: none">
+        <div class="col-lg-12" >
             <asp:Literal ID="ltDataPeriod" runat="server"></asp:Literal>
             <div class="margin-bottom-10">
                 <div class="">
@@ -338,9 +338,9 @@
                     </tbody>
                 </table>
             </div>
-            <label class="control-label" style="display:none">
+            <label class="control-label" >
                 <asp:Literal ID="ltPeriod" runat="server" Text="Kết quả thực hiện kế hoạch 5 năm"></asp:Literal></label>
-            <div class="margin-bottom-10" style="display:none">
+            <div class="margin-bottom-10" >
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         1. Kết quả thực hiện tiết kiệm năng lượng
@@ -397,7 +397,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10" style="display:none">
+            <div class="margin-bottom-10" >
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kết quả thay thế nâng cấp, bổ sung thiết bị công nghệ
