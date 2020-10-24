@@ -73,8 +73,10 @@
                                 Text="Báo cáo chưa đạt" OnClientClick="delinceReport();return false;" data-toggle="modal"
                                 data-target="#approvedReport" />
                             <asp:Button runat="server" ID="Button2" CssClass="btn btn-sm btn-success mr10"
-                                Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExport();return false;" data-toggle="modal"
+                                Text="Xuất báo cáo hàng năm" Visible="false" OnClientClick="ShowDialogExport();return false;" data-toggle="modal"
                                 data-target="#dlgExport" />
+                            <asp:Button runat="server" ID="btExportAnnualReportTop"  OnClick="btExportAnnualReport_Click" CssClass="btn btn-sm btn-success mr10"
+                                Text="Xuất báo cáo hàng năm" data-toggle="modal" />
                         </div>
                     </div>
                 </div>
@@ -389,60 +391,60 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <table class="table table-bordered table-hover mbn" width="100%">
-                        <tr class="primary fs12">
-                            <th style="width: 5%">STT
-                            </th>
-                            <th style="width: 15%">Loại năng lượng
-                            </th>
-                            <th style="width: 10%">Mức tiêu thụ
-                            </th>
-                            <th style="width: 10%">Đơn vị tính
-                            </th>
-                            <th style="width: 10%">Giá (đồng)
-                            </th>
-                            <%--<th style="width: 10%">
+                                <tr class="primary fs12">
+                                    <th style="width: 5%">STT
+                                    </th>
+                                    <th style="width: 15%">Loại năng lượng
+                                    </th>
+                                    <th style="width: 10%">Mức tiêu thụ
+                                    </th>
+                                    <th style="width: 10%">Đơn vị tính
+                                    </th>
+                                    <th style="width: 10%">Giá (đồng)
+                                    </th>
+                                    <%--<th style="width: 10%">
                                                     Hệ số TOE
                                                 </th>--%>
-                            <th style="width: 10%">Năng lượng tiêu thụ (TOE)
-                            </th>
-                            <th style="width: 30%">Mục đích sử dụng
-                            </th>
-                           
-                        </tr>
-                        <asp:Repeater ID="rptNoFuelCurrent_11" runat="server" OnItemDataBound="rptNoFuelCurrent_11_ItemDataBound">
-                            <ItemTemplate>
-                                <tr>
-                                    <td>
-                                        <%#Container.ItemIndex+1  %>
-                                    </td>
-                                    <td>
-                                        <%#Eval("FuelName") %>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
-                                    </td>
-                                    <td>
-                                        <%#Eval("MeasurementName")%>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <%#Eval("Price") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("Price"),0) : ""%>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
-                                        <asp:HiddenField ID="hdDenotation" runat="server" Value='<%#Eval("Denotation")%>' />
-                                    </td>
-                                    <td>
-                                        <%#Eval("Reason")%>
-                                    </td>
-                                   
+                                    <th style="width: 10%">Năng lượng tiêu thụ (TOE)
+                                    </th>
+                                    <th style="width: 30%">Mục đích sử dụng
+                                    </th>
+
                                 </tr>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </table>
-                    <div style="text-align: right">
-                        <b>
-                            <asp:Literal ID="Literal1" runat="server"></asp:Literal></b>
-                    </div>
+                                <asp:Repeater ID="rptNoFuelCurrent_11" runat="server" OnItemDataBound="rptNoFuelCurrent_11_ItemDataBound">
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td>
+                                                <%#Container.ItemIndex+1  %>
+                                            </td>
+                                            <td>
+                                                <%#Eval("FuelName") %>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
+                                            </td>
+                                            <td>
+                                                <%#Eval("MeasurementName")%>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <%#Eval("Price") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("Price"),0) : ""%>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
+                                                <asp:HiddenField ID="hdDenotation" runat="server" Value='<%#Eval("Denotation")%>' />
+                                            </td>
+                                            <td>
+                                                <%#Eval("Reason")%>
+                                            </td>
+
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </table>
+                            <div style="text-align: right">
+                                <b>
+                                    <asp:Literal ID="Literal1" runat="server"></asp:Literal></b>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -564,8 +566,11 @@
                                 Text="Báo cáo chưa đạt" OnClientClick="delinceReport();return false;" data-toggle="modal"
                                 data-target="#approvedReport" />
                             <asp:Button runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
-                                Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExport();return false;" data-toggle="modal"
+                                Text="Xuất báo cáo hàng năm" Visible="false" OnClientClick="ShowDialogExport();return false;" data-toggle="modal"
                                 data-target="#dlgExport" />
+
+                            <asp:Button runat="server" ID="btExportAnnualReportBottom" OnClick="btExportAnnualReport_Click" CssClass="btn btn-sm btn-success mr10"
+                                Text="Xuất báo cáo hàng năm" data-toggle="modal" />
                         </div>
                     </div>
                 </div>

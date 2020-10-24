@@ -154,6 +154,8 @@ public partial class Client_Module_DataEngery_DetailPlanYear : System.Web.UI.Use
     {
         ddlFuelType.Items.Clear();
         IList<Fuel> list = new List<Fuel>();
+        AspNetCache.RemoveCache(Constants.Cache_ReportFuel_Fuel_All);
+
         if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
         {
             list = new FuelService().FindAll();

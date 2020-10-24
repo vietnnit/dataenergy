@@ -2075,6 +2075,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         ddlFuel.Items.Clear();
         IList<Fuel> list = new List<Fuel>();
+        AspNetCache.RemoveCache(Constants.Cache_ReportFuel_Fuel_All);
+
         if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
         {
             ReportModels rp = new ReportModels();

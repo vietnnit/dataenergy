@@ -421,7 +421,7 @@ public partial class Client_Module_DataEngery_ProductYear : System.Web.UI.UserCo
         {
             i = productCapacityService.Insert(productCapacity);
 
-            if (txtTieuThuNLTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0 && i > 0)
+            if (txtTieuThuTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0 && i > 0)
             {
                 InsertUpdate_ProductCapacityFuel(i);
             }

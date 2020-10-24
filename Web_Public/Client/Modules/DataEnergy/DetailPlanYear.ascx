@@ -450,7 +450,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3" for="inputSmall">
-                            Loại nhiên liệu<span class="append-icon right text-danger">*</span></label>
+                            Loại năng lượng<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
                             <asp:DropDownList ID="ddlFuelType" runat="server" AppendDataBoundItems="True" CssClass="form-control input-sm"
                                 ValidationGroup="valAddSolutionTKNLOne" OnSelectedIndexChanged="ddlFuel_SelectedIndexChanged"

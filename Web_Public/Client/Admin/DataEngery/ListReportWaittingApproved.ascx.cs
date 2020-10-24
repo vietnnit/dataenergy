@@ -317,10 +317,23 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
     {
         //<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'
         string url = "";
-        if (input.ToUpper() == ReportKey.ANNUAL)
-            url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
-        else
-            url = ResolveUrl("~") + "Admin/ViewReportDetail/" + id.ToString() + "/Default.aspx";
+        switch (input.ToUpper())
+        {
+            case ReportKey.ANNUAL:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+                break;
+            case ReportKey.PLAN:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailPlan/" + id.ToString() + "/Default.aspx";
+                break;
+            case ReportKey.PLAN5:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+                break;
+
+        }
+        //if (input.ToUpper() == ReportKey.ANNUAL)
+        //    url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+        //else
+        //    url = ResolveUrl("~") + "Admin/ViewReportDetail/" + id.ToString() + "/Default.aspx";
         return url;
     }
 }

@@ -99,7 +99,8 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
         if (memVal.OrgId > 0)
         {
-            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging);
+            //DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging);
+            DataTable list = new ReportFuelService().FindListWithType(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, false, 0, null, null, "", paging, ReportKey.PLAN);
             rptReport.DataSource = list;
             rptReport.DataBind();
             if (list.Rows.Count > 0)
@@ -128,7 +129,8 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPageApp);
         if (memVal.OrgId > 0)
         {
-            DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
+            //DataTable list = new ReportFuelService().FindList(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging);
+            DataTable list = new ReportFuelService().FindListWithType(false, 0, 0, 0, memVal.OrgId, 0, 0, -1, true, 0, null, null, "", paging, ReportKey.PLAN);
             rptApproved.DataSource = list;
             rptApproved.DataBind();
             if (list.Rows.Count > 0)
@@ -176,7 +178,7 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
             Tool.Message(this.Page, "Báo cáo đã được gửi đi đang được duyệt, bạn không thể xóa báo cáo này.");
         }
     }
-   
+
     protected void btnAddReport_Click(object sender, EventArgs e)
     {
         ltErr.Text = "";
@@ -184,7 +186,8 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
         {
             ReportFuelService reportService = new ReportFuelService();
             int ReportYear = Convert.ToInt32(ddlYear.SelectedValue);
-            int iReportNo = reportService.CheckReport(ReportYear, memVal.OrgId);
+            //int iReportNo = reportService.CheckReport(ReportYear, memVal.OrgId);
+            int iReportNo = reportService.CheckReportWithType(ReportYear, memVal.OrgId, ReportKey.PLAN);
             if (iReportNo > 0)
             {
                 ltErr.Text = "<span style='color:red'>Đã có báo cáo hàng năm của năm " + ddlYear.SelectedValue + ". Vui lòng chọn năm báo cáo khác.</span>";
@@ -224,6 +227,7 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
                     report.DistrictParentId = enter.ManDistrictId;
                     report.CompanyName = enter.Title;
                     report.Responsible = enter.ManPerson;
+                    report.ReportType = ReportKey.PLAN;
                     if (enter != null)
                     {
                         report.OrganizationId = enter.OrganizationId;
@@ -265,14 +269,14 @@ public partial class Client_Modules_DataEnergy_MyReport : System.Web.UI.UserCont
             }
         }
     }
-   
+
     protected void rptReport_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
         if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
         {
             DataRowView item = (DataRowView)e.Item.DataItem;
             LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
-            Literal ltEdit = (Literal)e.Item.FindControl("ltEdit");                   
+            Literal ltEdit = (Literal)e.Item.FindControl("ltEdit");
             if (Convert.ToBoolean(item["ApprovedSatus"]))
             {
                 btnDelete.Visible = false;

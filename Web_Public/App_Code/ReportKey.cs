@@ -8,8 +8,8 @@ using System.Web;
 /// </summary>
 public static class ReportKey
 {
-    public static string ANNUAL = "ANNUAL";
-    public static string PLAN = "PLAN";
-    public static string PLAN5 = "PLAN5";
+    public const string ANNUAL = "ANNUAL";
+    public const string PLAN = "PLAN";
+    public const string PLAN5 = "PLAN5";
 
 }

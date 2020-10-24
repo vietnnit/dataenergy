@@ -18,9 +18,9 @@ using ePower.DE.Domain;
 using ePower.DE.Service;
 using PR.Domain;
 using PR.Service;
-using ReportEF;
 
-public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web.UI.UserControl
+
+public partial class Client_Admin_DataEnergy_ViewReportDetailPlan : System.Web.UI.UserControl
 {
     int ReportId
     {
@@ -150,14 +150,14 @@ public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web
                         }
                     }
                     ReportYear = report.Year;
-                    //ucViewPlanOneYear.ReportId = ReportId;
-                    //ucViewPlanOneYear.ReportYear = ReportYear;
+                    ucViewPlanOneYear.ReportId = ReportId;
+                    ucViewPlanOneYear.ReportYear = ReportYear;
 
-                    //ucProduct.ReportId = ReportId;
-                    //ucProduct.ReportYear = ReportYear;
+                    ucProduct.ReportId = ReportId;
+                    ucProduct.ReportYear = ReportYear;
 
-                    //ucViewPlan5Year.ReportId = ReportId;
-                    //ucViewPlan5Year.ReportYear = ReportYear;
+                    ucViewPlan5Year.ReportId = ReportId;
+                    ucViewPlan5Year.ReportYear = ReportYear;
                     ltEnterpriseName.Text = report.ReporterName;
                     if (report.OwnerId == 0)
                         ltOwner.Text = "";
@@ -165,8 +165,8 @@ public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web
                         ltOwner.Text = "";
                     ltDataCurrentTitle.Text = "1. Nhiên liệu tiêu thụ năm " + (report.Year - 1);
                     ltDataNextYearTitle.Text = "2. Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
-                    //BindReportDetail();
-                    //BindReportDetailNext();
+                    BindReportDetail();
+                    BindReportDetailNext();
                     //ltReportYear.Text = ddlYear.SelectedItem.Text;
                     ltReportDate.Text = report.ReportDate.ToString("dd/MM/yyyy");
                     ltEnterpriseName.Text = report.CompanyName;
@@ -234,8 +234,6 @@ public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web
                     ltFaxParent.Text = report.FaxParent;
                     ltAddressParent.Text = report.AddressParent;
                     ltPhoneParent.Text = report.PhoneParent;
-
-                    BindReportDetail_11();
                     BindLog();
                     BindReportFile();
                 }
@@ -1029,233 +1027,4 @@ public partial class Client_Admin_DataEnergy_ViewReportDetailAnnual : System.Web
             Response.End();
         }
     }
-
-    #region Report 1.1
-    void BindReportDetail_11()
-    {
-        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
-        rptNoFuelCurrent_11.DataSource = dtCurrent;
-        rptNoFuelCurrent_11.DataBind();
-        ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
-    }
-    protected void rptNoFuelCurrent_11_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    {
-        if (e.Item.ItemIndex == 0) No_TOE = 0;
-        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        {
-            DataRowView item = (DataRowView)e.Item.DataItem;
-            HiddenField hdDenotation = (HiddenField)e.Item.FindControl("hdDenotation");
-            int _denotation = Convert.ToInt32(hdDenotation.Value);
-            if (item["NoFuel_TOE"] != DBNull.Value)
-            {
-                //No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
-                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]) * _denotation;
-            }
-
-            //LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
-            //LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
-
-            //btnDelete.Visible = false;
-            //btnEdit.Visible = false;
-        }
-    }
-
-    protected void btExportAnnualReport_Click(object sender, EventArgs e)
-    {
-        #region get data
-        WordExtend ex = new WordExtend();
-        string temp = "TempReport/TemMauBaoCao1_1.doc";
-        ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
-        Enterprise or = new Enterprise();
-        EnterpriseService orser = new EnterpriseService();
-        or = orser.FindByKey(Convert.ToInt32(memVal.OrgId));
-
-        DataTable dtinfo = new DataTable();
-        ex.WriteToMergeField("BC_MaDN", memVal.UserName);
-        if (memVal.OrgId > 0)
-        {
-            dtinfo = new ReportFuelService().GetInfoReportFuel(ReportId);
-        }
-
-        if (or != null)
-        {
-            ex.WriteToMergeField("BC_Title", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo1", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo2", or.Title);
-        }
-        else
-            ex.WriteToMergeField("BC_TenCoSo", "");
-
-        if (dtinfo.Rows[0]["Year"] != DBNull.Value)
-        {
-            int iCurrentYear = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
-            string NextYear = dtinfo.Rows[0]["Year"].ToString();
-            ex.WriteToMergeField("BC_NextYear", NextYear);
-        }
-        if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
-        {
-            ex.WriteToMergeField("BC_ChiuTrachNhiem", dtinfo.Rows[0]["Responsible"].ToString());
-        }
-        else
-            ex.WriteToMergeField("BC_ChiuTrachNhiem", "");
-
-        if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
-        {
-            ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-            //ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-        }
-        if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayNhan", "");
-        if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayXacNhan", "");
-        if (dtinfo.Rows[0]["SubAreaName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_PhanNganh", dtinfo.Rows[0]["SubAreaName"].ToString());
-        else
-            ex.WriteToMergeField("BC_PhanNganh", "");
-
-        if (dtinfo.Rows[0]["TaxCode"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TaxCode", dtinfo.Rows[0]["TaxCode"].ToString());
-        else
-            ex.WriteToMergeField("BC_TaxCode", "");
-
-        //ex.WriteToMergeField("BC_Owner", ltOwner.Text);
-        ex.WriteToMergeField("BC_Owner", "");
-
-        if (or.Address != null)
-            ex.WriteToMergeField("BC_DiaChi", or.Address);
-        if (dtinfo.Rows[0]["DistrictName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Huyen", dtinfo.Rows[0]["DistrictName"].ToString());
-        else
-            ex.WriteToMergeField("BC_Huyen", "");
-        if (dtinfo.Rows[0]["ProvinceName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Tinh", dtinfo.Rows[0]["ProvinceName"].ToString());
-        else
-            ex.WriteToMergeField("BC_Tinh", "");
-        if (dtinfo.Rows[0]["ReporterName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NguoiBC", dtinfo.Rows[0]["ReporterName"].ToString());
-        else
-            ex.WriteToMergeField("BC_NguoiBC", "");
-
-        if (dtinfo.Rows[0]["Fax"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Fax", dtinfo.Rows[0]["Fax"].ToString());
-        else
-            ex.WriteToMergeField("BC_Fax", "");
-        if (dtinfo.Rows[0]["Email"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Email", dtinfo.Rows[0]["Email"].ToString());
-        else
-            ex.WriteToMergeField("BC_Email", "");
-
-        if (dtinfo.Rows[0]["Phone"] != DBNull.Value)
-            ex.WriteToMergeField("BC_DienThoai", dtinfo.Rows[0]["Phone"].ToString());
-        else
-            ex.WriteToMergeField("BC_DienThoai", "");
-        if (dtinfo.Rows[0]["ParentName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TenCtyMe", dtinfo.Rows[0]["ParentName"].ToString());
-        else
-            ex.WriteToMergeField("BC_TenCtyMe", "");
-
-        if (dtinfo.Rows[0]["AddressParent"] != null)
-            ex.WriteToMergeField("BC_DiaChiP", dtinfo.Rows[0]["AddressParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_DiaChiP", "");
-
-        if (dtinfo.Rows[0]["DistrictNameP"] != null)
-            ex.WriteToMergeField("BC_HuyenP", dtinfo.Rows[0]["DistrictNameP"].ToString());
-        else
-            ex.WriteToMergeField("BC_HuyenP", "");
-
-        if (dtinfo.Rows[0]["ProvinceNameP"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TinhP", dtinfo.Rows[0]["ProvinceNameP"].ToString());
-        else
-            ex.WriteToMergeField("BC_TinhP", "");
-
-        if (dtinfo.Rows[0]["PhoneParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_DienThoaiP", dtinfo.Rows[0]["PhoneParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_DienThoaiP", "");
-
-        if (dtinfo.Rows[0]["FaxParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_FaxP", "");
-        if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_EmailP", "");
-
-        if (or.ActiveYear > 0)
-            ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
-        else
-            ex.WriteToMergeField("ActiveYear", "");
-
-        DataTable dthientai = new DataTable();
-        DataSet dshientai = new DataSet("tbl1");
-
-        DataTable tblProductResult = CreateFuelData();
-        dshientai.Merge(tblProductResult);
-        dshientai.Tables[0].TableName = "tbl1";
-        dshientai.Merge(dthientai);
-        ex.WriteDataSetToMergeField(dshientai);
-        #endregion
-        ex.Save(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc"));
-        HttpContext.Current.Response.Redirect(string.Format("~/Download.aspx?fp={0}&fn={1}",
-              System.IO.Path.GetFileName(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc")),
-              ""
-          ));
-    }
-    private DataTable CreateFuelData()
-    {
-        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
-
-        ReportModels rp = new ReportModels();
-        var allFuel = (from a in rp.DE_Fuel
-                       join b in rp.DE_Measurement on a.MeasurementId equals b.Id
-                       select new
-                       {
-                           a.Id,
-                           a.GroupFuelId,
-                           a.FuelName,
-                           b.MeasurementName
-                       }).ToList();
-        DataTable res = new DataTable();
-        res.Columns.Add("stt", typeof(string));
-        res.Columns.Add("FuelName", typeof(string));
-        res.Columns.Add("MeasurementName", typeof(string));
-        res.Columns.Add("NoFuel", typeof(string));
-        res.Columns.Add("Reason", typeof(string));
-        int i = 1;
-        foreach (var item in allFuel)
-        {
-            DataRow r = res.NewRow();
-            r["stt"] = i.ToString();
-            r["FuelName"] = item.FuelName;
-            r["MeasurementName"] = item.MeasurementName;
-
-            bool check = false;
-            foreach (DataRow x in dtCurrent.Rows)
-            {
-                if (x["FuelId"].ToString() == item.Id.ToString())
-                {
-                    check = true;
-                    r["NoFuel"] = x["NoFuel"];
-                    r["Reason"] = x["Reason"];
-                    break;
-                }
-            }
-            if (check == false)
-            {
-                r["NoFuel"] = "";
-                r["Reason"] = "";
-            }
-            res.Rows.Add(r);
-            i++;
-        }
-        return res;
-    }
-    #endregion
 }

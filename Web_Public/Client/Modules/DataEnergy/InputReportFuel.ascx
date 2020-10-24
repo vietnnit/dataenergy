@@ -390,7 +390,7 @@
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltKeHoachTieuThuDien" runat ="server" Text="Tiêu thụ điện"></asp:Literal>
                                                 <div style="float: right">
-                                                    <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</a>
+                                                    <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</a>
                                                     <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
                                                         data-target="#dlgTieuThuSXDien" ToolTip="Sửa thông tin" OnClientClick='javascript:openDlgTieuThuSXDien(); return 0;'><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</asp:LinkButton>
                                                 </div>
@@ -822,9 +822,17 @@
                         <label class="col-lg-3" for="inputSmall">
                             Đơn vị tính <span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:DropDownList ID="ddlMeasure" runat="server" AppendDataBoundItems="True" ValidationGroup="viewFuelOne"
+                            <asp:UpdatePanel ID="update_ddlMeasure" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger EventName="SelectedIndexChanged" ControlID="ddlFuel" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="ddlMeasure" runat="server" AppendDataBoundItems="True" ValidationGroup="viewFuelOne"
                                 AutoPostBack="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMeasure_SelectedIndexChanged">
                             </asp:DropDownList>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                            
                             <asp:RequiredFieldValidator ID="rfvMeasurement" runat="server" ControlToValidate="ddlMeasure"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn đơn vị tính"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -1015,7 +1023,7 @@
                 </div>
                 <div class="modal-footer">
                     <asp:LinkButton ID="btnSaveSend" runat="server" Visible="true" OnClick="btnSend_Click"
-                        ValidationGroup="vgSend" Text="Gửi" CssClass="btn-u btn-u-primary mr10"></asp:LinkButton>
+                        Text="Gửi" CssClass="btn-u btn-u-primary mr10"></asp:LinkButton>
                     <button type="button" class="btn-u btn-u-default" data-dismiss="modal">
                         Hủy</button>
                 </div>
