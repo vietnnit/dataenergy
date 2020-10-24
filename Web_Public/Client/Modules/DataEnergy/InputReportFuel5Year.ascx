@@ -1,5 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="InputReportFuel.ascx.cs"
-    Inherits="Client_Modules_DataEnergy_InputReportFuel" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="InputReportFuel5Year.ascx.cs"
+    Inherits="Client_Modules_DataEnergy_InputReportFuel5Year" %>
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/InputPlan5Year.ascx" TagName="InputPlan5Year"
     TagPrefix="uc1" %>
@@ -22,7 +22,7 @@
         <div class="panel panel-blue" style="margin-bottom: 0;">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <span>KẾ HOẠCH NĂM VỀ SỬ DỤNG NĂNG LƯỢNG TIẾT KIỆM VÀ HIỆU QUẢ</span>
+                    <span>KẾ HOẠCH 5 NĂM</span>
                 </h3>
             </div>
         </div>
@@ -236,7 +236,7 @@
                                 <li><a rel="tabProduct" href="#" class="">Cơ sở hạ tầng và sản phẩm</a></li>
                                 <li><a rel="tabData" href="#" class="">Mức nhiên liệu tiêu thụ năm</a></li>
                                 <li><a rel="tabPlan" href="#" class="">Giải pháp TKNL năm</a></li>
-                                <li><a rel="tabPlan5Year" href="#" style="display:none" class="">Giải pháp TKNL 5 năm</a></li>
+                                <li><a rel="tabPlan5Year" href="#" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
                     </div>
@@ -408,7 +408,7 @@
                             <div id="tabPlan">
                                 <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" />
                             </div>
-                            <div id="tabPlan5Year" style="display:none;">
+                            <div id="tabPlan5Year">
                                 <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
                             </div>
                         </div>

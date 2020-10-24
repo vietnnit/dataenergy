@@ -1,6 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="EditWidgetPageLayout.ascx.cs"
     Inherits="Admin_Controls_EditWidgetPageLayout" %>
-<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
+<%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%--<%@ Register TagPrefix="telerik" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>--%>
+
+
+
 
 <header id="topbar">
     <div class="topbar-left">
@@ -167,7 +171,7 @@
             <div class="table-responsive mb20">
                 
                 <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
-                <telerik:RadGrid ID="RadGrid1" runat="server" PageSize="200" AllowPaging="True" GridLines="None"
+                <telerik:RadGrid ID="RadGrid1" runat="server" PageSize="400" AllowPaging="True" GridLines="None"
                     AutoGenerateColumns="False" Style="border: 1; outline: none;" Skin="Default"
                     OnItemDataBound="RadGrid1_ItemDataBound" 
                     OnItemCommand="RadGrid1_ItemCommand">

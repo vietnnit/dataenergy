@@ -121,7 +121,7 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             if (report != null)
             {
                 AllowEdit = report.ApprovedSatus;
-                if (AllowEdit)
+                if (!AllowEdit)
                 {
                     int iStatus = report.SendSatus;
                     if (iStatus == 5 || iStatus == 1 || iStatus == 2 || iStatus == 4)

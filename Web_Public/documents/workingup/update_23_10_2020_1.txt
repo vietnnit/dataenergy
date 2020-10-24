@@ -1,0 +1,196 @@
+﻿---------------------
+---------------------
+---------------------
+---------------------KHI CHẠY XONG CÁC THỦ TỤC CẦN VÀO TÀI KHOẢN ADMIN PHÂN QUYỀN CHO NHÓM SCT
+---------------------
+---------------------
+---------------------
+---------------------
+
+
+
+--1. Thêm cột ReportType vào bảng DE_ReportFuel
+ALTER TABLE DE_ReportFuel ADD ReportType nvarchar(50)
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ANNUAL(Hàng năm) PLAN(kế hoạch năm tiếp theo), PLAN5(Kế hoạch 5 năm)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'DE_ReportFuel', @level2type=N'COLUMN',@level2name=N'ReportType'
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Get_ReportFuel_FindWithType]
+@CurrentPage	int=1,
+@PageSize	int=20,
+@OrgId	int=0,
+@Enterprise int=0,
+@AreaId	int=0,
+@SubAreaId int =0,
+@ProvinceId	int=0,
+@DistrictId int =0,
+@SendStatus int =-1,
+@ApprovedStatus bit,
+@IsFiveYear bit,
+@Year int,
+@FromDate datetime,
+@ToDate datetime,
+@Keyword nvarchar(100),
+@ReportType nvarchar(50)
+AS
+declare @SQL nvarchar(4000), @DK nvarchar(1000), @Param nvarchar(1000), @StartIndex int, @Order varchar(255)
+set @Param = '@OrgId int, @Enterprise int, @AreaId int, @SubAreaId int, @ProvinceId int, @DistrictId int, @Year int, @SendStatus int, @ApprovedStatus bit, @IsFiveYear bit, @FromDate datetime, @ToDate datetime , @Keyword nvarchar(100), @ReportType nvarchar(50)'
+set @DK  = 'A.IsDelete=0'
+set @SQL = ''
+set @StartIndex = @PageSize*(@CurrentPage-1)
+
+IF(@IsFiveYear>0) begin	
+	SET @DK =@DK+ ' And A.IsFiveYear=@IsFiveYear'
+end
+IF(@Enterprise>0) begin	
+	SET @DK =@DK+ ' And A.EnterpriseId=@Enterprise'
+end
+
+IF(@AreaId>0) begin	
+	SET @DK =@DK+ ' And A.AreaId=@AreaId'
+end
+
+IF(@SubAreaId>0) begin	
+	SET @DK =@DK+ ' And A.SubAreaId=@SubAreaId'
+end
+
+IF(@OrgId>0) begin	
+	SET @DK =@DK+ ' And A.OrganizationId=@OrgId'
+end
+
+IF(@ProvinceId>0) begin	
+	SET @DK =@DK+ ' And A.ProvinceId=@ProvinceId'
+end
+IF(@DistrictId>0) begin	
+	SET @DK =@DK+ ' And A.DistrictId=@DistrictId'
+end
+
+IF(@Year>0) begin	
+	SET @DK = @DK+ ' And A.Year=@Year'
+end
+IF (@ApprovedStatus is not null )
+BEGIN	
+	SET @DK = @DK +' And A.ApprovedSatus =@ApprovedStatus '
+END
+IF (@SendStatus>-1 )
+
+BEGIN	
+	SET @DK=@DK +'  And A.SendSatus =@SendStatus '
+END
+
+
+IF @Keyword<>''
+BEGIN	
+	SET @DK=@DK +' A.Title Like N'  + char(39) + '%'+ @Keyword + '%' + char(39)		
+END
+
+SET @DK=@DK +'  And A.ReportType =@ReportType '
+
+set @SQL = @SQL + ' DECLARE @Result int CREATE TABLE #Temp ([TempID] [int] IDENTITY (1, 1) NOT NULL, Id [int])'
+set @SQL = @SQL + ' INSERT INTO #Temp (Id) '
+set @SQL = @SQL + ' SELECT A.Id '
+set @SQL = @SQL + ' FROM DE_ReportFuel A '
+
+
+if(@DK<>'')
+	set @SQL =@SQL+ ' WHERE ' + @DK
+
+set @SQL = @SQL + ' ORDER BY A.Id DESC'
+
+set @SQL = @SQL + ' SELECT TOP ' + cast(@PageSize as varchar) + ' * '
+set @SQL = @SQL + ' INTO #TempPage '
+set @SQL = @SQL + ' FROM #Temp '
+set @SQL = @SQL + ' WHERE (TempID > ' + cast(@StartIndex as varchar) + ') '
+set @SQL = @SQL + ' ORDER BY TempID '
+set @SQL = @SQL + ' SELECT @Result = max(TempID) FROM #Temp '
+set @SQL = @SQL + ' SELECT TempID as [Index],A.*,B.Title,AR.AreaName as ParentAreaName, ARS.AreaName,PR.ProvinceName, @Result as Total FROM DE_ReportFuel A INNER JOIN #TempPage T ON T.Id = A.Id 
+					INNER JOIN DE_Enterprise B ON A.EnterpriseId=B.Id 
+					LEFT JOIN DE_Area AR ON AR.Id=A.AreaId 
+					LEFT JOIN  DE_Area ARS ON ARS.Id=A.SubAreaId
+					LEFT JOIN DE_Province AS PR ON PR.Id=B.ProvinceId'
+
+
+set @SQL = @SQL + ' drop table #Temp '
+set @SQL = @SQL + ' drop table #TempPage '
+
+print(@SQL)
+
+exec sp_executesql @SQL, @Param, @OrgId,@Enterprise, @AreaId , @SubAreaId ,@ProvinceId, @DistrictId,@Year , @SendStatus ,@ApprovedStatus,@IsFiveYear , @FromDate,  @ToDate ,@Keyword, @ReportType 
+go
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROC [dbo].[CheckReportWithType]
+@ReportYear int,
+@EnterpriseId int,
+@ReportType nvarchar(50)
+AS
+SET NOCOUNT ON
+SELECT COUNT(*) as ReportNo from  [dbo].[DE_ReportFuel] as r WHERE r.[Year]=@ReportYear AND r.EnterpriseId=@EnterpriseId and ReportType=@ReportType
+SET NOCOUNT OFF
+go
+
+
+INSERT INTO [dbo].[tblModules]
+           ([Modules_Parent]
+           ,[Modules_Name]
+           ,[Modules_Dir]
+           ,[Modules_Url]
+           ,[Modules_Order]
+           ,[Modules_Help]
+           ,[Modules_Icon]
+           ,[Status]
+           ,[isMenu]
+           ,[isView]
+           ,[Slug])
+     
+          select 
+		  [Modules_Parent]
+           ,N'Xem chi tiết báo cáo hàng năm'
+           ,[Modules_Dir]
+           ,'ViewReportDetailAnnual'
+           ,[Modules_Order]
+           ,[Modules_Help]
+           ,[Modules_Icon]
+           ,[Status]
+           ,[isMenu]
+           ,[isView]
+           ,'ViewReportDetailAnnual'
+	from [tblModules]
+	where Slug='ViewReportDetail'
+
+    go
+    INSERT INTO [dbo].[tblModules]
+           ([Modules_Parent]
+           ,[Modules_Name]
+           ,[Modules_Dir]
+           ,[Modules_Url]
+           ,[Modules_Order]
+           ,[Modules_Help]
+           ,[Modules_Icon]
+           ,[Status]
+           ,[isMenu]
+           ,[isView]
+           ,[Slug])
+     
+          select 
+		  [Modules_Parent]
+           ,N'Xem chi tiết báo cáo kế hoạch năm'
+           ,[Modules_Dir]
+           ,'ViewReportDetailPlan'
+           ,[Modules_Order]
+           ,[Modules_Help]
+           ,[Modules_Icon]
+           ,[Status]
+           ,[isMenu]
+           ,[isView]
+           ,'ViewReportDetailPlan'
+	from [tblModules]
+	where Slug='ViewReportDetail'
+    go
