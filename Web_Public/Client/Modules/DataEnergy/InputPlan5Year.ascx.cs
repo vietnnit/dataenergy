@@ -12,6 +12,7 @@ using PR.Domain;
 using PR.Service;
 using System.Data;
 using System.Text;
+using ReportEF;
 
 public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.UserControl
 {
@@ -78,6 +79,8 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
             BindResultTB();
             BindResultTKNL();
             BindResultSolution5Year();
+
+            GetKQThucHienKeHoach();
         }
     }
 
@@ -86,8 +89,8 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
         //ReportFuel report = new ReportFuelService().FindByKey(ReportId);
         //if (report != null)
         //{
-        ltNextPeriod.Text = ("Kế hoạch, mục tiêu tiết kiệm và sử dụng hiệu quả năng lượng trong 5 năm tới (" + ReportYear.ToString() + " - " + (ReportYear + 5).ToString() + ")").ToUpper();
-        ltPeriod.Text = ("Kết quả thực hiện kế hoạch 5 năm (" + (ReportYear - 5).ToString() + " - " + ReportYear.ToString() + ")").ToUpper();
+        ltNextPeriod.Text = ("Kế hoạch, mục tiêu tiết kiệm và sử dụng hiệu quả năng lượng trong 5 năm tới (" + ReportYear.ToString() + " - " + (ReportYear + 4).ToString() + ")").ToUpper();
+        ltPeriod.Text = ("Kết quả thực hiện kế hoạch 5 năm (" + (ReportYear - 5).ToString() + " - " + (ReportYear - 1).ToString() + ")").ToUpper();
         btnAddDevice.Visible = btnAddPlan.Visible = btnAddSolution.Visible = AllowEdit;
         //}
 
@@ -174,6 +177,7 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
     }
     void BindResultSolution5Year()
     {
+        return;
         StringBuilder sb = new StringBuilder();
         DataTable tbl = new DataTable();
         tbl.Columns.Add("Year", typeof(string));
@@ -183,6 +187,7 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
         }
         DataTable dtSolution = new DataTable();
         dtSolution = new GiaiPhapService().GetSolutionYear(ReportYear - 4, ReportYear, memVal.OrgId);
+
 
         DataTable dtSolutionResult = new DataTable();
         dtSolutionResult = new PlanTKNLService().GetResultSolution5Year(ReportYear - 4, ReportYear, memVal.OrgId);
@@ -211,21 +216,22 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
                             dr3["Year"] = "Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch	(%)";
 
                             DataRow dr4 = tbl.NewRow();
-                            dr4["Year"] = "Mức tiết kiệm năng lượng – Thực tế đạt được	(%)";
+                            dr4["Year"] = "Mức tiết kiệm năng lượng – Thực tế đạt được (%)";
 
                             DataRow dr5 = tbl.NewRow();
-                            dr5["Year"] = "Mức tiết kiệm chi phí – Dự kiến theo kế hoạch	(Triệu đồng)";
+                            dr5["Year"] = "Mức tiết kiệm chi phí – Dự kiến theo kế hoạch (Triệu đồng)";
 
                             DataRow dr6 = tbl.NewRow();
                             dr6["Year"] = "Mức tiết kiệm chi phí – Thực tế đạt được	(Triệu đồng)";
 
                             DataRow dr7 = tbl.NewRow();
-                            dr7["Year"] = "Chi phí – Dự kiến theo kế họach	(Triệu đồng)";
+                            dr7["Year"] = "Chi phí – Dự kiến theo kế họach (Triệu đồng)";
 
                             DataRow dr8 = tbl.NewRow();
-                            dr8["Year"] = "Chi phí – Thực tế thực hiện	(Triệu đồng)";
+                            dr8["Year"] = "Chi phí – Thực tế thực hiện (Triệu đồng)";
 
                             int nam = Convert.ToInt32(drResult[j]["NamBatDau"]);
+
                             int indexYear = 5 - (ReportYear - nam);
                             if (drResult[j]["MucTietKiemDuKien"] != DBNull.Value && drResult[j]["MucTietKiemDuKien"].ToString().Trim() != "")
                                 dr1[indexYear.ToString()] = Convert.ToDouble(drResult[j]["MucTietKiemDuKien"]);
@@ -274,6 +280,137 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
         }
         rptResultSolution.DataSource = tbl;
         rptResultSolution.DataBind();
+    }
+
+    DataTable GetKQThucHienKeHoach()
+    {
+        StringBuilder sb = new StringBuilder();
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("Year", typeof(string));
+        for (int i = ReportYear - 5; i < ReportYear; i++)
+            tbl.Columns.Add(i.ToString(), typeof(string));
+        var firstRow = tbl.NewRow();
+
+        foreach (DataColumn col in tbl.Columns)
+        {
+            firstRow["Year"] = "Năm";
+            for (int i = ReportYear - 5; i < ReportYear; i++)
+                firstRow[i.ToString()] = i;
+        }
+
+
+        DataTable dtSolution = new DataTable();
+        int _startPlanYear = ReportYear - 4;
+        ReportModels rp = new ReportModels();
+        var Solution5Year = (from a in rp.DE_GiaiPhap
+                             join b in rp.DE_PlanTKNL on a.Id equals b.IdGiaPhap
+                             join c in rp.DE_ReportFuel on b.IdPlan equals c.Id
+                             where c.EnterpriseId == memVal.OrgId && c.ReportType == ReportKey.PLAN && b.IsPlan == true
+                             && c.Year >= _startPlanYear && c.Year <= ReportYear
+                             orderby c.Year
+                             select new
+                             {
+                                 DE_GiaiPhap = a,
+                                 DE_PlanTKNL = b,
+                                 DE_ReportFuel = c
+                             }).ToList();
+
+        int _startResultYear = ReportYear - 5;
+
+        var Result5Year = (from a in rp.DE_GiaiPhap
+                           join b in rp.DE_PlanTKNL on a.Id equals b.IdGiaPhap
+                           join c in rp.DE_ReportFuel on b.IdPlan equals c.Id
+                           where c.EnterpriseId == memVal.OrgId && c.ReportType == ReportKey.PLAN && b.IsPlan == false
+                           && c.Year >= _startResultYear && c.Year <= ReportYear && a.IsDelete == false
+                           orderby c.Year
+                           select new
+                           {
+                               DE_GiaiPhap = a,
+                               DE_PlanTKNL = b,
+                               DE_ReportFuel = c
+                           }).ToList();
+
+        var ListSol = Solution5Year.Select(o => new { o.DE_GiaiPhap.Id, o.DE_GiaiPhap.TenGiaiPhap }).Distinct().ToList();
+
+        int _counter = 1;
+
+        foreach (var sol in ListSol)
+        {
+            var plan = Solution5Year.Where(o => o.DE_GiaiPhap.Id == sol.Id);
+            var result = Result5Year.Where(o => o.DE_GiaiPhap.Id == sol.Id);
+
+            var row1 = tbl.NewRow();
+            row1["Year"] = string.Format("<b>Giải pháp {0}: {1}</b>", _counter, sol.TenGiaiPhap);
+
+
+            var row2 = tbl.NewRow();
+            row2["Year"] = "Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (kWh)";
+
+            var row3 = tbl.NewRow();
+            row3["Year"] = "Mức tiết kiệm năng lượng - Thực tế đạt được	(kWh)";
+
+            var row4 = tbl.NewRow();
+            row4["Year"] = "Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (%)";
+
+            var row5 = tbl.NewRow();
+            row5["Year"] = "Mức tiết kiệm năng lượng - Thực tế đạt được	(%)";
+
+            var row6 = tbl.NewRow();
+            row6["Year"] = "Mức tiết kiệm chi phí - Dự kiến theo kế hoạch (Triệu đồng)";
+
+            var row7 = tbl.NewRow();
+            row7["Year"] = "Mức tiết kiệm chi phí - Thực tế đạt được (Triệu đồng)";
+
+            var row8 = tbl.NewRow();
+            row8["Year"] = "Chi phí - Dự kiến theo kế họach	(Triệu đồng)";
+
+            var row9 = tbl.NewRow();
+            row9["Year"] = "Chi phí - Thực tế thực hiện (Triệu đồng)";
+
+            tbl.Rows.Add(row1);
+            tbl.Rows.Add(row2);
+            tbl.Rows.Add(row3);
+            tbl.Rows.Add(row4);
+            tbl.Rows.Add(row5);
+            tbl.Rows.Add(row6);
+            tbl.Rows.Add(row7);
+            tbl.Rows.Add(row8);
+            tbl.Rows.Add(row9);
+
+
+            //Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (kWh)
+            foreach (var p in plan)
+            {
+                foreach (DataColumn col in tbl.Columns)
+                    if ((p.DE_ReportFuel.Year).ToString() == col.ColumnName)
+                    {
+                        row2[col.ColumnName] = p.DE_PlanTKNL.MucTietKiemDuKien != null ? p.DE_PlanTKNL.MucTietKiemDuKien : "";
+                        row4[col.ColumnName] = p.DE_PlanTKNL.TuongDuong != null ? p.DE_PlanTKNL.TuongDuong : "";
+                        row6[col.ColumnName] = p.DE_PlanTKNL.TKCPDuKien != null ? p.DE_PlanTKNL.TKCPDuKien : "";
+                        row8[col.ColumnName] = p.DE_PlanTKNL.ChiPhiDuKien != null ? p.DE_PlanTKNL.ChiPhiDuKien : "";
+                    }
+
+            }
+
+            //Mức tiết kiệm năng lượng - Thực tế đạt được	(kWh)
+            foreach (var re in result)
+            {
+                foreach (DataColumn col in tbl.Columns)
+                    if ((re.DE_ReportFuel.Year - 1).ToString() == col.ColumnName)
+                    {
+                        row3[col.ColumnName] = re.DE_PlanTKNL.MucTKThucTe != null ? re.DE_PlanTKNL.MucTKThucTe : "";
+                        row5[col.ColumnName] = re.DE_PlanTKNL.TuongDuongTT != null ? re.DE_PlanTKNL.TuongDuongTT : "";
+                        row7[col.ColumnName] = re.DE_PlanTKNL.MucTKCPThucTe != null ? re.DE_PlanTKNL.MucTKCPThucTe : "";
+                        row9[col.ColumnName] = re.DE_PlanTKNL.CPThucTe != null ? re.DE_PlanTKNL.CPThucTe : "";
+                    }
+
+            }
+
+            _counter++;
+        }
+        rptResultSolutionPlan5.DataSource = tbl;
+        rptResultSolutionPlan5.DataBind();
+        return tbl;
     }
     protected void cpRepeater_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
@@ -473,7 +610,7 @@ public partial class Client_Module_DataEngery_InputPlan5Year : System.Web.UI.Use
             list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuelType.SelectedValue));
         }
 
-        ddlMeasure.DataSource = list;        
+        ddlMeasure.DataSource = list;
         ddlMeasure.DataValueField = "Id";
         ddlMeasure.DataTextField = "MeasurementName";
         ddlMeasure.DataBind();

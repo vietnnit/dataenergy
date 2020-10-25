@@ -233,10 +233,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs tabs-border" id="Reporttabs">
-                                <li><a rel="tabProduct" href="#" class="">Cơ sở hạ tầng và sản phẩm</a></li>
+                                <li><a rel="tabProduct" href="#" class="active" >Cơ sở hạ tầng và sản phẩm</a></li>
                                 <li><a rel="tabData" href="#" class="">Mức nhiên liệu tiêu thụ năm</a></li>
                                 <li><a rel="tabPlan" href="#" class="">Giải pháp TKNL năm</a></li>
-                                <li><a rel="tabPlan5Year" href="#" style="display:none" class="">Giải pháp TKNL 5 năm</a></li>
+                                <li><a rel="tabPlan5Year" href="#" style="display: none" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
                     </div>
@@ -319,7 +319,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-lg-12" >
+                                        <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
                                                 <asp:Literal ID="ltDataNextYearTitle" runat="server"></asp:Literal><div style="float: right">
                                                     <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Nhập số liệu" data-toggle="modal"
@@ -383,12 +383,12 @@
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </table>
-                                           
+
                                             <%--<asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="control-label pt5" style="width: 100%">
-                                                <asp:Literal ID="ltKeHoachTieuThuDien" runat ="server" Text="Tiêu thụ điện"></asp:Literal>
+                                                <asp:Literal ID="ltKeHoachTieuThuDien" runat="server" Text="Tiêu thụ điện"></asp:Literal>
                                                 <div style="float: right">
                                                     <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</a>
                                                     <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
@@ -397,10 +397,10 @@
                                             </div>
                                             <asp:Literal ID="ltTieuThuDien" runat="server"></asp:Literal>
                                         </div>
-                                         <div class="col-lg-12" style="text-align: right; margin-top:10px; margin-right:10px;">
-                                                <b>
-                                                    <asp:Literal ID="ltTotal_TOE_Future" runat="server"></asp:Literal></b>
-                                            </div>
+                                        <div class="col-lg-12" style="text-align: right; margin-top: 10px; margin-right: 10px;">
+                                            <b>
+                                                <asp:Literal ID="ltTotal_TOE_Future" runat="server"></asp:Literal></b>
+                                        </div>
                                     </div>
                                     <asp:Literal ID="error" runat="server"></asp:Literal>
                                 </div>
@@ -408,8 +408,8 @@
                             <div id="tabPlan">
                                 <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" />
                             </div>
-                            <div id="tabPlan5Year" style="display:none;">
-                                <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
+                            <div id="tabPlan5Year" style="display: none;">
+                                <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="false" />
                             </div>
                         </div>
                     </div>
@@ -529,7 +529,7 @@
                         <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
                             Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
-                        <asp:LinkButton style="display:none;" runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
+                        <asp:LinkButton Style="display: none;" runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnReSend" CssClass="btn btn-sm btn-danger mr10"
@@ -828,11 +828,11 @@
                                 </Triggers>
                                 <ContentTemplate>
                                     <asp:DropDownList ID="ddlMeasure" runat="server" AppendDataBoundItems="True" ValidationGroup="viewFuelOne"
-                                AutoPostBack="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMeasure_SelectedIndexChanged">
-                            </asp:DropDownList>
+                                        AutoPostBack="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMeasure_SelectedIndexChanged">
+                                    </asp:DropDownList>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
-                            
+
                             <asp:RequiredFieldValidator ID="rfvMeasurement" runat="server" ControlToValidate="ddlMeasure"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn đơn vị tính"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -865,15 +865,15 @@
                         <label class="col-lg-3" for="inputSmall">
                             Hệ số chuyển đổi(TOE)<span class="append-icon right text-danger">*</span></label>
                         <div class="col-lg-3">
-                            <asp:UpdatePanel ID="update_txtNoTOE" runat ="server">
+                            <asp:UpdatePanel ID="update_txtNoTOE" runat="server">
                                 <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID ="ddlMeasure" EventName="SelectedIndexChanged" />
+                                    <asp:AsyncPostBackTrigger ControlID="ddlMeasure" EventName="SelectedIndexChanged" />
                                 </Triggers>
                                 <ContentTemplate>
                                     <asp:TextBox ID="txtNoTOE" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"></asp:TextBox>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
-                            
+
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
                                 CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
                                 Display="Dynamic"></asp:RequiredFieldValidator>
@@ -1005,7 +1005,7 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <div class="form-group" style="display:none;">
+                    <div class="form-group" style="display: none;">
                         <div class="col-lg-3">
                             File báo cáo 5 năm
                         </div>
@@ -1260,7 +1260,7 @@ btn-u-primary mr10"
 <div style="display: none;">
     <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click" />
 
-    <asp:Button ID="btBindListTieuThuSXDien" runat ="server" OnClick="btBindListTieuThuSXDien_Click" />
+    <asp:Button ID="btBindListTieuThuSXDien" runat="server" OnClick="btBindListTieuThuSXDien_Click" />
 </div>
 
 <script type="text/javascript">
@@ -1326,7 +1326,7 @@ btn-u-primary mr10"
 
     });
 
-    
+
 </script>
 
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>

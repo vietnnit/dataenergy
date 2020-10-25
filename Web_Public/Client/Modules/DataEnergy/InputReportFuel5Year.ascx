@@ -233,9 +233,9 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs tabs-border" id="Reporttabs">
-                                <li><a rel="tabProduct" href="#" class="">Cơ sở hạ tầng và sản phẩm</a></li>
-                                <li><a rel="tabData" href="#" style="display: none;" class="">Mức nhiên liệu tiêu thụ năm</a></li>
-                                <li><a rel="tabPlan" href="#" style="display: none;" class="">Giải pháp TKNL năm</a></li>
+                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và sản phẩm</a></li>
+                                <li><a rel="tabData" href="#" class="" style="display:none;" >Mức nhiên liệu tiêu thụ năm</a></li>
+                                <li><a rel="tabPlan" href="#" class="" style="display:none;">Giải pháp TKNL năm</a></li>
                                 <li><a rel="tabPlan5Year" href="#" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
@@ -246,20 +246,48 @@
                                 <uc1:ProductYear ID="ucProduct" runat="server" Visible="false" />
                                 <div class="col-lg-12">
                                     <label class="control-label">
-                                        <asp:Literal ID="ltNangLucSXNamCoSo" runat="server" Text="1. Năng lực sản xuất"></asp:Literal></label>
+                                        <asp:Literal ID="Literal7" runat="server" Text="1. Năng lực sản xuất của cơ sở"></asp:Literal>
+                                        <asp:Literal ID="ltRp5_NangLucSXNamCoSo" runat="server"></asp:Literal>
+                                    </label>
                                     <div class="margin-bottom-10">
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="control-label">
-                                        <asp:Literal ID="ltKetQuaThucHienKeHoach" runat="server" Text="2. Kết quả thực hiện kế hoạch"></asp:Literal></label>
-                                    <div class="margin-bottom-10">
-
+                                        <table class="table table-bordered table-hover mbn" width="100%">
+                                            <thead>
+                                                <tr class="primary fs12">
+                                                    <th style="width: 15%">Tên sản phẩm
+                                                    </th>
+                                                    <th style="width: 10%">Đơn vị đo
+                                                    </th>
+                                                    <th style="width: 15%">Theo thiết kế
+                                                    </th>
+                                                    <th style="width: 20%">Mức sản xuất hiện tại
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rptProductResult" runat="server">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <%# Eval("ProductName")%>
+                                                            </td>
+                                                            <td>
+                                                                <%# Eval("Measurement")%>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <%# Eval("DesignQuantity")%>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <%# Eval("MaxQuantity")%>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div id="tabData" style="display: none;" class="">
+                            <div id="tabData" class="" style="display:none;">
                                 <div class="form-horizontal">
                                     <div class="form-group" style="display: none;">
                                         <div class="col-lg-12">
@@ -419,8 +447,8 @@
                                     <asp:Literal ID="error" runat="server"></asp:Literal>
                                 </div>
                             </div>
-                            <div id="tabPlan" style="display: none;">
-                                <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" />
+                            <div id="tabPlan" style="display:none;">
+                                <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" Visible="false" />
                             </div>
                             <div id="tabPlan5Year">
                                 <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
@@ -541,9 +569,9 @@
                 <div class="row">
                     <div class="col-lg-12 text-left">
                         <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
-                            Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExportword();return false;"
+                            Text="Xuất báo cáo hàng năm" Style="display: none;" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
-                        <asp:LinkButton Style="display: none;" runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
+                        <asp:LinkButton  runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnReSend" CssClass="btn btn-sm btn-danger mr10"
@@ -1008,7 +1036,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <div class="col-lg-3">
                             File báo cáo hàng năm
                         </div>
@@ -1019,7 +1047,7 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <div class="form-group" style="display: none;">
+                    <div class="form-group">
                         <div class="col-lg-3">
                             File báo cáo 5 năm
                         </div>

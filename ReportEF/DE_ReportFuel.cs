@@ -107,5 +107,7 @@ namespace ReportEF
         public int? OwnerId { get; set; }
 
         public int? ProcessStatus { get; set; }
+        [StringLength(50)]
+        public string ReportType { get; set; }
     }
 }

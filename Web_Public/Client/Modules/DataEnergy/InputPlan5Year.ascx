@@ -9,38 +9,33 @@
         Visible="false"></asp:Literal></label>
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0;">
-        <div class="col-lg-12" >
+        <div class="col-lg-12" style="display: none">
             <asp:Literal ID="ltDataPeriod" runat="server"></asp:Literal>
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         1. Kết quả thực hiện tiết kiệm năng lượng<a onclick="ShowDialogSolutionPlan(0,1);"
                             style="float: right; cursor: pointer; text-decoration: none;"><i class="fa fa-plus">
-                            </i>&nbsp;Thêm kết quả thực hiện</a></div>
+                            </i>&nbsp;Thêm kết quả thực hiện</a>
+                    </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 5%">
-                                Giải pháp TKNL dự kiến áp dụng &nbsp; <a style="cursor: pointer;" class="fs9 btn btn-primary"
-                                    title="Thêm giải pháp" onclick="showgiaiphap5();"><span class="fa fa-plus"></span>
-                                    &nbsp;Thêm giải pháp</a>
+                            <th style="width: 5%">Giải pháp TKNL dự kiến áp dụng &nbsp; <a style="cursor: pointer;" class="fs9 btn btn-primary"
+                                title="Thêm giải pháp" onclick="showgiaiphap5();"><span class="fa fa-plus"></span>
+                                &nbsp;Thêm giải pháp</a>
                             </th>
-                            <th style="width: 15%">
-                                Mục đích của giải pháp
+                            <th style="width: 15%">Mục đích của giải pháp
                             </th>
-                            <th style="width: 20%">
-                                Kết quả đạt được
+                            <th style="width: 20%">Kết quả đạt được
                             </th>
-                            <th style="width: 10%">
-                                C.Phí đầu tư<br />
+                            <th style="width: 10%">C.Phí đầu tư<br />
                                 (Tr.đồng)
                             </th>
-                            <th style="width: 20%">
-                                Ghi chú
+                            <th style="width: 20%">Ghi chú
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -54,8 +49,7 @@
                                     <td>
                                         <%# Eval("MucTieuGP")%>
                                     </td>
-                                    <td>
-                                        Mức TK:                                        
+                                    <td>Mức TK:                                        
                                         <%# Eval("MucTKThucTe") != null ? Tool.ConvertDecimalToString(Eval("MucTKThucTe"), 2) : ""%>
                                         <br />
                                         Tương đương:
@@ -67,7 +61,7 @@
                                         Lợi ích khác:
                                         <%# Eval("LoiIchKhacTT")%>
                                     </td>
-                                    <td class="text-right">                                        
+                                    <td class="text-right">
                                         <%# Eval("CPThucTe") != null ? Tool.ConvertDecimalToString(Eval("CPThucTe"), 0) : ""%>
                                     </td>
                                     <td>
@@ -91,31 +85,25 @@
                         <i class="fa fa-tasks"></i>&nbsp;Thay thế nâng cấp, bổ sung thiết bị công nghệ <a
                             style="float: right; cursor: pointer; text-decoration: none; color: #205081"
                             onclick="updateiaiphapTB5(1,0);"><i class="fa fa-plus"></i>&nbsp;Thêm kết quả thực
-                            hiện</a></div>
+                            hiện</a>
+                    </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 5%">
-                                Năm
+                            <th style="width: 5%">Năm
                             </th>
-                            <th style="width: 15%">
-                                Tên thiết bị
+                            <th style="width: 15%">Tên thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Mô tả tính năng, vị trí sử dụng của thiết bị
+                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Cách lắp đặt
+                            <th style="width: 15%">Cách lắp đặt
                             </th>
-                            <th style="width: 15%">
-                                Lý do lắp mới hoặc nâng cấp thay thế
+                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
                             </th>
-                            <th style="width: 15%">
-                                Mức cam kết khả năng thực hiện
+                            <th style="width: 15%">Mức cam kết khả năng thực hiện
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -139,8 +127,7 @@
                                     <td>
                                         <%# Eval("LyDo")%>
                                     </td>
-                                    <td>
-                                        Cam kết:
+                                    <td>Cam kết:
                                         <%# Eval("CamKet")%>
                                         <br />
                                         Khả năng:
@@ -168,41 +155,33 @@
                         1. Kế hoạch thực hiện tiết kiệm năng lượng
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddPlan" runat="server" Text="Thêm mới" ToolTip="Thêm mới"
-                                OnClientClick="javascript:ShowDialogSolutionPlan(0,1); return false;"><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton></div>
+                                OnClientClick="javascript:ShowDialogSolutionPlan(0,1); return false;"><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 10%">
-                                Giải pháp TKNL dự kiến áp dụng &nbsp;
+                            <th style="width: 10%">Giải pháp TKNL dự kiến áp dụng &nbsp;
                                 <asp:LinkButton ID="btnAddSolution" CssClass="fs9 btn btn-primary" runat="server"
                                     Text="Thêm giải pháp" ToolTip="Thêm giải pháp" OnClientClick='javascript:showgiaiphap5(); return false;'><i class="fa fa-plus"></i>&nbsp;"Thêm giải pháp</asp:LinkButton>
                             </th>
-                            <th style="width: 5%">
-                                Năm thực hiện
+                            <th style="width: 5%">Năm thực hiện
                             </th>
-                            <th style="width: 10%">
-                                Loại nhiên liệu
+                            <th style="width: 10%">Loại nhiên liệu
                             </th>
-                            <th style="width: 15%">
-                                Mục đích
+                            <th style="width: 15%">Mục đích
                             </th>
-                            <th style="width: 20%">
-                                Dự kiến kết quả
+                            <th style="width: 20%">Dự kiến kết quả
                             </th>
-                            <th style="width: 5%">
-                                Dự kiến CP<br />
+                            <th style="width: 5%">Dự kiến CP<br />
                                 (Tr.đồng)
                             </th>
-                            <th style="width: 20%">
-                                Ghi chú
+                            <th style="width: 20%">Ghi chú
                             </th>
-                            <th style="width: 15%">
-                                Khả năng thực hiện
+                            <th style="width: 15%">Khả năng thực hiện
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -225,8 +204,7 @@
                                     <td>
                                         <%# Eval("MucTieuGP")%>
                                     </td>
-                                    <td>
-                                        Mức TK:                                        
+                                    <td>Mức TK:                                        
                                           <%#  Tool.ConvertDecimalToString(Eval("MucTietKiemDuKien"), 0)%>
                                         (<i><%#Eval("MeasurementName")%></i>)
                                         <br />
@@ -234,7 +212,7 @@
                                         <%# Eval("TuongDuong") != DBNull.Value && Eval("TuongDuong").ToString()!=""? Eval("TuongDuong")+"%":""%>
                                         <br />
                                         Thành tiền:
-                                        <%# (Eval("ThanhTien") != DBNull.Value && Eval("ThanhTien").ToString() != "") ? Tool.ConvertDecimalToString(Eval("ThanhTien"), 0) + " (tr.đồng)" : ""%>                                        
+                                        <%# (Eval("ThanhTien") != DBNull.Value && Eval("ThanhTien").ToString() != "") ? Tool.ConvertDecimalToString(Eval("ThanhTien"), 0) + " (tr.đồng)" : ""%>
                                         <br />
                                         Lợi ích khác:
                                         <%# Eval("LoiIchKhac")%>
@@ -246,8 +224,7 @@
                                     <td>
                                         <%# Eval("GhiChu")%>
                                     </td>
-                                    <td>
-                                        Khả năng:
+                                    <td>Khả năng:
                                         <%# Eval("KhaNangThucHien")%><br />
                                         Cam kết:
                                         <%# Eval("MucCamKet") != DBNull.Value && Eval("MucCamKet").ToString() != "" ? Eval("MucCamKet") + "%" : ""%>
@@ -264,38 +241,32 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10">
+            <div class="margin-bottom-10" style="display: none;">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kế hoạch thay thế nâng cấp, bổ sung thiết bị công nghệ
                         <div style="float: right">
                             <asp:LinkButton ID="btnAddDevice" runat="server" Text="Thêm mới" ToolTip="Thêm mới"
-                                OnClientClick='javascript:ShowDialogDevicePlan(0,1); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton></div>
+                                OnClientClick='javascript:ShowDialogDevicePlan(0,1); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 5%">
-                                Năm
+                            <th style="width: 5%">Năm
                             </th>
-                            <th style="width: 15%">
-                                Tên thiết bị
+                            <th style="width: 15%">Tên thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Mô tả tính năng, vị trí sử dụng của thiết bị
+                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Cách lắp đặt
+                            <th style="width: 15%">Cách lắp đặt
                             </th>
-                            <th style="width: 15%">
-                                Lý do lắp mới hoặc nâng cấp thay thế
+                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
                             </th>
-                            <th style="width: 15%">
-                                Mức cam kết khả năng thực hiện
+                            <th style="width: 15%">Mức cam kết khả năng thực hiện
                             </th>
-                            <th style="width: 5%">
-                                Thao tác
+                            <th style="width: 5%">Thao tác
                             </th>
                         </tr>
                     </thead>
@@ -319,8 +290,7 @@
                                     <td>
                                         <%# Eval("LyDo")%>
                                     </td>
-                                    <td>
-                                        Khả năng:
+                                    <td>Khả năng:
                                         <%# Eval("KhaNang") != DBNull.Value && Eval("KhaNang").ToString() != "" ? Eval("KhaNang") + "%" : ""%>
                                         <br />
                                         Cam kết:
@@ -338,9 +308,9 @@
                     </tbody>
                 </table>
             </div>
-            <label class="control-label" >
+            <label class="control-label">
                 <asp:Literal ID="ltPeriod" runat="server" Text="Kết quả thực hiện kế hoạch 5 năm"></asp:Literal></label>
-            <div class="margin-bottom-10" >
+            <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         1. Kết quả thực hiện tiết kiệm năng lượng
@@ -349,8 +319,10 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 50%">
-                                Năm
+                            <th style="width: 50%">Năm
+                            </th>
+                            <th style="width: 10%">
+                                <%=ReportYear - 5%>
                             </th>
                             <th style="width: 10%">
                                 <%=ReportYear - 4%>
@@ -362,15 +334,12 @@
                                 <%=ReportYear - 2%>
                             </th>
                             <th style="width: 10%">
-                                <%=ReportYear - 1%>
-                            </th>
-                            <th style="width: 10%">
-                                <%=ReportYear%>
+                                <%=ReportYear -1 %>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <asp:Repeater ID="rptResultSolution" runat="server">
+                        <asp:Repeater ID="rptResultSolution" runat="server" Visible="false">
                             <ItemTemplate>
                                 <tr>
                                     <td>
@@ -394,10 +363,35 @@
                                 </tr>
                             </ItemTemplate>
                         </asp:Repeater>
+                      
+                        <asp:Repeater ID="rptResultSolutionPlan5" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%# Eval("Year")%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <%#Eval((ReportYear-5).ToString())%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <%#Eval((ReportYear-4).ToString())%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <%#Eval((ReportYear-3).ToString())%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <%#Eval((ReportYear-2).ToString())%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <%#Eval((ReportYear-1).ToString())%>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10" >
+            <div class="margin-bottom-10" style="display: none;">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         2. Kết quả thay thế nâng cấp, bổ sung thiết bị công nghệ
@@ -406,23 +400,17 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 5%">
-                                Năm thực hiện
+                            <th style="width: 5%">Năm thực hiện
                             </th>
-                            <th style="width: 15%">
-                                Tên thiết bị
+                            <th style="width: 15%">Tên thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Mô tả tính năng, vị trí sử dụng của thiết bị
+                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
                             </th>
-                            <th style="width: 15%">
-                                Cách lắp đặt
+                            <th style="width: 15%">Cách lắp đặt
                             </th>
-                            <th style="width: 15%">
-                                Lý do lắp mới hoặc nâng cấp thay thế
+                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
                             </th>
-                            <th style="width: 15%">
-                                Mức cam kết khả năng thực hiện
+                            <th style="width: 15%">Mức cam kết khả năng thực hiện
                             </th>
                         </tr>
                     </thead>
@@ -445,8 +433,7 @@
                                     <td>
                                         <%# Eval("LyDo")%>
                                     </td>
-                                    <td>
-                                        Khả năng:
+                                    <td>Khả năng:
                                         <%# Eval("KhaNang") != DBNull.Value && Eval("KhaNang").ToString() != "" ? Eval("KhaNang") + "%" : ""%>
                                         <br />
                                         Cam kết:
@@ -491,7 +478,8 @@
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" class="form-control" ID="txtnamegp"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtnamegp"
-                                ValidationGroup="viewSolution" Text="Vui lòng nhập tên giải pháp" Display="Dynamic"></asp:RequiredFieldValidator></div>
+                                ValidationGroup="viewSolution" Text="Vui lòng nhập tên giải pháp" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="message-text" class="col-lg-3 control-label ">
@@ -814,7 +802,7 @@
             $("#<%=hddkhtknl.ClientID%>").val("0");
             $("#<%=txtTKNLMucTieuDukien.ClientID%>").val('');
             $("#<%=txtchiphidukienTKNL.ClientID%>").val('');
-            
+
             $("#<%=txtKhaNangTKNL.ClientID%>").val('');
             $("#<%=txtvonTKNL.ClientID%>").val('');
         }
@@ -847,8 +835,7 @@
     }
 </script>
 <style type="text/css">
-    .modal-dialog
-    {
+    .modal-dialog {
         z-index: 9999 !important;
     }
 </style>
