@@ -695,11 +695,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         else
             ex.WriteToMergeField("BC_ChiuTrachNhiem", "");
 
-        if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
-        {
-            ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-            ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-        }
+        //if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
+        //{
+        //    ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+        //    ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+        //}
         if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
             ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
         else
@@ -1286,7 +1286,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     {
         #region get data
         WordExtend ex = new WordExtend();
-        string temp = "TempReport/Template_5nam" + ddlReportType5.SelectedValue + ".docx";
+        //string temp = "TempReport/Template_5nam" + ddlReportType5.SelectedValue + ".docx";
+        string temp = "TempReport/Template_5nam_new" + ddlReportType5.SelectedValue + ".docx";
         ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
         Enterprise or = new Enterprise();
         EnterpriseService orser = new EnterpriseService();
@@ -1302,7 +1303,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         if (or != null)
         {
             ex.WriteToMergeField("BC_Title", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo", or.Title);
+            ex.WriteToMergeField("BC_TenCoSoX", or.Title);
             ex.WriteToMergeField("BC_TenCoSo1", or.Title);
         }
         else
@@ -1314,11 +1315,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         if (dtinfo.Rows[0]["Year"] != DBNull.Value)
         {
             int NamBD = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
-            int NamKT = NamBD + 5;
+            int NamKT = NamBD + 4;
             ex.WriteToMergeField("BC_NamBD", NamBD.ToString());
             ex.WriteToMergeField("BC_NamKT", NamKT.ToString());
             ex.WriteToMergeField("BC_NamBD1", NamBD.ToString());
-            ex.WriteToMergeField("BC_NamKT1", NamKT.ToString());
+            //ex.WriteToMergeField("BC_NamKT1", NamKT.ToString());
         }
         if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
         {
@@ -1330,16 +1331,19 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
         {
             ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-            ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+            //ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
         }
+
         if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
             ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
         else
             ex.WriteToMergeField("BC_NgayNhan", "");
+
         if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
             ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
         else
             ex.WriteToMergeField("BC_NgayXacNhan", "");
+
         if (dtinfo.Rows[0]["SubAreaName"] != DBNull.Value)
             ex.WriteToMergeField("BC_PhanNganh", dtinfo.Rows[0]["SubAreaName"].ToString());
         else
@@ -1409,10 +1413,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
         else
             ex.WriteToMergeField("BC_FaxP", "");
-        //if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
-        //    ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
-        //else
-        //    ex.WriteToMergeField("BC_EmailP", "");
+        if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
+
+            ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_EmailP", "");
 
         if (or.ActiveYear > 0)
             ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
@@ -1604,7 +1609,16 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
-        tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        ReportModels rp = new ReportModels();
+        int _baseReportYear = ReportYear - 1;
+        var oldData = rp.DE_ReportFuel.FirstOrDefault(o => o.Year == ReportYear && o.EnterpriseId == memVal.OrgId && o.IsFiveYear == false && o.ReportType == ReportKey.PLAN);
+
+        if (oldData != null)
+            tblProductResult = productCapacityService.GetDataCapacity(oldData.Id, false);
+
+        //tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+
+
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 
@@ -1619,8 +1633,23 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
 
         dshientai.Tables.Add(dtPlanTKNL.Copy());
         dshientai.Tables[2].TableName = "tbl3";
+
         dshientai.Tables.Add(dtPlanTB.Copy());
         dshientai.Tables[3].TableName = "tbl4";
+
+        DataTable dtFiveYear = GetKQThucHienKeHoach();
+        int colcount = 1;
+        for (var j = ReportYear - 5; j < ReportYear; j++)
+        {
+            dtFiveYear.Columns[j.ToString()].ColumnName = string.Format("Nam{0}", colcount);
+            colcount++;
+        }
+        dtFiveYear.AcceptChanges();
+
+        dshientai.Tables.Add(dtFiveYear);
+        dshientai.Tables[4].TableName = "tbl5";
+        dshientai.Merge(dthientai);
+
         ex.WriteDataSetToMergeField(dshientai);
 
         #endregion
@@ -2596,7 +2625,142 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     }
     protected void rptProductResult_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
-        
+
+    }
+
+
+    DataTable GetKQThucHienKeHoach()
+    {
+        StringBuilder sb = new StringBuilder();
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("Year", typeof(string));
+        for (int i = ReportYear - 5; i < ReportYear; i++)
+            tbl.Columns.Add(i.ToString(), typeof(string));
+        var firstRow = tbl.NewRow();
+
+        foreach (DataColumn col in tbl.Columns)
+        {
+            firstRow["Year"] = "Năm";
+            for (int i = ReportYear - 5; i < ReportYear; i++)
+                firstRow[i.ToString()] = i;
+        }
+
+
+        DataTable dtSolution = new DataTable();
+        int _startPlanYear = ReportYear - 4;
+        ReportModels rp = new ReportModels();
+        var Solution5Year = (from a in rp.DE_GiaiPhap
+                             join b in rp.DE_PlanTKNL on a.Id equals b.IdGiaPhap
+                             join c in rp.DE_ReportFuel on b.IdPlan equals c.Id
+                             where c.EnterpriseId == memVal.OrgId && c.ReportType == ReportKey.PLAN && b.IsPlan == true
+                             && c.Year >= _startPlanYear && c.Year <= ReportYear
+                             orderby c.Year
+                             select new
+                             {
+                                 DE_GiaiPhap = a,
+                                 DE_PlanTKNL = b,
+                                 DE_ReportFuel = c
+                             }).ToList();
+
+        int _startResultYear = ReportYear - 5;
+
+        var Result5Year = (from a in rp.DE_GiaiPhap
+                           join b in rp.DE_PlanTKNL on a.Id equals b.IdGiaPhap
+                           join c in rp.DE_ReportFuel on b.IdPlan equals c.Id
+                           where c.EnterpriseId == memVal.OrgId && c.ReportType == ReportKey.PLAN && b.IsPlan == false
+                           && c.Year >= _startResultYear && c.Year <= ReportYear && a.IsDelete == false
+                           orderby c.Year
+                           select new
+                           {
+                               DE_GiaiPhap = a,
+                               DE_PlanTKNL = b,
+                               DE_ReportFuel = c
+                           }).ToList();
+
+        var ListSol = Solution5Year.Select(o => new { o.DE_GiaiPhap.Id, o.DE_GiaiPhap.TenGiaiPhap }).Distinct().ToList();
+
+        int _counter = 1;
+
+        foreach (var sol in ListSol)
+        {
+            var plan = Solution5Year.Where(o => o.DE_GiaiPhap.Id == sol.Id);
+            var result = Result5Year.Where(o => o.DE_GiaiPhap.Id == sol.Id);
+
+            var row1 = tbl.NewRow();
+            row1["Year"] = string.Format("Giải pháp {0}: {1}", _counter, sol.TenGiaiPhap);
+
+
+            var row2 = tbl.NewRow();
+            row2["Year"] = "Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (kWh)";
+
+            var row3 = tbl.NewRow();
+            row3["Year"] = "Mức tiết kiệm năng lượng - Thực tế đạt được	(kWh)";
+
+            var row4 = tbl.NewRow();
+            row4["Year"] = "Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (%)";
+
+            var row5 = tbl.NewRow();
+            row5["Year"] = "Mức tiết kiệm năng lượng - Thực tế đạt được	(%)";
+
+            var row6 = tbl.NewRow();
+            row6["Year"] = "Mức tiết kiệm chi phí - Dự kiến theo kế hoạch (Triệu đồng)";
+
+            var row7 = tbl.NewRow();
+            row7["Year"] = "Mức tiết kiệm chi phí - Thực tế đạt được (Triệu đồng)";
+
+            var row8 = tbl.NewRow();
+            row8["Year"] = "Chi phí - Dự kiến theo kế họach	(Triệu đồng)";
+
+            var row9 = tbl.NewRow();
+            row9["Year"] = "Chi phí - Thực tế thực hiện (Triệu đồng)";
+
+            tbl.Rows.Add(row1);
+            tbl.Rows.Add(row2);
+            tbl.Rows.Add(row3);
+            tbl.Rows.Add(row4);
+            tbl.Rows.Add(row5);
+            tbl.Rows.Add(row6);
+            tbl.Rows.Add(row7);
+            tbl.Rows.Add(row8);
+            tbl.Rows.Add(row9);
+
+
+            //Mức tiết kiệm năng lượng - Dự kiến theo kế hoạch (kWh)
+            foreach (var p in plan)
+            {
+                foreach (DataColumn col in tbl.Columns)
+                    if ((p.DE_ReportFuel.Year).ToString() == col.ColumnName)
+                    {
+                        row2[col.ColumnName] = p.DE_PlanTKNL.MucTietKiemDuKien != null ? p.DE_PlanTKNL.MucTietKiemDuKien : "";
+                        row4[col.ColumnName] = p.DE_PlanTKNL.TuongDuong != null ? p.DE_PlanTKNL.TuongDuong : "";
+                        row6[col.ColumnName] = p.DE_PlanTKNL.TKCPDuKien != null ? p.DE_PlanTKNL.TKCPDuKien : "";
+                        row8[col.ColumnName] = p.DE_PlanTKNL.ChiPhiDuKien != null ? p.DE_PlanTKNL.ChiPhiDuKien : "";
+                    }
+
+            }
+
+            //Mức tiết kiệm năng lượng - Thực tế đạt được	(kWh)
+            foreach (var re in result)
+            {
+                foreach (DataColumn col in tbl.Columns)
+                    if ((re.DE_ReportFuel.Year - 1).ToString() == col.ColumnName)
+                    {
+                        row3[col.ColumnName] = re.DE_PlanTKNL.MucTKThucTe != null ? re.DE_PlanTKNL.MucTKThucTe : "";
+                        row5[col.ColumnName] = re.DE_PlanTKNL.TuongDuongTT != null ? re.DE_PlanTKNL.TuongDuongTT : "";
+                        row7[col.ColumnName] = re.DE_PlanTKNL.MucTKCPThucTe != null ? re.DE_PlanTKNL.MucTKCPThucTe : "";
+                        row9[col.ColumnName] = re.DE_PlanTKNL.CPThucTe != null ? re.DE_PlanTKNL.CPThucTe : "";
+                    }
+
+            }
+
+            _counter++;
+        }
+        DataRow fRow = tbl.NewRow();
+        fRow["Year"] = "Năm";
+        for (int k = ReportYear - 5; k < ReportYear; k++)
+            fRow[k.ToString()] = k.ToString();
+        tbl.Rows.InsertAt(fRow, 0);
+        return tbl;
     }
 }
 #endregion
