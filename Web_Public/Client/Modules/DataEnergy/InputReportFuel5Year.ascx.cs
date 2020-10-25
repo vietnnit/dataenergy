@@ -123,6 +123,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             //
             CreateTable_TieuThuDien(ReportId);
             Load_ElectrictTechno();
+
+            BindProductCapacity();
         }
 
     }
@@ -2573,6 +2575,32 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             throw;
         }
     }
+
+    private void BindProductCapacity()
+    {
+        //Tính toán lấy ra năm cơ sở dựa vào năm lập báo cáo
+        //Ví dụ năm lập kế hoạch 5 năm là 2001 => năm cơ sở là 2000 và isplain=false + id doanh nghiệp
+        ltRp5_NangLucSXNamCoSo.Text = string.Format("(năm {0})", (ReportYear - 1));
+        ReportModels rp = new ReportModels();
+        int _baseReportYear = ReportYear - 1;
+        var oldData = rp.DE_ReportFuel.FirstOrDefault(o => o.Year == ReportYear && o.EnterpriseId == memVal.OrgId && o.IsFiveYear == false && o.ReportType == ReportKey.PLAN);
+
+        if (oldData != null)
+        {
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            DataTable tbl = new DataTable();
+            tbl = productCapacityService.GetDataCapacity(oldData.Id, false);
+            rptProductResult.DataSource = tbl;
+            rptProductResult.DataBind();
+        }
+    }
+    protected void rptProductResult_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        
+    }
 }
 #endregion
+
+
+
 
