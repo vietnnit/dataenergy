@@ -259,7 +259,7 @@ public partial class Client_Modules_DataEnergy_MyReport5Year : System.Web.UI.Use
                         year.IsKey = true;
                         yearService.Insert(year);
                     }
-                    Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam-r" + ret + ".aspx");
+                    Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-5-nam-" + ret + ".aspx");
                 }
                 else
                 {

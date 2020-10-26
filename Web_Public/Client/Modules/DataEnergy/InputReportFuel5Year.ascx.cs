@@ -475,7 +475,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     }
     void BindInfoLabel()
     {
-        ltReportYear.Text = ddlYear.SelectedItem.Text;
+        int _year = Convert.ToInt32(ddlYear.SelectedItem.Text);
+        ltReportYear.Text = string.Format("{0} - {1}", _year, _year + 4);
         ltReportDate.Text = txtReportDate.Text;
         ltEnterpriseName.Text = txtEnterpriseName.Text.Trim();
         ltAreaName.Text = ddlArea.SelectedItem.Text;

@@ -37,7 +37,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-lg-2" for="inputSmall">
-                        Kế hoạch năm</label>
+                        Kỳ kế hoạch</label>
                     <div class="col-lg-10">
                         <asp:Literal ID="ltReportYear" runat="server"></asp:Literal>
                     </div>

@@ -20,7 +20,7 @@
             <tr class="primary fs12 text-center">
                 <th style="width: 5%" class="text-center">STT
                 </th>
-                <th style="width: 10%" class="text-center">Kế hoạch năm
+                <th style="width: 10%" class="text-center">Kỳ kế hoạch
                 </th>
                 <th style="width: 10%" class="text-center">Ngày lập báo cáo
                 </th>
@@ -46,7 +46,7 @@
                         </td>
                         <td>
                             <a href='<%#ResolveUrl("~") %>bao-cao-so-lieu-5-nam-<%#Eval("Id")%>.aspx'>
-                                <%#Eval("Year") %>
+                                <%#Eval("Year") %> - <%#((int)Eval("Year") + 4) %>
                             </a>
                         </td>
                         <td>
