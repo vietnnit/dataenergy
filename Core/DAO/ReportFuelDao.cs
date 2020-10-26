@@ -83,6 +83,48 @@ namespace ePower.DE.Dao
             }
 
         }
+
+        public DataTable FindWaittingListWithType(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, int SendStatus, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, string ReportType, PagingInfo paging)
+        {
+            IList<Enterprise> list = new List<Enterprise>();
+            DbParameter[] parameter = new DbParameter[16];
+            parameter[0] = new DbParameter("@AreaId", AreaId);
+            parameter[1] = new DbParameter("@SubAreaId", SubAreaId);
+            parameter[2] = new DbParameter("@ProvinceId", ProvinceId);
+            parameter[3] = new DbParameter("@DistrictId", DistrictId);
+            parameter[4] = new DbParameter("@OrgId", OrgId);
+            if (FromDate != null)
+                parameter[5] = new DbParameter("@FromDate", FromDate);
+            else
+                parameter[5] = new DbParameter("@FromDate", DBNull.Value);
+            if (ToDate != null)
+                parameter[6] = new DbParameter("@ToDate", ToDate);
+            else
+                parameter[6] = new DbParameter("@ToDate", DBNull.Value);
+            parameter[7] = new DbParameter("@Keyword", keyword);
+            parameter[8] = new DbParameter("@CurrentPage", paging.CurrentPage);
+            parameter[9] = new DbParameter("@PageSize", paging.PageSize);
+            parameter[10] = new DbParameter("@Year", Year);
+            parameter[11] = new DbParameter("@SendStatus", SendStatus);
+            if (blApproved != null)
+                parameter[12] = new DbParameter("@ApprovedStatus", blApproved);
+            else
+                parameter[12] = new DbParameter("@ApprovedStatus", DBNull.Value);
+            parameter[13] = new DbParameter("@Enterprise", EnterpriseId);
+            parameter[14] = new DbParameter("@IsFiveYear", blReportType);
+            parameter[15] = new DbParameter("@ReportType", ReportType);
+
+            try
+            {
+                return new Db().GetDataTable("Get_ReportWaitting_FindWithType", parameter, System.Data.CommandType.StoredProcedure);
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
         public DataTable FindProcessingList(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, PagingInfo paging)
         {
             IList<Enterprise> list = new List<Enterprise>();

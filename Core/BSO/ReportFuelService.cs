@@ -68,6 +68,10 @@ namespace ePower.DE.Service
         {
             return reportfuelDao.FindWaittingList(blReportType, AreaId, SubAreaId, OrgId, EnterpriseId, ProvinceId, DistrictId, SendStatus, blApproved, Year, FromDate, ToDate, keyword, paging);
         }
+        public DataTable FindWaittingListWithType(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, int SendStatus, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, string ReportType, PagingInfo paging)
+        {
+            return reportfuelDao.FindWaittingListWithType(blReportType, AreaId, SubAreaId, OrgId, EnterpriseId, ProvinceId, DistrictId, SendStatus, blApproved, Year, FromDate, ToDate, keyword,ReportType, paging);
+        }
         public DataTable FindProcessingList(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, PagingInfo paging)
         {
             return reportfuelDao.FindProcessingList(blReportType, AreaId, SubAreaId, OrgId, EnterpriseId, ProvinceId, DistrictId, blApproved, Year, FromDate, ToDate, keyword, paging);

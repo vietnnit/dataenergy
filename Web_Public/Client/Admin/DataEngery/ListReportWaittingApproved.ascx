@@ -102,6 +102,16 @@
                             <div class="col-lg-2">
                                 <asp:TextBox ID="txtDenNgay" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                             </div>
+                            <div class="col-lg-1">
+                                <label>
+                                    Phân loại
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <asp:DropDownList ID="ddlPhanLoaiBC" runat="server" CssClass="form-control input-sm">
+                                    
+                                </asp:DropDownList>
+                            </div>
                             <div class="col-lg-3">
                                 <asp:Button ID="btnSearch" OnClick="btnSearch_Click" runat="server" CssClass="btn btn-outline btn-sm btn-primary" ValidationGroup="vgSearch"
                                     Text="Tìm kiếm" />

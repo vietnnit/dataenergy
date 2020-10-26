@@ -11,5 +11,4 @@ public static class ReportKey
     public const string ANNUAL = "ANNUAL";
     public const string PLAN = "PLAN";
     public const string PLAN5 = "PLAN5";
-
 }

@@ -79,6 +79,7 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
             BindYear();
             BindArea();
             BindDistrict();
+            BindPhanLoaiBaoCao();
             BindData();
         }
 
@@ -170,7 +171,8 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
             DistrictId = Convert.ToInt32(ddlDistrict.SelectedValue);
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
 
-        list = comBSO.FindWaittingList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, 1, false, Year, null, null, txtKeyword.Text.Trim(), paging);
+        //list = comBSO.FindWaittingList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, 1, false, Year, null, null, txtKeyword.Text.Trim(), paging);
+        list = comBSO.FindWaittingListWithType(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, 1, false, Year, null, null, txtKeyword.Text.Trim(), ddlPhanLoaiBC.SelectedValue, paging);
         if (list != null && list.Rows.Count > 0)
         {
             paging.RowsCount = Convert.ToInt32(list.Rows[0]["Total"]);
@@ -326,7 +328,7 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
                 url = ResolveUrl("~") + "Admin/ViewReportDetailPlan/" + id.ToString() + "/Default.aspx";
                 break;
             case ReportKey.PLAN5:
-                url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+                url = ResolveUrl("~") + "Admin/ViewPlan5Year/" + id.ToString() + "/Default.aspx";
                 break;
 
         }
@@ -335,5 +337,22 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
         //else
         //    url = ResolveUrl("~") + "Admin/ViewReportDetail/" + id.ToString() + "/Default.aspx";
         return url;
+    }
+    private void BindPhanLoaiBaoCao()
+    {
+        List<ListItem> items = new List<ListItem>();
+        //items.Add(new ListItem("----Tất cả-----", ""));
+        //items.Add(new ListItem("SDNL hàng năm", ReportKey.ANNUAL));
+        //items.Add(new ListItem("Kế hoạch hàng năm", ReportKey.PLAN));
+        //items.Add(new ListItem("Kế hoạch 5 năm", ReportKey.PLAN5));
+        ddlPhanLoaiBC.DataValueField = "value";
+        ddlPhanLoaiBC.DataTextField = "text";
+        ddlPhanLoaiBC.Items.Add(new ListItem("----Tất cả-----", ""));
+        ddlPhanLoaiBC.Items.Add(new ListItem("SDNL hàng năm", ReportKey.ANNUAL));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch hàng năm", ReportKey.PLAN));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch 5 năm", ReportKey.PLAN5));
+        
+        //ddlPhanLoaiBC.DataSource = items;
+        //ddlPhanLoaiBC.DataBind();
     }
 }

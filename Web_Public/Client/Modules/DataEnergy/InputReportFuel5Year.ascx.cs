@@ -1886,7 +1886,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                     log.Status = "Đã gửi báo cáo";
                     log.LogType = Convert.ToInt32(LogType.ANNUALREPORT);
                     new ReportLogService().Insert(log);
-                    Response.Redirect(ResolveUrl("~") + "Doanh-nghiep.aspx");
+                    Response.Redirect(ResolveUrl("~") + "doanh-nghiep-5-nam.aspx");
                 }
             }
         }
