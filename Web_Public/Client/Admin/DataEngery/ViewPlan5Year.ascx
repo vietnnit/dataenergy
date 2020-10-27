@@ -85,7 +85,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10">
+            <div class="margin-bottom-10" style="display:none;">
                 <div class="text-left">
                     <div class="control-label pt5" style="width: 100%">
                         <i class="fa fa-tasks"></i>&nbsp;Thay thế nâng cấp, bổ sung thiết bị công nghệ <a
@@ -250,7 +250,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="margin-bottom-10">
+            <div class="margin-bottom-10" style="display:none;">
                 <div class="">
                     <div class="text-left" style="width: 100%">
                         2. Kế hoạch thay thế nâng cấp, bổ sung thiết bị công nghệ                       
