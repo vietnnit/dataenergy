@@ -328,7 +328,7 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
                 url = ResolveUrl("~") + "Admin/ViewReportDetailPlan/" + id.ToString() + "/Default.aspx";
                 break;
             case ReportKey.PLAN5:
-                url = ResolveUrl("~") + "Admin/ViewPlan5Year/" + id.ToString() + "/Default.aspx";
+                url = ResolveUrl("~") + "Admin/ViewReportDetailPlan5Year/" + id.ToString() + "/Default.aspx";
                 break;
 
         }

@@ -77,6 +77,7 @@ public partial class Client_Admin_DataEnergy_ListReportApproved : System.Web.UI.
             BindArea();
             BindDistrict();
             BindYear();
+            BindPhanLoaiBaoCao();
             BindData();
         }
 
@@ -167,7 +168,8 @@ public partial class Client_Admin_DataEnergy_ListReportApproved : System.Web.UI.
         if (ddlDistrict.SelectedIndex > 0)
             DistrictId = Convert.ToInt32(ddlDistrict.SelectedValue);
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
-        list = comBSO.FindList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, -1, true, Year, null, null, txtKeyword.Text.Trim(), paging);
+        //list = comBSO.FindList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, -1, true, Year, null, null, txtKeyword.Text.Trim(), paging);
+        list = comBSO.FindListWithType(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, DistrictId, -1, true, Year, null, null, txtKeyword.Text.Trim(), paging, ddlPhanLoaiBC.SelectedValue);
         if (list != null && list.Rows.Count > 0)
         {
             paging.RowsCount = Convert.ToInt32(list.Rows[0]["Total"]);
@@ -272,4 +274,15 @@ public partial class Client_Admin_DataEnergy_ListReportApproved : System.Web.UI.
             Response.ContentType = "application/octet-stream"; // download […]
         }
     }
+    private void BindPhanLoaiBaoCao()
+    {
+        List<ListItem> items = new List<ListItem>();
+        ddlPhanLoaiBC.DataValueField = "value";
+        ddlPhanLoaiBC.DataTextField = "text";
+        ddlPhanLoaiBC.Items.Add(new ListItem("----Tất cả-----", ""));
+        ddlPhanLoaiBC.Items.Add(new ListItem("SDNL hàng năm", ReportKey.ANNUAL));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch hàng năm", ReportKey.PLAN));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch 5 năm", ReportKey.PLAN5));
+    }
+
 }

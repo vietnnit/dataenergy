@@ -166,6 +166,48 @@ namespace ePower.DE.Dao
 
         }
 
+        public DataTable FindProcessingListWithType(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, string ReportType, PagingInfo paging)
+        {
+            IList<Enterprise> list = new List<Enterprise>();
+            DbParameter[] parameter = new DbParameter[15];
+            parameter[0] = new DbParameter("@AreaId", AreaId);
+            parameter[1] = new DbParameter("@SubAreaId", SubAreaId);
+            parameter[2] = new DbParameter("@ProvinceId", ProvinceId);
+            parameter[3] = new DbParameter("@DistrictId", DistrictId);
+            parameter[4] = new DbParameter("@OrgId", OrgId);
+            if (FromDate != null)
+                parameter[5] = new DbParameter("@FromDate", FromDate);
+            else
+                parameter[5] = new DbParameter("@FromDate", DBNull.Value);
+            if (ToDate != null)
+                parameter[6] = new DbParameter("@ToDate", ToDate);
+            else
+                parameter[6] = new DbParameter("@ToDate", DBNull.Value);
+            parameter[7] = new DbParameter("@Keyword", keyword);
+            parameter[8] = new DbParameter("@CurrentPage", paging.CurrentPage);
+            parameter[9] = new DbParameter("@PageSize", paging.PageSize);
+            parameter[10] = new DbParameter("@Year", Year);
+
+            if (blApproved != null)
+                parameter[11] = new DbParameter("@ApprovedStatus", blApproved);
+            else
+                parameter[11] = new DbParameter("@ApprovedStatus", DBNull.Value);
+            parameter[12] = new DbParameter("@Enterprise", EnterpriseId);
+            parameter[13] = new DbParameter("@IsFiveYear", blReportType);
+            parameter[14] = new DbParameter("@ReportType", ReportType);
+
+            try
+            {
+                return new Db().GetDataTable("Get_ReportProcessing_Find_WithType", parameter, System.Data.CommandType.StoredProcedure);
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
         public DataTable SCTListBCTieuThuNangLuong(bool blReportType, int AreaId, int SubAreaId, int OrgId, int EnterpriseId, int ProvinceId, int DistrictId, bool? blApproved, int Year, DateTime? FromDate, DateTime? ToDate, string keyword, string Status, PagingInfo paging)
         {
             IList<Enterprise> list = new List<Enterprise>();

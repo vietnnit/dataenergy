@@ -1,2 +1,12 @@
-﻿1. Tạo page
-2
+﻿Webview(quản lý giao diện)
+0. Tạo rewrite url name(web.config) rewrite-url-page-name
+1. Tạo page với với slug=~/rewrite-url-page-name
+2. Add widget vào page mới tạo(dùng tính năng copy => thay thế widget cần thiết)
+
+Admin
+Tạo mới control:
+1. login tk administrator=>quản lý chức năng
+2. Thêm usercontrol vào chức năng
+3. Vào phân quyên=>thiết lập quyền sử dụng control 
+
+

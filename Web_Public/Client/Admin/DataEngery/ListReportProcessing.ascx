@@ -7,107 +7,122 @@
     <div class="topbar-left">
         <ol class="breadcrumb">
             <li class="crumb-active">
-                <a href="javascript:void();"> <asp:Literal ID="litModules" runat="server" Text="Báo cáo hàng năm đang xử lý"></asp:Literal></a>
+                <a href="javascript:void();">
+                    <asp:Literal ID="litModules" runat="server" Text="Báo cáo hàng năm đang xử lý"></asp:Literal></a>
             </li>
             <li class="crumb-icon">
-               <a href="/Admin/Home/Default.aspx">
+                <a href="/Admin/Home/Default.aspx">
                     <span class="glyphicon glyphicon-home"></span>
                 </a>
             </li>
-                        
+
         </ol>
     </div>
     <div class="topbar-right">
-         <div class="topbar-icon ml15 ib va-m">
-            <a href="/Admin/home/Default.aspx" class="pl5" title="Trang chủ"> 
-                <i class="fa fa-home fs22 text-danger"></i><br /><span class="fs11">Trang chủ</span>
+        <div class="topbar-icon ml15 ib va-m">
+            <a href="/Admin/home/Default.aspx" class="pl5" title="Trang chủ">
+                <i class="fa fa-home fs22 text-danger"></i>
+                <br />
+                <span class="fs11">Trang chủ</span>
             </a>
         </div>
         <div class="topbar-icon ml15 ib va-m">
-            <a href="#" class="pl5" title="Trợ giúp"> 
-                <i class="fa fa-exclamation-circle fs22 text-primary"></i><br /><span class="fs11">Trợ giúp</span>
+            <a href="#" class="pl5" title="Trợ giúp">
+                <i class="fa fa-exclamation-circle fs22 text-primary"></i>
+                <br />
+                <span class="fs11">Trợ giúp</span>
             </a>
         </div>
     </div>
 </header>
 <!-- Begin: Content -->
 <section id="content">
-<!-- Dashboard Tiles -->
-   <div class="row mb10">
-        <div class="tab-block mb25">            
+    <!-- Dashboard Tiles -->
+    <div class="row mb10">
+        <div class="tab-block mb25">
             <div class="panel">
                 <div class="panel-body">
                     <div class="row">
                         <div class="form-group">
-                            <div class="col-lg-1">                            
-                                    <label>
-                                        Kế hoạch năm
-                                    </label>
-                            </div>                        
-                            <div class="col-lg-2">                           
-                                <asp:DropDownList ID="ddlYear" runat="server"  CssClass="form-control input-sm">
-                                </asp:DropDownList>
-                                <asp:RequiredFieldValidator ID="rfvYear" runat="server" ControlToValidate="ddlYear" ValidationGroup="vgSearch" Display="Dynamic" Text="Bạn phải chọn năm"></asp:RequiredFieldValidator>                           
-                            </div>  
-                            <div class="col-lg-1">                          
-                                    <label>
-                                        Lĩnh vực
-                                    </label>                           
+                            <div class="col-lg-1">
+                                <label>
+                                    Phân loại
+                                </label>
                             </div>
-                            <div class="col-lg-2">                            
-                                <asp:DropDownList ID="ddlArea" runat="server"  CssClass="form-control input-sm">
-                                </asp:DropDownList>                           
-                            </div>      
-                            <div class="col-lg-1">                          
+                            <div class="col-lg-2">
+                                <asp:DropDownList ID="ddlPhanLoaiBC" runat="server" CssClass="form-control input-sm">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="col-lg-1">
+                                <label>
+                                    Kế hoạch năm
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <asp:DropDownList ID="ddlYear" runat="server" CssClass="form-control input-sm">
+                                </asp:DropDownList>
+                                <asp:RequiredFieldValidator ID="rfvYear" runat="server" ControlToValidate="ddlYear" ValidationGroup="vgSearch" Display="Dynamic" Text="Bạn phải chọn năm"></asp:RequiredFieldValidator>
+                            </div>
+                            <div class="col-lg-1">
+                                <label>
+                                    Lĩnh vực
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <asp:DropDownList ID="ddlArea" runat="server" CssClass="form-control input-sm">
+                                </asp:DropDownList>
+                            </div>
+                            <div class="col-lg-1">
                                 <label>
                                     Quận/Huyện
-                                </label>                           
+                                </label>
                             </div>
-                            <div class="col-lg-2">                            
-                                <asp:DropDownList ID="ddlDistrict" runat="server"  CssClass="form-control input-sm">
-                                </asp:DropDownList>                           
-                            </div> 
-                            <div class="col-lg-1">                          
-                                <label>
-                                    Tên DN
-                                </label>                           
+                            <div class="col-lg-2">
+                                <asp:DropDownList ID="ddlDistrict" runat="server" CssClass="form-control input-sm">
+                                </asp:DropDownList>
                             </div>
-                            <div class="col-lg-2">                            
-                                <asp:TextBox ID="txtKeyword"  runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                            </div>  
-                            
+
+
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group">                                 
-                            <div class="col-lg-1">                          
+                        <div class="form-group">
+                            <div class="col-lg-1">
                                 <label>
                                     Từ ngày
-                                </label>                          
+                                </label>
                             </div>
-                            <div class="col-lg-2">                           
-                                <asp:TextBox ID="txtTuNgay" runat="server"  CssClass="form-control input-sm"></asp:TextBox>                           
+                            <div class="col-lg-2">
+                                <asp:TextBox ID="txtTuNgay" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                             </div>
-                            <div class="col-lg-1">                            
+                            <div class="col-lg-1">
                                 <label>
                                     Đến ngày
-                                </label>                          
+                                </label>
                             </div>
-                            <div class="col-lg-2">                           
-                                <asp:TextBox ID="txtDenNgay" runat="server"  CssClass="form-control input-sm"></asp:TextBox>                            
-                            </div>                                                                                                
-                            <div class="col-lg-3">                          
+                            <div class="col-lg-2">
+                                <asp:TextBox ID="txtDenNgay" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                            </div>
+                            <div class="col-lg-1">
+                                <label>
+                                    Tên DN
+                                </label>
+                            </div>
+                            <div class="col-lg-2">
+                                <asp:TextBox ID="txtKeyword" runat="server" CssClass="form-control input-sm"></asp:TextBox>
+                            </div>
+                            <div class="col-lg-3">
                                 <asp:Button ID="btnSearch" OnClick="btnSearch_Click" runat="server" CssClass="btn btn-outline btn-sm btn-primary" ValidationGroup="vgSearch"
-                                    Text="Tìm kiếm" />                            
+                                    Text="Tìm kiếm" />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>          
-            
-            
+            </div>
+
+
             <div class="panel">
-                <div class="panel-body">                           
+                <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="dataTables_length">
@@ -118,64 +133,64 @@
                         <div class="col-lg-6" style="text-align: right">
                             <div class="dataTables_paginate paging_simple_numbers">
                                 <uc1:PagingControl ID="Paging" OnPaging_Click="Paging_Click" runat="server" FirstString="Trang đầu"
-        LastString="Trang cuối" NextString="Tiếp" PrevString="Quay lại" />
+                                    LastString="Trang cuối" NextString="Tiếp" PrevString="Quay lại" />
                             </div>
                         </div>
-                    </div>                
+                    </div>
                     <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
-                    <div class="form-horizontal">                                                               
-                        <div class="form-group">                                    
+                    <div class="form-horizontal">
+                        <div class="form-group">
                             <div class="col-lg-12">
-                                    <asp:Literal ID="ltNoFuelCurrent" runat="server"></asp:Literal>
-                                    <table class="table table-bordered table-hover mbn" width="100%">
-                                        <tr class="primary fs12">
-                                            <th style="width:5%">STT</th>
-                                            <th style="width:7%">Báo cáo năm</th>
-                                            <th style="width:25%">Tên doanh nghiệp</th>
-                                            <th style="width:10%">Địa chỉ</th>
-                                            <th style="width:10%">Lĩnh vực</th>
-                                            <th style="width:10%">Ngành nghề</th>
-                                            <th style="width:10%">Điện thoại</th>
-                                            <th style="width:10%">Email</th>                                                    
-                                            <th style="width:10%">Ngày gửi báo cáo</th>                                                    
-                                            <th style="width:10%">Người báo cáo</th>  
-                                            <th style="width:10%">Trạng thái</th>                                                                                                                                               
-                                            <th style="width:10%">Thao tác</th>
-                                        </tr>                                           
-                                        <asp:Repeater ID="rptNoFuelCurrent" runat="server" 
-                                            onitemdatabound="rptNoFuelCurrent_ItemDataBound">
+                                <asp:Literal ID="ltNoFuelCurrent" runat="server"></asp:Literal>
+                                <table class="table table-bordered table-hover mbn" width="100%">
+                                    <tr class="primary fs12">
+                                        <th style="width: 5%">STT</th>
+                                        <th style="width: 7%">Báo cáo năm</th>
+                                        <th style="width: 25%">Tên doanh nghiệp</th>
+                                        <th style="width: 10%">Địa chỉ</th>
+                                        <th style="width: 10%">Lĩnh vực</th>
+                                        <th style="width: 10%">Ngành nghề</th>
+                                        <th style="width: 10%">Điện thoại</th>
+                                        <th style="width: 10%">Email</th>
+                                        <th style="width: 10%">Ngày gửi báo cáo</th>
+                                        <th style="width: 10%">Người báo cáo</th>
+                                        <th style="width: 10%">Trạng thái</th>
+                                        <th style="width: 10%">Thao tác</th>
+                                    </tr>
+                                    <asp:Repeater ID="rptNoFuelCurrent" runat="server"
+                                        OnItemDataBound="rptNoFuelCurrent_ItemDataBound">
                                         <ItemTemplate>
                                             <tr>
                                                 <td><%#Container.ItemIndex+1  %></td>
                                                 <td><%#Eval("Year") %></td>
-                                                <td><a href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'><%#Eval("Title") %></a></td>                                                        
+                                                <td><a href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'><%#Eval("Title") %></a></td>
                                                 <td><%#Eval("Address") %></td>
                                                 <td><%#Eval("ParentAreaName")%></td>
-                                                <td><%#Eval("AreaName") %></td>                                                        
+                                                <td><%#Eval("AreaName") %></td>
                                                 <td><%#Eval("Phone")%></td>
                                                 <td><%#Eval("Email")%></td>
                                                 <td><%#Eval("ReportDate") != DBNull.Value && Convert.ToDateTime(Eval("ReportDate")).Year > 1 ? Convert.ToDateTime(Eval("ReportDate")).ToString("dd/MM/yyyy") : ""%></td>
-                                                <td><%#Eval("ReporterName")%></td>                                                                                                                                                                     
-                                                <td><%#Tool.TrangThaiGui(Convert.ToInt32(Eval("SendSatus")), Convert.ToBoolean(Eval("ApprovedSatus")))%></td> 
+                                                <td><%#Eval("ReporterName")%></td>
+                                                <td><%#Tool.TrangThaiGui(Convert.ToInt32(Eval("SendSatus")), Convert.ToBoolean(Eval("ApprovedSatus")))%></td>
                                                 <td style="text-align: center">
-                                                         
-                        <%--<%#(Eval("PathFile") != null && Eval("PathFile").ToString()!="")? "<a href='"+ ResolveUrl("~") +"UserFile/Report/" + Eval("PathFile")+"'><i class=\"fa fa-download\"></i></a>":"" %>--%>
-                        <a class="fa fa-info-circle" href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'></a>
-                                                            
+
+                                                    <%--<%#(Eval("PathFile") != null && Eval("PathFile").ToString()!="")? "<a href='"+ ResolveUrl("~") +"UserFile/Report/" + Eval("PathFile")+"'><i class=\"fa fa-download\"></i></a>":"" %>--%>
+                                                    <a class="fa fa-info-circle" href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'></a>
+
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
-                                        </asp:Repeater> 
-                                    </table>                                    
+                                    </asp:Repeater>
+                                </table>
                             </div>
-                        </div>                                                                                                                                                                                                  
-                        <asp:Literal ID="error" runat="server"></asp:Literal>                                                                                                                                                     
-                    </div>                                         
-                </div>            
+                        </div>
+                        <asp:Literal ID="error" runat="server"></asp:Literal>
+                    </div>
+                </div>
             </div>
-            
-        </div>        
-   </div>
+
+        </div>
+    </div>
 </section>
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
     <div class="modal-dialog">
@@ -183,8 +198,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">
-                    Phê duyệt báo cáo</h4>
+                <h4 class="modal-title">Phê duyệt báo cáo</h4>
             </div>
             <div class="modal-body">
                 <asp:Literal ID="clientview" runat="server"></asp:Literal>
@@ -206,8 +220,7 @@
             </div>
             <div class="modal-footer" style="text-align: left">
                 <asp:Button ID="btnSave" runat="server" Visible="true" Text="Xác nhận duyệt" OnClick="btnSave_Click"
-                    CssClass="btn btn-sm btn-primary mr10" AutoPostback="false" ValidationGroup="vgTN">
-                </asp:Button>
+                    CssClass="btn btn-sm btn-primary mr10" AutoPostback="false" ValidationGroup="vgTN"></asp:Button>
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
                     Đóng</button>
             </div>
@@ -217,8 +230,7 @@
     <!-- /.modal-dialog -->
 </div>
 <style type="text/css">
-    .modal-dialog
-    {
+    .modal-dialog {
         z-index: 9999 !important;
     }
 </style>

@@ -76,7 +76,8 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
                 NavigationTitle(Request["dll"]);
             BindYear();
             BindArea();
-            BindDistrict();                   
+            BindDistrict();
+            BindPhanLoaiBaoCao();
             BindData();
         }
 
@@ -100,7 +101,7 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
     void BindDistrict()
     {
         ddlDistrict.Items.Clear();
-        
+
         if (m_UserValidation.OrgId > 0)
         {
             Organization org = new OrganizationService().FindByKey(m_UserValidation.OrgId);
@@ -170,7 +171,8 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
             DistrictId = Convert.ToInt32(ddlDistrict.SelectedValue);
         ePower.Core.PagingInfo paging = new ePower.Core.PagingInfo(PageSize, CurrentPage);
 
-        list = comBSO.FindProcessingList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, 0, false, Year, null, null, txtKeyword.Text.Trim(), paging);
+        //list = comBSO.FindProcessingList(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, 0, false, Year, null, null, txtKeyword.Text.Trim(), paging);
+        list = comBSO.FindProcessingListWithType(false, AreaId, SubAreaId, m_UserValidation.OrgId, 0, 0, 0, false, Year, null, null, txtKeyword.Text.Trim(), ddlPhanLoaiBC.SelectedValue, paging);
         if (list != null && list.Rows.Count > 0)
         {
             paging.RowsCount = Convert.ToInt32(list.Rows[0]["Total"]);
@@ -311,5 +313,16 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
             Response.AddHeader("Content-Disposition", "attachment; filename=" + file.Name); Response.AddHeader("Content-Length", file.Length.ToString());
             Response.ContentType = "application/octet-stream"; // download […]
         }
+    }
+
+    private void BindPhanLoaiBaoCao()
+    {
+        List<ListItem> items = new List<ListItem>();
+        ddlPhanLoaiBC.DataValueField = "value";
+        ddlPhanLoaiBC.DataTextField = "text";
+        ddlPhanLoaiBC.Items.Add(new ListItem("----Tất cả-----", ""));
+        ddlPhanLoaiBC.Items.Add(new ListItem("SDNL hàng năm", ReportKey.ANNUAL));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch hàng năm", ReportKey.PLAN));
+        ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch 5 năm", ReportKey.PLAN5));
     }
 }

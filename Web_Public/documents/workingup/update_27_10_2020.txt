@@ -1,10 +1,23 @@
-﻿
-/****** Object:  StoredProcedure [dbo].[Get_ReportWaitting_Find]    Script Date: 10/26/2020 22:49:38 ******/
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROC [dbo].[GetNoFuelDetailByReport]
+@ReportId int
+,@IsNexYear bit
+AS
+SELECT RFD.*, F.FuelName,F.Denotation, MF.MeasurementName, F.FuelOrder FROM DE_ReportFuelDetail as RFD JOIN DE_Fuel F ON F.Id=RFD.FuelId
+JOIN DE_Measurement MF ON RFD.MeasurementId=MF.Id
+WHERE RFD.ReportId=@ReportId AND RFD.IsNextYear=@IsNexYear
+order by isnull(F.FuelOrder,1000)
+GO
+
+/****** Object:  StoredProcedure [dbo].[Get_ReportProcessing_Find]    Script Date: 10/27/2020 10:49:30 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create PROCEDURE [dbo].[Get_ReportWaitting_FindWithType]
+CREATE PROCEDURE [dbo].[Get_ReportProcessing_Find_WithType]
 @CurrentPage	int=1,
 @PageSize	int=20,
 @OrgId	int=0,
@@ -13,7 +26,6 @@ create PROCEDURE [dbo].[Get_ReportWaitting_FindWithType]
 @SubAreaId int =0,
 @ProvinceId	int=0,
 @DistrictId int =0,
-@SendStatus int =-1,
 @ApprovedStatus bit,
 @IsFiveYear bit,
 @Year int,
@@ -21,13 +33,14 @@ create PROCEDURE [dbo].[Get_ReportWaitting_FindWithType]
 @ToDate datetime,
 @Keyword nvarchar(100),
 @ReportType nvarchar(50)
-
 AS
 declare @SQL nvarchar(4000), @DK nvarchar(1000), @Param nvarchar(1000), @StartIndex int, @Order varchar(255)
-set @Param = '@OrgId int, @Enterprise int, @AreaId int, @SubAreaId int, @ProvinceId int, @DistrictId int, @Year int, @SendStatus int, @ApprovedStatus bit, @IsFiveYear bit, @FromDate datetime, @ToDate datetime , @Keyword nvarchar(100), @ReportType nvarchar(50)'
+set @Param = '@OrgId int, @Enterprise int, @AreaId int, @SubAreaId int, @ProvinceId int, @DistrictId int, @Year int, @ApprovedStatus bit, @IsFiveYear bit, @FromDate datetime, @ToDate datetime , @Keyword nvarchar(100), @ReportType nvarchar(50)'
 set @DK  = 'A.IsDelete=0'
 set @SQL = ''
 set @StartIndex = @PageSize*(@CurrentPage-1)
+
+SET @DK=@DK +'  And A.SendSatus >=2 AND A.SendSatus<=4'
 
 IF(@IsFiveYear>0) begin	
 	SET @DK =@DK+ ' And A.IsFiveYear=@IsFiveYear'
@@ -62,19 +75,15 @@ IF (@ApprovedStatus is not null )
 BEGIN	
 	SET @DK = @DK +' And A.ApprovedSatus =@ApprovedStatus '
 END
-IF (@SendStatus>-1 )
 
-BEGIN	
-	SET @DK=@DK +'  And A.SendSatus = @SendStatus '
-END
-
+IF(@ReportType <> '') begin	
+	SET @DK =@DK+ ' And A.ReportType=@ReportType'
+end
 
 IF @Keyword<>''
 BEGIN	
-	SET @DK=@DK +' and A.Title Like N'  + char(39) + '%'+ @Keyword + '%' + char(39)		
+	SET @DK=@DK +' A.Title Like N'  + char(39) + '%'+ @Keyword + '%' + char(39)		
 END
-IF @ReportType <>''
-	SET @DK=@DK +'  And A.ReportType = @ReportType '
 
 set @SQL = @SQL + ' DECLARE @Result int CREATE TABLE #Temp ([TempID] [int] IDENTITY (1, 1) NOT NULL, Id [int])'
 set @SQL = @SQL + ' INSERT INTO #Temp (Id) '
@@ -101,15 +110,24 @@ set @SQL = @SQL + ' SELECT TempID as [Index],A.*,B.Title,AR.AreaName as ParentAr
 set @SQL = @SQL + ' drop table #Temp '
 set @SQL = @SQL + ' drop table #TempPage '
 
---print(@SQL)
---truncate table test
+print(@SQL)
 
---BEGIN TRY  
---	insert into test([str]) values(@SQL)
-	exec sp_executesql @SQL, @Param, @OrgId,@Enterprise, @AreaId , @SubAreaId ,@ProvinceId, @DistrictId,@Year , @SendStatus ,@ApprovedStatus,@IsFiveYear , @FromDate,  @ToDate ,@Keyword, @ReportType   
---END TRY  
---BEGIN CATCH  
---	insert into test([str]) select ERROR_MESSAGE() AS ErrorMessage
---END CATCH; 
+exec sp_executesql @SQL, @Param, @OrgId,@Enterprise, @AreaId , @SubAreaId ,@ProvinceId, @DistrictId,@Year ,@ApprovedStatus,@IsFiveYear , @FromDate,  @ToDate ,@Keyword, @ReportType 
 
-
+/*
+[dbo].[Get_ReportProcessing_Find]
+@CurrentPage	=1,
+@PageSize	=20,
+@OrgId	=0,
+@Enterprise =0,
+@AreaId	=0,
+@SubAreaId  =0,
+@ProvinceId	=0,
+@DistrictId  =0,
+@ApprovedStatus =0,
+@IsFiveYear =0,
+@Year =0,
+@FromDate ='',
+@ToDate ='',
+@Keyword =''
+*/

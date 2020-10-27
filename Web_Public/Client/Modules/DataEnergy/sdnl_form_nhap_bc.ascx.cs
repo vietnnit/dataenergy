@@ -96,18 +96,18 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             BindFuel();
             BindReportDetail();
 
-            if(AllowEdit==false)
+            if (AllowEdit == false)
             {
                 btnSend.Visible = false;
                 btnSaveSend.Enabled = false;
                 btnAddFuel.Visible = false;
-            }    
+            }
             else
             {
                 btnSaveSend.Enabled = true;
                 btnSend.Visible = true;
                 btnAddFuel.Visible = true;
-            }    
+            }
         }
     }
 
@@ -545,9 +545,30 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         DataSet dshientai = new DataSet("tbl1");
 
         DataTable tblProductResult = CreateFuelData();
-        dshientai.Merge(tblProductResult);
+        DataTable dtElectrict = GetFuelGroup(tblProductResult, ReportKey.FuelGroupKey_POWER, "=");
+        DataTable dtNotElectrict = GetFuelGroup(tblProductResult, ReportKey.FuelGroupKey_POWER, "<>");
+
+        dshientai.Merge(dtNotElectrict);
         dshientai.Tables[0].TableName = "tbl1";
-        dshientai.Merge(dthientai);
+
+        int k = 1;
+        foreach (DataRow r in dtElectrict.Rows)
+        {
+            string eName = string.Format("e{0}Name", k);
+            ex.WriteToMergeField(eName, r["FuelName"].ToString());
+
+            string e1Me = string.Format("e{0}Me", k);
+            ex.WriteToMergeField(e1Me, r["MeasurementName"].ToString());
+
+            string e1No = string.Format("e{0}No", k);
+            ex.WriteToMergeField(e1No, r["NoFuel"].ToString());
+
+            string e1Reason = string.Format("e{0}Reason", k);
+            ex.WriteToMergeField(e1Reason, r["Reason"].ToString());
+
+            k++;
+        }
+
         ex.WriteDataSetToMergeField(dshientai);
         #endregion
         ex.Save(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc"));
@@ -564,12 +585,15 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         ReportModels rp = new ReportModels();
         var allFuel = (from a in rp.DE_Fuel
                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                       join c in rp.DE_GroupFuel on a.GroupFuelId equals c.Id
                        select new
                        {
                            a.Id,
                            a.GroupFuelId,
                            a.FuelName,
-                           b.MeasurementName
+                           b.MeasurementName,
+                           c.GroupCode,
+                           a.FuelOrder
                        }).ToList();
         DataTable res = new DataTable();
         res.Columns.Add("stt", typeof(string));
@@ -577,6 +601,9 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         res.Columns.Add("MeasurementName", typeof(string));
         res.Columns.Add("NoFuel", typeof(string));
         res.Columns.Add("Reason", typeof(string));
+        res.Columns.Add("GroupCode", typeof(string));
+        res.Columns.Add("FuelOrder", typeof(string));
+
         int i = 1;
         foreach (var item in allFuel)
         {
@@ -584,7 +611,8 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             r["stt"] = i.ToString();
             r["FuelName"] = item.FuelName;
             r["MeasurementName"] = item.MeasurementName;
-
+            r["GroupCode"] = item.GroupCode;
+            r["FuelOrder"] = item.FuelOrder;
             bool check = false;
             foreach (DataRow x in dtCurrent.Rows)
             {
@@ -605,6 +633,22 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             i++;
         }
         return res;
+    }
+
+    private static DataTable GetFuelGroup(DataTable dtSrc, string GroupCode, string CompareSign)
+    {
+
+        string filter = string.Format("GroupCode {0} '{1}'", CompareSign, GroupCode);
+        string sort = "FuelOrder asc";
+        DataRow[] rows = dtSrc.Select(filter);
+        DataTable dtRes = new DataView(dtSrc, filter, sort, DataViewRowState.CurrentRows).ToTable();
+        int i = 2;
+        foreach (DataRow r in dtRes.Rows)
+        {
+            r["stt"] = i.ToString();
+            i++;
+        }
+        return dtRes;
     }
 
     protected void btnSend_Click(object sender, EventArgs e)
