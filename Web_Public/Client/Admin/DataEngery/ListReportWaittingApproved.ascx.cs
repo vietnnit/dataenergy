@@ -317,7 +317,6 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
 
     public string GetUrl(string input, int id)
     {
-        //<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'
         string url = "";
         switch (input.ToUpper())
         {
@@ -332,10 +331,6 @@ public partial class Client_Admin_DataEnergy_ListReportWaittingApproved : System
                 break;
 
         }
-        //if (input.ToUpper() == ReportKey.ANNUAL)
-        //    url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
-        //else
-        //    url = ResolveUrl("~") + "Admin/ViewReportDetail/" + id.ToString() + "/Default.aspx";
         return url;
     }
     private void BindPhanLoaiBaoCao()

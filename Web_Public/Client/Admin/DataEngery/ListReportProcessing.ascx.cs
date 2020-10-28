@@ -325,4 +325,23 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
         ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch hàng năm", ReportKey.PLAN));
         ddlPhanLoaiBC.Items.Add(new ListItem("Kế hoạch 5 năm", ReportKey.PLAN5));
     }
+
+    public string GetUrl(string input, int id)
+    {
+        string url = "";
+        switch (input.ToUpper())
+        {
+            case ReportKey.ANNUAL:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailAnnual/" + id.ToString() + "/Default.aspx";
+                break;
+            case ReportKey.PLAN:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailPlan/" + id.ToString() + "/Default.aspx";
+                break;
+            case ReportKey.PLAN5:
+                url = ResolveUrl("~") + "Admin/ViewReportDetailPlan5Year/" + id.ToString() + "/Default.aspx";
+                break;
+
+        }
+        return url;
+    }
 }

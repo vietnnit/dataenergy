@@ -173,7 +173,8 @@
                                                 <td><%#Eval("ReporterName")%></td>
                                                 <td style="text-align: center">
                                                     <%--<%#(Eval("PathFile") != null && Eval("PathFile").ToString()!="")? "<a href='"+ ResolveUrl("~") +"UserFile/Report/" + Eval("PathFile")+"'><i class=\"fa fa-download\"></i></a>":"" %>--%>
-                                                    <a class="fa fa-search" href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'></a>
+                                                    <%--<a class="fa fa-search" href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'></a>--%>
+                                                    <a class="fa fa-info-circle" href='<%#GetUrl((string)Eval("ReportType"),(int)Eval("Id"))%>'></a>
                                                 </td>
                                             </tr>
                                         </ItemTemplate>
