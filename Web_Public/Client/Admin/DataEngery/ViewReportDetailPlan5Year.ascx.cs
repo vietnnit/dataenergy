@@ -118,8 +118,7 @@ public partial class Client_Admin_DataEngery_ViewReportDetailPlan5Year : System.
                     EnterpriseId = report.EnterpriseId;
                     if (report.SendSatus == 1)
                     {
-                        //tam comment vao de ko bi chuyen trang thai bao cao
-                        //reportBSO.UpdateStatusEnterprise(ReportId, 2);//Chuyen sang trang thai dang xu ly   
+                        reportBSO.UpdateStatusEnterprise(ReportId, 2);//Chuyen sang trang thai dang xu ly   
                         ReportLog log = new ReportLog();
                         log.ActionName = "Phê duyệt báo cáo";
                         log.Comment = txtmota.Text;

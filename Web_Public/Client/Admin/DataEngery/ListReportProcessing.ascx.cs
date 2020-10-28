@@ -344,4 +344,21 @@ public partial class Client_Admin_DataEnergy_ListReportProcessing : System.Web.U
         }
         return url;
     }
+    public string GetReporType(string type)
+    {
+        string res = string.Empty;
+        switch (type)
+        {
+            case ReportKey.ANNUAL:
+                res = "SDNL hàng năm";
+                break;
+            case ReportKey.PLAN:
+                res = "Kế hoạch hàng năm";
+                break;
+            case ReportKey.PLAN5:
+                res = "Kế hoạch 5 năm";
+                break;
+        }
+        return res;
+    }
 }
