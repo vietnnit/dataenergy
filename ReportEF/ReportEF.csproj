@@ -84,6 +84,7 @@
     <Compile Include="DE_PlanTKNL.cs" />
     <Compile Include="DE_Product.cs" />
     <Compile Include="DE_ProductCapacity.cs" />
+    <Compile Include="DE_ProductCapacity18.cs" />
     <Compile Include="DE_ProductConsume.cs" />
     <Compile Include="DE_ProductMeasurement.cs" />
     <Compile Include="DE_ProductPlan.cs" />

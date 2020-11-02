@@ -28,5 +28,7 @@ namespace ReportEF
         public int? EnterpriseId { get; set; }
 
         public bool? IsProduct { get; set; }
+
+        public int? ProductOrder { get; set; }
     }
 }
