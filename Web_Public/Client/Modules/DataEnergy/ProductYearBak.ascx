@@ -1,9 +1,10 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear.ascx.cs" Inherits="Client_Module_DataEngery_ProductYear" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYearBak.ascx.cs" Inherits="Client_Module_DataEngery_ProductYear" %>
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
+
         <div class="col-lg-12" style="display: none;">
             <div class="">
                 <div class="control-label pt5" style="width: 100%" for="inputSmall">
@@ -144,6 +145,9 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
+                            <%--<th style="width: 5%">
+                                            Năm
+                                        </th>--%>
                             <th style="width: 15%">Tên sản phẩm<br />
                                 <asp:LinkButton ID="btnAddProductPlan" runat="server" CssClass="fs9 btn btn-primary"
                                     Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
@@ -153,6 +157,12 @@
                             </th>
                             <th style="width: 15%">Mức sản xuất dự kiến
                             </th>
+                            <%--                            <th style="width: 15%">Dự kiến sản xuất
+                            </th>
+                            <th style="width: 10%">Tỷ lệ so với chi phí sản xuất (%)
+                            </th>
+                            <th style="width: 15%">Tỷ lệ doanh thu (%)
+                            </th>--%>
                             <th style="width: 5%">Thao tác
                             </th>
                         </tr>
@@ -162,6 +172,9 @@
                             OnItemDataBound="rptProductPlan_ItemDataBound">
                             <ItemTemplate>
                                 <tr>
+                                    <%--<td>
+                                                    <%# Eval("Nam")%>
+                                                </td>--%>
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>

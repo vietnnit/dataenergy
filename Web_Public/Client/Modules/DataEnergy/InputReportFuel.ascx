@@ -7,6 +7,9 @@
     TagPrefix="uc1" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/ProductYear.ascx" TagName="ProductYear"
     TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/DataEnergy/ProductYearCommon.ascx" TagPrefix="uc1" TagName="ProductYearCommon" %>
+
+<uc1:ProductYearCommon runat="server" ID="ProductYearCommon" />
 <asp:HiddenField ID="hdnNewsUrl" Value="" runat="server" />
 <asp:HiddenField ID="hdnReport" Value="" runat="server" />
 <asp:HiddenField ID="hdnNextYear" Value="" runat="server" />
@@ -233,7 +236,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs tabs-border" id="Reporttabs">
-                                <li><a rel="tabProduct" href="#" class="active" >Cơ sở hạ tầng và sản phẩm</a></li>
+                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và sản phẩm</a></li>
                                 <li><a rel="tabData" href="#" class="">Mức nhiên liệu tiêu thụ năm</a></li>
                                 <li><a rel="tabPlan" href="#" class="">Giải pháp TKNL năm</a></li>
                                 <li><a rel="tabPlan5Year" href="#" style="display: none" class="">Giải pháp TKNL 5 năm</a></li>
@@ -243,7 +246,8 @@
                     <div id="tabChuyen">
                         <div class="" style="border-top: 0">
                             <div id="tabProduct">
-                                <uc1:ProductYear ID="ucProduct" runat="server" />
+                                <uc1:ProductYear ID="ucProduct" runat="server" Visible="false" />
+                                <uc1:ProductYearCommon ID="ucProductCommon" runat="server" />
                             </div>
                             <div id="tabData" class="">
                                 <div class="form-horizontal">

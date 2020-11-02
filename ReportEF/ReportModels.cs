@@ -11,6 +11,8 @@ namespace ReportEF
             : base("name=ReportModels")
         {
         }
+        public virtual DbSet<DE_ProductCapacity18> DE_ProductCapacity18 { get; set; }
+        public virtual DbSet<DE_BaocaoLinhVuc> DE_BaocaoLinhVuc { get; set; }
         public virtual DbSet<DE_ProductCapacityFuel> DE_ProductCapacityFuel { get; set; }
         public virtual DbSet<DE_UsingSystem> DE_UsingSystem { get; set; }
         public virtual DbSet<DE_ElectrictProduce> DE_ElectrictProduce { get; set; }
@@ -122,6 +124,18 @@ namespace ReportEF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<DE_ProductCapacity18>()
+               .Property(e => e.DienTichPhucVu)
+               .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ProductCapacity18>()
+                .Property(e => e.TongCSSuDungDien)
+                .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ProductCapacity18>()
+                .Property(e => e.KhoiLuongNuocBomHangNgay)
+                .HasPrecision(20, 2);
+
             modelBuilder.Entity<DE_ProductCapacityFuel>()
               .Property(e => e.ConsumeQty)
               .HasPrecision(20, 2);
