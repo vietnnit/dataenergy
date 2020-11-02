@@ -1093,15 +1093,15 @@
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="form-group" style="display:none;">
                         <div class="col-lg-3">
                             File báo cáo hàng năm
                         </div>
                         <div class="col-lg-9">
                             <asp:FileUpload runat="server" ID="fAttachResend"></asp:FileUpload>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server" ControlToValidate="fAttachResend"
+                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server" ControlToValidate="fAttachResend"
                                 CssClass="text-danger" ValidationGroup="valResend" Text="Vui lòng chọn file báo cáo hàng năm"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
+                                Display="Dynamic"></asp:RequiredFieldValidator>--%>
                         </div>
                     </div>
                     <div class="form-group">

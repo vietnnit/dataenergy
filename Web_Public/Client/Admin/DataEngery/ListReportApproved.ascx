@@ -160,7 +160,7 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <td><%#Container.ItemIndex+1  %></td>
-                                                <td><%#Eval("Year") %></td>
+                                                 <td><%#GetReporType((string)Eval("ReportType"))%> - <%#Eval("Year") %></td>
                                                 <td>
                                                     <a href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'><%#Eval("Title") %></a>
                                                 </td>

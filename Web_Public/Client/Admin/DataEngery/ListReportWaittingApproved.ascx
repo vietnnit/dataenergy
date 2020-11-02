@@ -165,9 +165,8 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <td><%#Container.ItemIndex+1  %></td>
-                                                <td><%#Eval("Year") %></td>
+                                                <td><%#GetReporType((string)Eval("ReportType"))%> - <%#Eval("Year") %></td>
                                                 <td>
-                                                    <%--<a href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'><%#Eval("Title") %></a>--%>
                                                     <a href='<%#GetUrl((string)Eval("ReportType"),(int)Eval("Id"))%>'><%#Eval("Title") %></a>
                                                 </td>
                                                 <td><%#Eval("Address") %></td>
@@ -179,8 +178,6 @@
                                                 <td><%#Eval("ReporterName")%></td>
                                                 <td><%#Tool.TrangThaiGui(Convert.ToInt32(Eval("SendSatus")), Convert.ToBoolean(Eval("ApprovedSatus")))%></td>
                                                 <td style="text-align: center">
-                                                    <%--<%#(Eval("PathFile") != null && Eval("PathFile").ToString()!="")? "<a href='"+ ResolveUrl("~") +"UserFile/Report/" + Eval("PathFile")+"'><i class=\"fa fa-download\"></i></a>":"" %>--%>
-                                                    <%--<a class="fa fa-info-circle" href='<%#ResolveUrl("~") %>Admin/ViewReportDetail/<%#Eval("Id") %>/Default.aspx'></a>  --%>
                                                     <a class="fa fa-info-circle" href='<%#GetUrl((string)Eval("ReportType"),(int)Eval("Id"))%>'></a>
                                                 </td>
                                             </tr>
