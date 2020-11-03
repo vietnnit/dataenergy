@@ -77,1200 +77,17 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
             ReportId = Id;
 
             CreateProductCapacity18();
-
-            BindProduct();
-            BindFuel();
+            BindMeasurement();
             BindFuelFuture();
             BindUsingElectrictFuture();
             BindData();
-            if (ReportId > 0)
-            {
-                BindInfrastructure();
-                BindProductCapacity();
-                //BindProductCapacityPlan();
-                BindElectrictPlan();
-                BindElectrictResult();
-            }
-        }
-    }
-
-
-    void BindFuel()
-    {
-        ddlFuel.Items.Clear();
-        ddlFuelPlan.Items.Clear();
-        IList<Fuel> list = new List<Fuel>();
-        AspNetCache.RemoveCache(Constants.Cache_ReportFuel_Fuel_All);
-        if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
-        {
-            list = new FuelService().FindAll();
-            AspNetCache.SetCache(Constants.Cache_ReportFuel_Fuel_All, list);
-        }
-        else
-            list = (IList<Fuel>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Fuel_All);
-        int GroupId = 0;
-        if (ddlFuel.SelectedIndex > 0)
-            GroupId = Convert.ToInt32(ddlFuel.SelectedValue);
-
-        var listSearch = from o in list where o.GroupFuelId == GroupId || GroupId == 0 select o;
-        ddlFuel.DataSource = listSearch;
-        ddlFuel.DataValueField = "Id";
-        ddlFuel.DataTextField = "FuelName";
-        ddlFuel.DataBind();
-        ddlFuel.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
-
-        ddlFuelPlan.DataSource = listSearch;
-        ddlFuelPlan.DataValueField = "Id";
-        ddlFuelPlan.DataTextField = "FuelName";
-        ddlFuelPlan.DataBind();
-        ddlFuelPlan.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
-
-        ddlProductFuel.DataSource = listSearch;
-        ddlProductFuel.DataValueField = "Id";
-        ddlProductFuel.DataTextField = "FuelName";
-        ddlProductFuel.DataBind();
-        ddlProductFuel.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
-
-        ddlLoaiNangLuong.DataSource = listSearch;
-        ddlLoaiNangLuong.DataValueField = "Id";
-        ddlLoaiNangLuong.DataTextField = "FuelName";
-        ddlLoaiNangLuong.DataBind();
-        ddlLoaiNangLuong.Items.Insert(0, new ListItem("---Chọn loại năng lượng---", ""));
-    }
-    void BindProduct()
-    {
-        ddlProduct.Items.Clear();
-        IList<Product> list = new List<Product>();
-
-        list = new ProductService().GetListByEnterprise(memVal.OrgId);
-
-        if (list != null && list.Count > 0)
-        {
-            var listSearch = from o in list where o.IsProduct == true orderby o.ProductName ascending select o;
-            ddlProduct.DataSource = listSearch;
-            ddlProduct.DataValueField = "Id";
-            ddlProduct.DataTextField = "ProductName";
-            ddlProduct.DataBind();
-            ddlProduct.Items.Insert(0, new ListItem("---Chọn sản phẩm---", ""));
-
-            ddlProductPlan.DataSource = listSearch;
-            ddlProductPlan.DataValueField = "Id";
-            ddlProductPlan.DataTextField = "ProductName";
-            ddlProductPlan.DataBind();
-            ddlProductPlan.Items.Insert(0, new ListItem("---Chọn sản phẩm---", ""));
-        }
-    }
-
-
-    private void Load_ProductCapacity(int ProductCapacityId)
-    {
-        ProductCapacity productCapacity = new ProductCapacity();
-        ProductCapacityService productCapacityService = new ProductCapacityService();
-        productCapacity = productCapacityService.FindByKey(ProductCapacityId);
-        if (productCapacity != null)
-        {
-            try
-            {
-                txtMaxQty.Text = productCapacity.MaxQuantity.ToString();
-                ddlProduct.SelectedValue = productCapacity.ProductId.ToString();
-                Product product = new Product();
-                ProductService productService = new ProductService();
-                product = productService.FindByKey(productCapacity.ProductId);
-                ltMeasurement.Text = product.Measurement;
-                txtQtyByDesign.Text = product.Quantity.ToString();
-                ltMearsurement2.Text = "(" + product.Measurement + ")";
-                txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
-
-                ReportModels rp = new ReportModels();
-                if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
-                {
-                    var data = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == ProductCapacityId);
-                    if (data != null)
-                    {
-                        ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
-                        var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
-                        Binding_ddlLoaiNangLuong_DVT(meList);
-
-                        ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
-                        txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-    }
-    public void btnSaveDevice_Click(object sender, EventArgs e)
-    {
-        //try
-        //{
-        //    PlanTB plantb = new PlanTB();
-        //    PlanTBService plantbservice = new PlanTBService();
-        //    if (hddkhTB.Value != "")
-        //    {
-        //        plantb = plantbservice.FindByKey(Convert.ToInt32(hddkhTB.Value));
-        //        if (ddlCacThucLD.SelectedIndex > 0)
-        //            plantb.CachLapDat = ddlCacThucLD.SelectedValue;
-        //        plantb.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-        //        plantb.NameTB = txtTenTB.Text;
-        //        plantb.TinhNang = txtTinhNangTB.Text;
-        //        plantb.LyDo = txtlydoTB.Text;
-        //        plantb.Nam = (ReportYear + 1);//Convert.ToInt32(txtnamTB.Text);
-        //        if (ddlKhaNangTB.SelectedIndex > 0)
-        //            plantb.KhaNang = ddlKhaNangTB.SelectedValue;
-        //        plantb.CamKet = txtCamKetTB.Text.Trim();
-        //        plantb.IdPlan = ReportId;
-        //        plantb.IsFiveYear = false;
-        //        plantb.IsPlan = true;
-        //        plantb.IsNew = false;
-        //        int i = plantbservice.Update(plantb).Id;
-        //        if (i > 0)
-        //        {
-
-        //        }
-        //        else
-        //        {
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-        //        }
-
-        //    }
-        //    else
-        //    {
-        //        //plantb.CamKet = txtMucCamKetTB.Text;
-        //        if (ddlCacThucLD.SelectedIndex > 0)
-        //            plantb.CachLapDat = ddlCacThucLD.SelectedValue;
-        //        plantb.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-        //        plantb.NameTB = txtTenTB.Text;
-        //        plantb.TinhNang = txtTinhNangTB.Text;
-        //        plantb.LyDo = txtlydoTB.Text;
-        //        plantb.Nam = ReportYear + 1;//Convert.ToInt32(txtnamTB.Text);
-        //        if (ddlKhaNangTB.SelectedIndex > 0)
-        //            plantb.KhaNang = ddlKhaNangTB.SelectedValue;
-        //        plantb.CamKet = txtCamKetTB.Text.Trim();
-        //        plantb.IsFiveYear = false;
-        //        plantb.IsPlan = true;
-        //        plantb.IsNew = false;
-        //        plantb.IdPlan = ReportId;
-        //        int i = plantbservice.Insert(plantb);
-        //        if (i > 0)
-        //        {
-
-        //        }
-        //        else
-        //        {
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "showgiaiphapTB('1');", true);
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "showx", "alert('Cập nhật không thành công!');", true);
-
-        //        }
-        //    }
-        //}
-        //catch (Exception)
-        //{
-
-        //    throw;
-        //}
-
-    }
-    public void btnSaveProduct_Click(object sender, EventArgs e)
-    {
-        ProductService productService = new ProductService();
-        Product product = new Product();
-        product.ProductName = txtProductName.Text.Trim();
-        if (txtYearStart.Text.Trim() != "")
-            product.YearStart = Convert.ToInt32(txtYearStart.Text.Trim());
-        if (txtYearEnd.Text.Trim() != "")
-            product.YearEnd = Convert.ToInt32(txtYearEnd.Text.Trim());
-        product.Quantity = Convert.ToInt32(txtDesignQty.Text.Trim());
-        product.Measurement = txtMeasurement.Text.Trim();
-        product.Note = txtDescription.Text.Trim();
-        product.EnterpriseId = memVal.OrgId;
-        product.IsProduct = true;
-        if (ddlProductFuel.SelectedIndex > 0)
-            product.FuelId = Convert.ToInt32(ddlProductFuel.SelectedValue);
-
-        int i = productService.Insert(product);
-        if (i <= 0)
-        {
-            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "AddProductQty();", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
-        }
-        else
-        {
-            BindProduct();
-        }
-
-    }
-    public void btnSaveProductYear_Click(object sender, EventArgs e)
-    {
-        ProductCapacityService productCapacityService = new ProductCapacityService();
-        ProductCapacity productCapacity = new ProductCapacity();
-        int _ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
-
-        if (txtQtyByDesign.Text != "")
-            productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesign.Text);
-        if (txtMaxQty.Text.Trim() != "")
-            productCapacity.MaxQuantity = Convert.ToDecimal(txtMaxQty.Text.Trim());
-
-        if (txtTieuThuNLTheoSP.Text.Trim() != "")
-            productCapacity.TieuThuNLTheoSP = Convert.ToDecimal(txtTieuThuNLTheoSP.Text.Trim());
-
-        if (txtDoanhThuTheoSP.Text.Trim() != "")
-            productCapacity.DoanhThuTheoSP = Convert.ToDecimal(txtDoanhThuTheoSP.Text.Trim());
-
-        productCapacity.IsPlan = false;
-        productCapacity.ProductId = _ProductId;
-        productCapacity.ReportId = ReportId;
-        productCapacity.ReportYear = ReportYear;
-
-        ReportModels rp = new ReportModels();
-        var oldData = rp.DE_ProductCapacity.FirstOrDefault(x => x.ReportId == ReportId && x.ProductId == _ProductId && x.IsPlan == false);
-        if (oldData != null)
-            hdnId.Value = oldData.Id.ToString();
-
-        int i = 0;
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //Cần sửa lại đoạn này
-        {
-            productCapacity.Id = Convert.ToInt32(hdnId.Value);
-            productCapacity = productCapacityService.Update(productCapacity);
-
-            if (txtTieuThuTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0)
-            {
-                InsertUpdate_ProductCapacityFuel(productCapacity.Id);
-            }
-
-            if (productCapacity != null) i = 1;
-        }
-        else
-        {
-            i = productCapacityService.Insert(productCapacity);
-
-            if (txtTieuThuTheoSP.Text != "" && ddlLoaiNangLuong.SelectedIndex > 0 && ddlLoaiNangLuong_DVT.SelectedIndex >= 0 && i > 0)
-            {
-                InsertUpdate_ProductCapacityFuel(i);
-            }
-        }
-        if (i <= 0)
-        {
-            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "AddProductQty(" + hdnId.Value + ");", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
-        }
-        else
-        {
+            BindFuel();
+            BindSolution();
+            BindResultTKNL();
+            BindPlanTKNL();
+            BindUsingEnerySystem();
             BindProductCapacity();
         }
-
-    }
-
-    private void InsertUpdate_ProductCapacityFuel(int _ProductCapacityId)
-    {
-        int _fuelId = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-        int _meId = Convert.ToInt32(ddlLoaiNangLuong_DVT.SelectedValue);
-        ReportModels rp = new ReportModels();
-        if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _fuelId && o.MeasurementId == _meId)) //update
-        {
-            var _fuel = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _fuelId && o.MeasurementId == _meId);
-            if (_fuel != null)
-                _fuel.ConsumeQty = Convert.ToDecimal(txtTieuThuTheoSP.Text);
-            rp.SaveChanges();
-        }
-        else //Insert
-        {
-            var _insertedFuel = new DE_ProductCapacityFuel();
-            _insertedFuel.ProductCapacityId = _ProductCapacityId;
-            _insertedFuel.FuelId = _fuelId;
-            _insertedFuel.MeasurementId = _meId;
-            _insertedFuel.ConsumeQty = Convert.ToDecimal(txtTieuThuTheoSP.Text);
-            rp.DE_ProductCapacityFuel.Add(_insertedFuel);
-            rp.SaveChanges();
-        }
-    }
-
-    public void btnSaveProductPlan_Click(object sender, EventArgs e)
-    {
-        ProductCapacityService productCapacityService = new ProductCapacityService();
-        ProductCapacity productCapacity = new ProductCapacity();
-        int _ProductId = Convert.ToInt32(ddlProductPlan.SelectedValue);
-
-        if (txtQtyByDesignPlan.Text != "")
-            productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesignPlan.Text);
-        if (txtMaxQtyPlan.Text.Trim() != "")
-            productCapacity.MaxQuantity = Convert.ToDecimal(txtMaxQtyPlan.Text.Trim());
-        productCapacity.IsPlan = true;
-        if (txtRateOfRevenue.Text.Trim() != "")
-            productCapacity.RateOfRevenue = Convert.ToDecimal(txtRateOfRevenue.Text.Trim());
-        if (txtRateOfCost.Text.Trim() != "")
-            productCapacity.RateOfCost = Convert.ToDecimal(txtRateOfCost.Text.Trim());
-        productCapacity.ProductId = _ProductId;
-        productCapacity.ReportId = ReportId;
-        productCapacity.ReportYear = ReportYear;
-
-        ReportModels rp = new ReportModels();
-        var check = rp.DE_ProductCapacity.FirstOrDefault(o => o.ReportId == ReportId && o.IsPlan == true && o.ProductId == _ProductId);
-        if (check != null)
-            hdnId.Value = check.Id.ToString();
-
-        int i = 0;
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0)
-        {
-            productCapacity.Id = Convert.ToInt32(hdnId.Value);
-            productCapacity = productCapacityService.Update(productCapacity);
-            if (productCapacity != null) i = 1;
-        }
-        else
-        {
-            i = productCapacityService.Insert(productCapacity);
-        }
-
-        if (i <= 0)
-        {
-            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "AddProductQtyPlan(" + hdnId.Value + ");", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
-        }
-        else
-        {
-            BindProductCapacityPlan();
-        }
-
-    }
-    protected void rptProductPlan_ItemCommand(object source, RepeaterCommandEventArgs e)
-    {
-        if (e.CommandName.Equals("delete"))
-        {
-            ProductCapacityService rptbso = new ProductCapacityService();
-            LinkButton btnDelete = (LinkButton)e.CommandSource;
-            btnDelete.Visible = AllowEdit;
-            long i = rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
-            if (i > 0)
-                BindProductCapacityPlan();
-            else
-                ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "alert('Xóa không thành không. Vui lòng thử lại');", true);
-        }
-        else if (e.CommandName.Equals("edit"))
-        {
-            LinkButton btnEdit = (LinkButton)e.CommandSource;
-            btnEdit.Visible = AllowEdit;
-            ProductCapacity productCapacity = new ProductCapacity();
-            ProductCapacityService productCapacityService = new ProductCapacityService();
-            int ProductCapacityId = int.Parse(((LinkButton)e.CommandSource).CommandArgument);
-            productCapacity = productCapacityService.FindByKey(ProductCapacityId);
-            if (productCapacity != null)
-            {
-                try
-                {
-                    txtMaxQtyPlan.Text = productCapacity.MaxQuantity.ToString();
-                    txtQtyByDesignPlan.Text = productCapacity.DesignQuantity.ToString();
-                    txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
-                    txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
-                    ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();
-                    txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
-                    Product product = new Product();
-                    ProductService productService = new ProductService();
-                    product = productService.FindByKey(productCapacity.ProductId);
-                    ltMeasurementPlan.Text = "(" + product.Measurement + ")";
-                }
-                catch { }
-            }
-            hdnId.Value = ProductCapacityId.ToString();
-            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "AddProductQtyPlan(" + hdnId.Value + ");", true);
-        }
-    }
-    protected void rptProductPlan_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    {
-        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        {
-            //DataRowView item = (DataRowView)e.Item.DataItem;
-            //if (item["NoFuel_TOE"] != DBNull.Value)
-            //{
-            //    No_TOE_Future = No_TOE_Future + Convert.ToDecimal(item["NoFuel_TOE"]);
-            //}
-            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
-            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
-            btnDelete.Visible = AllowEdit;
-            btnEdit.Visible = AllowEdit;
-
-            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",false); return false;");
-
-        }
-    }
-
-    public void btnSaveSolution_Click(object sender, EventArgs e)
-    {
-        //GiaiPhap gp = new GiaiPhap();
-        //GiaiPhapService gpser = new GiaiPhapService();
-        //gp.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-        //if (txtProductName.Text != "")
-        //{
-        //    gp.MoTa = txtNote.Text;
-        //    gp.TenGiaiPhap = txtProductName.Text;
-        //    if (gpser.Insert(gp) > 0)
-        //    {
-        //        ltNoticeSolution.Text = "Lưu sản phẩm mới thành công";
-        //        BindSolution();
-        //    }
-        //    else
-        //        ltNoticeSolution.Text = "Không lưu được sản phẩm mới. Vui lòng thử lại";
-
-        //}
-        //else
-        //{
-        //    ScriptManager.RegisterStartupScript(this, GetType(), "showGP", "showgiaiphap();", true);
-        //    ScriptManager.RegisterStartupScript(this, GetType(), "ac", "alert('Chưa nhập tên sản phẩm!');", true);
-        //}
-    }
-
-    void BindInfrastructure()
-    {
-        Infrastructure infra = new Infrastructure();
-        InfrastructureService infraService = new InfrastructureService();
-
-        infra = infraService.GetInfrastructureByReport(ReportId);
-        if (infra != null)
-        {
-            ltProduceArea.Text = infra.ProduceAreaNo.ToString();
-            ltOfficeArea.Text = infra.OfficeAreaNo.ToString();
-            ltProduceEmployeeNo.Text = infra.ProduceEmployeeNo.ToString();
-            ltOfficeEmployeeNo.Text = infra.OfficeEmployeeNo.ToString();
-            txtProduceArea.Text = infra.ProduceAreaNo.ToString();
-            txtOfficeArea.Text = infra.OfficeAreaNo.ToString();
-            txtProduceEmployeeNo.Text = infra.ProduceEmployeeNo.ToString();
-            txtOficeEmployeeNo.Text = infra.OfficeEmployeeNo.ToString();
-        }
-    }
-    void BindElectrictResult()
-    {
-        UsingElectrict usingElectrict = new UsingElectrict();
-        UsingElectrictService usingElectrictService = new UsingElectrictService();
-        try
-        {
-            usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, false);
-            if (usingElectrict != null)
-            {
-                if (usingElectrict.InstalledCapacity > 0)
-                {
-                    ltInstalledResult.Text = usingElectrict.InstalledCapacity.ToString() + "(kV)";
-                    txtInstalledCapacity.Text = usingElectrict.InstalledCapacity.ToString();
-                }
-                else
-                    ltInstalledResult.Text = "";
-                if (usingElectrict.Capacity > 0)
-                {
-                    txtCapacity.Text = usingElectrict.Capacity.ToString();
-                    ltCapacityResult.Text = usingElectrict.Capacity.ToString() + "(kV)";
-                }
-                else
-                    ltCapacityResult.Text = "";
-                if (usingElectrict.AvgPrice > 0)
-                {
-                    ltPriceAvgResult.Text = usingElectrict.AvgPrice.ToString() + "(đồng/kW)";
-                    txtAvgPrice.Text = Tool.ConvertDecimalToString(usingElectrict.AvgPrice);
-                }
-                if (usingElectrict.PriceBuy > 0)
-                {
-                    ltPriceBuy.Text = usingElectrict.PriceBuy.ToString() + "(đồng/kWh)";
-                    txtPriceBuy.Text = Tool.ConvertDecimalToString(usingElectrict.PriceBuy);
-                }
-                if (usingElectrict.ProduceQty > 0)
-                {
-                    ltQuantityProduceResult.Text = usingElectrict.ProduceQty.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    txtProduceQty.Text = usingElectrict.ProduceQty.ToString();
-                }
-                else
-                    ltQuantityProduceResult.Text = "";
-                if (usingElectrict.Technology != null)
-                    ltTechnologyResult.Text = usingElectrict.Technology.ToString();
-
-                if (usingElectrict.Quantity > 0)
-                {
-                    ltQuantityResult.Text = usingElectrict.Quantity.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    txtQuantity.Text = usingElectrict.Quantity.ToString();
-                }
-                else
-                    ltQuantityResult.Text = "";
-                Fuel fuel = new Fuel();
-                if (usingElectrict.FuelId > 0)
-                {
-                    fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-                    if (fuel != null)
-                    {
-                        ddlFuel.SelectedValue = usingElectrict.FuelId.ToString();
-                        ltFuelResult.Text = fuel.FuelName;
-                    }
-
-                }
-                else
-                    ddlFuel.SelectedIndex = 0;
-
-            }
-        }
-        catch { }
-    }
-    void BindElectrictPlan()
-    {
-        try
-        {
-            UsingElectrict usingElectrict = new UsingElectrict();
-            UsingElectrictService usingElectrictService = new UsingElectrictService();
-
-            usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
-            if (usingElectrict != null)
-            {
-                if (usingElectrict.InstalledCapacity > 0)
-                {
-                    ltInstalledCapacityPlan.Text = usingElectrict.InstalledCapacity.ToString() + "(kV)";
-                    txtInstalledCapacityPlan.Text = usingElectrict.InstalledCapacity.ToString();
-                }
-                else
-                    ltInstalledCapacityPlan.Text = "";
-                if (usingElectrict.Capacity > 0)
-                {
-                    txtCapacityPlan.Text = usingElectrict.Capacity.ToString();
-                    ltCapacityPlan.Text = usingElectrict.Capacity.ToString() + "(kV)";
-                }
-                else
-                    ltCapacityPlan.Text = "";
-                if (usingElectrict.PriceBuy > 0)
-                {
-                    txtCostPlan.Text = Tool.ConvertDecimalToString(usingElectrict.PriceBuy);
-                    ltPriceBuyPlan.Text = usingElectrict.PriceBuy.ToString() + "(đồng/kWh)";
-                }
-                else
-                    ltPriceBuyPlan.Text = "";
-                if (usingElectrict.ProduceQty > 0)
-                {
-                    txtProduceQtyPlan.Text = usingElectrict.ProduceQty.ToString();
-                    ltQuantityProducePlan.Text = usingElectrict.ProduceQty.ToString() + "(10<sup>6</sup> kWh/năm)";
-                }
-                else
-                    ltQuantityProducePlan.Text = "";
-                if (usingElectrict.Technology != null)
-                    ltTecnologyPlan.Text = usingElectrict.Technology.ToString();
-
-                else
-                    ltFuelPlan.Text = "";
-                if (usingElectrict.Quantity > 0)
-                {
-                    txtElectrictQuantityPlan.Text = usingElectrict.Quantity.ToString();
-                    ltQuantityElectrictPlan.Text = usingElectrict.Quantity.ToString() + "(10<sup>6</sup> kWh/năm)";
-                }
-                else
-                    ltQuantityElectrictPlan.Text = "";
-                if (usingElectrict.PriceProduce > 0)
-                {
-                    txtPriceProducePlan.Text = usingElectrict.PriceProduce.ToString();
-                    ltPriceProducePlan.Text = usingElectrict.PriceProduce.ToString() + "(đồng/kWh)"; ;
-                }
-                else
-                    ltPriceProducePlan.Text = "";
-
-                Fuel fuel = new Fuel();
-                if (usingElectrict.FuelId > 0)
-                {
-                    fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-                    if (fuel != null)
-                    {
-                        ddlFuelPlan.SelectedValue = usingElectrict.FuelId.ToString();
-                        ltFuelPlan.Text = fuel.FuelName;
-                    }
-                }
-            }
-        }
-        catch { }
-    }
-
-    //using
-
-    private void GetData_ProductCapacity()
-    {
-        ReportModels rp = new ReportModels();
-        var data1 = (from a in rp.DE_ProductCapacity
-                     join b in rp.DE_Product on a.ProductId equals b.Id
-                     where a.ReportId == ReportId && a.IsPlan == false
-                     select new { a, b }).ToList();
-
-
-        var ListProductCapacityId = data1.Select(o => o.a.Id).ToList();
-        var data2 = rp.DE_ProductCapacityFuel.Where(o => ListProductCapacityId.Contains(o.ProductCapacityId))
-            .GroupBy(x => x.FuelId).Select(g => new
-            {
-                FuelId = g.Key,
-                total = g.Sum(s => s.ConsumeQty)
-            }).ToList();
-        Console.WriteLine(data2);
-
-    }
-
-
-    //using
-    private void BindProductCapacityPlan()
-    {
-        //ProductCapacityService productCapacityService = new ProductCapacityService();
-        //DataTable tbl = new DataTable();
-        //tbl = productCapacityService.GetDataCapacity(ReportId, true);
-        //rptProductPlan.DataSource = tbl;
-        //rptProductPlan.DataBind();
-    }
-    protected void btnSaveElectrict_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            UsingElectrict usingElectrict = new UsingElectrict();
-            UsingElectrictService usingElectrictService = new UsingElectrictService();
-            usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, false);
-            if (usingElectrict == null)
-            {
-                usingElectrict = new UsingElectrict();
-                usingElectrict.ReportId = ReportId;
-                if (txtCapacity.Text.Trim() != "")
-                    usingElectrict.Capacity = Convert.ToDecimal(txtCapacity.Text);
-                else
-                    usingElectrict.Capacity = 0;
-                if (txtQuantity.Text.Trim() != "")
-                    usingElectrict.Quantity = Convert.ToDecimal(txtQuantity.Text);
-                else
-                    usingElectrict.Quantity = 0;
-                if (txtAvgPrice.Text.Trim() != "")
-                    usingElectrict.AvgPrice = Convert.ToDecimal(txtAvgPrice.Text);
-                else
-                    usingElectrict.AvgPrice = 0;
-                if (txtAvgPrice.Text.Trim() != "")
-                    usingElectrict.AvgPrice = Convert.ToDecimal(txtAvgPrice.Text);
-                else
-                    usingElectrict.AvgPrice = 0;
-                if (txtPriceBuy.Text.Trim() != "")
-                    usingElectrict.PriceBuy = Convert.ToDecimal(txtPriceBuy.Text);
-                else
-                    usingElectrict.PriceBuy = 0;
-
-                if (txtInstalledCapacity.Text.Trim() != "")
-                    usingElectrict.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacity.Text);
-                else
-                    usingElectrict.InstalledCapacity = 0;
-                if (txtProduceQty.Text.Trim() != "")
-                    usingElectrict.ProduceQty = Convert.ToDecimal(txtProduceQty.Text);
-                else
-                    usingElectrict.ProduceQty = 0;
-                usingElectrict.Technology = txtTenologyElectrict.Text;
-                if (ddlFuel.SelectedIndex > 0)
-                    usingElectrict.FuelId = Convert.ToInt32(ddlFuel.SelectedValue);
-                else
-                    usingElectrict.FuelId = 0;
-                usingElectrict.IsPlan = false;
-                int i = usingElectrictService.Insert(usingElectrict);
-                if (i > 0)
-                {
-                    if (usingElectrict.InstalledCapacity > 0)
-                        ltInstalledResult.Text = usingElectrict.InstalledCapacity.ToString() + "(kV)";
-                    else
-                        ltInstalledResult.Text = "";
-                    if (usingElectrict.Capacity > 0)
-                        ltCapacityResult.Text = usingElectrict.Capacity.ToString() + "(kV)";
-                    else
-                        ltCapacityResult.Text = "";
-                    if (usingElectrict.AvgPrice > 0)
-                        ltPriceAvgResult.Text = usingElectrict.AvgPrice.ToString() + "(đồng/kW)";
-                    if (usingElectrict.PriceBuy > 0)
-                        ltPriceBuy.Text = usingElectrict.PriceBuy.ToString() + "(đồng/kWh)";
-                    if (usingElectrict.ProduceQty > 0)
-                        ltQuantityProduceResult.Text = usingElectrict.ProduceQty.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityProduceResult.Text = "";
-                    ltTechnologyResult.Text = usingElectrict.Technology.ToString();
-                    if (ddlFuel.SelectedIndex > 0)
-                        ltFuelResult.Text = ddlFuel.SelectedItem.Text;
-                    else
-                        ltFuelResult.Text = "";
-                    if (usingElectrict.Quantity > 0)
-                        ltQuantityResult.Text = usingElectrict.Quantity.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityResult.Text = "";
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateElectrict();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                }
-            }
-            else
-            {
-                usingElectrict.ReportId = ReportId;
-                if (txtCapacity.Text.Trim() != "")
-                    usingElectrict.Capacity = Convert.ToDecimal(txtCapacity.Text);
-                else
-                    usingElectrict.Capacity = 0;
-                if (txtQuantity.Text.Trim() != "")
-                    usingElectrict.Quantity = Convert.ToDecimal(txtQuantity.Text);
-                else
-                    usingElectrict.Quantity = 0;
-                if (txtPriceBuy.Text.Trim() != "")
-                    usingElectrict.PriceBuy = Convert.ToDecimal(txtPriceBuy.Text);
-                else
-                    usingElectrict.PriceBuy = 0;
-                if (txtAvgPrice.Text.Trim() != "")
-                    usingElectrict.AvgPrice = Convert.ToDecimal(txtAvgPrice.Text);
-                else
-                    usingElectrict.AvgPrice = 0;
-                if (txtInstalledCapacity.Text.Trim() != "")
-                    usingElectrict.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacity.Text);
-                else
-                    usingElectrict.InstalledCapacity = 0;
-                if (txtProduceQty.Text.Trim() != "")
-                    usingElectrict.ProduceQty = Convert.ToDecimal(txtProduceQty.Text);
-                else
-                    usingElectrict.ProduceQty = 0;
-                usingElectrict.Technology = txtTenologyElectrict.Text;
-                if (ddlFuel.SelectedIndex > 0)
-                    usingElectrict.FuelId = Convert.ToInt32(ddlFuel.SelectedValue);
-                else
-                    usingElectrict.FuelId = 0;
-                usingElectrict.IsPlan = false;
-
-                if (usingElectrictService.Update(usingElectrict) != null)
-                {
-                    if (usingElectrict.InstalledCapacity > 0)
-                        ltInstalledResult.Text = usingElectrict.InstalledCapacity.ToString();
-                    if (usingElectrict.Capacity > 0)
-                        ltCapacityResult.Text = usingElectrict.Capacity.ToString();
-
-                    if (usingElectrict.ProduceQty > 0)
-                        ltQuantityProduceResult.Text = usingElectrict.ProduceQty.ToString();
-                    ltTechnologyResult.Text = usingElectrict.Technology.ToString();
-                    if (ddlFuel.SelectedIndex > 0)
-                        ltFuelResult.Text = ddlFuel.SelectedItem.Text;
-                    ltQuantityResult.Text = usingElectrict.Quantity.ToString();
-
-                    if (usingElectrict.InstalledCapacity > 0)
-                        ltInstalledResult.Text = usingElectrict.InstalledCapacity.ToString();
-                    else
-                        ltInstalledResult.Text = "";
-                    if (usingElectrict.Capacity > 0)
-                    {
-                        ltCapacityResult.Text = usingElectrict.Capacity.ToString();
-                        ltPriceAvgResult.Text = Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString();
-                    }
-                    else
-                    {
-                        ltCapacityResult.Text = "";
-                        ltPriceAvgResult.Text = "";
-                    }
-
-                    if (usingElectrict.AvgPrice > 0)
-                        ltPriceAvgResult.Text = usingElectrict.AvgPrice.ToString() + "(đồng/kW)";
-                    if (usingElectrict.PriceBuy > 0)
-                        ltPriceBuy.Text = usingElectrict.PriceBuy.ToString() + "(đồng/kWh)";
-                    if (usingElectrict.ProduceQty > 0)
-                        ltQuantityProduceResult.Text = usingElectrict.ProduceQty.ToString();
-                    else
-                        ltQuantityProduceResult.Text = "";
-                    ltTechnologyResult.Text = usingElectrict.Technology.ToString();
-                    if (ddlFuel.SelectedIndex > 0)
-                        ltFuelResult.Text = ddlFuel.SelectedItem.Text;
-                    else
-                        ltFuelResult.Text = "";
-                    if (usingElectrict.Quantity > 0)
-                        ltQuantityResult.Text = usingElectrict.Quantity.ToString();
-                    else
-                        ltQuantityResult.Text = "";
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateElectrict();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                }
-            }
-        }
-        catch (Exception ex)
-        { }
-    }
-
-    public void btnSaveElectrictPlan_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            UsingElectrict usingElectrict = new UsingElectrict();
-            UsingElectrictService usingElectrictService = new UsingElectrictService();
-            usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
-            if (usingElectrict == null)
-            {
-                usingElectrict = new UsingElectrict();
-                usingElectrict.ReportId = ReportId;
-                if (txtCapacityPlan.Text.Trim() != "")
-                    usingElectrict.Capacity = Convert.ToDecimal(txtCapacityPlan.Text);
-                else
-                    usingElectrict.Capacity = 0;
-                if (txtElectrictQuantityPlan.Text.Trim() != "")
-                    usingElectrict.Quantity = Convert.ToDecimal(txtElectrictQuantityPlan.Text);
-                else
-                    usingElectrict.Quantity = 0;
-                if (txtCostPlan.Text.Trim() != "")
-                    usingElectrict.BuyCost = Convert.ToDecimal(txtCostPlan.Text);
-                else
-                    usingElectrict.BuyCost = 0;
-                if (txtInstalledCapacityPlan.Text.Trim() != "")
-                    usingElectrict.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacityPlan.Text);
-                else
-                    usingElectrict.InstalledCapacity = 0;
-                if (txtProduceQtyPlan.Text.Trim() != "")
-                    usingElectrict.ProduceQty = Convert.ToDecimal(txtProduceQtyPlan.Text);
-                else
-                    usingElectrict.ProduceQty = 0;
-                usingElectrict.Technology = txtTenologyPlan.Text;
-                if (ddlFuelPlan.SelectedIndex > 0)
-                    usingElectrict.FuelId = Convert.ToInt32(ddlFuelPlan.SelectedValue);
-                else
-                    usingElectrict.FuelId = 0;
-                if (txtPriceProducePlan.Text.Trim() != "")
-                    usingElectrict.PriceProduce = Convert.ToDecimal(txtPriceProducePlan.Text);
-                else
-                    usingElectrict.PriceProduce = 0;
-                usingElectrict.IsPlan = true;
-                int i = usingElectrictService.Insert(usingElectrict);
-                if (i > 0)
-                {
-                    if (usingElectrict.InstalledCapacity > 0)
-                        ltInstalledCapacityPlan.Text = usingElectrict.InstalledCapacity.ToString() + "(kV)";
-                    else
-                        ltInstalledCapacityPlan.Text = "";
-                    if (usingElectrict.Capacity > 0)
-                        ltCapacityPlan.Text = usingElectrict.Capacity.ToString() + "(kV)";
-                    else
-                        ltCapacityPlan.Text = "";
-                    if (usingElectrict.BuyCost > 0)
-                        ltPriceBuyPlan.Text = usingElectrict.BuyCost.ToString() + "(đồng/kWh)";
-                    else
-                        ltPriceBuyPlan.Text = "";
-                    if (usingElectrict.ProduceQty > 0)
-                        ltQuantityProducePlan.Text = usingElectrict.ProduceQty.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityProducePlan.Text = "";
-
-                    ltTecnologyPlan.Text = usingElectrict.Technology.ToString();
-                    if (ddlFuelPlan.SelectedIndex > 0)
-                        ltFuelPlan.Text = ddlFuelPlan.SelectedItem.Text;
-                    else
-                        ltFuelPlan.Text = "";
-                    if (usingElectrict.Quantity > 0)
-                        ltQuantityElectrictPlan.Text = usingElectrict.Quantity.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityElectrictPlan.Text = "";
-                    if (usingElectrict.PriceProduce > 0)
-                        ltPriceProducePlan.Text = usingElectrict.PriceProduce.ToString() + "(đồng/kWh)";
-                    else
-                        ltPriceProducePlan.Text = "";
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateElectrictPlan();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                }
-            }
-            else
-            {
-                usingElectrict.ReportId = ReportId;
-                if (txtCapacityPlan.Text.Trim() != "")
-                    usingElectrict.Capacity = Convert.ToDecimal(txtCapacityPlan.Text);
-                else
-                    usingElectrict.Capacity = 0;
-                if (txtElectrictQuantityPlan.Text.Trim() != "")
-                    usingElectrict.Quantity = Convert.ToDecimal(txtElectrictQuantityPlan.Text);
-                else
-                    usingElectrict.Quantity = 0;
-                if (txtCostPlan.Text.Trim() != "")
-                    usingElectrict.BuyCost = Convert.ToDecimal(txtCostPlan.Text);
-                else
-                    usingElectrict.BuyCost = 0;
-                if (txtInstalledCapacityPlan.Text.Trim() != "")
-                    usingElectrict.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacityPlan.Text);
-                else
-                    usingElectrict.InstalledCapacity = 0;
-                if (txtProduceQtyPlan.Text.Trim() != "")
-                    usingElectrict.ProduceQty = Convert.ToDecimal(txtProduceQtyPlan.Text);
-                else
-                    usingElectrict.ProduceQty = 0;
-                if (txtPriceProducePlan.Text.Trim() != "")
-                    usingElectrict.PriceProduce = Convert.ToDecimal(txtPriceProducePlan.Text);
-                else
-                    usingElectrict.PriceProduce = 0;
-                usingElectrict.Technology = txtTenologyPlan.Text;
-
-                if (ddlFuelPlan.SelectedIndex > 0)
-                    usingElectrict.FuelId = Convert.ToInt32(ddlFuelPlan.SelectedValue);
-                else
-                    usingElectrict.FuelId = 0;
-                usingElectrict.IsPlan = true;
-
-                if (usingElectrictService.Update(usingElectrict) != null)
-                {
-                    if (usingElectrict.InstalledCapacity > 0)
-                        ltInstalledCapacityPlan.Text = usingElectrict.InstalledCapacity.ToString() + "(kV)";
-                    else
-                        ltInstalledCapacityPlan.Text = "";
-                    if (usingElectrict.Capacity > 0)
-                        ltCapacityPlan.Text = usingElectrict.Capacity.ToString() + "(kV)";
-                    else
-                        ltCapacityPlan.Text = "";
-                    if (usingElectrict.BuyCost > 0)
-                        ltPriceBuyPlan.Text = usingElectrict.BuyCost.ToString() + "(đồng/kWh)";
-                    else
-                        ltPriceBuyPlan.Text = "";
-                    if (usingElectrict.ProduceQty > 0)
-                        ltQuantityProducePlan.Text = usingElectrict.ProduceQty.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityProducePlan.Text = "";
-
-                    ltTecnologyPlan.Text = usingElectrict.Technology.ToString();
-                    if (ddlFuelPlan.SelectedIndex > 0)
-                        ltFuelPlan.Text = ddlFuelPlan.SelectedItem.Text;
-                    else
-                        ltFuelPlan.Text = "";
-                    if (usingElectrict.Quantity > 0)
-                        ltQuantityElectrictPlan.Text = usingElectrict.Quantity.ToString() + "(10<sup>6</sup> kWh/năm)";
-                    else
-                        ltQuantityElectrictPlan.Text = "";
-                    if (usingElectrict.PriceProduce > 0)
-                        ltPriceProducePlan.Text = usingElectrict.PriceProduce.ToString() + "(đồng/kWh)";
-                    else
-                        ltPriceProducePlan.Text = "";
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateElectrictPlan();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                }
-            }
-        }
-        catch (Exception ex)
-        { }
-    }
-    public void btnSaveInfo_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            Infrastructure infra = new Infrastructure();
-            InfrastructureService infraService = new InfrastructureService();
-            if (ReportId > 0)
-            {
-                infra = infraService.GetInfrastructureByReport(ReportId);
-                if (infra != null)
-                {
-                    if (txtProduceEmployeeNo.Text.Trim() != "")
-                        infra.ProduceEmployeeNo = Convert.ToInt32(txtProduceEmployeeNo.Text.Trim());
-                    if (txtOficeEmployeeNo.Text.Trim() != "")
-                        infra.OfficeEmployeeNo = Convert.ToInt32(txtOficeEmployeeNo.Text.Trim());
-                    if (txtProduceArea.Text.Trim() != "")
-                        infra.ProduceAreaNo = Convert.ToInt32(txtProduceArea.Text.Trim());
-                    if (txtOfficeArea.Text.Trim() != "")
-                        infra.OfficeAreaNo = Convert.ToInt32(txtOfficeArea.Text.Trim());
-                    infra = infraService.Update(infra);
-                    if (infra != null)
-                    {
-                        ltProduceArea.Text = infra.ProduceAreaNo.ToString();
-                        ltOfficeArea.Text = infra.OfficeAreaNo.ToString();
-                        ltProduceEmployeeNo.Text = infra.ProduceEmployeeNo.ToString();
-                        ltOfficeEmployeeNo.Text = infra.OfficeEmployeeNo.ToString();
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateInfratructure();", true);
-                        ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                    }
-
-                }
-                else
-                {
-                    infra = new Infrastructure();
-                    infra.ReportId = ReportId;
-                    if (txtProduceEmployeeNo.Text.Trim() != "")
-                        infra.ProduceEmployeeNo = Convert.ToInt32(txtProduceEmployeeNo.Text.Trim());
-                    if (txtOficeEmployeeNo.Text.Trim() != "")
-                        infra.OfficeEmployeeNo = Convert.ToInt32(txtOficeEmployeeNo.Text.Trim());
-                    if (txtProduceArea.Text.Trim() != "")
-                        infra.ProduceAreaNo = Convert.ToInt32(txtProduceArea.Text.Trim());
-                    if (txtOfficeArea.Text.Trim() != "")
-                        infra.OfficeAreaNo = Convert.ToInt32(txtOfficeArea.Text.Trim());
-                    int i = infraService.Insert(infra);
-                    if (i > 0)
-                    {
-                        ltProduceArea.Text = infra.ProduceAreaNo.ToString();
-                        ltOfficeArea.Text = infra.OfficeAreaNo.ToString();
-                        ltProduceEmployeeNo.Text = infra.ProduceEmployeeNo.ToString();
-                        ltOfficeEmployeeNo.Text = infra.OfficeEmployeeNo.ToString();
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateInfratructure();", true);
-                        ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                    }
-
-                }
-
-            }
-
-        }
-        catch (Exception ex)
-        {
-            ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "UpdateInfratructure();", true);
-            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-        }
-
-    }
-
-    protected void ddlProductPlan_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (ddlProductPlan.SelectedIndex > 0)
-        {
-            Product product = new Product();
-            ProductService productService = new ProductService();
-            product = productService.FindByKey(Convert.ToInt32(ddlProductPlan.SelectedValue));
-            ltMeasurementPlan.Text = product.Measurement;
-        }
-        else
-        {
-            ltMeasurementPlan.Text = "";
-        }
-        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQtyPlan(0);", true);
-    }
-    protected void ddlProduct_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (ddlProduct.SelectedIndex > 0)
-        {
-            Product product = new Product();
-            ProductService productService = new ProductService();
-            int _ProductId = Convert.ToInt32(ddlProduct.SelectedValue);
-            product = productService.FindByKey(_ProductId);
-            ltMeasurement.Text = product.Measurement;
-            txtQtyByDesign.Text = product.Quantity.ToString();
-            ltMearsurement2.Text = "(" + product.Measurement + ")";
-
-            //Nếu đã nhập sản phẩm này lúc trước => cần load lại dữ liệu đã nhập
-            ReportModels rp = new ReportModels();
-            if (rp.DE_ProductCapacity.Any(o => o.ReportId == ReportId && o.ProductId == _ProductId && o.IsPlan == false))
-            {
-                var oldData = rp.DE_ProductCapacity.FirstOrDefault(o => o.ReportId == ReportId && o.ProductId == _ProductId && o.IsPlan == false);
-                if (oldData != null)
-                {
-                    Load_ProductCapacity(oldData.Id);
-                }
-            }
-        }
-        else
-        {
-            txtQtyByDesign.Text = "";
-            ltMeasurement.Text = "";
-            ltMearsurement2.Text = "";
-            txtTieuThuTheoSP.Text = "";
-            txtMaxQty.Text = "";
-        }
-        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQty(0);", true);
-    }
-    protected void ddlLoaiNangLuong_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        if (ddlLoaiNangLuong.SelectedIndex == 0)
-        {
-            ddlLoaiNangLuong_DVT.Items.Clear();
-            txtTieuThuTheoSP.Text = "";
-            return;
-        }
-
-        ReportModels rp = new ReportModels();
-        int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-        var data = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == _selectedFuel select a).ToList();
-        Binding_ddlLoaiNangLuong_DVT(data);
-
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
-        {
-            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
-            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel);
-            if (oldData != null)
-            {
-                ddlLoaiNangLuong_DVT.SelectedValue = oldData.MeasurementId.ToString();
-                txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
-            }
-            else
-            {
-                txtTieuThuTheoSP.Text = "";
-            }
-        }
-        else // dữ liệu mới
-        {
-
-        }
-    }
-
-    private void Binding_ddlLoaiNangLuong_DVT(List<DE_Measurement> data)
-    {
-        ddlLoaiNangLuong_DVT.DataValueField = "Id";
-        ddlLoaiNangLuong_DVT.DataTextField = "MeasurementName";
-        ddlLoaiNangLuong_DVT.DataSource = data;
-        ddlLoaiNangLuong_DVT.DataBind();
-
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
-        {
-            ReportModels rp = new ReportModels();
-            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
-            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel);
-            if (oldData != null)
-            {
-                ddlLoaiNangLuong_DVT.SelectedValue = oldData.MeasurementId.ToString();
-                txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
-            }
-            else
-            {
-                txtTieuThuTheoSP.Text = "";
-            }
-        }
-        else // dữ liệu mới
-        {
-
-        }
-    }
-    protected void ddlLoaiNangLuong_DVT_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        int _selectedMearsement = Convert.ToInt32(ddlLoaiNangLuong_DVT.SelectedValue);
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
-        {
-            ReportModels rp = new ReportModels();
-            int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
-            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
-            var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel && o.MeasurementId == _selectedMearsement);
-            txtTieuThuTheoSP.Text = oldData.ConsumeQty.ToString();
-        }
-        else // dữ liệu mới
-        {
-
-        }
-    }
-
-    private void Binding_SuDungNangLuongTheoSP(int ProductCapacityId)
-    {
-        if (ProductCapacityId > 0)
-        {
-            ReportModels rp = new ReportModels();
-            if (rp.DE_ProductCapacityFuel.Any(o => o.ProductCapacityId == ProductCapacityId))
-            {
-                var data = rp.DE_ProductCapacityFuel.Where(o => o.ProductCapacityId == ProductCapacityId).First();
-                if (data.FuelId > 0)
-                {
-                    ddlLoaiNangLuong.SelectedValue = data.FuelId.ToString();
-                    if (data.MeasurementId > 0)
-                    {
-                        var meList = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == data.FuelId select a).ToList();
-                        Binding_ddlLoaiNangLuong_DVT(meList);
-                        ddlLoaiNangLuong_DVT.SelectedValue = data.MeasurementId.ToString();
-                        txtTieuThuTheoSP.Text = data.ConsumeQty.ToString();
-                    }
-                }
-            }
-        }
-    }
-
-
-    private void Update_ProductCapacityFuel(int ProductCapacityId)
-    {
-        ReportModels rp = new ReportModels();
     }
 
 
@@ -1561,7 +378,9 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
         if (data != null)
         {
             ltReportYear.Text = (data.Year - 1).ToString();
+            ltSolutionResult.Text = (data.Year - 1).ToString();
             ltReportNext.Text = data.Year.ToString();
+            ltSolutionNextYear.Text = data.Year.ToString();
         }
     }
 
@@ -1731,11 +550,78 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
 
     protected void btAddElectrictFutureUpdate_Click(object sender, EventArgs e)
     {
+        ReportModels rp = new ReportModels();
         //DE_UsingElectrict
+        var checkUsingElectrict = rp.DE_UsingElectrict.Any(x => x.ReportId == ReportId && x.IsPlan == true);
+        var _usingElectrict = new DE_UsingElectrict();
+        if (checkUsingElectrict == true)
+            _usingElectrict = rp.DE_UsingElectrict.FirstOrDefault(x => x.ReportId == ReportId && x.IsPlan == true);
+        else
+        {
+            _usingElectrict.ReportId = ReportId;
+            _usingElectrict.IsPlan = true;
+            _usingElectrict.ReportYear = ReportYear;
+            _usingElectrict.FuelId = 0;
+        }
 
+        if (txtUsingElectrictFuture_InstalledCapacity.Text.Trim() != "")
+            _usingElectrict.InstalledCapacity = Convert.ToDecimal(txtUsingElectrictFuture_InstalledCapacity.Text.Trim(), culture);
+
+        if (txtUsingElectrictFuture_Quantity.Text.Trim() != "")
+            _usingElectrict.Quantity = Convert.ToDecimal(txtUsingElectrictFuture_Quantity.Text.Trim(), culture);
+
+        if (txtUsingElectrictFuture_CongSuatBanRa.Text.Trim() != "")
+            _usingElectrict.CongSuatBan = Convert.ToDecimal(txtUsingElectrictFuture_CongSuatBanRa.Text.Trim(), culture);
+
+        if (txtUsingElectrictFuture_SanLuongBanRa.Text.Trim() != "")
+            _usingElectrict.SanLuongBan = Convert.ToDecimal(txtUsingElectrictFuture_SanLuongBanRa.Text.Trim(), culture);
+        if (checkUsingElectrict == false)
+            rp.DE_UsingElectrict.Add(_usingElectrict);
 
         //DE_ElectrictProduce
+        var checkElectrictSelfProduce = rp.DE_ElectrictProduce.Any(x => x.ReportId == ReportId);
 
+        if (checkElectrictSelfProduce == true) //Update DE_ElectrictProduce
+        {
+            var tempData = rp.DE_ElectrictProduce.Where(x => x.ReportId == ReportId).ToList();
+            foreach (RepeaterItem ri in rptUsingElectrictFuture.Items)
+            {
+                TextBox txtInstalledCapacity = ri.FindControl("txtInstalledCapacity") as TextBox;
+                TextBox txtProduceQty = ri.FindControl("txtProduceQty") as TextBox;
+                HiddenField hdTechKey = ri.FindControl("hdTechKey") as HiddenField;
+                var tmp = tempData.FirstOrDefault(x => x.TechKey == hdTechKey.Value);
+                if (tmp != null)
+                {
+                    if (txtInstalledCapacity.Text.Trim() != "")
+                        tmp.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacity.Text.Trim(), culture);
+                    if (txtProduceQty.Text.Trim() != "")
+                        tmp.ProduceQty = Convert.ToDecimal(txtProduceQty.Text.Trim(), culture);
+                }
+            }
+        }
+        else //Insert DE_ElectrictProduce
+        {
+            foreach (RepeaterItem ri in rptUsingElectrictFuture.Items)
+            {
+                TextBox txtInstalledCapacity = ri.FindControl("txtInstalledCapacity") as TextBox;
+                TextBox txtProduceQty = ri.FindControl("txtProduceQty") as TextBox;
+                HiddenField hdTechKey = ri.FindControl("hdTechKey") as HiddenField;
+                DE_ElectrictProduce _usingElectrictInserted = new DE_ElectrictProduce();
+                _usingElectrictInserted.ReportId = ReportId;
+                _usingElectrictInserted.ReportYear = ReportYear;
+                _usingElectrictInserted.TechKey = hdTechKey.Value;
+                _usingElectrictInserted.IsPlan = true;
+
+                if (txtInstalledCapacity.Text.Trim() != "")
+                    _usingElectrictInserted.InstalledCapacity = Convert.ToDecimal(txtInstalledCapacity.Text.Trim(), culture);
+                if (txtProduceQty.Text.Trim() != "")
+                    _usingElectrictInserted.ProduceQty = Convert.ToDecimal(txtProduceQty.Text.Trim(), culture);
+                rp.DE_ElectrictProduce.Add(_usingElectrictInserted);
+            }
+        }
+        rp.SaveChanges();
+
+        btAddElectrictFutureCancel_Click(sender, e);
     }
 
     private void BindUsingElectrictFuture()
@@ -1768,5 +654,395 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
         rptUsingElectrictFuture.DataBind();
     }
 
+    #endregion
+
+    //3. Giải pháp tiết kiệm năng lương
+    #region 3. Giải pháp tiết kiệm năng lương
+    private void BindResultTKNL()
+    {
+        PlanTKNLService plangpservice = new PlanTKNLService();
+        DataTable tbl = new DataTable();
+        tbl = plangpservice.GetPlanTKNLEnerprise(memVal.OrgId, ReportId, false, false);
+        rptResultTKNL.DataSource = tbl;
+        rptResultTKNL.DataBind();
+    }
+
+    protected void rptResultTKNL_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName.Equals("delete"))
+        {
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            PlanTKNL rpt = new PlanTKNL();
+            PlanTKNLService rptbso = new PlanTKNLService();
+            rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+            BindResultTKNL();
+        }
+        else if (e.CommandName.Equals("edit"))
+        {
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            //btnDelete.Visible = AllowEdit;
+            btnDelete.Visible = true;
+            PlanTKNL rpt = new PlanTKNL();
+            PlanTKNLService rptbso = new PlanTKNLService();
+            rpt = rptbso.FindByKey(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+            hddkhtknl.Value = rpt.Id.ToString();
+            txtMucDichGPTT.Text = rpt.MucTieuGP;
+            txtMucTietKiemNLTT.Text = rpt.MucTKThucTe;
+            if (rpt.IdGiaPhap > 0)
+                ddlSolution2.SelectedValue = rpt.IdGiaPhap.ToString();
+            txtTKCPThucTe.Text = rpt.MucTKCPThucTe;
+            txtChiPhiThucTe.Text = rpt.CPThucTe;
+            txtGhiChuTT.Text = rpt.GhiChuTT;
+            txtTuongDuongTT.Text = rpt.TuongDuongTT;
+            if (!string.IsNullOrEmpty(rpt.HeThongSuDung))
+                ddlUseSysName.SelectedValue = rpt.HeThongSuDung;
+
+            if (rpt.LoaiNhienLieu > 0)
+            {
+                ddlFuelType2.SelectedValue = rpt.LoaiNhienLieu.ToString();
+                BindMeasurement2();
+            }
+            if (rpt.MeasurementId > 0)
+                ddlMeasure2.SelectedValue = rpt.MeasurementId.ToString();
+            txtLoiIchKhacTT.Text = rpt.LoiIchKhacTT;
+            //try
+            //{
+            //    txtKhaNangTKNL.Text = rpt.KhaNangThucHien;
+            //}
+            //catch { }
+            //txtTKNLMucTieuDukien.Text = rpt.MucTietKiemDuKien;
+            hddkhtknl.Value = rpt.Id.ToString();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkhd", "ShowDialogSolutionResultOne(" + hddkhtknl.Value + ");", true);
+        }
+    }
+
+    protected void rptResultTB_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        //if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //{
+        //    LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+        //    LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+        //    btnDelete.Visible = AllowEdit;
+        //    btnEdit.Visible = AllowEdit;
+        //}
+    }
+    protected void BindUsingEnerySystem()
+    {
+        ReportModels reportModels = new ReportModels();
+        var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0 && o.SysGroup == ddlPhanLoaiHeThong.SelectedValue).ToList();
+
+        ddlUseSysName.DataValueField = "SysCode";
+        ddlUseSysName.DataTextField = "SysName";
+        ddlUseSysName.DataSource = res;
+        ddlUseSysName.DataBind();
+        
+        ddlUseSysNamePlan.DataValueField = "SysCode";
+        ddlUseSysNamePlan.DataTextField = "SysName";
+        ddlUseSysNamePlan.DataSource = res;
+        ddlUseSysNamePlan.DataBind();
+    }
+    void BindMeasurement()
+    {
+        ddlMeasure.Items.Clear();
+        DataTable list = new DataTable();
+        if (ddlFuelType.SelectedIndex > 0)
+        {
+            list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuelType.SelectedValue));
+        }
+
+        ddlMeasure.DataSource = list;
+        ddlMeasure.DataValueField = "Id";
+        ddlMeasure.DataTextField = "MeasurementName";
+        ddlMeasure.DataBind();
+        ddlMeasure.Items.Insert(0, new ListItem("---Chọn đơn vị---", ""));
+        if (ddlMeasure.Items.Count == 2)
+        {
+            ddlMeasure.SelectedIndex = 1;
+        }
+    }
+    void BindMeasurement2()
+    {
+        ddlMeasure2.Items.Clear();
+        DataTable list = new DataTable();
+        if (ddlFuelType2.SelectedIndex > 0)
+        {
+            list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuelType2.SelectedValue));
+        }
+
+        ddlMeasure2.DataSource = list;
+        ddlMeasure2.DataValueField = "Id";
+        ddlMeasure2.DataTextField = "MeasurementName";
+        ddlMeasure2.DataBind();
+        ddlMeasure2.Items.Insert(0, new ListItem("---Chọn đơn vị---", ""));
+        if (ddlMeasure2.Items.Count == 2)
+        {
+            ddlMeasure2.SelectedIndex = 1;
+        }
+    }
+
+    void BindFuel()
+    {
+        ReportModels rp = new ReportModels();
+        var list = rp.DE_Fuel.OrderBy(o => o.FuelOrder).ToList();
+
+        int GroupId = 0;
+        if (ddlFuelType.SelectedIndex > 0)
+            GroupId = Convert.ToInt32(ddlFuelType.SelectedValue);
+
+        var listSearch = from o in list where o.GroupFuelId == GroupId || GroupId == 0 select o;
+
+        ddlFuelType.DataSource = listSearch;
+        ddlFuelType.DataValueField = "Id";
+        ddlFuelType.DataTextField = "FuelName";
+        ddlFuelType.DataBind();
+        ddlFuelType.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
+
+        ddlFuelType2.DataSource = listSearch;
+        ddlFuelType2.DataValueField = "Id";
+        ddlFuelType2.DataTextField = "FuelName";
+        ddlFuelType2.DataBind();
+        ddlFuelType2.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
+
+    }
+
+    protected void ddlFuel2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindMeasurement2();
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "ShowDialogSolutionResultOne('" + hddkhtknl.Value + "');", true);
+    }
+    protected void ddlPhanLoaiHeThong_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindUsingEnerySystem();
+    }
+    protected void ddlPhanLoaiHeThongPlan_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ReportModels reportModels = new ReportModels();
+        var res = reportModels.DE_UsingSystem.Where(o => o.SysState == 0 && o.SysGroup == ddlPhanLoaiHeThongPlan.SelectedValue).ToList();
+        ddlUseSysNamePlan.DataValueField = "SysCode";
+        ddlUseSysNamePlan.DataTextField = "SysName";
+        ddlUseSysNamePlan.DataSource = res;
+        ddlUseSysNamePlan.DataBind();
+    }
+    protected void ddlFuel_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindMeasurement();
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "ShowDialogSolutionPlanOne('" + hddkhtknl.Value + "');", true);
+    }
+    void BindSolution()
+    {
+        ddlSolution2.Items.Clear();
+
+        GiaiPhapService gps = new GiaiPhapService();
+        DataTable lst = gps.GetGiaiPhepByEnerprise(memVal.OrgId);
+
+        ddlSolution.Items.Clear();
+        ddlSolution.DataSource = lst;
+        ddlSolution.DataBind();
+        ddlSolution.Items.Insert(0, new ListItem("---Chọn giải pháp---", ""));
+
+        ddlSolution2.DataSource = lst;
+        ddlSolution2.DataBind();
+        ddlSolution2.Items.Insert(0, new ListItem("---Chọn giải pháp---", ""));
+    }
+    private void BindPlanTKNL()
+    {
+        PlanTKNLService plangpservice = new PlanTKNLService();
+        DataTable tbl = new DataTable();
+        tbl = plangpservice.GetPlanTKNLEnerprise(memVal.OrgId, ReportId, false, true);
+        rptSolutionPlan.DataSource = tbl;
+        rptSolutionPlan.DataBind();
+    }
+    protected void rptPlanTKNL_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName.Equals("delete"))
+        {
+            PlanTKNL rpt = new PlanTKNL();
+            PlanTKNLService rptbso = new PlanTKNLService();
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            rptbso.Delete(int.Parse(btnDelete.CommandArgument));
+            BindPlanTKNL();
+        }
+        else if (e.CommandName.Equals("edit"))
+        {
+            PlanTKNL rpt = new PlanTKNL();
+            PlanTKNLService rptbso = new PlanTKNLService();
+            LinkButton btnEdit = (LinkButton)e.CommandSource;
+            rpt = rptbso.FindByKey(int.Parse(btnEdit.CommandArgument));
+            txtmuctieuTKNL.Text = rpt.MucTieuGP;
+            txtchiphidukienTKNL.Text = rpt.ChiPhiDuKien;
+            if (rpt.IdGiaPhap > 0)
+                ddlSolution.SelectedValue = rpt.IdGiaPhap.ToString();
+            //try
+            //{
+            //    ddlCamKet.SelectedValue = rpt.MucCamKet;
+            //}
+            //catch { }
+            if (rpt.LoaiNhienLieu > 0)
+            {
+                ddlFuelType.SelectedValue = rpt.LoaiNhienLieu.ToString();
+                BindMeasurement();
+            }
+            if (rpt.MeasurementId > 0)
+                ddlMeasure.SelectedValue = rpt.MeasurementId.ToString();
+            txtGhiChu.Text = rpt.GhiChu;
+            txtLoiIchKhac.Text = rpt.LoiIchKhac;
+            txtThanhTien.Text = rpt.ThanhTien;
+            txtTuongDuong.Text = rpt.TuongDuong;
+
+            //txtKhaNangTKNL.Text = rpt.KhaNangThucHien;
+
+            txtTKNLMucTieuDukien.Text = rpt.MucTietKiemDuKien;
+            hddkhtknl.Value = rpt.Id.ToString();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkhd", "ShowDialogSolutionPlanOne(" + hddkhtknl.Value + ");", true);
+        }
+    }
+    //protected void rptResultTB_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    //{
+    //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+    //    {
+    //        LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+    //        LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+    //        btnDelete.Visible = AllowEdit;
+    //        btnEdit.Visible = AllowEdit;
+    //    }
+    //}
+    public void btnSaveSolution_Click(object sender, EventArgs e)
+    {
+        GiaiPhap gp = new GiaiPhap();
+        GiaiPhapService gpser = new GiaiPhapService();
+        gp.EnterpriseId = Convert.ToInt32(memVal.OrgId);
+        if (txtnamegp.Text != "")
+        {
+            gp.MoTa = txtmotagp.Text;
+            gp.TenGiaiPhap = txtnamegp.Text;
+            if (gpser.Insert(gp) > 0)
+            {
+                ltNoticeSolution.Text = "Lưu giải pháp mới thành công";
+                BindSolution();
+            }
+            else
+                ltNoticeSolution.Text = "Không lưu được giải pháp mới. Vui lòng thử lại";
+
+        }
+        else
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "showGP", "showgiaiphap();", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "ac", "alert('Chưa nhập tên giải pháp!');", true);
+        }
+    }
+    public void btnSaveSolutionResult_Click(object sender, EventArgs e)
+    {
+        PlanTKNLService planser = new PlanTKNLService();
+        PlanTKNL plantknl = new PlanTKNL();
+        plantknl.NamBatDau = ReportYear;
+        plantknl.NamKetThuc = ReportYear;
+        plantknl.CPThucTe = txtChiPhiThucTe.Text;
+        plantknl.MucTieuGP = txtMucDichGPTT.Text;
+        plantknl.MucTKCPThucTe = txtTKCPThucTe.Text;
+        plantknl.MucTKThucTe = txtMucTietKiemNLTT.Text;
+        plantknl.CPThucTe = txtChiPhiThucTe.Text.Trim();
+        plantknl.LoiIchKhacTT = txtLoiIchKhacTT.Text.Trim();
+        plantknl.TuongDuongTT = txtTuongDuongTT.Text.Trim();
+        plantknl.GhiChuTT = txtGhiChuTT.Text.Trim();
+        plantknl.IsFiveYear = false;
+        plantknl.IsPlan = false;
+        plantknl.ReportId = ReportId;
+        plantknl.IdPlan = ReportId;
+        plantknl.EnterpriseId = memVal.OrgId;
+        plantknl.HeThongSuDung = ddlUseSysName.SelectedValue;
+        if (ddlSolution2.SelectedIndex > 0)
+            plantknl.IdGiaPhap = Convert.ToInt32(ddlSolution2.SelectedValue);
+        if (ddlFuelType2.SelectedIndex > 0)
+            plantknl.LoaiNhienLieu = Convert.ToInt32(ddlFuelType2.SelectedValue);
+        if (ddlMeasure2.SelectedIndex > 0)
+            plantknl.MeasurementId = Convert.ToInt32(ddlMeasure2.SelectedValue);
+
+        if (hddkhtknl.Value != "" && Convert.ToInt32(hddkhtknl.Value) > 0)
+        {
+            plantknl.Id = Convert.ToInt32(hddkhtknl.Value);
+            if (planser.Update(plantknl) != null)
+            {
+                BindResultTKNL();
+                hddkhtknl.Value = "";
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "ShowDialogSolutionResultOne(" + hddkhtknl.Value + ");", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
+            }
+        }
+        else
+        {
+            int i = planser.Insert(plantknl);
+            if (i > 0)
+            {
+                BindResultTKNL();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "ShowDialogSolutionResultOne();", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Thêm mới kê hoạch không thành công. Vui lòng thử lại!');", true);
+            }
+        }
+    }
+
+    public void btnSavePlan_Click(object sender, EventArgs e)
+    {
+        PlanTKNLService planser = new PlanTKNLService();
+        PlanTKNL plantknl = new PlanTKNL();
+        plantknl.NamBatDau = ReportYear + 1;
+        plantknl.NamKetThuc = ReportYear + 1;
+        plantknl.ThanhTien = txtThanhTien.Text.Trim();
+        plantknl.ChiPhiDuKien = txtchiphidukienTKNL.Text;
+        plantknl.MucTieuGP = txtmuctieuTKNL.Text;
+        //plantknl.KhaNangThucHien = txtKhaNangTKNL.Text;
+        //plantknl.MucCamKet = ddlCamKet.SelectedValue;
+        plantknl.MucTietKiemDuKien = txtTKNLMucTieuDukien.Text;
+        plantknl.LoiIchKhac = txtLoiIchKhac.Text.Trim();
+        plantknl.TuongDuong = txtTuongDuong.Text.Trim();
+        plantknl.GhiChu = txtGhiChu.Text.Trim();
+        plantknl.IsFiveYear = false;
+        plantknl.IsPlan = true;
+        plantknl.HeThongSuDung = ddlUseSysNamePlan.SelectedValue;
+
+        plantknl.EnterpriseId = memVal.OrgId;
+        if (ddlSolution.SelectedIndex > 0)
+            plantknl.IdGiaPhap = Convert.ToInt32(ddlSolution.SelectedValue);
+        if (ddlFuelType.SelectedIndex > 0)
+            plantknl.LoaiNhienLieu = Convert.ToInt32(ddlFuelType.SelectedValue);
+        if (ddlMeasure.SelectedIndex > 0)
+            plantknl.MeasurementId = Convert.ToInt32(ddlMeasure.SelectedValue);
+        plantknl.IdPlan = ReportId;
+        plantknl.ReportId = ReportId;
+        if (hddkhtknl.Value != "" && Convert.ToInt32(hddkhtknl.Value) > 0)
+        {
+            plantknl.Id = Convert.ToInt32(hddkhtknl.Value);
+            if (planser.Update(plantknl) != null)
+            {
+                BindPlanTKNL();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "ShowDialogSolutionPlanOne(" + hddkhtknl.Value + ");", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
+            }
+        }
+        else
+        {
+            int i = planser.Insert(plantknl);
+            if (i > 0)
+            {
+                BindPlanTKNL();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "ShowDialogSolutionPlanOne(0);", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Thêm mới kê hoạch không thành công. Vui lòng thử lại!');", true);
+            }
+        }
+
+    }
     #endregion
 }

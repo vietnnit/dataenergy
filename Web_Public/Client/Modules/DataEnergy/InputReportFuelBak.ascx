@@ -1,5 +1,12 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="InputReportFuel.ascx.cs"
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="InputReportFuelBak.ascx.cs"
     Inherits="Client_Modules_DataEnergy_InputReportFuel" %>
+<%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
+<%@ Register Src="~/Client/Modules/DataEnergy/InputPlan5Year.ascx" TagName="InputPlan5Year"
+    TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/DataEnergy/DetailPlanYear.ascx" TagName="DetailPlanYear"
+    TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/DataEnergy/ProductYear.ascx" TagName="ProductYear"
+    TagPrefix="uc1" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/ProductYearCommon.ascx" TagPrefix="uc1" TagName="ProductYearCommon" %>
 
 
@@ -228,7 +235,186 @@
                 <div id="tabReport">
                     <div class="row">
                         <div class="col-lg-12">
-                            <uc1:ProductYearCommon ID="ucProductCommon" runat="server" />
+                            <ul class="nav nav-tabs tabs-border" id="Reporttabs">
+                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và sản phẩm</a></li>
+                                <li><a rel="tabData" href="#" class="">Mức nhiên liệu tiêu thụ năm</a></li>
+                                <li><a rel="tabPlan" href="#" class="">Giải pháp TKNL năm</a></li>
+                                <li><a rel="tabPlan5Year" href="#" style="display: none" class="">Giải pháp TKNL 5 năm</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="tabChuyen">
+                        <div class="" style="border-top: 0">
+                            <div id="tabProduct">
+                                <uc1:ProductYear ID="ucProduct" runat="server" Visible="false" />
+                                <uc1:ProductYearCommon ID="ucProductCommon" runat="server" />
+                            </div>
+                            <div id="tabData" class="">
+                                <div class="form-horizontal">
+                                    <div class="form-group" style="display: none;">
+                                        <div class="col-lg-12">
+                                            <div class="control-label pt5" style="width: 100%">
+                                                <asp:Literal ID="ltDataCurrentTitle" runat="server"></asp:Literal><div style="float: right">
+                                                    <asp:LinkButton ID="btnAddFuel" runat="server" Text="Nhập số liệu" data-toggle="modal"
+                                                        data-target="#dlgFuelConsume" ToolTip="Thêm báo cáo" OnClientClick='javascript:addReportDetail(0); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <table class="table table-bordered table-hover mbn" width="100%">
+                                                <tr class="primary fs12">
+                                                    <th style="width: 5%">STT
+                                                    </th>
+                                                    <th style="width: 15%">Nhiên liệu
+                                                    </th>
+                                                    <th style="width: 10%">Mức tiêu thụ
+                                                    </th>
+                                                    <th style="width: 10%">Đơn vị tính
+                                                    </th>
+                                                    <th style="width: 10%">Giá (đồng)
+                                                    </th>
+                                                    <%--<th style="width: 10%">
+                                                    Hệ số TOE
+                                                </th>--%>
+                                                    <th style="width: 10%">Năng lượng tiêu thụ (TOE)
+                                                    </th>
+                                                    <th style="width: 30%">Mục đích sử dụng
+                                                    </th>
+                                                    <th style="width: 10%">Thao tác
+                                                    </th>
+                                                </tr>
+                                                <asp:Repeater ID="rptNoFuelCurrent" runat="server" OnItemDataBound="rptNoFuelCurrent_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <%#Container.ItemIndex+1  %>
+                                                            </td>
+                                                            <td>
+                                                                <%#Eval("FuelName") %>
+                                                            </td>
+                                                            <td style="text-align: right">
+                                                                <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
+                                                            </td>
+                                                            <td>
+                                                                <%#Eval("MeasurementName")%>
+                                                            </td>
+                                                            <td style="text-align: right">
+                                                                <%#Eval("Price") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("Price"),0) : ""%>
+                                                            </td>
+                                                            <td style="text-align: right">
+                                                                <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
+                                                            </td>
+                                                            <td>
+                                                                <%#Eval("Reason")%>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%#Eval("Id") %>'
+                                                                    CssClass="fa fa-times" ToolTip="Xóa" OnClientClick="return javascript:confirm('Bạn chắc chắn muốn xóa không');"></asp:LinkButton>
+                                                                <asp:LinkButton ID="btnEdit" runat="server" OnClick="btnEditDetail_Click" CssClass="fa fa-edit"
+                                                                    ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </table>
+                                            <div style="text-align: right">
+                                                <b>
+                                                    <asp:Literal ID="ltTotal_TOE" runat="server"></asp:Literal></b>
+                                            </div>
+                                            <%--<asp:LinkButton ID="btnAddFuel" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <div class="control-label pt5" style="width: 100%">
+                                                <asp:Literal ID="ltDataNextYearTitle" runat="server"></asp:Literal><div style="float: right">
+                                                    <asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Nhập số liệu" data-toggle="modal"
+                                                        data-target="#dlgFuelConsume" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:addReportDetail(1); return 0;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <asp:Literal ID="ltNoFuelFuture" runat="server"></asp:Literal>
+                                            <table class="table table-bordered table-hover mbn" width="100%">
+                                                <tr class="primary fs12">
+                                                    <th style="width: 5%">STT
+                                                    </th>
+                                                    <th style="width: 20%">Loại năng lượng
+                                                    </th>
+                                                    <th style="width: 15%">Đơn vị tính
+                                                    </th>
+                                                    <th style="width: 15%">Lượng tiêu thụ
+                                                    </th>
+                                                    <%--    <th style="width: 10%">Giá dự kiến (đồng)
+                                                    </th>--%>
+
+                                                    <%--<th style="width: 10%">Năng lượng tiêu thụ (TOE)
+                                                    </th>--%>
+                                                    <th>Ghi chú
+                                                    </th>
+                                                    <th style="width: 10%">Thao tác
+                                                    </th>
+                                                </tr>
+                                                <asp:Repeater ID="rptNoFuelFuture" runat="server" OnItemDataBound="rptNoFuelFuture_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <%#Container.ItemIndex+1  %>
+                                                            </td>
+                                                            <td>
+                                                                <%#Eval("FuelName") %>
+                                                            </td>
+
+                                                            <td>
+                                                                <%#Eval("MeasurementName")%>
+                                                            </td>
+                                                            <td style="text-align: right">
+                                                                <%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>
+                                                            </td>
+                                                            <%--<td style="text-align: right">
+                                                                <%#Eval("Price") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("Price"),0) : ""%>
+                                                            </td>--%>
+
+                                                            <%--   <td style="text-align: right">
+                                                                <%#Eval("NoFuel_TOE") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel_TOE"),2) : ""%>
+                                                            </td>--%>
+                                                            <td>
+                                                                <%#Eval("Reason")%>
+                                                            </td>
+                                                            <td style="text-align: center">
+                                                                <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%#Eval("Id") %>'
+                                                                    CssClass="fa fa-times" ToolTip="Xóa" OnClientClick="return javascript:confirm('Bạn chắc chắn muốn xóa không');"></asp:LinkButton>
+                                                                <asp:LinkButton ID="btnEdit" OnClick="btnEditDetail_Click" runat="server" CssClass="fa fa-edit"
+                                                                    ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'></asp:LinkButton>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </table>
+
+                                            <%--<asp:LinkButton ID="btnAddFuelFuture" runat="server" Text="Thêm nhiên liệu" CssClass="btn btn-sm btn-primary mr10"></asp:LinkButton>--%>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="control-label pt5" style="width: 100%">
+                                                <asp:Literal ID="ltKeHoachTieuThuDien" runat="server" Text="Tiêu thụ điện"></asp:Literal>
+                                                <div style="float: right">
+                                                    <a href="#" data-target="#dlgTieuThuSXDien" data-toggle="modal"><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</a>
+                                                    <asp:LinkButton ID="LinkButton1" Visible="false" runat="server" Text="Thêm nhiên liệu" data-toggle="modal"
+                                                        data-target="#dlgTieuThuSXDien" ToolTip="Sửa thông tin" OnClientClick='javascript:openDlgTieuThuSXDien(); return 0;'><i class="fa fa-plus"></i>&nbsp;Nhập số liệu</asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <asp:Literal ID="ltTieuThuDien" runat="server"></asp:Literal>
+                                        </div>
+                                        <div class="col-lg-12" style="text-align: right; margin-top: 10px; margin-right: 10px;">
+                                            <b>
+                                                <asp:Literal ID="ltTotal_TOE_Future" runat="server"></asp:Literal></b>
+                                        </div>
+                                    </div>
+                                    <asp:Literal ID="error" runat="server"></asp:Literal>
+                                </div>
+                            </div>
+                            <div id="tabPlan">
+                                <uc1:DetailPlanYear ID="ucDetailPlanYear" runat="server" />
+                            </div>
+                            <div id="tabPlan5Year" style="display: none;">
+                                <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="false" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -609,7 +795,121 @@
         <!-- /.modal-dialog -->
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="dlgFuelConsume">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    <asp:Literal ID="ltTitle" runat="server" Text="Tình hình sử dụng nhiên liệu"></asp:Literal>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h3>
+                    <asp:Literal ID="Literal1" runat="server"></asp:Literal></h3>
+                <asp:Literal ID="Literal2" runat="server"></asp:Literal>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Loại nhiên liệu <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList ID="ddlFuel" runat="server" AppendDataBoundItems="True" CssClass="form-control input-sm"
+                                ValidationGroup="viewFuelOne" AutoPostBack="true" OnSelectedIndexChanged="ddlFuel_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="ddlFuel"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn nhiên liệu"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Đơn vị tính <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_ddlMeasure" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger EventName="SelectedIndexChanged" ControlID="ddlFuel" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:DropDownList ID="ddlMeasure" runat="server" AppendDataBoundItems="True" ValidationGroup="viewFuelOne"
+                                        AutoPostBack="true" CssClass="form-control input-sm" OnSelectedIndexChanged="ddlMeasure_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
 
+                            <asp:RequiredFieldValidator ID="rfvMeasurement" runat="server" ControlToValidate="ddlMeasure"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng chọn đơn vị tính"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <%--</div>
+                    <div class="form-group">--%>
+                        <label class="col-lg-3" for="inputSmall">
+                            Lượng tiêu thụ<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:TextBox ID="txtNoFuel" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
+                                MaxLength="20" placeholder="Lượng tiêu thụ tối đa 20 ký tự"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="txtNoFuel"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập Lượng tiêu thụ"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="RangeValidator1" runat="server" ControlToValidate="txtNoFuel"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Lượng tiêu thụ chỉ nhập số"
+                                ValidationExpression="^[0-9]{1,18}(\,[0-9]{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3" for="inputSmall">
+                            Đơn giá(<i>đồng</i>)</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control input-sm" placeholder="Nhập tối đa 15 ký tự"
+                                MaxLength="15" ValidationGroup="viewFuelOne"></asp:TextBox>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtPrice"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Đơn giá nhập số và từ 0 đến 9.999.999.999.999,99"
+                                ValidationExpression="^[0-9]{1,13}(\,[0-9]{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <label class="col-lg-3" for="inputSmall">
+                            Hệ số chuyển đổi(TOE)<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_txtNoTOE" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlMeasure" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox ID="txtNoTOE" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="txtNoTOE"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng nhập hệ số chuyển đổi TOE"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:RangeValidator ID="rvNoTOE" MaximumValue="10" Type="Double" MinimumValue="0"
+                                CssClass="text-danger" ControlToValidate="txtNoTOE" ValidationGroup="viewFuelOne"
+                                runat="server" Display="Dynamic"></asp:RangeValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Mục đích sử dụng <span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-9">
+                            <asp:TextBox ID="txtPropose" runat="server" CssClass="form-control input-sm" ValidationGroup="viewFuelOne"
+                                MaxLength="255" placeholder="Mục đích sử dụng tối đa 255 ký tự"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="txtPropose"
+                                CssClass="text-danger" ValidationGroup="viewFuelOne" Text="Vui lòng mục đích sử dụng"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:Button runat="server" ID="btnSaveFuel" CssClass="btn btn-sm btn-primary mr10"
+                    Text="Lưu lại" OnClick="btnSaveFuel_Click" ValidationGroup="viewFuelOne" />
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <div class="modal fade" tabindex="-1" role="dialog" id="dlgExportReport">
     <div class="modal-dialog">
         <div class="modal-content sky-form">
@@ -853,10 +1153,131 @@ btn-u-primary mr10"
 </div>
 
 <%--dialog cap nhat Tiêu thụ điện--%>
+<div class="modal" tabindex="-1" role="dialog" id="dlgTieuThuSXDien" data-backdrop="static">
+    <div class="modal-dialog large">
+        <div class="modal-content">
+            <div class="modal-header panel-heading  ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">Kế hoạch mua điện và điện tự sản xuất</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <asp:UpdatePanel ID="updateTieuThuSXDien" runat="server">
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btBindTieuThuSXDien" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="ddlElectrictTechnology" EventName="SelectedIndexChanged" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSaveElectrictPlan" EventName="Click" />
+                        </Triggers>
+                        <ContentTemplate>
+                            <table class="table table-bordered table-hover mbn" width="100%">
+                                <tbody>
+                                    <tr class="primary fs12">
+                                        <td style="width: 10%">Điện năng mua từ lưới
+                                        </td>
+                                        <td style="width: 10%">Công suất đăng ký (kW)<span class="append-icon right text-danger">*</span>:
+                                    <asp:TextBox ID="txtDienDkMua" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator39" runat="server" ControlToValidate="txtDienDkMua" CssClass="text-danger"
+                                                ValidationGroup="valElectrictPlan" Text="Vui lòng nhập công suất" Display="Dynamic"></asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txtDienDkMua"
+                                                CssClass="text-danger" ValidationGroup="valElectrictPlan" Text="Chỉ nhập số"
+                                                ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td style="width: 10%;" colspan="2">Điện năng (10<sup>6</sup> kWh/năm)<span class="append-icon right text-danger">*</span>:
+                                    <asp:TextBox ID="txtDienTieuThu" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator40" runat="server" ControlToValidate="txtDienTieuThu" CssClass="text-danger"
+                                                ValidationGroup="valElectrictPlan" Text="Vui lòng nhập điện năng mua ngoài" Display="Dynamic"></asp:RequiredFieldValidator>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="txtDienTieuThu"
+                                                CssClass="text-danger" ValidationGroup="valElectrictPlan" Text="Chỉ nhập số"
+                                                ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Điện năng bán ra(nếu có)
+                                        </td>
+                                        <td>Công suất bán ra(kW)
+                                    <asp:TextBox ID="txtCongSuaBanRa" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server"
+                                                ControlToValidate="txtCongSuaBanRa" CssClass="text-danger"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                        <td>Sản lượng bán ra(10<sup>6</sup> kWh/năm)
+                                    <asp:TextBox ID="txtSanLuongBanRa" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server"
+                                                ControlToValidate="txtSanLuongBanRa" CssClass="text-danger"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
 
+                                    <tr>
+                                        <td rowspan="3">Điện tự sản xuất(nếu có)
+                                        </td>
+                                        <td>Công nghệ
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlElectrictTechnology" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlElectrictTechnology_SelectedIndexChanged" CssClass="form-control input-sm"></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Công suất lắp đặt (kW)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtInstalledCapacityPlan" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator11" runat="server"
+                                                ControlToValidate="txtInstalledCapacityPlan" CssClass="text-danger" ValidationGroup="valElectrictPlan"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Điện năng sản xuất (10<sup>6</sup> kWh/năm)
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtProduceQty" runat="server" CssClass="form-control"></asp:TextBox>
+                                            <asp:RegularExpressionValidator ID="RegularExpressionValidator12" runat="server"
+                                                ControlToValidate="txtProduceQty" CssClass="text-danger" ValidationGroup="valElectrictPlan"
+                                                Text="Chỉ nhập số" ValidationExpression="^[0-9]\d{0,9}(\,\d{1,2})?$" Display="Dynamic"></asp:RegularExpressionValidator>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <div style="width: 100%; text-align: center; padding-top: 10px;">
+                                <label style="color: forestgreen" id="update_message">
+                                    <asp:Literal ID="ltmsg" runat="server"></asp:Literal>
+                                </label>
+                            </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:LinkButton ID="btnSaveElectrictPlan" runat="server" Text="Lưu lại"
+                    CssClass="btn btn-sm btn-primary mr10"
+                    OnClick="btnSaveElectrictPlan_Click"></asp:LinkButton>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display: none;">
+    <asp:Button ID="btBindTieuThuSXDien" runat="server" OnClick="btBindTieuThuSXDien_Click" />
+
+    <asp:Button ID="btBindListTieuThuSXDien" runat="server" OnClick="btBindListTieuThuSXDien_Click" />
+</div>
 
 <script type="text/javascript">
-
+    function addReportDetail(isnext) { // alert($("#<%=hdnNextYear.ClientID%>").val()); 
+        $("#<%=hdnNextYear.ClientID%>").val(isnext);
+        $("#<%=hdnDetailId.ClientID%>").val(''); // 
+        $("#<%=ddlFuel.ClientID%>").selectedIndex = 0; //         
+        $("#<%=ddlMeasure.ClientID%>").selectedIndex = 0;
+        $("#<%=txtNoFuel.ClientID%>").val('');
+        $("#<%=txtPrice.ClientID%>").val('');
+        $("#<%=txtPropose.ClientID%>").val('');
+        $("#dlgFuelConsume").on('shown.bs.modal', function () { });
+    }
     function showformInfo() {
         $('#frmInfo').modal('toggle');
     }
@@ -888,12 +1309,28 @@ btn-u-primary mr10"
     } 
 </script>
 <script type="text/javascript"> 
-
+    var tabReport = new ddtabcontent("Reporttabs");
+    tabReport.setpersist(true);
+    tabReport.setselectedClassTarget("link");
+    tabReport.currentTabIndex =<%=activeTab %>;
+    tabReport.init();
     var tabReportAll = new ddtabcontent("tabGeneral");
     tabReportAll.setpersist(true);
     tabReportAll.setselectedClassTarget("link");
     tabReportAll.currentTabIndex =<%=activeTab %>;
     tabReportAll.init(); 
+</script>
+<script type="text/javascript">
+    $('#dlgTieuThuSXDien').on('shown.bs.modal', function () {
+        $('#<%=btBindTieuThuSXDien.ClientID%>').click();
+
+    });
+    $('#dlgTieuThuSXDien').on('hide.bs.modal', function () {
+        $('#<%=btBindListTieuThuSXDien.ClientID%>').click();
+
+    });
+
+
 </script>
 
 <asp:Literal ID="ltScript" runat="server"></asp:Literal>
