@@ -180,10 +180,10 @@
                             </th>
                             <th style="width: 40%">Loại năng lượng
                             </th>
-                            <th style="width: 20%;">Đơn vị tính
+                            <th style="width: 10%;">Đơn vị tính
                             </th>
-                            <th style="width: 10%;">Lượng tiêu thụ</th>
-                            <th style="width: 25%;">Ghi chú</th>
+                            <th style="width: 15%;">Lượng tiêu thụ</th>
+                            <th>Ghi chú</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -240,7 +240,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Điện tự sản xuất (nếu có):</td>
+                            <td>II. Điện tự sản xuất (nếu có):</td>
                             <td>Công suất lắp đặt:<asp:Literal ID="ltUsingElectrictFuture_InstalledCapacity" runat="server"></asp:Literal>
                                 kW</td>
                             <td>Điện năng sản xuất:<asp:Literal ID="ltUsingElectrictFuture_Quantity" runat="server"></asp:Literal>
@@ -253,7 +253,7 @@
                                         <%#Container.ItemIndex+1  %>.<%# Eval("TechName")%>
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtInstalledCapacity" runat="server" CssClass="form-control input-sm" Text=' <%#Eval("InstalledCapacity")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtInstalledCapacity" runat="server" ReadOnly="true" CssClass="form-control input-sm" Text=' <%#Eval("InstalledCapacity")%>'></asp:TextBox>
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtProduceQty" runat="server" CssClass="form-control input-sm" ReadOnly="true" Text=' <%#Eval("ProduceQty")%>'></asp:TextBox>
