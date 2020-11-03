@@ -57,30 +57,32 @@
             </table>
         </div>
 
-        <%--1.1 Năng lực sản xuất của cơ sở năm [N-1]--%>
+        <%--1. Năng lực sản xuất của cơ sở năm [N-1] và [N]--%>
         <div class="col-lg-12">
             <label class="control-label">
-                <asp:Literal ID="ltOldYear" runat="server" Text="2.1. Năng lực sản xuất"></asp:Literal></label>
+                <asp:Literal ID="ltOldYear" runat="server" Text="1. Năng lực sản xuất"></asp:Literal></label>
             <div class="margin-bottom-10">
                 <div class="">
                     <div class="control-label pt5" style="width: 100%">
                         <i>a. Năng lực sản xuất năm
                             <asp:Literal ID="ltReportYear" runat="server"></asp:Literal></i>
                         <div style="float: right">
-                            <asp:LinkButton ID="btnAddProductResult" OnClick="btnAddProductResult_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-plus"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
-                            <asp:LinkButton ID="btnUpdateProductResult" OnClick="btnUpdateProductResult_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-plus"></i>&nbsp;Cập nhật</asp:LinkButton>
+                            <asp:LinkButton ID="btnAddProductResult" OnClick="btnAddProductResult_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-edit"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnUpdateProductResult" OnClick="btnUpdateProductResult_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-check"></i>&nbsp;Cập nhật</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnCancelProductResult" OnClick="btnCancelProductResult_Click" runat="server" Text="Hủy" ToolTip="Hủy" Visible="false"><i class="fa fa-close"></i>&nbsp;Hủy</asp:LinkButton>
                         </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 55%">Tên sản phẩm
+                            <th style="width: 50%">Tên sản phẩm
                             </th>
-                            <th style="width: 25%">Đơn vị đo
+                            <th style="width: 20%">Đơn vị đo
                             </th>
-                            <th style="width: 20%">Số lượng
+                            <th style="width: 20%; border-right: none;">Số lượng
                             </th>
+                            <th style="border-left: none;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,9 +95,12 @@
                                     <td>
                                         <%# Eval("Measurement")%>
                                     </td>
-                                    <td class="text-right">
-                                        <asp:HiddenField ID="hdProductId" runat ="server" Value='<%# Eval("ProductId")%>' />
-                                        <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    <td class="text-right" style="border-right: none;">
+                                        <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
+                                        <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td style="border-left: none;">
+                                        <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -109,34 +114,40 @@
                         <i>b. Kế hoạch sản xuất năm 
                             <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></i>
                         <div style="float: right">
-                            <asp:LinkButton ID="btnAddProductNextResult" runat="server" Text="Thêm mới" ToolTip="Thêm sản phẩm"
-                                OnClientClick='javascript:AddProductQtyPlan(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                            <asp:LinkButton ID="btnAddProductNextResult" OnClick="btnAddProductNextResult_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-edit"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnAddProductNextResultUpdate" OnClick="btnAddProductNextResultUpdate_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-check"></i>&nbsp;Cập nhật</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnAddProductNextResultCancel" OnClick="btnAddProductNextResultCancel_Click" runat="server" Text="Hủy" ToolTip="Hủy" Visible="false"><i class="fa fa-close"></i>&nbsp;Hủy</asp:LinkButton>
                         </div>
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 60%">Hạng mục<br />
+                            <th style="width: 50%">Tên sản phẩm
                             </th>
-                            <th style="width: 20%">Đơn vị đo</th>
-                            <th>Số lượng
+                            <th style="width: 20%">Đơn vị đo
                             </th>
+                            <th style="width: 20%; border-right: none;">Số lượng
+                            </th>
+                            <th style="border-left: none;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <asp:Repeater ID="rptProductPlan" runat="server" OnItemCommand="rptProductPlan_ItemCommand"
-                            OnItemDataBound="rptProductPlan_ItemDataBound">
+                        <asp:Repeater ID="rptProductPlan" runat="server">
                             <ItemTemplate>
                                 <tr>
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
-                                    <td class="text-right">
+                                    <td>
                                         <%# Eval("Measurement")%>
                                     </td>
-                                    <td class="text-right">
-                                        <%# Eval("DesignQuantity")%>
+                                    <td class="text-right" style="border-right: none;">
+                                        <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
+                                        <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td style="border-left: none;">
+                                        <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -145,6 +156,123 @@
                 </table>
             </div>
         </div>
+
+        <%--2. Tiêu thụ năng lượng--%>
+        <div class="col-lg-12">
+            <label class="control-label">
+                <asp:Literal ID="Literal4" runat="server" Text="2. Dự kiến mức tiêu thụ năng lượng"></asp:Literal></label>
+            <div class="margin-bottom-10">
+                <div class="">
+                    <div class="control-label pt5" style="width: 100%">
+                        <i>a. Mức tiêu thụ nhiên liệu
+                            <asp:Literal ID="Literal5" runat="server"></asp:Literal></i>
+                        <div style="float: right">
+                            <asp:LinkButton ID="btAddFuelFuture" OnClick="btAddFuelFuture_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-edit"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btAddFuelFutureUpdate" OnClick="btAddFuelFutureUpdate_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-check"></i>&nbsp;Cập nhật</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btAddFuelFutureCancel" OnClick="btAddFuelFutureCancel_Click" runat="server" Text="Hủy" ToolTip="Hủy" Visible="false"><i class="fa fa-close"></i>&nbsp;Hủy</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover mbn" width="100%">
+                    <thead>
+                        <tr class="primary fs12">
+                            <th style="width: 5%">STT
+                            </th>
+                            <th style="width: 40%">Loại năng lượng
+                            </th>
+                            <th style="width: 20%;">Đơn vị tính
+                            </th>
+                            <th style="width: 10%;">Lượng tiêu thụ</th>
+                            <th style="width: 25%;">Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptFuelFuture" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%#Container.ItemIndex+1  %>
+                                    </td>
+                                    <td>
+                                        <%# Eval("FuelName")%>
+                                    </td>
+                                    <td>
+                                        <%#Eval("MeasurementName")%>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:HiddenField ID="hdFuelId" runat="server" Value='<%# Eval("FuelId")%>' />
+                                        <asp:HiddenField ID="hdGroupFuelId" runat="server" Value='<%# Eval("GroupFuelId")%>' />
+                                        <asp:HiddenField ID="hdMeasurementId" runat="server" Value='<%# Eval("MeasurementId")%>' />
+                                        <asp:TextBox ID="txtNoFuel" ReadOnly="true" CssClass="form-control input-sm" runat="server" Text='<%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>'></asp:TextBox>
+                                        <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtNoFuel" Display="Dynamic" ErrorMessage="*" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtReason" runat="server" ReadOnly="true" CssClass="form-control input-sm" Text=' <%#Eval("Reason")%>'></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
+            <div class="margin-bottom-10">
+                <div class="">
+                    <div class="control-label pt5" style="width: 100%">
+                        <i>b. Tiêu thụ điện                            </i>
+                        <div style="float: right">
+                            <asp:LinkButton ID="btAddElectrictFuture" OnClick="btAddElectrictFuture_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-edit"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btAddElectrictFutureUpdate" OnClick="btAddElectrictFutureUpdate_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-check"></i>&nbsp;Cập nhật</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btAddElectrictFutureCancel" OnClick="btAddElectrictFutureCancel_Click" runat="server" Text="Hủy" ToolTip="Hủy" Visible="false"><i class="fa fa-close"></i>&nbsp;Hủy</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover mbn" width="100%">
+                    <thead>
+                        <tr class="primary fs12">
+                            <td style="width: 30%">I. Điện năng mua từ lưới
+                            </td>
+                            <td style="width: 30%">Công suất đăng ký(kW)<asp:TextBox ID="txtUsingElectrictFuture_InstalledCapacity" ReadOnly="true" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                            </td>
+                            <td>Điện năng(10<sup>6</sup>kWh/năm)
+                                <asp:TextBox ID="txtUsingElectrictFuture_Quantity" CssClass="form-control input-sm" runat="server" ReadOnly="true"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Điện tự sản xuất (nếu có):</td>
+                            <td>Công suất lắp đặt:<asp:Literal ID="ltUsingElectrictFuture_InstalledCapacity" runat="server"></asp:Literal>
+                                kW</td>
+                            <td>Điện năng sản xuất:<asp:Literal ID="ltUsingElectrictFuture_Quantity" runat="server"></asp:Literal>
+                                10<sup>6</sup>kWh/năm</td>
+                        </tr>
+                        <asp:Repeater ID="rptUsingElectrictFuture" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%#Container.ItemIndex+1  %>.<%# Eval("TechName")%>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtInstalledCapacity" runat="server" CssClass="form-control input-sm" Text=' <%#Eval("InstalledCapacity")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtProduceQty" runat="server" CssClass="form-control input-sm" ReadOnly="true" Text=' <%#Eval("ProduceQty")%>'></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                        <tr>
+                            <td>III. Điện bán ra (nếu có):</td>
+                            <td>Công suất bán ra(kW):<asp:TextBox ID="txtUsingElectrictFuture_CongSuatBanRa" ReadOnly="true" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                            </td>
+                            <td>Sản lượng điện bán ra(10<sup>6</sup>kWh/năm):<asp:TextBox ID="txtUsingElectrictFuture_SanLuongBanRa" ReadOnly="true" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
         <div class="col-lg-12" style="display: none;">
             <label class="control-label">

@@ -24,5 +24,6 @@ namespace ReportEF
         public decimal? ProduceQty { get; set; }
 
         public int State { get; set; }
+        public bool? IsPlan { get; set; }
     }
 }

@@ -9,4 +9,12 @@ Tạo mới control:
 2. Thêm usercontrol vào chức năng
 3. Vào phân quyên=>thiết lập quyền sử dụng control 
 
+Key
+InstalledCapacity: Công suất lắp đặt (kW)
+Capacity: ... Công suất (kW)
+ProduceQty: Điện năng sản xuất (10<sup>6</sup> kWh/năm)
+Quantity: Điện năng... (10<sup>6</sup> kWh/năm)
+
+
+
 

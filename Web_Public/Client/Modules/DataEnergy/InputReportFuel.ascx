@@ -9,7 +9,7 @@
     TagPrefix="uc1" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/ProductYearCommon.ascx" TagPrefix="uc1" TagName="ProductYearCommon" %>
 
-<uc1:ProductYearCommon runat="server" ID="ProductYearCommon" />
+
 <asp:HiddenField ID="hdnNewsUrl" Value="" runat="server" />
 <asp:HiddenField ID="hdnReport" Value="" runat="server" />
 <asp:HiddenField ID="hdnNextYear" Value="" runat="server" />
