@@ -203,8 +203,7 @@
                                         <asp:HiddenField ID="hdFuelId" runat="server" Value='<%# Eval("FuelId")%>' />
                                         <asp:HiddenField ID="hdGroupFuelId" runat="server" Value='<%# Eval("GroupFuelId")%>' />
                                         <asp:HiddenField ID="hdMeasurementId" runat="server" Value='<%# Eval("MeasurementId")%>' />
-                                        <asp:TextBox ID="txtNoFuel" ReadOnly="true" CssClass="form-control input-sm" runat="server" Text='<%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2) : ""%>'></asp:TextBox>
-                                        <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtNoFuel" Display="Dynamic" ErrorMessage="*" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
+                                        <asp:TextBox ID="txtNoFuel" ReadOnly="true" CssClass="form-control input-sm" runat="server" Text='<%#Eval("NoFuel") != DBNull.Value ? Tool.ConvertDecimalToString(Eval("NoFuel"),2).Trim() : ""%>'></asp:TextBox>
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtReason" runat="server" ReadOnly="true" CssClass="form-control input-sm" Text=' <%#Eval("Reason")%>'></asp:TextBox>
@@ -241,7 +240,7 @@
                     <tbody>
                         <tr>
                             <td>II. Điện tự sản xuất (nếu có):</td>
-                            <td>Công suất lắp đặt:<asp:Literal ID="ltUsingElectrictFuture_InstalledCapacity" runat="server"></asp:Literal>
+                            <td>Công suất lắp đặt(kW):<asp:Literal ID="ltUsingElectrictFuture_InstalledCapacity" runat="server"></asp:Literal>
                                 kW</td>
                             <td>Điện năng sản xuất:<asp:Literal ID="ltUsingElectrictFuture_Quantity" runat="server"></asp:Literal>
                                 10<sup>6</sup>kWh/năm</td>

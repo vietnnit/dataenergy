@@ -124,9 +124,9 @@ public class Tool : System.Web.UI.Page
                 {
                     IFormatProvider culture = new System.Globalization.CultureInfo("vi-VN", true);
                     if (strNumberZero != "")
-                        return String.Format(culture, "{0,-15:N" + part + "}", Convert.ToDecimal(dNumber)).Replace(strNumberZero, "");
+                        return String.Format(culture, "{0,-15:N" + part + "}", Convert.ToDecimal(dNumber)).Replace(strNumberZero, "").Trim();
                     else
-                        return String.Format(culture, "{0,-15:N0}", Convert.ToDecimal(dNumber));
+                        return String.Format(culture, "{0,-15:N0}", Convert.ToDecimal(dNumber)).Trim();
 
                 }
             }

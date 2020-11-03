@@ -1645,6 +1645,19 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
 
         //SaveChanges
         rp.SaveChanges();
+
+        btAddFuelFuture.Visible = true;
+        btAddFuelFutureUpdate.Visible = false;
+        btAddFuelFutureCancel.Visible = false;
+
+        foreach (RepeaterItem ri in rptFuelFuture.Items)
+        {
+            TextBox txtNoFuel = ri.FindControl("txtNoFuel") as TextBox;
+            txtNoFuel.ReadOnly = true;
+
+            TextBox txtReason = ri.FindControl("txtReason") as TextBox;
+            txtReason.ReadOnly = true;
+        }
     }
 
     private void BindFuelFuture()
