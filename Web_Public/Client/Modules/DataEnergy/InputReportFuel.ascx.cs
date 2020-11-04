@@ -579,8 +579,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
         string temp = "TempReport/" + rp.DE_BaocaoLinhVuc.First(x => x.PhanLoaiBC == ReportKey.PLAN && x.IdLinhVuc == en.AreaId && x.TrangThai == false).TemplateBC.Trim();
 
-        //string temp = "TempReport/TemMauBaoCao" + drpmaubaocao.SelectedValue + ".doc";
-
         WordExtend ex = new WordExtend();
         ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
         Enterprise or = new Enterprise();
@@ -899,52 +897,62 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             dtdukien.AcceptChanges();
 
         }
-        ProductCapacityService productCapacityService = new ProductCapacityService();
+        //ProductCapacityService productCapacityService = new ProductCapacityService();
+        //DataTable tblProductResult = new DataTable();
+        //tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        ////Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
+        //tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
+
+        //foreach (DataRow r in tblProductResult.Rows)
+        //{
+        //    int _ProductCapacityId = (int)r["Id"];
+        //    var data = (from a in rp.DE_ProductCapacityFuel
+        //                join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+        //                join c in rp.DE_Fuel on a.FuelId equals c.Id
+        //                where a.ProductCapacityId == _ProductCapacityId
+        //                select new
+        //                {
+        //                    c.FuelName,
+        //                    a.ConsumeQty,
+        //                    b.MeasurementName
+        //                }).ToList();
+
+        //    string tmp = string.Empty;
+        //    foreach (var item in data)
+        //    {
+        //        tmp += string.Format("{0}: {1}({2})\n", item.FuelName, item.ConsumeQty, item.MeasurementName);
+        //    }
+
+        //    r["TTNLTHEOSP"] = tmp;
+        //}
+
+        //dshientai.Merge(tblProductResult);
+        //dshientai.Tables[0].TableName = "tbl1";
+
+        //dshientai.Merge(dthientai);
+        //dshientai.Tables[1].TableName = "tbl2";
+
+        //DataTable tblProductPlan = new DataTable();
+        //tblProductPlan = productCapacityService.GetDataCapacity(ReportId, true);
+
+
+        //dshientai.Merge(tblProductPlan);
+        //dshientai.Tables[2].TableName = "tbl3";
+
+        //tblProductResult
         DataTable tblProductResult = new DataTable();
-        tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
-        //Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
-        tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
-
-        foreach (DataRow r in tblProductResult.Rows)
-        {
-            int _ProductCapacityId = (int)r["Id"];
-            var data = (from a in rp.DE_ProductCapacityFuel
-                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
-                        join c in rp.DE_Fuel on a.FuelId equals c.Id
-                        where a.ProductCapacityId == _ProductCapacityId
-                        select new
-                        {
-                            c.FuelName,
-                            a.ConsumeQty,
-                            b.MeasurementName
-                        }).ToList();
-
-            string tmp = string.Empty;
-            foreach (var item in data)
-            {
-                tmp += string.Format("{0}: {1}({2})\n", item.FuelName, item.ConsumeQty, item.MeasurementName);
-            }
-
-            r["TTNLTHEOSP"] = tmp;
-        }
-
+        tblProductResult = GetDataTbl1(ReportId, false, memVal.OrgId);
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 
-        dshientai.Merge(dthientai);
-
-        dshientai.Tables[1].TableName = "tbl2";
-        //ex.WriteDataSetToMergeField(dshientai);
-
+        //tblProductPlan
         DataTable tblProductPlan = new DataTable();
-        tblProductPlan = productCapacityService.GetDataCapacity(ReportId, true);
+        tblProductPlan= GetDataTbl1(ReportId, true, memVal.OrgId);
         dshientai.Merge(tblProductPlan);
         dshientai.Tables[2].TableName = "tbl3";
 
         dshientai.Merge(dtdukien);
         dshientai.Tables[3].TableName = "tbl4";
-        //ex.WriteDataSetToMergeField(dshientai);
-
 
         DataSet dsData = new DataSet();
         PlanTBService plangpservice = new PlanTBService();
@@ -1390,7 +1398,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
+
         tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 
@@ -1879,6 +1889,61 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         {
             throw;
         }
+    }
+
+    private DataTable GetDataTbl1(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        DataTable tblProductResult = new DataTable();
+        var rpInfo = (from a in rp.DE_Enterprise
+                      join b in rp.DE_BaocaoLinhVuc on a.AreaId equals b.IdLinhVuc
+                      where a.Id == OrgId
+                      select b).FirstOrDefault();
+        if (rpInfo != null)
+        {
+            switch (rpInfo.TemplateBC.ToUpper())
+            {
+                case "BC1.8.DOCX":
+                    tblProductResult = productCapacityService.GetDataCapacity(ReportId, IsPlan);
+                    break;
+                case "BC1.7.DOCX":
+                    GetData17(ReportId, IsPlan, OrgId);
+                    break;
+            }
+        }
+        return tblProductResult;
+    }
+
+    private DataTable GetData17(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("FuelName", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(decimal));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity on a.Id equals b.ProductId
+                    join c in rp.DE_Fuel on a.FuelId equals c.Id
+                    where b.ReportId == ReportId && b.IsPlan == IsPlan
+                    orderby a.ProductOrder ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        MaxQuantity = b.MaxQuantity,
+                        FuelName = c.FuelName
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["MaxQuantity"] = item.MaxQuantity;
+            row["FuelName"] = item.FuelName;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult
     }
 }
 
