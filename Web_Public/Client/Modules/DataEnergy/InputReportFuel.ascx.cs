@@ -577,7 +577,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         var en = rp.DE_Enterprise.First(x => x.Id == memVal.OrgId);
         if (en == null || en.AreaId == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
-        string temp = "TempReport/TemMauBaoCao" + rp.DE_BaocaoLinhVuc.First(x => x.PhanLoaiBC == ReportKey.PLAN && x.IdLinhVuc == en.AreaId && x.TrangThai == false).TemplateBC.Trim();
+        string temp = "TempReport/" + rp.DE_BaocaoLinhVuc.First(x => x.PhanLoaiBC == ReportKey.PLAN && x.IdLinhVuc == en.AreaId && x.TrangThai == false).TemplateBC.Trim();
 
         //string temp = "TempReport/TemMauBaoCao" + drpmaubaocao.SelectedValue + ".doc";
 
