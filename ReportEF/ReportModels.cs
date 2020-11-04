@@ -229,6 +229,14 @@ namespace ReportEF
                 .HasPrecision(20, 2);
 
             modelBuilder.Entity<DE_ProductCapacity>()
+               .Property(e => e.NangLucVanChuyenNguoi)
+               .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ProductCapacity>()
+               .Property(e => e.NangLucVanChuyenHang)
+               .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ProductCapacity>()
                 .Property(e => e.MaxQuantity)
                 .HasPrecision(20, 2);
 

@@ -31,5 +31,6 @@ namespace ReportEF
 
         public int? ProductOrder { get; set; }
         public int? FuelId { get; set; }
+        public int? MeasurementId { get; set; }
     }
 }

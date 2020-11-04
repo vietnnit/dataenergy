@@ -12,4 +12,7 @@ public static class ReportKey
     public const string PLAN = "PLAN";
     public const string PLAN5 = "PLAN5";
     public const string FuelGroupKey_POWER = "POWER";
+    public const string FuelGroupKey_OIL = "FOOIL";
+    public const string FuelGroupKey_GASONLINE = "GASONLINE";
+    public const string FuelGroupKey_GAS = "GAS";
 }

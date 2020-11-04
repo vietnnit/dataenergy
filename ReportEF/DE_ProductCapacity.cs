@@ -11,6 +11,8 @@ namespace ReportEF
         public int? ProductId { get; set; }
 
         public decimal? MaxQuantity { get; set; }
+        public decimal? NangLucVanChuyenHang { get; set; }
+        public decimal? NangLucVanChuyenNguoi { get; set; }
 
         public decimal? DesignQuantity { get; set; }
 

@@ -28,6 +28,7 @@ namespace ePower.DE.Domain
             this.IsProduct = productDTO.IsProduct;
             this.FuelId = productDTO.FuelId;
             this.ProductOrder = productDTO.ProductOrder;
+            this.MeasurementId = productDTO.MeasurementId;
         }
         #endregion
 
@@ -43,6 +44,7 @@ namespace ePower.DE.Domain
         private bool _IsProduct;
         private int _FuelId;
         private int _ProductOrder;
+        private int _MeasurementId;
         #endregion
 
         #region Public Properties
@@ -111,6 +113,13 @@ namespace ePower.DE.Domain
         {
             get { return _FuelId; }
             set { _FuelId = value; SetDirty("FuelId"); }
+        }
+
+        [FieldName("MeasurementId", FieldAccessMode.ReadWrite, FieldType.Int)]
+        public int MeasurementId
+        {
+            get { return _MeasurementId; }
+            set { _MeasurementId = value; SetDirty("MeasurementId"); }
         }
 
         [FieldName("ProductOrder", FieldAccessMode.ReadWrite, FieldType.Int)]
