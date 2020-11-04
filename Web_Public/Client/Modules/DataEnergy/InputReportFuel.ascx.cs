@@ -945,9 +945,13 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 
+        //Chưa dùng
+        dshientai.Merge(dthientai);
+        dshientai.Tables[1].TableName = "tbl2";
+
         //tblProductPlan
         DataTable tblProductPlan = new DataTable();
-        tblProductPlan= GetDataTbl1(ReportId, true, memVal.OrgId);
+        tblProductPlan = GetDataTbl1(ReportId, true, memVal.OrgId);
         dshientai.Merge(tblProductPlan);
         dshientai.Tables[2].TableName = "tbl3";
 
@@ -1908,7 +1912,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                     tblProductResult = productCapacityService.GetDataCapacity(ReportId, IsPlan);
                     break;
                 case "BC1.7.DOCX":
-                    GetData17(ReportId, IsPlan, OrgId);
+                    tblProductResult = GetData17(ReportId, IsPlan, OrgId);
                     break;
             }
         }
@@ -1920,6 +1924,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ReportModels rp = new ReportModels();
         DataTable tblProductResult = new DataTable();
         tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("Measurement", typeof(string));
         tblProductResult.Columns.Add("FuelName", typeof(string));
         tblProductResult.Columns.Add("MaxQuantity", typeof(decimal));
 
@@ -1932,6 +1937,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                     {
                         ProductName = a.ProductName,
                         MaxQuantity = b.MaxQuantity,
+                        Measurement = a.Measurement,
                         FuelName = c.FuelName
                     }).ToList();
 
@@ -1939,11 +1945,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         {
             var row = tblProductResult.NewRow();
             row["ProductName"] = item.ProductName;
+            row["Measurement"] = item.Measurement;
             row["MaxQuantity"] = item.MaxQuantity;
             row["FuelName"] = item.FuelName;
             tblProductResult.Rows.Add(row);
         }
-        return tblProductResult
+        return tblProductResult;
     }
 }
 
