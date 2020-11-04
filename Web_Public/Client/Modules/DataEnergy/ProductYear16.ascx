@@ -112,13 +112,13 @@
                                         <asp:TextBox ID="txtNangLucVanChuyenNguoi" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("NangLucVanChuyenNguoi")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-left: none; text-align: center;">
-                                        <asp:RadioButton ID="radio1" runat="server" GroupName="nhomNangLuc1" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
+                                        <asp:RadioButton ID="radio1" runat="server" Enabled="false" GroupName="nhomNangLuc1" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
                                     </td>
                                     <td style="border-right: none;">
                                         <asp:TextBox ID="txtNangLucVanChuyenHang" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("NangLucVanChuyenHang")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-left: none; text-align: center;">
-                                        <asp:RadioButton ID="radio2" runat="server" GroupName="nhomNangLuc1" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenHang" />
+                                        <asp:RadioButton ID="radio2" runat="server"  Enabled="false" GroupName="nhomNangLuc1" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenHang" />
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -173,13 +173,13 @@
                                         <asp:TextBox ID="txtNangLucVanChuyenNguoi" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("NangLucVanChuyenNguoi")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-left: none; text-align: center;">
-                                        <asp:RadioButton ID="radio1" runat="server" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
+                                        <asp:RadioButton ID="radio1" runat="server"  Enabled="false" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
                                     </td>
                                     <td style="border-right: none;">
                                         <asp:TextBox ID="txtNangLucVanChuyenHang" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("NangLucVanChuyenHang")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-left: none; text-align: center;">
-                                        <asp:RadioButton ID="radio2" runat="server" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
+                                        <asp:RadioButton ID="radio2" runat="server"  Enabled="false" onchange="chonNangLucVanChuyenChanged(this)" value="NangLucVanChuyenNguoi" />
                                     </td>
                                 </tr>
                             </ItemTemplate>
