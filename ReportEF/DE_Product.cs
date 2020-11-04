@@ -30,5 +30,6 @@ namespace ReportEF
         public bool? IsProduct { get; set; }
 
         public int? ProductOrder { get; set; }
+        public int? FuelId { get; set; }
     }
 }

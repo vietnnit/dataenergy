@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear18.ascx.cs" Inherits="Client_Modules_DataEnergy_ProductYear18" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear17.ascx.cs" Inherits="Client_Modules_DataEnergy_ProductYear17" %>
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
@@ -76,11 +76,15 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 50%">Tên sản phẩm
+                            <th style="width: 50%">Loại phương tiện
+                                <br />
+                                <asp:LinkButton ID="btnAddProduct" runat="server" CssClass="fs9 btn btn-primary"
+                                    Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
                             </th>
-                            <th style="width: 20%">Đơn vị đo
+
+                            <th style="width: 20%;">Số lượng(chiếc)
                             </th>
-                            <th style="width: 20%; border-right: none;">Số lượng
+                            <th style="width: 20%; border-right: none;">Loại nhiên liệu/năng lượng
                             </th>
                             <th style="border-left: none;"></th>
                         </tr>
@@ -92,12 +96,12 @@
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
-                                    <td>
-                                        <%# Eval("Measurement")%>
-                                    </td>
                                     <td class="text-right" style="border-right: none;">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td style="border-right: none;">
+                                        <%# Eval("FuelName")%>
                                     </td>
                                     <td style="border-left: none;">
                                         <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
@@ -125,9 +129,9 @@
                         <tr class="primary fs12">
                             <th style="width: 50%">Tên sản phẩm
                             </th>
-                            <th style="width: 20%">Đơn vị đo
+                            <th style="width: 20%;">Số lượng(chiếc)
                             </th>
-                            <th style="width: 20%; border-right: none;">Số lượng
+                            <th style="width: 20%; border-right: none;">Loại nhiên liệu/năng lượng
                             </th>
                             <th style="border-left: none;"></th>
                         </tr>
@@ -139,12 +143,13 @@
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
-                                    <td>
-                                        <%# Eval("Measurement")%>
-                                    </td>
+
                                     <td class="text-right" style="border-right: none;">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td style="border-right: none;">
+                                        <%# Eval("FuelName")%>
                                     </td>
                                     <td style="border-left: none;">
                                         <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
@@ -802,7 +807,7 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Hạng mục<span class="append-icon right text-danger">*</span>:</label>
+                            Loại phương tiện<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtProductName" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtProductName"
@@ -820,6 +825,27 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            Năng lực sản xuất theo thiết kế<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" ID="txtDesignQty" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtDesignQty"
+                                CssClass="text-danger" Text="Vui lòng nhập năng lực sản xuất là ký tự số" ValidationGroup="valProduct"
+                                Type="Double" MinimumValue="0" MaximumValue="999999999999" Display="Dynamic"></asp:RangeValidator>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtDesignQty"
+                                CssClass="text-danger" ValidationGroup="valProduct" Text="Vui lòng nhập năng lực sản xuất"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList ID="ddlProductFuel" CssClass="form-control input-sm" runat="server">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -831,7 +857,6 @@
         </div>
     </div>
 </div>
-
 <br />
 <asp:HiddenField ID="hddGroup" runat="server" />
 <asp:HiddenField ID="hdnPage" runat="server" Value="1" />
@@ -873,9 +898,11 @@
         }
         $('#dlgSolutionPlanOne').modal('toggle');
     }
+
     function AddProduct() {
         $('#divProduct').modal('toggle');
     }
+
 
     (function ($) {
         $.fn.inputFilter = function (inputFilter) {

@@ -15,7 +15,7 @@ using Telerik.Web.Data.Extensions;
 using ReportEF;
 using System.Globalization;
 
-public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.UserControl
+public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.UserControl
 {
     UserValidation m_UserValidation = new UserValidation();
     MemberValidation memVal = new MemberValidation();
@@ -93,24 +93,26 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
     //===========================================================================update===============================================
 
     //Tạo danh sách sản phẩm tĩnh nếu chưa tồn tại
+
     public void btnSaveProduct_Click(object sender, EventArgs e)
     {
         ProductService productService = new ProductService();
         Product product = new Product();
         product.ProductName = txtProductName.Text.Trim();
-
         product.YearStart = DateTime.Now.Year;
         product.YearEnd = DateTime.Now.Year;
-        product.Quantity = 0;
+        product.Quantity = Convert.ToInt32(txtDesignQty.Text.Trim());
         product.Measurement = txtMeasurement.Text.Trim();
         product.Note = txtProductName.Text.Trim();
         product.EnterpriseId = memVal.OrgId;
         product.IsProduct = false;
-        product.FuelId = 0;
+        product.FuelId = Convert.ToInt32(ddlProductFuel.SelectedValue);
         product.ProductOrder = 10;
+
         int i = productService.Insert(product);
         BindProductCapacity();
     }
+
     //Last year
     protected void btnAddProductResult_Click(object sender, EventArgs e)
     {
@@ -278,13 +280,15 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_Fuel on a.FuelId equals d.Id
                     where a.EnterpriseId == memVal.OrgId
-                    orderby a.ProductOrder ascending
+                    orderby a.ProductName ascending
                     select new
                     {
                         ProductId = a.Id,
                         ProductName = a.ProductName,
                         Measurement = a.Measurement,
+                        FuelName = d.FuelName,
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
@@ -295,6 +299,7 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
         var dataNextYear = (from a in rp.DE_Product
                             join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == true) on a.Id equals b.ProductId into ab
                             from c in ab.DefaultIfEmpty()
+                            join d in rp.DE_Fuel on a.FuelId equals d.Id
                             where a.EnterpriseId == memVal.OrgId
                             orderby a.ProductOrder ascending
                             select new
@@ -302,6 +307,7 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
                                 ProductId = a.Id,
                                 ProductName = a.ProductName,
                                 Measurement = a.Measurement,
+                                FuelName = d.FuelName,
                                 MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                             }).ToList();
 
@@ -742,6 +748,10 @@ public partial class Client_Modules_DataEnergy_ProductYear18 : System.Web.UI.Use
         ddlFuelType2.DataBind();
         ddlFuelType2.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
 
+        ddlProductFuel.DataSource = listSearch;
+        ddlProductFuel.DataValueField = "Id";
+        ddlProductFuel.DataTextField = "FuelName";
+        ddlProductFuel.DataBind();
     }
 
     protected void ddlFuel2_SelectedIndexChanged(object sender, EventArgs e)

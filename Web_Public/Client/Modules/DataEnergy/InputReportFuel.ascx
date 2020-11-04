@@ -290,10 +290,6 @@
                     </div>
                 </div>
                 <div id="tabAttachFile">
-                    <%-- <div class="form-group">
-                        <label class="col-lg-2" for="inputSmall">
-                            File báo cáo gửi kèm</label>
-                    </div>--%>
                     <div class="row">
                         <div class="col-lg-12">
                             <label class="control-label">
@@ -345,8 +341,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-left">
                         <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
-                            Text="Xuất báo cáo hàng năm" OnClientClick="ShowDialogExportword();return false;"
-                            data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
+                            Text="Xuất báo cáo hàng năm" OnClick="btnExportWord_Click"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
                         <asp:LinkButton Style="display: none;" runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
@@ -610,45 +605,6 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="dlgExportReport">
-    <div class="modal-dialog">
-        <div class="modal-content sky-form">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Lựa chọn mẫu báo cáo hàng năm</h4>
-            </div>
-            <div class="modal-body">
-                <section class="mbn">
-                    <label class="select">
-                        <asp:DropDownList runat="server" ID="drpmaubaocao">
-                            <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
-                            <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
-                            <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
-                            <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
-                            <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
-                            <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
-                            <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
-                            <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
-                            <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
-                            <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                            <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                        </asp:DropDownList>
-                        <i></i>
-                    </label>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <asp:LinkButton ID="btnExport" runat="server" Visible="true" OnClick="btnExport_Click"
-                    Text="Xuất báo cáo" CssClass="btn-u btn-u-primary mr10"></asp:LinkButton>
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">
-                    Đóng</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
 <div class="modal fade" tabindex="-1" role="dialog" id="dlgExportReport5">
     <div class="modal-dialog">
         <div class="modal-content sky-form">
@@ -755,7 +711,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
-                    <div class="form-group" >
+                    <div class="form-group">
                         <div class="col-lg-3">
                             File báo cáo hàng năm
                         </div>
@@ -766,7 +722,7 @@
                                 Display="Dynamic"></asp:RequiredFieldValidator>
                         </div>
                     </div>
-                    <div class="form-group" style="display:none;">
+                    <div class="form-group" style="display: none;">
                         <div class="col-lg-3">
                             File 5 năm
                         </div>
@@ -871,9 +827,7 @@ btn-u-primary mr10"
             });
     });
 
-    function ShowDialogExportword() {
-        $('#dlgExportReport').on('shown.bs.modal', function () { });
-    }
+
     function ShowDialogExportword5() {
         $('#dlgExportReport5').on('shown.bs.modal', function () { });
     }
