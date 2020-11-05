@@ -16,7 +16,12 @@ public partial class Client_Modules_DataEnergy_ProductYearCommon : System.Web.UI
     {
         ReportModels rp = new ReportModels();
         var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
-        var rpTemplalte = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.IdLinhVuc == en.AreaId && x.PhanLoaiBC == ReportKey.PLAN);
+        var rpTemplalte = (from a in rp.DE_Enterprise
+                          join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                          select b).FirstOrDefault();
+
+        //var rpTemplalte = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.IdLinhVuc == en.AreaId && x.PhanLoaiBC == ReportKey.PLAN);
+
         if (rpTemplalte != null)
         {
             string ctName = rpTemplalte.TenControl;

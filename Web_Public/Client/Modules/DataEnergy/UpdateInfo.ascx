@@ -137,6 +137,14 @@
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator15" ValidationGroup="vgInfo"
                                 runat="server" ControlToValidate="ddlOwner" Display="Dynamic" ErrorMessage="RequiredFieldValidator"><span class="append-icon right text-danger"><i class="fa fa-exclamation-triangle"></i></span></asp:RequiredFieldValidator>
                         </div>
+                        <label class="col-lg-2 control-label pt5" for="inputSmall">
+                            Chọn mẫu báo cáo<span class="text-danger">*</span></label>
+                        <div class="col-lg-4">
+                            <asp:DropDownList ID="ddlReportTemplate" ValidationGroup="vgInfo" runat="server" CssClass="form-control input-sm">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="vgInfo"
+                                runat="server" ControlToValidate="ddlReportTemplate" Display="Dynamic" ErrorMessage="RequiredFieldValidator"><span class="append-icon right text-danger"><i class="fa fa-exclamation-triangle"></i></span></asp:RequiredFieldValidator>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-5 control-label pt5" for="inputSmall">

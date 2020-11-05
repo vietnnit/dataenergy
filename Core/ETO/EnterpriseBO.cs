@@ -51,6 +51,7 @@ namespace ePower.DE.Domain
             this.ActiveYear = enterpriseDTO.ActiveYear;
             this.CustomerCode = enterpriseDTO.CustomerCode;
             this.MoHinhQLNL = enterpriseDTO.MoHinhQLNL;
+            this.ReportTemplate = enterpriseDTO.ReportTemplate;
         }
         #endregion
 
@@ -89,6 +90,7 @@ namespace ePower.DE.Domain
         private int _ActiveYear;
         private string _CustomerCode;
         private int _MoHinhQLNL;
+        private int _ReportTemplate;
         #endregion
 
         #region Public Properties
@@ -302,6 +304,13 @@ namespace ePower.DE.Domain
         {
             get { return _MoHinhQLNL; }
             set { _MoHinhQLNL = value; SetDirty("MoHinhQLNL"); }
+        }
+
+        [FieldName("ReportTemplate", FieldAccessMode.ReadWrite, FieldType.String)]
+        public int ReportTemplate
+        {
+            get { return _ReportTemplate; }
+            set { _ReportTemplate = value; SetDirty("ReportTemplate"); }
         }
         #endregion
 

@@ -27,5 +27,6 @@ namespace ReportEF
         public int? ReportYear { get; set; }
 
         public int Id { get; set; }
+        public string PhanLoaiCongTrinh { get; set; }
     }
 }

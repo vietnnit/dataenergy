@@ -82,6 +82,7 @@
     <Compile Include="DE_Plan.cs" />
     <Compile Include="DE_PlanTB.cs" />
     <Compile Include="DE_PlanTKNL.cs" />
+    <Compile Include="DE_ProductGroup.cs" />
     <Compile Include="DE_Product.cs" />
     <Compile Include="DE_ProductCapacity.cs" />
     <Compile Include="DE_ProductCapacity18.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="DE_UsingSystem.cs" />
     <Compile Include="DE_ProductCapacityFuel.cs" />
     <Compile Include="DE_BaocaoLinhVuc.cs" />
+    <Compile Include="DE_InfrastructInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PR_Project.cs" />
     <Compile Include="PR_ProjectArea.cs" />

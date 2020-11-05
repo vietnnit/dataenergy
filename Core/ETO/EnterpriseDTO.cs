@@ -49,6 +49,7 @@ namespace ePower.DE.Domain
             this.ActiveYear = enterpriseBO.ActiveYear;
             this.CustomerCode = enterpriseBO.CustomerCode;
             this.MoHinhQLNL = enterpriseBO.MoHinhQLNL;
+            this.ReportTemplate = enterpriseBO.ReportTemplate;
         }
         #endregion
 
@@ -88,6 +89,7 @@ namespace ePower.DE.Domain
         private string _CustomerCode;
         private int _Total;
         private int _MoHinhQLNL;
+        private int _ReportTemplate;
         #endregion
 
         #region Public Properties
@@ -268,6 +270,10 @@ namespace ePower.DE.Domain
         {
             get { return _MoHinhQLNL; }
             set { _MoHinhQLNL = value; }
+        } public int ReportTemplate
+        {
+            get { return _ReportTemplate; }
+            set { _ReportTemplate = value; }
         }
         #endregion Public Properties
 

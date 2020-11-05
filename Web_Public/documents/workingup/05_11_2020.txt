@@ -1,0 +1,1 @@
+﻿--Bổ sung bảng DE_ProductGroup => Lưu thông tin nhóm sản phẩm(Tương ứng phân ngành sẽ có nhóm sản phẩm khác nhau)

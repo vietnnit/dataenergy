@@ -90,5 +90,6 @@ namespace ReportEF
         public string CustomerCode { get; set; }
 
         public int? MoHinhQLNL { get; set; }
+        public int? ReportTemplate { get; set; }
     }
 }

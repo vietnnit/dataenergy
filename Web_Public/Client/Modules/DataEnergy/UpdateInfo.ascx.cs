@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using BSO;
 using ePower.DE.Domain;
 using ePower.DE.Service;
+using ReportEF;
 
 public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserControl
 {
@@ -14,6 +15,7 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     {
         if (!IsPostBack)
         {
+            BindReportTemplate();
             BindArea();
             BindProvince();
             BindDistrict();
@@ -24,6 +26,16 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                 BindImportantYear();
             }
         }
+    }
+
+    void BindReportTemplate()
+    {
+        ReportModels rp = new ReportModels();
+        var list = rp.DE_BaocaoLinhVuc.ToList();
+        ddlReportTemplate.DataValueField = "AutoId";
+        ddlReportTemplate.DataTextField = "TenMauBC";
+        ddlReportTemplate.DataSource = list;
+        ddlReportTemplate.DataBind();
     }
 
     void BindArea()
@@ -215,6 +227,8 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                     if (obj.SubAreaId > 0)
                         ddlSubArea.SelectedValue = obj.SubAreaId.ToString();
                 }
+                if (obj.ReportTemplate != null && obj.ReportTemplate > 0)
+                    ddlReportTemplate.SelectedValue = obj.ReportTemplate.ToString();
 
                 txtMST.Text = obj.TaxCode;
                 txtCustomerCode.Text = obj.CustomerCode;
@@ -333,6 +347,8 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
 
                 obj.MoHinhQLNL = _MoHinhQLNL;
                 int tmpMoHinhQLNL = obj.MoHinhQLNL;
+                obj.ReportTemplate = Convert.ToInt32(ddlReportTemplate.SelectedValue);
+
                 if (memVal.OrgId > 0)
                 {
                     if (objlogic.Update(obj) != null)

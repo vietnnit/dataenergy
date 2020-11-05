@@ -574,10 +574,15 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         #region get data
         ReportModels rp = new ReportModels();
-        var en = rp.DE_Enterprise.First(x => x.Id == memVal.OrgId);
-        if (en == null || en.AreaId == null)
+        //var en = rp.DE_Enterprise.First(x => x.Id == memVal.OrgId);
+
+        var reportTemp = (from a in rp.DE_Enterprise
+                          join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                          select b).FirstOrDefault();
+        if (reportTemp == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
-        string temp = "TempReport/" + rp.DE_BaocaoLinhVuc.First(x => x.PhanLoaiBC == ReportKey.PLAN && x.IdLinhVuc == en.AreaId && x.TrangThai == false).TemplateBC.Trim();
+        
+        string temp = "TempReport/" + reportTemp.TemplateBC.Trim();
 
         WordExtend ex = new WordExtend();
         ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
@@ -1900,13 +1905,16 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ReportModels rp = new ReportModels();
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
-        var rpInfo = (from a in rp.DE_Enterprise
-                      join b in rp.DE_BaocaoLinhVuc on a.AreaId equals b.IdLinhVuc
-                      where a.Id == OrgId
-                      select b).FirstOrDefault();
-        if (rpInfo != null)
+
+        var reportTemp = (from a in rp.DE_Enterprise
+                          join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                          select b).FirstOrDefault();
+        if (reportTemp == null)
+            throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
+
+        if (reportTemp != null)
         {
-            switch (rpInfo.TemplateBC.ToUpper())
+            switch (reportTemp.TemplateBC.ToUpper())
             {
                 case "BC1.8.DOCX":
                     tblProductResult = productCapacityService.GetDataCapacity(ReportId, IsPlan);

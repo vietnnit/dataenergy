@@ -15,7 +15,7 @@ using Telerik.Web.Data.Extensions;
 using ReportEF;
 using System.Globalization;
 
-public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.UserControl
+public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.UserControl
 {
     UserValidation m_UserValidation = new UserValidation();
     MemberValidation memVal = new MemberValidation();
@@ -75,7 +75,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
             if (!string.IsNullOrEmpty(Request["ReportId"]))
                 int.TryParse(Request["ReportId"].Replace(",", ""), out Id);
             ReportId = Id;
-
+            
             BindMeasurement();
             BindFuelFuture();
             BindUsingElectrictFuture();
@@ -103,12 +103,11 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         product.YearEnd = DateTime.Now.Year;
         product.Quantity = Convert.ToInt32(txtDesignQty.Text.Trim());
         product.Measurement = ddlProductMeasurement.SelectedItem.Text;
-        product.MeasurementId = Convert.ToInt32(ddlProductMeasurement.SelectedValue);
         product.Note = txtProductName.Text.Trim();
         product.EnterpriseId = memVal.OrgId;
         product.IsProduct = false;
-        product.FuelId = Convert.ToInt32(ddlProductFuel.SelectedValue);
         product.ProductOrder = 10;
+
         int i = productService.Insert(product);
         BindProductCapacity();
     }
@@ -124,18 +123,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = false;
-
-            TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-            txtNangLucVanChuyenNguoi.ReadOnly = false;
-
-            TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-            txtNangLucVanChuyenHang.ReadOnly = false;
-
-            RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-            radio1.Enabled = true;
-
-            RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-            radio2.Enabled = true;
         }
     }
     protected void btnUpdateProductResult_Click(object sender, EventArgs e)
@@ -144,16 +131,10 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         if (rp.DE_ProductCapacity.Any(x => x.ReportId == ReportId && x.IsPlan == false)) //Update
         {
             var tempData = rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false).ToList();
-
             foreach (RepeaterItem ri in rptProductResult.Items)
             {
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
-                TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-                TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-                RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-                RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 var pcInfo = tempData.FirstOrDefault(x => x.ProductId == ProductId);
                 decimal tmpDecimal = 0;
@@ -161,13 +142,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
-
-                if (radio1.Checked && txtNangLucVanChuyenNguoi.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenNguoi = Convert.ToDecimal(txtNangLucVanChuyenNguoi.Text.Trim(), culture);
-
-                if (radio2.Checked && txtNangLucVanChuyenHang.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenHang = Convert.ToDecimal(txtNangLucVanChuyenHang.Text.Trim(), culture);
-
             }
 
             rp.SaveChanges();
@@ -179,11 +153,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                 DE_ProductCapacity pcInfo = new DE_ProductCapacity();
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
-                TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-                TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-                RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-                RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 pcInfo.ProductId = ProductId;
                 pcInfo.ReportId = ReportId;
@@ -195,23 +164,20 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
-
-                if (radio1.Checked && txtNangLucVanChuyenNguoi.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenNguoi = Convert.ToDecimal(txtNangLucVanChuyenNguoi.Text.Trim(), culture);
-                else
-                    pcInfo.NangLucVanChuyenNguoi = 0;
-
-                if (radio2.Checked && txtNangLucVanChuyenHang.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenHang = Convert.ToDecimal(txtNangLucVanChuyenHang.Text.Trim(), culture);
-                else
-                    pcInfo.NangLucVanChuyenHang = 0;
-
                 rp.DE_ProductCapacity.Add(pcInfo);
             }
             rp.SaveChanges();
         }
 
-        btnCancelProductResult_Click(sender, e);
+        btnAddProductResult.Visible = true;
+        btnUpdateProductResult.Visible = false;
+        btnCancelProductResult.Visible = false;
+
+        foreach (RepeaterItem ri in rptProductResult.Items)
+        {
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = true;
+        }
     }
     protected void btnCancelProductResult_Click(object sender, EventArgs e)
     {
@@ -222,18 +188,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = true;
-
-            TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-            txtNangLucVanChuyenNguoi.ReadOnly = true;
-
-            TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-            txtNangLucVanChuyenHang.ReadOnly = true;
-
-            RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-            radio1.Enabled = false;
-
-            RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-            radio2.Enabled = false;
         }
     }
 
@@ -247,18 +201,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = false;
-
-            TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-            txtNangLucVanChuyenNguoi.ReadOnly = false;
-
-            TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-            txtNangLucVanChuyenHang.ReadOnly = false;
-
-            RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-            radio1.Enabled = true;
-
-            RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-            radio2.Enabled = true;
         }
     }
 
@@ -271,18 +213,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = true;
-
-            TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-            txtNangLucVanChuyenNguoi.ReadOnly = true;
-
-            TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-            txtNangLucVanChuyenHang.ReadOnly = true;
-
-            RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-            radio1.Enabled = false;
-
-            RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-            radio2.Enabled = false;
         }
     }
 
@@ -296,11 +226,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
             {
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
-                TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-                TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-                RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-                RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 var pcInfo = tempData.FirstOrDefault(x => x.ProductId == ProductId);
                 decimal tmpDecimal = 0;
@@ -308,12 +233,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
-
-                if (radio1.Checked && txtNangLucVanChuyenNguoi.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenNguoi = Convert.ToDecimal(txtNangLucVanChuyenNguoi.Text.Trim(), culture);
-
-                if (radio2.Checked && txtNangLucVanChuyenHang.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenHang = Convert.ToDecimal(txtNangLucVanChuyenHang.Text.Trim(), culture);
             }
 
             rp.SaveChanges();
@@ -325,11 +244,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                 DE_ProductCapacity pcInfo = new DE_ProductCapacity();
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
-                TextBox txtNangLucVanChuyenNguoi = ri.FindControl("txtNangLucVanChuyenNguoi") as TextBox;
-                TextBox txtNangLucVanChuyenHang = ri.FindControl("txtNangLucVanChuyenHang") as TextBox;
-                RadioButton radio1 = ri.FindControl("radio1") as RadioButton;
-                RadioButton radio2 = ri.FindControl("radio2") as RadioButton;
-
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 pcInfo.ProductId = ProductId;
                 pcInfo.ReportId = ReportId;
@@ -341,24 +255,22 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
-
-                if (radio1.Checked && txtNangLucVanChuyenNguoi.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenNguoi = Convert.ToDecimal(txtNangLucVanChuyenNguoi.Text.Trim(), culture);
-                else
-                    pcInfo.NangLucVanChuyenNguoi = 0;
-
-                if (radio2.Checked && txtNangLucVanChuyenHang.Text.Trim() != "")
-                    pcInfo.NangLucVanChuyenHang = Convert.ToDecimal(txtNangLucVanChuyenHang.Text.Trim(), culture);
-                else
-                    pcInfo.NangLucVanChuyenHang = 0;
-
                 rp.DE_ProductCapacity.Add(pcInfo);
             }
             rp.SaveChanges();
         }
 
-        btnAddProductNextResultCancel_Click(sender, e);
+        btnAddProductNextResult.Visible = true;
+        btnAddProductNextResultUpdate.Visible = false;
+        btnAddProductNextResultCancel.Visible = false;
+
+        foreach (RepeaterItem ri in rptProductPlan.Items)
+        {
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = true;
+        }
     }
+
 
     //Binding
     private void BindProductCapacity()
@@ -367,7 +279,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
-                    join d in rp.DE_Fuel on a.FuelId equals d.Id
                     where a.EnterpriseId == memVal.OrgId
                     orderby a.ProductName ascending
                     select new
@@ -375,10 +286,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                         ProductId = a.Id,
                         ProductName = a.ProductName,
                         Measurement = a.Measurement,
-                        FuelName = d.FuelName,
-                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
-                        NangLucVanChuyenNguoi = (c == null ? string.Empty : c.NangLucVanChuyenNguoi.ToString()),
-                        NangLucVanChuyenHang = (c == null ? string.Empty : c.NangLucVanChuyenHang.ToString())
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
         rptProductResult.DataSource = data;
@@ -388,7 +296,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         var dataNextYear = (from a in rp.DE_Product
                             join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == true) on a.Id equals b.ProductId into ab
                             from c in ab.DefaultIfEmpty()
-                            join d in rp.DE_Fuel on a.FuelId equals d.Id
                             where a.EnterpriseId == memVal.OrgId
                             orderby a.ProductOrder ascending
                             select new
@@ -396,10 +303,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                                 ProductId = a.Id,
                                 ProductName = a.ProductName,
                                 Measurement = a.Measurement,
-                                FuelName = d.FuelName,
-                                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
-                                NangLucVanChuyenNguoi = (c == null ? string.Empty : c.NangLucVanChuyenNguoi.ToString()),
-                                NangLucVanChuyenHang = (c == null ? string.Empty : c.NangLucVanChuyenHang.ToString())
+                                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                             }).ToList();
 
         rptProductPlan.DataSource = dataNextYear;
@@ -422,6 +326,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         ddlProductMeasurement.DataValueField = "Id";
         ddlProductMeasurement.DataTextField = "MeasurementName";
         ddlProductMeasurement.DataBind();
+        ddlProductMeasurement.Items.Insert(0, new ListItem("---Lựa chọn đơn vị tính(nếu có)---", "-1"));
     }
 
     //2. Sử dụng nhiên liệu
@@ -527,8 +432,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
                     from c in ab.DefaultIfEmpty()
                     join d in rp.DE_GroupFuel on a.GroupFuelId equals d.Id
                     join e in rp.DE_Measurement on a.MeasurementId equals e.Id
-                    //where d.GroupCode != ReportKey.FuelGroupKey_POWER
-                    where d.GroupCode == ReportKey.FuelGroupKey_GAS || d.GroupCode == ReportKey.FuelGroupKey_OIL || d.GroupCode == ReportKey.FuelGroupKey_GASONLINE
+                    where d.GroupCode != ReportKey.FuelGroupKey_POWER
                     orderby a.FuelOrder ascending
                     select new
                     {
@@ -544,6 +448,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         rptFuelFuture.DataSource = data;
         rptFuelFuture.DataBind();
     }
+
 
     //b. Sử dụng điện
     protected void btAddElectrictFuture_Click(object sender, EventArgs e)
@@ -800,8 +705,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         {
             ddlMeasure.SelectedIndex = 1;
         }
-
-
     }
     void BindMeasurement2()
     {
@@ -826,12 +729,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
     void BindFuel()
     {
         ReportModels rp = new ReportModels();
-        var list = (from a in rp.DE_Fuel
-                    join b in rp.DE_GroupFuel on a.GroupFuelId equals b.Id
-                    where b.GroupCode == ReportKey.FuelGroupKey_OIL || b.GroupCode == ReportKey.FuelGroupKey_GAS || b.GroupCode == ReportKey.FuelGroupKey_GASONLINE
-                    orderby a.FuelOrder
-                    select a).ToList();
-        //var list = rp.DE_Fuel.OrderBy(o => o.FuelOrder).ToList();
+        var list = rp.DE_Fuel.OrderBy(o => o.FuelOrder).ToList();
 
         int GroupId = 0;
         if (ddlFuelType.SelectedIndex > 0)
@@ -850,11 +748,6 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         ddlFuelType2.DataTextField = "FuelName";
         ddlFuelType2.DataBind();
         ddlFuelType2.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
-
-        ddlProductFuel.DataSource = listSearch;
-        ddlProductFuel.DataValueField = "Id";
-        ddlProductFuel.DataTextField = "FuelName";
-        ddlProductFuel.DataBind();
     }
 
     protected void ddlFuel2_SelectedIndexChanged(object sender, EventArgs e)
