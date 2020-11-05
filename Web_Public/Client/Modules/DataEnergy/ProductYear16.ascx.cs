@@ -101,7 +101,7 @@ public partial class Client_Modules_DataEnergy_ProductYear16 : System.Web.UI.Use
         product.ProductName = txtProductName.Text.Trim();
         product.YearStart = DateTime.Now.Year;
         product.YearEnd = DateTime.Now.Year;
-        product.Quantity = Convert.ToInt32(txtDesignQty.Text.Trim());
+        //product.Quantity = Convert.ToInt32(txtDesignQty.Text.Trim());
         product.Measurement = ddlProductMeasurement.SelectedItem.Text;
         product.MeasurementId = Convert.ToInt32(ddlProductMeasurement.SelectedValue);
         product.Note = txtProductName.Text.Trim();

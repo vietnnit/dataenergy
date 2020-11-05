@@ -101,7 +101,7 @@
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-right: none;">
-                                        <%# Eval("FuelName")%>
+                                        
                                     </td>
                                     <td style="border-left: none;">
                                         <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
@@ -149,7 +149,7 @@
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-right: none;">
-                                        <%# Eval("FuelName")%>
+                                       
                                     </td>
                                     <td style="border-left: none;">
                                         <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
@@ -801,7 +801,7 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">Cập nhật danh mục sản phẩm sản xuất</h3>
+                <h3 class="modal-title">Cập nhật thông tin cơ sở hạ tầng</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -818,12 +818,12 @@
                     <div class="form-group">
                         <label class="col-lg-3">
                             Giá trị<span class="append-icon right text-danger"></span>:</label>
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <asp:TextBox runat="server" ID="txtDesignQty" CssClass="form-control input-sm"></asp:TextBox>
                         </div>
-                        <div class="col-lg-3">Đơn vị</div>
-                        <div class="col-lg-3">
-                            <asp:DropDownList ID="ddlProductMeasurement" runat="server"></asp:DropDownList>
+                        <div class="col-lg-2">Đơn vị</div>
+                        <div class="col-lg-5">
+                            <asp:DropDownList ID="ddlProductMeasurement" CssClass="form-control input-sm" runat="server"></asp:DropDownList>
                         </div>
                     </div>
                     <div class="form-group">

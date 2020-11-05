@@ -80,7 +80,7 @@
                         <tr class="primary fs12">
                             <th rowspan="2" style="width: 40%">Loại phương tiện<br />
                                 <asp:LinkButton ID="btnAddProduct" runat="server" CssClass="fs9 btn btn-primary"
-                                    Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
+                                    Text="Thêm loại phương tiện" ToolTip="Thêm loại phương tiện" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm loại phương tiện</asp:LinkButton>
                             </th>
                             <th rowspan="2" style="width: 15%;">Số lượng(chiếc)
                             </th>
@@ -846,22 +846,10 @@
                         <label class="col-lg-3">
                             Đơn vị tính<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
-                            <asp:DropDownList ID="ddlProductMeasurement" runat="server"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlProductMeasurement" CssClass="form-control input-sm" runat="server"></asp:DropDownList>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">
-                            Năng lực sản xuất theo thiết kế<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtDesignQty" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtDesignQty"
-                                CssClass="text-danger" Text="Vui lòng nhập năng lực sản xuất là ký tự số" ValidationGroup="valProduct"
-                                Type="Double" MinimumValue="0" MaximumValue="999999999999" Display="Dynamic"></asp:RangeValidator>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtDesignQty"
-                                CssClass="text-danger" ValidationGroup="valProduct" Text="Vui lòng nhập năng lực sản xuất"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
+                    
                     <div class="form-group">
                         <label class="col-lg-3">
                             Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
