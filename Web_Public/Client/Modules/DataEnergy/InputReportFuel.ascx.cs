@@ -581,7 +581,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                           select b).FirstOrDefault();
         if (reportTemp == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
-        
+
         string temp = "TempReport/" + reportTemp.TemplateBC.Trim();
 
         WordExtend ex = new WordExtend();
@@ -1922,6 +1922,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                 case "BC1.7.DOCX":
                     tblProductResult = GetData17(ReportId, IsPlan, OrgId);
                     break;
+                case "BC1.6.DOCX":
+                    tblProductResult = GetData16(ReportId, IsPlan, OrgId);
+                    break;
             }
         }
         return tblProductResult;
@@ -1956,6 +1959,43 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             row["Measurement"] = item.Measurement;
             row["MaxQuantity"] = item.MaxQuantity;
             row["FuelName"] = item.FuelName;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult;
+    }
+    private DataTable GetData16(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(decimal));
+        tblProductResult.Columns.Add("FuelName", typeof(decimal));
+        tblProductResult.Columns.Add("NangLucVanChuyenNguoi", typeof(string));
+        tblProductResult.Columns.Add("NangLucVanChuyenHang", typeof(string));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_Fuel on a.FuelId equals d.Id
+                    where a.EnterpriseId == memVal.OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        FuelName = d.FuelName,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
+                        NangLucVanChuyenNguoi = (c == null ? string.Empty : c.NangLucVanChuyenNguoi.ToString()),
+                        NangLucVanChuyenHang = (c == null ? string.Empty : c.NangLucVanChuyenHang.ToString())
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["MaxQuantity"] = item.MaxQuantity;
+            row["FuelName"] = item.FuelName;
+            row["NangLucVanChuyenHang"] = item.NangLucVanChuyenNguoi;
+            row["NangLucVanChuyenHang"] = item.NangLucVanChuyenHang;
             tblProductResult.Rows.Add(row);
         }
         return tblProductResult;

@@ -74,8 +74,6 @@
                     </div>
                 </div>
                 <table class="table table-bordered table-hover mbn" width="100%">
-
-
                     <thead>
                         <tr class="primary fs12">
                             <th rowspan="2" style="width: 40%">Loại phương tiện<br />
@@ -849,7 +847,7 @@
                             <asp:DropDownList ID="ddlProductMeasurement" CssClass="form-control input-sm" runat="server"></asp:DropDownList>
                         </div>
                     </div>
-                    
+                    <%--  --%>
                     <div class="form-group">
                         <label class="col-lg-3">
                             Sử dụng năng lượng<span class="append-icon right text-danger">*</span>:</label>
