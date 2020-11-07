@@ -170,6 +170,69 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="margin-bottom-10">
+                <div class="">
+                    <div class="control-label pt5" style="width: 100%">
+                        2. Kế hoạch thay thế nâng cấp, bổ sung thiết bị công nghệ
+                        <div style="float: right">
+                            <asp:LinkButton ID="btnAddPlanDeviceNext" runat="server" Text="Thêm kế hoạch" ToolTip="Thêm mới kế hoạch"
+                                OnClientClick='javascript:ShowDialogDevicePlanOne(0); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover mbn" width="100%">
+                    <thead>
+                        <tr class="primary fs12">
+                            <th style="width: 15%">Tên thiết bị
+                            </th>
+                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
+                            </th>
+                            <th style="width: 10%">Cách lắp đặt
+                            </th>
+                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
+                            </th>
+                            <th style="width: 15%">Mức cam kết khả năng thực hiện
+                            </th>
+                            <th style="width: 5%">Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptKHBoSungTB" runat="server" OnItemCommand="rptKHBoSungTB_ItemCommand"
+                            OnItemDataBound="rptResultTB_ItemDataBound">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%# Eval("NameTB")%>
+                                    </td>
+                                    <td>
+                                        <%# Eval("TinhNang")%>
+                                    </td>
+                                    <td>
+                                        <%# Eval("CachLapDat")%>
+                                    </td>
+                                    <td>
+                                        <%# Eval("LyDo")%>
+                                    </td>
+                                    <td>Khả năng:
+                                        <%# Eval("KhaNang") != DBNull.Value && Eval("KhaNang").ToString() != "" ? Eval("KhaNang") + "%" : ""%>
+                                        <br />
+                                        Cam kết:
+                                        <%# Eval("CamKet")%>
+                                    </td>
+                                    <td>
+                                        <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
+                                            CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEdit" runat="server" CssClass="" ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'
+                                            CommandName="edit"><i class="fa fa-edit"></i></asp:LinkButton>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <%--2. Tiêu thụ năng lượng--%>

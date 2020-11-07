@@ -71,6 +71,7 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
     {
         if (!IsPostBack)
         {
+            AllowEdit = true;
             int Id = 0;
             if (!string.IsNullOrEmpty(Request["ReportId"]))
                 int.TryParse(Request["ReportId"].Replace(",", ""), out Id);
@@ -87,6 +88,7 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
             BindUsingEnerySystem();
             BindProductCapacity();
             BindResultTB();
+            BindThietBi();
         }
     }
 
@@ -244,6 +246,8 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
     }
     void BindData()
     {
+        //btnAddDevice.Visible = btnAddPlan.Visible = btnAddPlanDeviceNext.Visible = btnAddPlanNext.Visible = btnAddSolution.Visible = btnAddSolution2.Visible = AllowEdit;
+
         ReportModels rp = new ReportModels();
         var data = rp.DE_ReportFuel.FirstOrDefault(x => x.Id == ReportId && x.ReportType == ReportKey.PLAN);
         if (data != null)
@@ -975,13 +979,57 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
         }
     }
 
+    protected void rptKHBoSungTB_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName.Equals("delete"))
+        {
+            PlanTB rpt = new PlanTB();
+            PlanTBService rptbso = new PlanTBService();
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+            BindThietBi();
+
+        }
+        else if (e.CommandName.Equals("edit"))
+        {
+            PlanTB rpt = new PlanTB();
+            PlanTBService rptbso = new PlanTBService();
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            rpt = rptbso.FindByKey(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+
+            if (rpt.CachLapDat != "")
+            {
+                try
+                {
+                    ddlCacThucLD.SelectedValue = rpt.CachLapDat;
+                }
+                catch { }
+            }
+            txtlydoTB.Text = rpt.LyDo;
+            txtTenTB.Text = rpt.NameTB;
+            try
+            {
+                ddlCamKetTB.SelectedValue = rpt.CamKet;
+            }
+            catch { }
+            txtKhaNangTB.Text = rpt.KhaNang;
+            txtTinhNangTB.Text = rpt.TinhNang;
+            hddkhTB.Value = rpt.Id.ToString();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "ShowDialogDevicePlanOne(" + hddkhTB.Value + ");", true);
+        }
+    }
+
+   
+
     void BindThietBi()
     {
-        //PlanTBService plangpservice = new PlanTBService();
-        //DataTable tbl = new DataTable();
-        //tbl = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
-        //rptKHBoSungTB.DataSource = tbl;
-        //rptKHBoSungTB.DataBind();
+        PlanTBService plangpservice = new PlanTBService();
+        DataTable tbl = new DataTable();
+        tbl = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
+        rptKHBoSungTB.DataSource = tbl;
+        rptKHBoSungTB.DataBind();
     }
 
 
