@@ -33,5 +33,7 @@ namespace ReportEF
         public int? FuelId { get; set; }
         public int? MeasurementId { get; set; }
         public int? ProductGroup { get; set; }
+        public int? GroupFuel { get; set; }
+        public decimal? NhietTriThap { get; set; }
     }
 }

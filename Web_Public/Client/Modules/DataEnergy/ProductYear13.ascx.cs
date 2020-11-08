@@ -15,7 +15,7 @@ using Telerik.Web.Data.Extensions;
 using ReportEF;
 using System.Globalization;
 
-public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.UserControl
+public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.UserControl
 {
     UserValidation m_UserValidation = new UserValidation();
     MemberValidation memVal = new MemberValidation();
@@ -87,8 +87,6 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
             BindPlanTKNL();
             BindUsingEnerySystem();
             BindProductCapacity();
-            BindResultTB();
-            BindThietBi();
         }
     }
 
@@ -99,16 +97,16 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
 
     protected void rptProductResult_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
-        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        {
-            //form-control input-sm onlyNumberCss
-            TextBox txtDataReport1415 = (TextBox)e.Item.FindControl("txtDataReport1415") as TextBox;
-            HiddenField hdProductMeasurement = (HiddenField)e.Item.FindControl("hdProductMeasurement");
-            if (hdProductMeasurement.Value != "")
-                txtDataReport1415.CssClass = "form-control input-sm onlyNumberCss";
-            else
-                txtDataReport1415.CssClass = "form-control input-sm";
-        }
+        //if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //{
+        //    //form-control input-sm onlyNumberCss
+        //    TextBox txtMaxQuantity = (TextBox)e.Item.FindControl("txtMaxQuantity") as TextBox;
+        //    HiddenField hdProductMeasurement = (HiddenField)e.Item.FindControl("hdProductMeasurement");
+        //    if (hdProductMeasurement.Value != "")
+        //        txtMaxQuantity.CssClass = "form-control input-sm onlyNumberCss";
+        //    else
+        //        txtMaxQuantity.CssClass = "form-control input-sm";
+        //}
     }
 
 
@@ -120,11 +118,9 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
         product.ProductName = txtProductName.Text.Trim();
         product.YearStart = DateTime.Now.Year;
         product.YearEnd = DateTime.Now.Year;
-        if (ddlProductMeasurement.SelectedIndex > 0)
-        {
-            product.Measurement = ddlProductMeasurement.SelectedItem.Text;
-            product.MeasurementId = Convert.ToInt32(ddlProductMeasurement.SelectedValue);
-        }
+        product.GroupFuel = Convert.ToInt32(ddlGroupFuel.SelectedValue);
+        if (txtNhietTriThap.Text.Trim() != "")
+            product.NhietTriThap = Convert.ToDecimal(txtNhietTriThap.Text, culture);
         product.EnterpriseId = memVal.OrgId;
         product.IsProduct = false;
         product.ProductOrder = 10;
@@ -142,8 +138,8 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
 
         foreach (RepeaterItem ri in rptProductResult.Items)
         {
-            TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
-            txtDataReport1415.ReadOnly = false;
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = false;
         }
     }
     protected void btnUpdateProductResult_Click(object sender, EventArgs e)
@@ -166,13 +162,15 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
                     pcInfo.IsPlan = false;
                     pcInfo.ReportYear = ReportYear;
                     rp.DE_ProductCapacity.Add(pcInfo);
-                    TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
-                    pcInfo.DataReport1415 = txtDataReport1415.Text.Trim();
+                    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                    if (txtMaxQuantity.Text.Trim() != "")
+                        pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
                 }
                 else
                 {
-                    TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
-                    pcInfo.DataReport1415 = txtDataReport1415.Text.Trim();
+                    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                    if (txtMaxQuantity.Text.Trim() != "")
+                        pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
                 }
             }
 
@@ -183,14 +181,15 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
             foreach (RepeaterItem ri in rptProductResult.Items)
             {
                 DE_ProductCapacity pcInfo = new DE_ProductCapacity();
-                TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
+                TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 pcInfo.ProductId = ProductId;
                 pcInfo.ReportId = ReportId;
                 pcInfo.IsPlan = false;
                 pcInfo.ReportYear = ReportYear;
-                pcInfo.DataReport1415 = txtDataReport1415.Text.Trim();
+                if (txtMaxQuantity.Text.Trim() != "")
+                    pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
                 rp.DE_ProductCapacity.Add(pcInfo);
             }
             rp.SaveChanges();
@@ -202,8 +201,8 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
 
         foreach (RepeaterItem ri in rptProductResult.Items)
         {
-            TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
-            txtDataReport1415.ReadOnly = true;
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = true;
         }
     }
 
@@ -215,8 +214,8 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
 
         foreach (RepeaterItem ri in rptProductResult.Items)
         {
-            TextBox txtDataReport1415 = ri.FindControl("txtDataReport1415") as TextBox;
-            txtDataReport1415.ReadOnly = true;
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = true;
         }
     }
 
@@ -227,17 +226,15 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
-                        //join d in rp.DE_Measurement on a.MeasurementId equals d.Id into ad
-                        //from m in ad.DefaultIfEmpty()
+                    join d in rp.DE_GroupFuel on a.GroupFuel equals d.Id
                     where a.EnterpriseId == memVal.OrgId
                     orderby a.ProductName ascending
                     select new
                     {
                         ProductId = a.Id,
                         ProductName = a.ProductName,
-                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
-                        DataReport1415 = c.DataReport1415,
-                        //MeasurementName = m != null ? m.MeasurementName : string.Empty,
+                        NhietTriThap = a.NhietTriThap == null ? 0 : a.NhietTriThap,
+                        GroupFuelName = d.Title,
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
@@ -255,16 +252,13 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
             ltReportYear.Text = (data.Year - 1).ToString();
             ltSolutionResult.Text = (data.Year - 1).ToString();
             ltSolutionNextYear.Text = data.Year.ToString();
-            ltReportCurentYear.Text= (data.Year - 1).ToString();
-            ltReportNextYear.Text= (data.Year).ToString();
             ltDuKienMucTieuThuNangLuong.Text = "2. Dự kiến mức tiêu thụ năng lượng năm " + (data.Year).ToString();
         }
 
-        ddlProductMeasurement.DataSource = rp.DE_Measurement.ToList(); ;
-        ddlProductMeasurement.DataValueField = "Id";
-        ddlProductMeasurement.DataTextField = "MeasurementName";
-        ddlProductMeasurement.DataBind();
-        ddlProductMeasurement.Items.Insert(0, new ListItem("---Lựa chọn đơn vị tính(nếu có)---", "-1"));
+        ddlGroupFuel.DataSource = rp.DE_GroupFuel.ToList(); ;
+        ddlGroupFuel.DataValueField = "Id";
+        ddlGroupFuel.DataTextField = "Title";
+        ddlGroupFuel.DataBind();
     }
 
     //2. Sử dụng nhiên liệu
@@ -600,7 +594,7 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
         }
     }
 
-   
+
     protected void BindUsingEnerySystem()
     {
         ReportModels reportModels = new ReportModels();
@@ -908,263 +902,5 @@ public partial class Client_Modules_DataEnergy_ProductYear15 : System.Web.UI.Use
         }
 
     }
-    #endregion
-
-
-    //Kết quả Thực hiện thay thế, nâng cấp, bổ sung thiết bị công nghệ trong năm
-    #region Kết quả Thực hiện thay thế, nâng cấp, bổ sung thiết bị công nghệ trong năm
-    void BindResultTB()
-    {
-        PlanTBService plangpservice = new PlanTBService();
-        DataTable tbl = new DataTable();
-        tbl = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, false);
-        rptResultTB.DataSource = tbl;
-        rptResultTB.DataBind();
-    }
-
-    protected void rptResultTB_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    {
-        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        {
-            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
-            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
-            btnDelete.Visible = AllowEdit;
-            btnEdit.Visible = AllowEdit;
-        }
-    }
-
-    protected void rptResultTB_ItemCommand(object source, RepeaterCommandEventArgs e)
-    {
-        if (e.CommandName.Equals("delete"))
-        {
-            PlanTB rpt = new PlanTB();
-            PlanTBService rptbso = new PlanTBService();
-            LinkButton btnDelete = (LinkButton)e.CommandSource;
-            btnDelete.Visible = AllowEdit;
-            rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
-            BindResultTB();
-
-        }
-        else if (e.CommandName.Equals("edit"))
-        {
-            LinkButton btnDelete = (LinkButton)e.CommandSource;
-            btnDelete.Visible = AllowEdit;
-            PlanTB rpt = new PlanTB();
-            PlanTBService rptbso = new PlanTBService();
-            rpt = rptbso.FindByKey(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
-            if (rpt.CachLapDat != "")
-            {
-                try
-                {
-                    ddlCacThucLDBS.SelectedValue = rpt.CachLapDat;
-                }
-                catch { }
-            }
-
-            txtMoTaTinhNangBS.Text = rpt.TinhNang;
-            txtTenTietBiBS.Text = rpt.NameTB;
-            txtLyDoKhongThucHien.Text = rpt.LyDo;
-            if (rpt.IsExecuted)
-                rblThucHien.SelectedIndex = 0;
-            else
-                rblThucHien.SelectedIndex = 1;
-            if (rpt.IsNew)
-                rblIsNew.SelectedIndex = 1;
-            else
-                rblIsNew.SelectedIndex = 0;
-
-            txtLyDoKhongThucHien.Text = rpt.LyDoLapDat;
-
-            txtLyDoKhongThucHien.Text = rpt.LyDoLapDat;
-
-            hddkhTB.Value = rpt.Id.ToString();
-            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "ShowDialogDeviceResultOne(" + hddkhTB.Value + ");", true);
-        }
-    }
-
-    protected void rptKHBoSungTB_ItemCommand(object source, RepeaterCommandEventArgs e)
-    {
-        if (e.CommandName.Equals("delete"))
-        {
-            PlanTB rpt = new PlanTB();
-            PlanTBService rptbso = new PlanTBService();
-            LinkButton btnDelete = (LinkButton)e.CommandSource;
-            btnDelete.Visible = AllowEdit;
-            rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
-            BindThietBi();
-
-        }
-        else if (e.CommandName.Equals("edit"))
-        {
-            PlanTB rpt = new PlanTB();
-            PlanTBService rptbso = new PlanTBService();
-            LinkButton btnDelete = (LinkButton)e.CommandSource;
-            btnDelete.Visible = AllowEdit;
-            rpt = rptbso.FindByKey(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
-
-            if (rpt.CachLapDat != "")
-            {
-                try
-                {
-                    ddlCacThucLD.SelectedValue = rpt.CachLapDat;
-                }
-                catch { }
-            }
-            txtlydoTB.Text = rpt.LyDo;
-            txtTenTB.Text = rpt.NameTB;
-            try
-            {
-                ddlCamKetTB.SelectedValue = rpt.CamKet;
-            }
-            catch { }
-            txtKhaNangTB.Text = rpt.KhaNang;
-            txtTinhNangTB.Text = rpt.TinhNang;
-            hddkhTB.Value = rpt.Id.ToString();
-            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "ShowDialogDevicePlanOne(" + hddkhTB.Value + ");", true);
-        }
-    }
-
-   
-
-    void BindThietBi()
-    {
-        PlanTBService plangpservice = new PlanTBService();
-        DataTable tbl = new DataTable();
-        tbl = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
-        rptKHBoSungTB.DataSource = tbl;
-        rptKHBoSungTB.DataBind();
-    }
-
-
-    public void btnSaveDevice_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            PlanTB plantb = new PlanTB();
-            PlanTBService plantbservice = new PlanTBService();
-            if (ddlCacThucLD.SelectedIndex > 0)
-                plantb.CachLapDat = ddlCacThucLD.SelectedValue;
-            plantb.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-            plantb.NameTB = txtTenTB.Text;
-            plantb.TinhNang = txtTinhNangTB.Text;
-            plantb.LyDo = txtlydoTB.Text;
-            plantb.Nam = (ReportYear + 1);//Convert.ToInt32(txtnamTB.Text);
-            if (ddlCamKetTB.SelectedIndex > 0)
-                plantb.CamKet = ddlCamKetTB.SelectedValue;
-            plantb.KhaNang = txtKhaNangTB.Text.Trim();
-            plantb.IdPlan = ReportId;
-            plantb.IsFiveYear = false;
-            plantb.IsPlan = true;
-            plantb.IsNew = false;
-            if (hddkhTB.Value != "" && Convert.ToInt32(hddkhTB.Value) > 0)
-            {
-                plantb.Id = Convert.ToInt32(hddkhTB.Value);
-                if (plantbservice.Update(plantb) != null)
-                {
-                    BindThietBi();
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "ShowDialogDevicePlanOne(" + hddkhTB.Value + ");", true);
-                }
-
-            }
-            else
-            {
-                int i = plantbservice.Insert(plantb);
-                if (i > 0)
-                {
-                    BindThietBi();
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showx", "alert('Cập nhật không thành công!');", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "ShowDialogDevicePlanOne(0);", true);
-                }
-            }
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-
-    }
-    public void btnSaveAddDevice_Click(object sender, EventArgs e)
-    {
-        try
-        {
-            PlanTB plantb = new PlanTB();
-            PlanTBService plantbservice = new PlanTBService();
-            if (hddkhTB.Value != "")
-            {
-                plantb = plantbservice.FindByKey(Convert.ToInt32(hddkhTB.Value));
-                if (ddlCacThucLDBS.SelectedIndex > 0)
-                    plantb.CachLapDat = ddlCacThucLDBS.SelectedValue;
-                plantb.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-                plantb.NameTB = txtTenTietBiBS.Text;
-                plantb.TinhNang = txtMoTaTinhNangBS.Text;
-
-                plantb.IsNew = (rblThucHien.SelectedIndex == 1);
-
-
-                plantb.LyDo = txtLyDoKhongThucHien.Text;
-                plantb.LyDoLapDat = txtLyDoKhongThucHien.Text;
-                plantb.Nam = ReportYear;
-                plantb.IsExecuted = (rblThucHien.SelectedIndex == 0);
-                plantb.IdPlan = ReportId;
-                plantb.IsFiveYear = false;
-                plantb.IsPlan = false;
-
-                int i = plantbservice.Update(plantb).Id;
-                if (i > 0)
-                {
-                    BindResultTB();
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "updateiaiphapTB();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công!');", true);
-                }
-
-            }
-            else
-            {
-                plantb.EnterpriseId = Convert.ToInt32(memVal.OrgId);
-                if (ddlCacThucLDBS.SelectedIndex > 0)
-                    plantb.CachLapDat = ddlCacThucLDBS.SelectedValue;
-                plantb.NameTB = txtTenTietBiBS.Text;
-                plantb.TinhNang = txtMoTaTinhNangBS.Text;
-                plantb.Nam = ReportYear;
-                plantb.IsExecuted = (rblThucHien.SelectedIndex == 0);
-                plantb.IsNew = (rblThucHien.SelectedIndex == 1);
-
-                plantb.LyDo = txtLyDoKhongThucHien.Text;
-                plantb.LyDoLapDat = txtLyDoKhongThucHien.Text;
-                plantb.IsFiveYear = false;
-                plantb.IsPlan = false;
-                plantb.IdPlan = ReportId;
-                int i = plantbservice.Insert(plantb);
-                if (i > 0)
-                {
-                    BindResultTB();
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showkhd", "updateiaiphapTB();", true);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "showx", "alert('Cập nhật không thành công!');", true);
-
-                }
-            }
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-
-    }
-
     #endregion
 }

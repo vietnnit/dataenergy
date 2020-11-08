@@ -227,6 +227,10 @@ namespace ReportEF
                 .HasPrecision(20, 2);
 
             modelBuilder.Entity<DE_Product>()
+                .Property(e => e.NhietTriThap)
+                .HasPrecision(10, 5);
+
+            modelBuilder.Entity<DE_Product>()
                 .Property(e => e.Quantity)
                 .HasPrecision(20, 2);
 

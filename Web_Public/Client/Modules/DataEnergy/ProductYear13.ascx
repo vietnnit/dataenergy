@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear15.ascx.cs" Inherits="Client_Modules_DataEnergy_ProductYear15" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear13.ascx.cs" Inherits="Client_Modules_DataEnergy_ProductYear13" %>
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
@@ -76,13 +76,14 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 50%">Thông tin
+                            <th style="width: 40%">Nhiên liệu sử dụng
                                 <br />
                                 <asp:LinkButton ID="btnAddProduct" runat="server" CssClass="fs9 btn btn-primary"
-                                    Text="Thêm thông tin" ToolTip="Thêm thông tin" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm thông tin</asp:LinkButton>
+                                    Text="Thêm nhiên liệu" ToolTip="Thêm nhiên liệu" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm nhiên liệu</asp:LinkButton>
                             </th>
-                            <th style="width: 20%;"></th>
-                            <th style="width: 5%; border-right: none; border-left: none;"></th>
+                            <th style="width: 25%;">Loại nhiên liệu</th>
+                            <th style="width: 15%;">Khối lượng SD/năm</th>
+                            <th style="width: 15%; border-right: none; border-left: none;">Nhiệt trị thấp (kJ/kg)</th>
                             <th style="border-left: none;"></th>
                         </tr>
                     </thead>
@@ -93,141 +94,18 @@
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
+                                     <td>
+                                        <%# Eval("GroupFuelName")%>
+                                    </td>
                                     <td class="text-right">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
-                                        <asp:HiddenField ID="hdProductMeasurement" runat="server" Value='<%# Eval("Measurement")%>' />
-                                        <asp:TextBox ID="txtDataReport1415" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("DataReport1415")%>'></asp:TextBox>
+                                        <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
                                     </td>
-                                    <td class="text-left" style="border-right: none; border-left: none;">
-                                        <%# Eval("Measurement")%>
+                                    <td class="text-left" style="border-right: none;">
+                                        <%# Eval("NhietTriThap")%>
                                     </td>
                                     <td style="border-left: none;">
-                                        <asp:RegularExpressionValidator ID="regtxtDataReport1415" runat="server" ControlToValidate="txtDataReport1415" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
-                                    </td>
-                                </tr>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="margin-bottom-10">
-                <div class="">
-                    <div class="control-label pt5" style="width: 100%">
-                        b. Kết quả Thực hiện thay thế, nâng cấp, bổ sung thiết bị công nghệ
-                        <asp:Literal ID="ltReportCurentYear" runat="server"></asp:Literal>
-                        <div style="float: right">
-                            <asp:LinkButton ID="btnAddDevice" runat="server" Text="Thêm kết quả thực hiện" ToolTip="Thêm mới kết quả thực hiện"
-                                OnClientClick='javascript:ShowDialogDeviceResultOne(0); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
-                        </div>
-                    </div>
-                </div>
-                <table class="table table-bordered table-hover mbn" width="100%">
-                    <thead>
-                        <tr class="primary fs12">
-                            <th style="width: 15%">Tên thiết bị
-                            </th>
-                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
-                            </th>
-                            <th style="width: 10%">Cách lắp đặt
-                            </th>
-                            <th style="width: 15%">Thực hiện (Có/không)
-                            </th>
-                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
-                            </th>
-                            <th style="width: 5%">Thao tác
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <asp:Repeater ID="rptResultTB" runat="server" OnItemCommand="rptResultTB_ItemCommand"
-                            OnItemDataBound="rptResultTB_ItemDataBound">
-                            <ItemTemplate>
-                                <tr>
-                                    <td>
-                                        <%# Eval("NameTB")%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("TinhNang")%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("CachLapDat")%>
-                                    </td>
-                                    <td>
-                                        <%# (Eval("IsExecuted") != null && Convert.ToBoolean(Eval("IsExecuted"))) ? "Có" : "Không"%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("LyDo")%>
-                                    </td>
-                                    <td>
-                                        <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
-                                            CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
-                                        <asp:LinkButton ID="btnEdit" runat="server" CssClass="" ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'
-                                            CommandName="edit"><i class="fa fa-edit"></i></asp:LinkButton>
-                                    </td>
-                                </tr>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="margin-bottom-10">
-                <div class="">
-                    <div class="control-label pt5" style="width: 100%">
-                        c. Kế hoạch thay thế, nâng cấp, bổ sung thiết bị công nghệ trong năm
-                        <asp:Literal ID="ltReportNextYear" runat="server"></asp:Literal>
-                        <div style="float: right">
-                            <asp:LinkButton ID="btnAddPlanDeviceNext" runat="server" Text="Thêm kế hoạch" ToolTip="Thêm mới kế hoạch"
-                                OnClientClick='javascript:ShowDialogDevicePlanOne(0); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
-                        </div>
-                    </div>
-                </div>
-                <table class="table table-bordered table-hover mbn" width="100%">
-                    <thead>
-                        <tr class="primary fs12">
-                            <th style="width: 15%">Tên thiết bị
-                            </th>
-                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
-                            </th>
-                            <th style="width: 10%">Cách lắp đặt
-                            </th>
-                            <th style="width: 15%">Lý do lắp mới hoặc nâng cấp thay thế
-                            </th>
-                            <th style="width: 15%">Mức cam kết khả năng thực hiện
-                            </th>
-                            <th style="width: 5%">Thao tác
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <asp:Repeater ID="rptKHBoSungTB" runat="server" OnItemCommand="rptKHBoSungTB_ItemCommand"
-                            OnItemDataBound="rptResultTB_ItemDataBound">
-                            <ItemTemplate>
-                                <tr>
-                                    <td>
-                                        <%# Eval("NameTB")%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("TinhNang")%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("CachLapDat")%>
-                                    </td>
-                                    <td>
-                                        <%# Eval("LyDo")%>
-                                    </td>
-                                    <td>Khả năng:
-                                        <%# Eval("KhaNang") != DBNull.Value && Eval("KhaNang").ToString() != "" ? Eval("KhaNang") + "%" : ""%>
-                                        <br />
-                                        Cam kết:
-                                        <%# Eval("CamKet")%>
-                                    </td>
-                                    <td>
-                                        <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
-                                            CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
-                                        <asp:LinkButton ID="btnEdit" runat="server" CssClass="" ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'
-                                            CommandName="edit"><i class="fa fa-edit"></i></asp:LinkButton>
+                                        <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -390,8 +268,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <asp:Repeater ID="rptResultTKNL" runat="server" OnItemCommand="rptResultTKNL_ItemCommand"
-                            OnItemDataBound="rptResultTB_ItemDataBound">
+                        <asp:Repeater ID="rptResultTKNL" runat="server" OnItemCommand="rptResultTKNL_ItemCommand">
                             <ItemTemplate>
                                 <tr>
                                     <td>
@@ -473,8 +350,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <asp:Repeater ID="rptSolutionPlan" runat="server" OnItemCommand="rptPlanTKNL_ItemCommand"
-                                OnItemDataBound="rptResultTB_ItemDataBound">
+                            <asp:Repeater ID="rptSolutionPlan" runat="server" OnItemCommand="rptPlanTKNL_ItemCommand">
                                 <ItemTemplate>
                                     <tr>
                                         <td>
@@ -876,13 +752,13 @@
             <div class="modal-header panel-heading  ">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×</button>
-                <h3 class="modal-title">Cập nhật thông tin cơ sở hạ tầng</h3>
+                <h3 class="modal-title">Cập nhật thông tin nhiên liệu</h3>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Thông tin hạ tầng<span class="append-icon right text-danger">*</span>:</label>
+                            Nhiên liệu<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtProductName" CssClass="form-control input-sm" ValidationGroup="validProduct"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtProductName"
@@ -892,9 +768,16 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Đơn vị tính(nếu có)<span class="append-icon right text-danger"></span>:</label>
+                            Loại nhiên liệu<span class="append-icon right text-danger"></span>:</label>
                         <div class="col-lg-5">
-                            <asp:DropDownList ID="ddlProductMeasurement" CssClass="form-control input-sm" runat="server"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlGroupFuel" CssClass="form-control input-sm" runat="server"></asp:DropDownList>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Nhiệt trị thấp<span class="append-icon right text-danger"></span>:</label>
+                        <div class="col-lg-5">
+                            <asp:TextBox ID="txtNhietTriThap" CssClass="form-control input-sm onlyNumberCss" runat="server"></asp:TextBox>
                         </div>
                     </div>
                 </div>
@@ -909,187 +792,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="dlgPlanDeviceOne" data-backdrop="static">
-    <div class="modal-dialog large">
-        <div class="modal-content">
-            <div class="modal-header panel-heading  ">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×</button>
-                <h3 class="modal-title">
-                    <i class="fa  fa-sliders"></i>Kế hoạch thay thế nâng cấp, bổ sung thiết bị công
-                    nghệ
-                    
-                </h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Tên thiết bị<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtTenTB" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtTenTB"
-                                CssClass="text-danger" ValidationGroup="viewSolutionTB" Text="Vui lòng nhập tên thiết bị"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Mô tả tính năng, vị trí sử dụng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtTinhNangTB" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtTinhNangTB"
-                                CssClass="text-danger" ValidationGroup="viewSolutionTB" Text="Vui lòng nhập mô tả tính năng,.."
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Cách thức lắp đặt<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-3">
-                            <asp:DropDownList runat="server" ID="ddlCacThucLD" Name="Khả năng thực hiện" CssClass="form-control input-sm">
-                                <asp:ListItem Value="" Text="---Chọn---" Selected="False"></asp:ListItem>
-                                <asp:ListItem Value="Mới" Text="Mới"></asp:ListItem>
-                                <asp:ListItem Value="Thay thế" Text="Thay thế"></asp:ListItem>
-                                <asp:ListItem Value="Nâng cấp" Text="Nâng cấp"></asp:ListItem>
-                                <asp:ListItem Value="Sửa chữa" Text="Sửa chữa"></asp:ListItem>
-                            </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="ddlCacThucLD"
-                                CssClass="text-danger" ValidationGroup="viewSolutionTB" Text="Vui lòng chọn các thức lắp đặt"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Lý do lắp mới hoặc nâng cấp thay thế:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtlydoTB" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Khả năng thực hiện(%)<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-3">
-                            <asp:TextBox runat="server" ID="txtKhaNangTB" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtKhaNangTB"
-                                CssClass="text-danger" ValidationGroup="viewSolutionTB" Text="Vui lòng nhập khả năng thực hiện"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                            <asp:RangeValidator ID="RequiredFieldValidator22" runat="server" ControlToValidate="txtKhaNangTB"
-                                MinimumValue="0" MaximumValue="100" Type="Double" ValidationGroup="viewSolutionTB"
-                                CssClass="text-danger" Text="Vui lòng nhập khả năng thực hiện trong khoảng(0% đến 100%)"
-                                Display="Dynamic"></asp:RangeValidator>
-                        </div>
-                        <label class="col-lg-3">
-                            Cam kết<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-3">
-                            <asp:DropDownList runat="server" ID="ddlCamKetTB" Name="Khả năng thực hiện" CssClass="form-control input-sm">
-                                <asp:ListItem Value="" Text="---Chọn---" Selected="False"></asp:ListItem>
-                                <asp:ListItem Value="Cao" Text="Cao"></asp:ListItem>
-                                <asp:ListItem Value="Trung bình" Text="Trung bình"></asp:ListItem>
-                                <asp:ListItem Value="Thấp" Text="Thấp"></asp:ListItem>
-                            </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="ddlCamKetTB"
-                                CssClass="text-danger" ValidationGroup="viewSolutionTB" Text="Vui lòng chọn mức cam kết"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <asp:Button ID="btnSaveDevice" runat="server" Visible="true" Text="Lưu lại" OnClick="btnSaveDevice_Click"
-                    CssClass="btn btn-sm btn-primary mr10" ValidationGroup="viewSolutionTB" AutoPostback="false"
-                    UseSubmitBehavior="false"></asp:Button>
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
-                    Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal" tabindex="-1" role="dialog" id="dlgDeviceResultOne" data-backdrop="static">
-    <div class="modal-dialog large">
-        <div class="modal-content">
-            <div class="modal-header panel-heading  ">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×</button>
-                <h3 class="modal-title">
-                    <i class="fa  fa-sliders"></i>Kết quả thay thế nâng cấp, bổ sung thiết bị công nghệ</h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Tên thiết bị<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtTenTietBiBS" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="txtTenTietBiBS"
-                                CssClass="text-danger" ValidationGroup="valAddSolutionTB" Text="Vui lòng nhập tên thiết bị"
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Mô tả tính năng, vị trí sử dụng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtMoTaTinhNangBS" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator25" runat="server" ControlToValidate="txtMoTaTinhNangBS"
-                                CssClass="text-danger" ValidationGroup="valAddSolutionTB" Text="Vui lòng nhập mô tả tính năng,.."
-                                Display="Dynamic"></asp:RequiredFieldValidator>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Cách thức lắp đặt<span class="append-icon right text-danger">*</span>:</label>
-                        <div class="col-lg-3">
-                            <asp:DropDownList runat="server" ID="ddlCacThucLDBS" CssClass="form-control input-sm">
-                                <asp:ListItem Value="" Text="---Chọn---" Selected="False"></asp:ListItem>
-                                <asp:ListItem Value="Mới" Text="Mới"></asp:ListItem>
-                                <asp:ListItem Value="Thay thế" Text="Thay thế"></asp:ListItem>
-                                <asp:ListItem Value="Nâng cấp" Text="Nâng cấp"></asp:ListItem>
-                                <asp:ListItem Value="Sửa chữa" Text="Sửa chữa"></asp:ListItem>
-                            </asp:DropDownList>
-                            <asp:RequiredFieldValidator ID="rfvCachThucLDBS" runat="server" ValidationGroup="valAddSolutionTB"
-                                CssClass="text-danger" Display="Dynamic" Text="Vui lòng chọn cách thức lắp đặt"
-                                ControlToValidate="ddlCacThucLDBS"></asp:RequiredFieldValidator>
-                        </div>
-                        <label class="col-lg-3">
-                            Thực hiện:</label>
-                        <div class="col-lg-3">
-                            <asp:RadioButtonList ID="rblThucHien" runat="server" RepeatDirection="Horizontal">
-                                <asp:ListItem Value="1" Text="Có" Selected="True"></asp:ListItem>
-                                <asp:ListItem Value="0" Text="Không"></asp:ListItem>
-                            </asp:RadioButtonList>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Lý do lắp mới hoặc nâng cấp thay thế:</label>
-                        <div class="col-lg-9">
-                            <asp:TextBox runat="server" ID="txtLyDoKhongThucHien" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3">
-                            Thực hiện theo :</label>
-                        <div class="col-lg-9">
-                            <asp:RadioButtonList ID="rblIsNew" runat="server" RepeatDirection="Horizontal">
-                                <asp:ListItem Value="1" Text="Kế hoạch" Selected="True"></asp:ListItem>
-                                <asp:ListItem Value="0" Text="Không có trong kế hoạch"></asp:ListItem>
-                            </asp:RadioButtonList>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <asp:LinkButton ID="btnSaveAddDevice" runat="server" Visible="true" Text="Lưu lại"
-                    OnClick="btnSaveAddDevice_Click" CssClass="btn btn-sm btn-primary mr10" ValidationGroup="valAddSolutionTB"
-                    AutoPostback="false" UseSubmitBehavior="false"></asp:LinkButton>
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
-                    Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <br />
 <asp:HiddenField ID="hddGroup" runat="server" />
@@ -1137,30 +840,6 @@
     function AddProduct() {
         $('#divProduct').modal('toggle');
     }
-
-    function ShowDialogDevicePlanOne(id) {
-        if (id == "0") {
-            $("#<%=hddkhTB.ClientID%>").val('');
-            $("#<%=txtlydoTB.ClientID%>").val('');
-            $("#<%=txtTinhNangTB.ClientID%>").val('');
-        }
-        else {
-        }
-        $('#dlgPlanDeviceOne').modal('toggle');
-    }
-
-    function ShowDialogDeviceResultOne(id) {
-        if (id == "0") {
-            $("#<%=hddkhTB.ClientID%>").val('');
-        }
-        $('#dlgDeviceResultOne').modal('toggle');
-    }
-
-    function addgiaiphapTB() {
-        $("#<%=hddkhTB.ClientID%>").val('');
-        $('#frmTB').modal('toggle');
-    }
-
 
     (function ($) {
         $.fn.inputFilter = function (inputFilter) {
