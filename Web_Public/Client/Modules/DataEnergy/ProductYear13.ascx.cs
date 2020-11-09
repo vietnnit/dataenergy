@@ -87,6 +87,7 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
             BindPlanTKNL();
             BindUsingEnerySystem();
             BindProductCapacity();
+            BindProductCapacityToMay();
         }
     }
 
@@ -124,9 +125,26 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
         product.EnterpriseId = memVal.OrgId;
         product.IsProduct = false;
         product.ProductOrder = 10;
+        product.ProductType13 = ReportKey.ProductKey_131;
 
         int i = productService.Insert(product);
         BindProductCapacity();
+    }
+
+    public void btnSaveProductToMay_Click(object sender, EventArgs e)
+    {
+        ProductService productService = new ProductService();
+        Product product = new Product();
+        product.ProductName = txtProductNameToMay.Text.Trim();
+        product.YearStart = DateTime.Now.Year;
+        product.YearEnd = DateTime.Now.Year;
+        product.EnterpriseId = memVal.OrgId;
+        product.IsProduct = true;
+        product.ProductOrder = 10;
+        product.ProductType13 = ReportKey.ProductKey_132;
+
+        int i = productService.Insert(product);
+        BindProductCapacityToMay();
     }
 
     //Last year
@@ -195,15 +213,16 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
             rp.SaveChanges();
         }
 
-        btnAddProductResult.Visible = true;
-        btnUpdateProductResult.Visible = false;
-        btnCancelProductResult.Visible = false;
+        btnCancelProductResult_Click(sender, e);
+        //btnAddProductResult.Visible = true;
+        //btnUpdateProductResult.Visible = false;
+        //btnCancelProductResult.Visible = false;
 
-        foreach (RepeaterItem ri in rptProductResult.Items)
-        {
-            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
-            txtMaxQuantity.ReadOnly = true;
-        }
+        //foreach (RepeaterItem ri in rptProductResult.Items)
+        //{
+        //    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+        //    txtMaxQuantity.ReadOnly = true;
+        //}
     }
 
     protected void btnCancelProductResult_Click(object sender, EventArgs e)
@@ -218,6 +237,124 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
             txtMaxQuantity.ReadOnly = true;
         }
     }
+    protected void btnAddProductToMayResult_Click(object sender, EventArgs e)
+    {
+        btnAddProductToMayResult.Visible = false;
+        btnUpdateProductToMayResult.Visible = true;
+        btnCancelProductToMayResult.Visible = true;
+
+        foreach (RepeaterItem ri in rptProductToMayResult.Items)
+        {
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+            txtDesignQuantity.ReadOnly = false;
+            TextBox txtCongSuat13 = ri.FindControl("txtCongSuat13") as TextBox;
+            txtCongSuat13.ReadOnly = false;
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = false;
+        }
+    }
+
+
+
+    protected void btnUpdateProductToMayResult_Click(object sender, EventArgs e)
+    {
+        ReportModels rp = new ReportModels();
+        if (rp.DE_ProductCapacity.Any(x => x.ReportId == ReportId && x.IsPlan == false)) //Update
+        {
+            var tempData = rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false).ToList();
+            foreach (RepeaterItem ri in rptProductToMayResult.Items)
+            {
+                HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
+                int ProductId = Convert.ToInt32(hdProductId.Value);
+                var pcInfo = tempData.FirstOrDefault(x => x.ProductId == ProductId);
+                if (pcInfo == null)
+                {
+                    //Khởi tạo    pcInfo 
+                    pcInfo = new DE_ProductCapacity();
+                    pcInfo.ProductId = ProductId;
+                    pcInfo.ReportId = ReportId;
+                    pcInfo.IsPlan = false;
+                    pcInfo.ReportYear = ReportYear;
+                    rp.DE_ProductCapacity.Add(pcInfo);
+                    TextBox txtCongSuat13 = ri.FindControl("txtCongSuat13") as TextBox;
+                    TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+                    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+
+                    if (txtCongSuat13.Text.Trim() != "")
+                        pcInfo.CongSuat13 = Convert.ToDecimal(txtCongSuat13.Text.Trim(), culture);
+
+                    if (txtDesignQuantity.Text.Trim() != "")
+                        pcInfo.DesignQuantity = Convert.ToDecimal(txtDesignQuantity.Text.Trim(), culture);
+
+                    if (txtMaxQuantity.Text.Trim() != "")
+                        pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
+                }
+                else
+                {
+                    TextBox txtCongSuat13 = ri.FindControl("txtCongSuat13") as TextBox;
+                    TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+                    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+
+                    if (txtCongSuat13.Text.Trim() != "")
+                        pcInfo.CongSuat13 = Convert.ToDecimal(txtCongSuat13.Text.Trim(), culture);
+
+                    if (txtDesignQuantity.Text.Trim() != "")
+                        pcInfo.DesignQuantity = Convert.ToDecimal(txtDesignQuantity.Text.Trim(), culture);
+
+                    if (txtMaxQuantity.Text.Trim() != "")
+                        pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
+                }
+            }
+
+            rp.SaveChanges();
+        }
+        else //Insert
+        {
+            foreach (RepeaterItem ri in rptProductResult.Items)
+            {
+                DE_ProductCapacity pcInfo = new DE_ProductCapacity();
+
+                HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
+                int ProductId = Convert.ToInt32(hdProductId.Value);
+                pcInfo.ProductId = ProductId;
+                pcInfo.ReportId = ReportId;
+                pcInfo.IsPlan = false;
+                pcInfo.ReportYear = ReportYear;
+                TextBox txtCongSuat13 = ri.FindControl("txtCongSuat13") as TextBox;
+                TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+                TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+
+                if (txtCongSuat13.Text.Trim() != "")
+                    pcInfo.CongSuat13 = Convert.ToDecimal(txtCongSuat13.Text.Trim(), culture);
+
+                if (txtDesignQuantity.Text.Trim() != "")
+                    pcInfo.DesignQuantity = Convert.ToDecimal(txtDesignQuantity.Text.Trim(), culture);
+
+                if (txtMaxQuantity.Text.Trim() != "")
+                    pcInfo.MaxQuantity = Convert.ToDecimal(txtMaxQuantity.Text.Trim(), culture);
+                rp.DE_ProductCapacity.Add(pcInfo);
+            }
+            rp.SaveChanges();
+        }
+        btnCancelProductToMayResult_Click(sender, e);
+    }
+    protected void btnCancelProductToMayResult_Click(object sender, EventArgs e)
+    {
+        btnAddProductToMayResult.Visible = true;
+        btnUpdateProductToMayResult.Visible = false;
+        btnCancelProductToMayResult.Visible = false;
+
+        foreach (RepeaterItem ri in rptProductToMayResult.Items)
+        {
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+            txtDesignQuantity.ReadOnly = true;
+            TextBox txtCongSuat13 = ri.FindControl("txtCongSuat13") as TextBox;
+            txtCongSuat13.ReadOnly = true;
+            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            txtMaxQuantity.ReadOnly = true;
+        }
+    }
+
 
     //Binding
     private void BindProductCapacity()
@@ -227,7 +364,8 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
                     join d in rp.DE_GroupFuel on a.GroupFuel equals d.Id
-                    where a.EnterpriseId == memVal.OrgId
+                    where a.EnterpriseId == memVal.OrgId && a.IsProduct == false
+                    && a.ProductType13 == ReportKey.ProductKey_131
                     orderby a.ProductName ascending
                     select new
                     {
@@ -240,6 +378,29 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
 
         rptProductResult.DataSource = data;
         rptProductResult.DataBind();
+    }
+
+    private void BindProductCapacityToMay()
+    {
+        ReportModels rp = new ReportModels();
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == memVal.OrgId
+                    && a.IsProduct == true
+                    && a.ProductType13 == ReportKey.ProductKey_132
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        CongSuat13 = (c == null ? string.Empty : c.CongSuat13.ToString()),
+                        DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        rptProductToMayResult.DataSource = data;
+        rptProductToMayResult.DataBind();
     }
     void BindData()
     {

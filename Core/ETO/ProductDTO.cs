@@ -29,6 +29,7 @@ namespace ePower.DE.Domain
             this.MeasurementId = productBO.MeasurementId;
             this.NhietTriThap = productBO.NhietTriThap;
             this.GroupFuel = productBO.GroupFuel;
+            this.ProductType13 = productBO.ProductType13;
         }
         #endregion
 
@@ -48,6 +49,7 @@ namespace ePower.DE.Domain
         private int _MeasurementId;
         private decimal _NhietTriThap;
         private int _GroupFuel;
+        private string _ProductType13;
 
         #endregion
 
@@ -128,6 +130,11 @@ namespace ePower.DE.Domain
         {
             get { return _GroupFuel; }
             set { _GroupFuel = value; }
+        }
+        public string ProductType13
+        {
+            get { return _ProductType13; }
+            set { _ProductType13 = value; }
         }
 
         #endregion Public Properties

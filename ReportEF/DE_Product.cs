@@ -35,5 +35,6 @@ namespace ReportEF
         public int? ProductGroup { get; set; }
         public int? GroupFuel { get; set; }
         public decimal? NhietTriThap { get; set; }
+        public string ProductType13 { get; set; }
     }
 }

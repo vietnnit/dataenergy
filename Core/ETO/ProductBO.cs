@@ -31,6 +31,7 @@ namespace ePower.DE.Domain
             this.MeasurementId = productDTO.MeasurementId;
             this.NhietTriThap = productDTO.NhietTriThap;
             this.GroupFuel = productDTO.GroupFuel;
+            this.ProductType13 = productDTO.ProductType13;
         }
         #endregion
 
@@ -49,6 +50,7 @@ namespace ePower.DE.Domain
         private int _MeasurementId;
         private decimal _NhietTriThap;
         private int _GroupFuel;
+        private string _ProductType13;
         #endregion
 
         #region Public Properties
@@ -144,6 +146,12 @@ namespace ePower.DE.Domain
         {
             get { return _GroupFuel; }
             set { _GroupFuel = value; SetDirty("GroupFuel"); }
+        } 
+        [FieldName("ProductType13", FieldAccessMode.ReadWrite, FieldType.String)]
+        public string ProductType13
+        {
+            get { return _ProductType13; }
+            set { _ProductType13 = value; SetDirty("ProductType13"); }
         }
         #endregion
 

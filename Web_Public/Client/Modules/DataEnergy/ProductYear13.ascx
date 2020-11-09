@@ -94,7 +94,7 @@
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
-                                     <td>
+                                    <td>
                                         <%# Eval("GroupFuelName")%>
                                     </td>
                                     <td class="text-right">
@@ -106,6 +106,53 @@
                                     </td>
                                     <td style="border-left: none;">
                                         <asp:RegularExpressionValidator ID="regtxtMaxQuantity" runat="server" ControlToValidate="txtMaxQuantity" Display="Static" ErrorMessage="error" ValidationExpression="^[1-9]\d*(\.\d{1,2})?$"></asp:RegularExpressionValidator>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="margin-bottom-10">
+                <div class="">
+                    <div class="control-label pt5" style="width: 100%">
+                        <div style="float: right">
+                            <asp:LinkButton ID="btnAddProductToMayResult" OnClick="btnAddProductToMayResult_Click" runat="server" Text="Hiệu chỉnh" ToolTip="Hiệu chỉnh"><i class="fa fa-edit"></i>&nbsp;Hiệu chỉnh</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnUpdateProductToMayResult" OnClick="btnUpdateProductToMayResult_Click" Visible="false" runat="server" Text="Cập nhật" ToolTip="Cập nhật"><i class="fa fa-check"></i>&nbsp;Cập nhật</asp:LinkButton>&nbsp;&nbsp;&nbsp;
+                            <asp:LinkButton ID="btnCancelProductToMayResult" OnClick="btnCancelProductToMayResult_Click" runat="server" Text="Hủy" ToolTip="Hủy" Visible="false"><i class="fa fa-close"></i>&nbsp;Hủy</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover mbn" width="100%">
+                    <thead>
+                        <tr class="primary fs12">
+                            <th style="width: 40%">Số tổ máy
+                                <br />
+                                <asp:LinkButton ID="LinkButton4" runat="server" CssClass="fs9 btn btn-primary"
+                                    Text="Thêm tổ máy" ToolTip="Thêm tổ máy" OnClientClick='javascript:AddProductToMay(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm tổ máy</asp:LinkButton>
+                            </th>
+                            <th style="width: 15%;">Công suất(MW)</th>
+                            <th style="width: 15%;">Hiệu suất thiết kế</th>
+                            <th style="width: 15%; border-right: none; border-left: none;">Hiệu suất vận hành trung bình</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptProductToMayResult" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%# Eval("ProductName")%>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtCongSuat13" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("CongSuat13")%>'></asp:TextBox>
+                                    </td>
+                                    <td class="text-right">
+                                        <asp:TextBox ID="txtDesignQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("DesignQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td class="text-left" style="border-right: none;">
+                                     <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
+                                        <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -792,7 +839,37 @@
     </div>
 </div>
 
-
+<div class="modal" tabindex="-1" role="dialog" id="divProductToMay" data-backdrop="static">
+    <div class="modal-dialog large">
+        <div class="modal-content">
+            <div class="modal-header panel-heading  ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">Cập nhật thông tin tổ máy</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Tổ máy<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" ID="txtProductNameToMay" CssClass="form-control input-sm" ValidationGroup="validProductToMay"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtProductNameToMay"
+                                CssClass="text-danger" ValidationGroup="validProductToMay" Text="Vui lòng nhập Thông tin hạ tầng"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:Button ID="btnSaveProductToMay" runat="server" Visible="true"
+                    Text="Lưu lại" OnClick="btnSaveProductToMay_Click" CssClass="btn btn-sm btn-primary mr10"></asp:Button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <br />
 <asp:HiddenField ID="hddGroup" runat="server" />
@@ -839,6 +916,10 @@
 
     function AddProduct() {
         $('#divProduct').modal('toggle');
+    }
+
+    function AddProductToMay() {
+        $('#divProductToMay').modal('toggle');
     }
 
     (function ($) {

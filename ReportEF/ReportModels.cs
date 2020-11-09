@@ -126,17 +126,6 @@ namespace ReportEF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DE_ProductCapacity18>()
-               .Property(e => e.DienTichPhucVu)
-               .HasPrecision(20, 2);
-
-            modelBuilder.Entity<DE_ProductCapacity18>()
-                .Property(e => e.TongCSSuDungDien)
-                .HasPrecision(20, 2);
-
-            modelBuilder.Entity<DE_ProductCapacity18>()
-                .Property(e => e.KhoiLuongNuocBomHangNgay)
-                .HasPrecision(20, 2);
 
             modelBuilder.Entity<DE_ProductCapacityFuel>()
               .Property(e => e.ConsumeQty)
@@ -233,6 +222,10 @@ namespace ReportEF
             modelBuilder.Entity<DE_Product>()
                 .Property(e => e.Quantity)
                 .HasPrecision(20, 2);
+
+            modelBuilder.Entity<DE_ProductCapacity>()
+            .Property(e => e.CongSuat13)
+            .HasPrecision(20, 2);
 
             modelBuilder.Entity<DE_ProductCapacity>()
                .Property(e => e.NangLucVanChuyenNguoi)

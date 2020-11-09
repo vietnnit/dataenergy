@@ -19,6 +19,7 @@ namespace ReportEF
         public int? ReportId { get; set; }
 
         public decimal? RateOfCost { get; set; }
+        public decimal? CongSuat13 { get; set; }
 
         public decimal? RateOfRevenue { get; set; }
 

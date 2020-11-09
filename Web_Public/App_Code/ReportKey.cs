@@ -19,4 +19,8 @@ public static class ReportKey
     public const string ProductKey_14 = "14";
     public const string ProductKey_15 = "15";
     public const string ProductKey_16 = "16";
+
+    public const string ProductKey_131 = "NHIENLIEU";
+    public const string ProductKey_132 = "TOMAY";
+    public const string ProductKey_133 = "SANPHAM";
 }
