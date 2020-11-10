@@ -113,7 +113,7 @@
                                     </td>
                                     <td class="text-right">
                                         <asp:HiddenField ID="hdTieuThuNLTheoSP" runat="server" Value='<%#Eval("Id")%>' />
-                                        <asp:Literal ID="ltTieuThuNLTheoSP" runat="server"></asp:Literal>
+                                        <asp:Literal ID="ltTieuThuNLTheoSP" Text=' <%# Eval("TieuThuNLTheoSP")%>' runat="server"></asp:Literal>
                                     </td>
                                     <td class="text-right">
                                         <%# Eval("DoanhThuTheoSP ")%>
@@ -965,12 +965,7 @@
                                 CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
                                 Display="Dynamic"></asp:RegularExpressionValidator>
                         </div>
-                        <div style="display: none;">
-                            <asp:TextBox runat="server" ID="txtTieuThuNLTheoSP" CssClass="form-control input-sm"></asp:TextBox>
-                            <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtTieuThuNLTheoSP"
-                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
-                                Display="Dynamic"></asp:RegularExpressionValidator>
-                        </div>
+
                         <div class="col-lg-2">
                             <asp:Literal ID="Literal1" runat="server"></asp:Literal>
                         </div>
@@ -1093,6 +1088,52 @@
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="mygiaiphap" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">
+                    <i class="fa fa-sliders"></i>Cập nhật giải pháp tiết kiệm năng lượng</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <asp:Literal ID="ltNoticeSolution" runat="server"></asp:Literal>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-lg-3">
+                            Tên giải pháp<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" class="form-control" ID="txtnamegp"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="txtnamegp"
+                                ValidationGroup="viewSolutionOne" Text="Vui lòng nhập tên giải pháp" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-lg-3">
+                            Mô tả:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" class="form-control" ID="txtmotagp" TextMode="MultiLine"
+                                Rows="3"></asp:TextBox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:Button ID="btnSaveSolution" runat="server" Visible="true" Text="Lưu lại"
+                    OnClick="btnSaveSolution_Click" CssClass="btn btn-sm btn-primary mr10"></asp:Button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <br />
 <asp:HiddenField ID="hddGroup" runat="server" />

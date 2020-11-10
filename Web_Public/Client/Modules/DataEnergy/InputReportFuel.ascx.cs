@@ -578,6 +578,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
         var reportTemp = (from a in rp.DE_Enterprise
                           join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                          where a.Id == memVal.OrgId
                           select b).FirstOrDefault();
         if (reportTemp == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
