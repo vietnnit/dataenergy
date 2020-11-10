@@ -1753,7 +1753,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
     }
 
-
     protected void rptNoFuelFuture_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
         if (e.Item.ItemIndex == 0) No_TOE_Future = 0;
@@ -1923,6 +1922,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                 case "BC1.6.DOCX":
                     tblProductResult = GetData16(ReportId, IsPlan, OrgId);
                     break;
+                case "BC1.5.DOCX":
+                    tblProductResult = GetData15(ReportId, IsPlan, OrgId);
+                    break;
+                case "BC1.4.DOCX":
+                    tblProductResult = GetData14(ReportId, IsPlan, OrgId);
+                    break;
             }
         }
         return tblProductResult;
@@ -1930,7 +1935,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     private DataTable GetData18(int ReportId, bool IsPlan)
     {
         ProductCapacityService productCapacityService = new ProductCapacityService();
-        return productCapacityService.GetDataCapacity(ReportId, IsPlan); 
+        return productCapacityService.GetDataCapacity(ReportId, IsPlan);
     }
     private DataTable GetData17(int ReportId, bool IsPlan, int OrgId)
     {
@@ -1944,7 +1949,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity on a.Id equals b.ProductId
                     join c in rp.DE_Fuel on a.FuelId equals c.Id
-                    where b.ReportId == ReportId && b.IsPlan == IsPlan
+                    where b.ReportId == ReportId && b.IsPlan == IsPlan && a.EnterpriseId == OrgId
                     orderby a.ProductOrder ascending
                     select new
                     {
@@ -1976,10 +1981,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         tblProductResult.Columns.Add("NangLucVanChuyenHang", typeof(string));
 
         var data = (from a in rp.DE_Product
-                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
                     join d in rp.DE_Fuel on a.FuelId equals d.Id
-                    where a.EnterpriseId == memVal.OrgId
+                    where a.EnterpriseId == OrgId
                     orderby a.ProductName ascending
                     select new
                     {
@@ -1998,6 +2003,108 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             row["FuelName"] = item.FuelName;
             row["NangLucVanChuyenHang"] = item.NangLucVanChuyenNguoi;
             row["NangLucVanChuyenHang"] = item.NangLucVanChuyenHang;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult;
+    }
+
+    private DataTable GetData15(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("Measurement", typeof(string));
+        tblProductResult.Columns.Add("DataReport1415", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+                        DataReport1415 = c.DataReport1415,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["Measurement"] = item.Measurement;
+            row["DataReport1415"] = item.DataReport1415;
+            row["MaxQuantity"] = item.MaxQuantity;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult;
+    }
+
+    private DataTable GetData14(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("Measurement", typeof(string));
+        tblProductResult.Columns.Add("DataReport1415", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+                        DataReport1415 = c.DataReport1415,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["Measurement"] = item.Measurement;
+            row["DataReport1415"] = item.DataReport1415;
+            row["MaxQuantity"] = item.MaxQuantity;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult;
+    }
+
+    private DataTable GetData12(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("Measurement", typeof(string));
+        tblProductResult.Columns.Add("DataReport1415", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+                        DataReport1415 = c.DataReport1415,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["Measurement"] = item.Measurement;
+            row["DataReport1415"] = item.DataReport1415;
+            row["MaxQuantity"] = item.MaxQuantity;
             tblProductResult.Rows.Add(row);
         }
         return tblProductResult;
