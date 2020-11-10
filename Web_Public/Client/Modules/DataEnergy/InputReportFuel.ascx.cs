@@ -1903,9 +1903,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     private DataTable GetDataTbl1(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
-        ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
-
         var reportTemp = (from a in rp.DE_Enterprise
                           join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
                           select b).FirstOrDefault();
@@ -1917,7 +1915,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             switch (reportTemp.TemplateBC.ToUpper())
             {
                 case "BC1.8.DOCX":
-                    tblProductResult = productCapacityService.GetDataCapacity(ReportId, IsPlan);
+                    tblProductResult = GetData18(ReportId, IsPlan);
                     break;
                 case "BC1.7.DOCX":
                     tblProductResult = GetData17(ReportId, IsPlan, OrgId);
@@ -1929,7 +1927,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
         return tblProductResult;
     }
-
+    private DataTable GetData18(int ReportId, bool IsPlan)
+    {
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        return productCapacityService.GetDataCapacity(ReportId, IsPlan); 
+    }
     private DataTable GetData17(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
@@ -2000,6 +2002,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
         return tblProductResult;
     }
+
 }
 
 
