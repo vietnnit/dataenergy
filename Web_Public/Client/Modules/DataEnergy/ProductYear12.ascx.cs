@@ -87,6 +87,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
             BindPlanTKNL();
             BindUsingEnerySystem();
             BindProductCapacity();
+            BindProductCapacityPlan();
         }
     }
 
@@ -97,16 +98,30 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
 
     protected void rptProductResult_ItemDataBound(object sender, RepeaterItemEventArgs e)
     {
-        //if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //{
-        //    //form-control input-sm onlyNumberCss
-        //    TextBox txtMaxQuantity = (TextBox)e.Item.FindControl("txtMaxQuantity") as TextBox;
-        //    HiddenField hdProductMeasurement = (HiddenField)e.Item.FindControl("hdProductMeasurement");
-        //    if (hdProductMeasurement.Value != "")
-        //        txtMaxQuantity.CssClass = "form-control input-sm onlyNumberCss";
-        //    else
-        //        txtMaxQuantity.CssClass = "form-control input-sm";
-        //}
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            Literal ltTieuThuNLTheoSP = (Literal)e.Item.FindControl("ltTieuThuNLTheoSP");
+            HiddenField hdTieuThuNLTheoSP = (HiddenField)e.Item.FindControl("hdTieuThuNLTheoSP");
+            int _ProductCapacityId = Convert.ToInt32(hdTieuThuNLTheoSP.Value);
+            ReportModels rp = new ReportModels();
+            var data = (from a in rp.DE_ProductCapacityFuel
+                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                        join c in rp.DE_Fuel on a.FuelId equals c.Id
+                        where a.ProductCapacityId == _ProductCapacityId
+                        select new
+                        {
+                            c.FuelName,
+                            a.ConsumeQty,
+                            b.MeasurementName
+                        }).ToList();
+
+            string tmp = string.Empty;
+            foreach (var item in data)
+            {
+                tmp += string.Format("{0}: {1}({2})<br/>", item.FuelName, item.ConsumeQty, item.MeasurementName);
+            }
+            ltTieuThuNLTheoSP.Text = tmp;
+        }
     }
 
     //Binding
@@ -148,6 +163,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
         if (data != null)
         {
             ltReportYear.Text = (data.Year - 1).ToString();
+            ltReportNext.Text = (data.Year).ToString();
             ltSolutionResult.Text = (data.Year - 1).ToString();
             ltSolutionNextYear.Text = data.Year.ToString();
             ltDuKienMucTieuThuNangLuong.Text = "2. Dự kiến mức tiêu thụ năng lượng năm " + (data.Year).ToString();
@@ -564,7 +580,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
         ddlFuelType2.DataTextField = "FuelName";
         ddlFuelType2.DataBind();
         ddlFuelType2.Items.Insert(0, new ListItem("---Chọn loại nhiên liệu---", ""));
-               
+
 
         ddlProductFuel.DataSource = listSearch;
         ddlProductFuel.DataValueField = "Id";
@@ -671,7 +687,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
             ScriptManager.RegisterStartupScript(this, GetType(), "showgpkhd", "ShowDialogSolutionPlanOne(" + hddkhtknl.Value + ");", true);
         }
     }
-    
+
     public void btnSaveSolutionResult_Click(object sender, EventArgs e)
     {
         PlanTKNLService planser = new PlanTKNLService();
@@ -1042,6 +1058,15 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
                     Load_ProductCapacity(oldData.Id);
                 }
             }
+            else
+            {
+                txtQtyByDesign.Text = "";
+                ltMeasurement.Text = "";
+                ltMearsurement2.Text = "";
+                txtTieuThuTheoSP.Text = "";
+                txtMaxQty.Text = "";
+                txtDoanhThuTheoSP.Text = "";
+            }
         }
         else
         {
@@ -1050,6 +1075,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
             ltMearsurement2.Text = "";
             txtTieuThuTheoSP.Text = "";
             txtMaxQty.Text = "";
+            txtDoanhThuTheoSP.Text = "";
         }
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQty(0);", true);
     }
@@ -1094,10 +1120,21 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
         int _selectedFuel = Convert.ToInt32(ddlLoaiNangLuong.SelectedValue);
         var data = (from a in rp.DE_Measurement join b in rp.DE_MeasurementFuel on a.Id equals b.MeasurementId where b.FuelId == _selectedFuel select a).ToList();
         Binding_ddlLoaiNangLuong_DVT(data);
+        int _pId = 0;
 
-        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
+
+        if (ddlProduct.SelectedIndex > 0)
+            _pId = Convert.ToInt32(ddlProduct.SelectedValue);
+
+        var pcc = rp.DE_ProductCapacity.FirstOrDefault(x => x.ReportId == ReportId && x.IsPlan == false && x.ProductId == _pId);
+
+
+        // if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0) //load dữ liệu đã có
+        if (pcc != null)
         {
-            int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
+            //int _ProductCapacityId = Convert.ToInt32(hdnId.Value);
+            int _ProductCapacityId = pcc.Id;
+
             var oldData = rp.DE_ProductCapacityFuel.FirstOrDefault(o => o.ProductCapacityId == _ProductCapacityId && o.FuelId == _selectedFuel);
             if (oldData != null)
             {
@@ -1111,7 +1148,10 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
         }
         else // dữ liệu mới
         {
-
+            txtQtyByDesign.Text = string.Empty;
+            txtMaxQty.Text = string.Empty;
+            txtTieuThuTheoSP.Text = string.Empty;
+            txtDoanhThuTheoSP.Text = string.Empty;
         }
     }
 
@@ -1132,7 +1172,7 @@ public partial class Client_Modules_DataEnergy_ProductYear12 : System.Web.UI.Use
         }
     }
 
-    
+
     protected void rptProductResult_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         if (e.CommandName.Equals("delete"))

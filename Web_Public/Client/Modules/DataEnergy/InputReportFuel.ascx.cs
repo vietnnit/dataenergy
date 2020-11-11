@@ -382,10 +382,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                         ddlYear.SelectedValue = report.Year.ToString();
                     //if (report.OwnerId != null)
                     //{
-                        if (report.OwnerId == 0)
-                            ltOwner.Text = "Thành phần kinh tế khác";
-                        else
-                            ltOwner.Text = "Doanh nghiệp nhà nước";
+                    if (report.OwnerId == 0)
+                        ltOwner.Text = "Thành phần kinh tế khác";
+                    else
+                        ltOwner.Text = "Doanh nghiệp nhà nước";
                     //}
                     ReportModels reportModels = new ReportModels();
                     var deEnterprise = reportModels.DE_Enterprise.FirstOrDefault(o => o.Id == report.EnterpriseId);
@@ -639,8 +639,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         {
             int iCurrentYear = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
             string NextYear = dtinfo.Rows[0]["Year"].ToString();
+            //ex.WriteToMergeField("BC_NextYear1", NextYear);
             ex.WriteToMergeField("BC_NextYear", NextYear);
-            ex.WriteToMergeField("BC_NextYear1", NextYear);
+
             ex.WriteToMergeField("BC_NextYear2", NextYear);
             ex.WriteToMergeField("BC_NextYear3", NextYear);
             ex.WriteToMergeField("BC_Year1", NextYear);
@@ -648,6 +649,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
             ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
         }
+
         if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
         {
             ex.WriteToMergeField("BC_ChiuTrachNhiem", dtinfo.Rows[0]["Responsible"].ToString());
@@ -733,14 +735,18 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         else
             ex.WriteToMergeField("BC_DienThoaiP", "");
 
-        if (dtinfo.Rows[0]["FaxParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_FaxP", "");
+
+
         if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
             ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
         else
             ex.WriteToMergeField("BC_EmailP", "");
+
+        if (dtinfo.Rows[0]["FaxParent"] != DBNull.Value)
+            ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
+        else
+            ex.WriteToMergeField("BC_FaxP", "");
+
 
         if (or.ActiveYear > 0)
             ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
@@ -1906,6 +1912,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         DataTable tblProductResult = new DataTable();
         var reportTemp = (from a in rp.DE_Enterprise
                           join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                          where a.Id == memVal.OrgId
                           select b).FirstOrDefault();
         if (reportTemp == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
@@ -1928,6 +1935,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                     break;
                 case "BC1.4.DOCX":
                     tblProductResult = GetData14(ReportId, IsPlan, OrgId);
+                    break;
+                case "BC1.2.DOCX":
+                    tblProductResult = GetData12(ReportId, IsPlan, OrgId);
                     break;
             }
         }
@@ -2080,33 +2090,63 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     private DataTable GetData12(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
+        //DataTable tblProductResult = new DataTable();
+        //tblProductResult.Columns.Add("ProductName", typeof(string));
+        //tblProductResult.Columns.Add("Measurement", typeof(string));
+        //tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
+        //tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+
+        //var data = (from a in rp.DE_Product
+        //            join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
+        //            from c in ab.DefaultIfEmpty()
+        //            where a.EnterpriseId == OrgId
+        //            orderby a.ProductName ascending
+        //            select new
+        //            {
+        //                ProductName = a.ProductName,
+        //                Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+        //                TTNLTHEOSP = c.DataReport1415,
+        //                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+        //            }).ToList();
+
+        //foreach (var item in data)
+        //{
+        //    var row = tblProductResult.NewRow();
+        //    row["ProductName"] = item.ProductName;
+        //    row["Measurement"] = item.Measurement;
+        //    row["TTNLTHEOSP"] = item.TTNLTHEOSP;
+        //    row["MaxQuantity"] = item.MaxQuantity;
+        //    tblProductResult.Rows.Add(row);
+        //}
+        //return tblProductResult;
+
+        ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
-        tblProductResult.Columns.Add("ProductName", typeof(string));
-        tblProductResult.Columns.Add("Measurement", typeof(string));
-        tblProductResult.Columns.Add("DataReport1415", typeof(string));
-        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+        tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        //Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
+        tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
 
-        var data = (from a in rp.DE_Product
-                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
-                    from c in ab.DefaultIfEmpty()
-                    where a.EnterpriseId == OrgId
-                    orderby a.ProductName ascending
-                    select new
-                    {
-                        ProductName = a.ProductName,
-                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
-                        DataReport1415 = c.DataReport1415,
-                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
-                    }).ToList();
-
-        foreach (var item in data)
+        foreach (DataRow r in tblProductResult.Rows)
         {
-            var row = tblProductResult.NewRow();
-            row["ProductName"] = item.ProductName;
-            row["Measurement"] = item.Measurement;
-            row["DataReport1415"] = item.DataReport1415;
-            row["MaxQuantity"] = item.MaxQuantity;
-            tblProductResult.Rows.Add(row);
+            int _ProductCapacityId = (int)r["Id"];
+            var data = (from a in rp.DE_ProductCapacityFuel
+                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
+                        join c in rp.DE_Fuel on a.FuelId equals c.Id
+                        where a.ProductCapacityId == _ProductCapacityId
+                        select new
+                        {
+                            c.FuelName,
+                            a.ConsumeQty,
+                            b.MeasurementName
+                        }).ToList();
+
+            string tmp = string.Empty;
+            foreach (var item in data)
+            {
+                tmp += string.Format("{0}: {1}({2})\n", item.FuelName, item.ConsumeQty, item.MeasurementName);
+            }
+
+            r["TTNLTHEOSP"] = tmp;
         }
         return tblProductResult;
     }

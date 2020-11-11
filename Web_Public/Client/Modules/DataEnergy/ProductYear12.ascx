@@ -112,8 +112,10 @@
                                         <%# Eval("MaxQuantity")%>
                                     </td>
                                     <td class="text-right">
+                                        <%--<asp:HiddenField ID="hdTieuThuNLTheoSP" runat="server" Value='<%#Eval("Id")%>' />
+                                        <asp:Literal ID="ltTieuThuNLTheoSP" Text=' <%# Eval("TieuThuNLTheoSP")%>' runat="server"></asp:Literal>--%>
                                         <asp:HiddenField ID="hdTieuThuNLTheoSP" runat="server" Value='<%#Eval("Id")%>' />
-                                        <asp:Literal ID="ltTieuThuNLTheoSP" Text=' <%# Eval("TieuThuNLTheoSP")%>' runat="server"></asp:Literal>
+                                        <asp:Literal ID="ltTieuThuNLTheoSP" runat="server"></asp:Literal>
                                     </td>
                                     <td class="text-right">
                                         <%# Eval("DoanhThuTheoSP ")%>
