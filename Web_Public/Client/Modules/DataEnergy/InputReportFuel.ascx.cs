@@ -637,13 +637,25 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_TenCoSo", "");
         if (dtinfo.Rows[0]["Year"] != DBNull.Value)
         {
+            string ReportTemplate = GetReportTemp(ReportId, false, memVal.OrgId);
+
             int iCurrentYear = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
             string NextYear = dtinfo.Rows[0]["Year"].ToString();
-            //ex.WriteToMergeField("BC_NextYear1", NextYear);
             ex.WriteToMergeField("BC_NextYear", NextYear);
 
+            if (ReportTemplate == ReportKeyTemplate.ANNUAL17 || ReportTemplate == ReportKeyTemplate.ANNUAL18)
+            {
+                ex.WriteToMergeField("BC_NextYear1", "");
+            }
+            if (ReportTemplate == ReportKeyTemplate.ANNUAL18)
+            {
+                ex.WriteToMergeField("BC_NextYear1", "");
+                ex.WriteToMergeField("BC_NextYear3", "");
+            }
+
+
             ex.WriteToMergeField("BC_NextYear2", NextYear);
-            ex.WriteToMergeField("BC_NextYear3", NextYear);
+            //ex.WriteToMergeField("BC_NextYear3", NextYear);
             ex.WriteToMergeField("BC_Year1", NextYear);
             ex.WriteToMergeField("BC_Year_1", (iCurrentYear - 1).ToString());
             ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
@@ -1906,7 +1918,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
     }
 
-    private DataTable GetDataTbl1(int ReportId, bool IsPlan, int OrgId)
+    private string GetReportTemp(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
         DataTable tblProductResult = new DataTable();
@@ -1916,30 +1928,34 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                           select b).FirstOrDefault();
         if (reportTemp == null)
             throw new Exception("Doanh nghiệp chưa cập nhật lĩnh vực hoạt động");
+        string tmp = reportTemp.TemplateBC.ToUpper();
+        return tmp;
+    }
 
-        if (reportTemp != null)
+    private DataTable GetDataTbl1(int ReportId, bool IsPlan, int OrgId)
+    {
+        DataTable tblProductResult = new DataTable();
+        var Template = GetReportTemp(ReportId, IsPlan, OrgId);
+        switch (Template)
         {
-            switch (reportTemp.TemplateBC.ToUpper())
-            {
-                case "BC1.8.DOCX":
-                    tblProductResult = GetData18(ReportId, IsPlan);
-                    break;
-                case "BC1.7.DOCX":
-                    tblProductResult = GetData17(ReportId, IsPlan, OrgId);
-                    break;
-                case "BC1.6.DOCX":
-                    tblProductResult = GetData16(ReportId, IsPlan, OrgId);
-                    break;
-                case "BC1.5.DOCX":
-                    tblProductResult = GetData15(ReportId, IsPlan, OrgId);
-                    break;
-                case "BC1.4.DOCX":
-                    tblProductResult = GetData14(ReportId, IsPlan, OrgId);
-                    break;
-                case "BC1.2.DOCX":
-                    tblProductResult = GetData12(ReportId, IsPlan, OrgId);
-                    break;
-            }
+            case "BC1.8.DOCX":
+                tblProductResult = GetData18(ReportId, IsPlan);
+                break;
+            case "BC1.7.DOCX":
+                tblProductResult = GetData17(ReportId, IsPlan, OrgId);
+                break;
+            case "BC1.6.DOCX":
+                tblProductResult = GetData16(ReportId, IsPlan, OrgId);
+                break;
+            case "BC1.5.DOCX":
+                tblProductResult = GetData15(ReportId, IsPlan, OrgId);
+                break;
+            case "BC1.4.DOCX":
+                tblProductResult = GetData14(ReportId, IsPlan, OrgId);
+                break;
+            case "BC1.2.DOCX":
+                tblProductResult = GetData12(ReportId, IsPlan, OrgId);
+                break;
         }
         return tblProductResult;
     }
@@ -2090,36 +2106,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     private DataTable GetData12(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
-        //DataTable tblProductResult = new DataTable();
-        //tblProductResult.Columns.Add("ProductName", typeof(string));
-        //tblProductResult.Columns.Add("Measurement", typeof(string));
-        //tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
-        //tblProductResult.Columns.Add("MaxQuantity", typeof(string));
-
-        //var data = (from a in rp.DE_Product
-        //            join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
-        //            from c in ab.DefaultIfEmpty()
-        //            where a.EnterpriseId == OrgId
-        //            orderby a.ProductName ascending
-        //            select new
-        //            {
-        //                ProductName = a.ProductName,
-        //                Measurement = a.Measurement != null ? a.Measurement : string.Empty,
-        //                TTNLTHEOSP = c.DataReport1415,
-        //                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
-        //            }).ToList();
-
-        //foreach (var item in data)
-        //{
-        //    var row = tblProductResult.NewRow();
-        //    row["ProductName"] = item.ProductName;
-        //    row["Measurement"] = item.Measurement;
-        //    row["TTNLTHEOSP"] = item.TTNLTHEOSP;
-        //    row["MaxQuantity"] = item.MaxQuantity;
-        //    tblProductResult.Rows.Add(row);
-        //}
-        //return tblProductResult;
-
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
         tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
