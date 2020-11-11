@@ -380,13 +380,13 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
                     if (report.Year > 0)
                         ddlYear.SelectedValue = report.Year.ToString();
-                    if (report.OwnerId != null)
-                    {
+                    //if (report.OwnerId != null)
+                    //{
                         if (report.OwnerId == 0)
                             ltOwner.Text = "Thành phần kinh tế khác";
                         else
                             ltOwner.Text = "Doanh nghiệp nhà nước";
-                    }
+                    //}
                     ReportModels reportModels = new ReportModels();
                     var deEnterprise = reportModels.DE_Enterprise.FirstOrDefault(o => o.Id == report.EnterpriseId);
                     int _MoHinhQLNL = deEnterprise.MoHinhQLNL.Value;

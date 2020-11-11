@@ -60,8 +60,8 @@ namespace ePower.DE.Dao
             try
             {
                 string sql = "SELECT a.* FROM  DE_Member a inner join DE_Enterprise b on a.EnterpriseId = b.Id WHERE ";
-                sql += "(b.TaxCode=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0 and isnull(b.TaxCode,'') <> '') or ";
-                sql += "(a.AccountName=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0 and isnull(b.TaxCode,'') = '')";
+                sql += "(b.TaxCode=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0) or ";
+                sql += "(a.AccountName=@AccountName AND a.Password=@Password AND a.IsActive=1 AND a.IsDelete=0)";
                 return new Db().GetList<Member>(sql, parameter, System.Data.CommandType.Text);
                 //return new Db().GetList<Member>("SELECT * FROM  DE_Member WHERE AccountName=@AccountName AND Password=@Password AND IsActive=1 AND IsDelete=0", parameter, System.Data.CommandType.Text);
             }
@@ -115,7 +115,8 @@ namespace ePower.DE.Dao
             parameter[2] = new DbParameter("@AccountName", accountname);
             try
             {
-                return new Db().Update("UPDATE DE_Member SET Password = @NewPass WHERE AccountName=@AccountName AND Password=@OldPass", parameter, System.Data.CommandType.Text);
+                //return new Db().Update("UPDATE DE_Member SET Password = @NewPass WHERE AccountName=@AccountName AND Password=@OldPass", parameter, System.Data.CommandType.Text);
+                return new Db().Update("Member_PasswordChanged", parameter, System.Data.CommandType.StoredProcedure);
             }
             catch (Exception ex)
             {
