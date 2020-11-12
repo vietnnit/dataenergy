@@ -76,13 +76,14 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 50%">Loại phương tiện
+                            <th style="width: 30%">Loại phương tiện
                                 <br />
                                 <asp:LinkButton ID="btnAddProduct" runat="server" CssClass="fs9 btn btn-primary"
                                     Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
                             </th>
-
-                            <th style="width: 20%;">Số lượng(chiếc)
+                            <th style="width: 20%;">Số lượng dự kiến(chiếc)
+                            </th>
+                            <th style="width: 20%;">Số lượng thực tế(chiếc)
                             </th>
                             <th style="width: 20%; border-right: none;">Loại nhiên liệu/năng lượng
                             </th>
@@ -95,6 +96,9 @@
                                 <tr>
                                     <td>
                                         <%# Eval("ProductName")%>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtDesignQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("DesignQuantity")%>'></asp:TextBox>
                                     </td>
                                     <td class="text-right" style="border-right: none;">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
@@ -143,7 +147,6 @@
                                     <td>
                                         <%# Eval("ProductName")%>
                                     </td>
-
                                     <td class="text-right" style="border-right: none;">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>

@@ -453,14 +453,16 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
             ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
             //ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
         }
-        if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayNhan", "");
-        if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayXacNhan", "");
+        //if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
+        //    ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
+        //else
+        //    ex.WriteToMergeField("BC_NgayNhan", "");
+
+        //if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
+        //    ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
+        //else
+        //    ex.WriteToMergeField("BC_NgayXacNhan", "");
+
         if (dtinfo.Rows[0]["SubAreaName"] != DBNull.Value)
             ex.WriteToMergeField("BC_PhanNganh", dtinfo.Rows[0]["SubAreaName"].ToString());
         else
@@ -536,10 +538,10 @@ public partial class Client_Modules_DataEnergy_sdnl_form_nhap_bc : System.Web.UI
         else
             ex.WriteToMergeField("BC_EmailP", "");
 
-        if (or.ActiveYear > 0)
-            ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
-        else
-            ex.WriteToMergeField("ActiveYear", "");
+        //if (or.ActiveYear > 0)
+        //    ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
+        //else
+        //    ex.WriteToMergeField("ActiveYear", "");
 
         DataTable dthientai = new DataTable();
         DataSet dshientai = new DataSet("tbl1");

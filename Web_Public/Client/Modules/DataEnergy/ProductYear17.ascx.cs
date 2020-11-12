@@ -124,6 +124,8 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = false;
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+            txtDesignQuantity.ReadOnly = false;
         }
     }
     protected void btnUpdateProductResult_Click(object sender, EventArgs e)
@@ -135,14 +137,21 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
             foreach (RepeaterItem ri in rptProductResult.Items)
             {
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 var pcInfo = tempData.FirstOrDefault(x => x.ProductId == ProductId);
                 decimal tmpDecimal = 0;
+
                 if (decimal.TryParse(txtMaxQuantity.Text, style, culture, out tmpDecimal))
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
+
+                if (decimal.TryParse(txtDesignQuantity.Text, style, culture, out tmpDecimal))
+                    pcInfo.DesignQuantity = tmpDecimal;
+                else
+                    pcInfo.DesignQuantity = 0;
             }
 
             rp.SaveChanges();
@@ -153,6 +162,7 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
             {
                 DE_ProductCapacity pcInfo = new DE_ProductCapacity();
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 pcInfo.ProductId = ProductId;
@@ -165,20 +175,18 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
+
+                if (decimal.TryParse(txtDesignQuantity.Text, style, culture, out tmpDecimal))
+                    pcInfo.DesignQuantity = tmpDecimal;
+                else
+                    pcInfo.DesignQuantity = 0;
+
                 rp.DE_ProductCapacity.Add(pcInfo);
             }
             rp.SaveChanges();
         }
 
-        btnAddProductResult.Visible = true;
-        btnUpdateProductResult.Visible = false;
-        btnCancelProductResult.Visible = false;
-
-        foreach (RepeaterItem ri in rptProductResult.Items)
-        {
-            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
-            txtMaxQuantity.ReadOnly = true;
-        }
+        btnCancelProductResult_Click(sender, e);
     }
     protected void btnCancelProductResult_Click(object sender, EventArgs e)
     {
@@ -189,6 +197,8 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = true;
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
+            txtDesignQuantity.ReadOnly = true;
         }
     }
 
@@ -289,6 +299,7 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                         ProductName = a.ProductName,
                         Measurement = a.Measurement,
                         FuelName = d.FuelName,
+                        DesignQuantity= (c == null ? string.Empty : c.DesignQuantity.ToString()),
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 

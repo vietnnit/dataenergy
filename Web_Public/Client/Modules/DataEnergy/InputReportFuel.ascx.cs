@@ -645,17 +645,23 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
             if (ReportTemplate == ReportKeyTemplate.ANNUAL17 || ReportTemplate == ReportKeyTemplate.ANNUAL18)
             {
-                ex.WriteToMergeField("BC_NextYear1", "");
+                ex.WriteToMergeField("BC_NextYear1", (iCurrentYear - 1).ToString());
+                ex.WriteToMergeField("BC_NextYear3", "");
             }
+
             if (ReportTemplate == ReportKeyTemplate.ANNUAL18)
             {
                 ex.WriteToMergeField("BC_NextYear1", "");
                 ex.WriteToMergeField("BC_NextYear3", "");
             }
 
+            if (ReportTemplate == ReportKeyTemplate.ANNUAL12)
+            {
+                ex.WriteToMergeField("BC_NextYear3", "");
+            }
+
 
             ex.WriteToMergeField("BC_NextYear2", NextYear);
-            //ex.WriteToMergeField("BC_NextYear3", NextYear);
             ex.WriteToMergeField("BC_Year1", NextYear);
             ex.WriteToMergeField("BC_Year_1", (iCurrentYear - 1).ToString());
             ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
@@ -804,8 +810,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         if (usingElectrict != null)
         {
             //Su dung dien 1
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("QuantityResult", usingElectrict.Capacity.ToString());
+            if (usingElectrict.Quantity > 0)
+                ex.WriteToMergeField("QuantityResult", usingElectrict.Quantity.ToString());
             else
                 ex.WriteToMergeField("QuantityResult", "");
 
@@ -1971,6 +1977,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         tblProductResult.Columns.Add("ProductName", typeof(string));
         tblProductResult.Columns.Add("Measurement", typeof(string));
         tblProductResult.Columns.Add("FuelName", typeof(string));
+        tblProductResult.Columns.Add("DesignQuantity", typeof(decimal));
         tblProductResult.Columns.Add("MaxQuantity", typeof(decimal));
 
         var data = (from a in rp.DE_Product
@@ -1983,6 +1990,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                         ProductName = a.ProductName,
                         MaxQuantity = b.MaxQuantity,
                         Measurement = a.Measurement,
+                        DesignQuantity = b.DesignQuantity == null ? 0 : b.DesignQuantity,
                         FuelName = c.FuelName
                     }).ToList();
 
@@ -1992,6 +2000,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             row["ProductName"] = item.ProductName;
             row["Measurement"] = item.Measurement;
             row["MaxQuantity"] = item.MaxQuantity;
+            row["DesignQuantity"] = item.DesignQuantity;
             row["FuelName"] = item.FuelName;
             tblProductResult.Rows.Add(row);
         }
@@ -2123,7 +2132,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                         {
                             c.FuelName,
                             a.ConsumeQty,
-                            b.MeasurementName
+                            b.MeasurementName,
                         }).ToList();
 
             string tmp = string.Empty;
@@ -2134,6 +2143,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
             r["TTNLTHEOSP"] = tmp;
         }
+        //tblProductResult.Columns["MucTieuGP"].ColumnName = "GhiChu";
+        //tblProductResult.AcceptChanges();
         return tblProductResult;
     }
 
