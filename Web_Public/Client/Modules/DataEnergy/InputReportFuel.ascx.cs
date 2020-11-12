@@ -657,7 +657,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
             if (ReportTemplate == ReportKeyTemplate.ANNUAL12)
             {
-                ex.WriteToMergeField("BC_NextYear3", "");
+                ex.WriteToMergeField("BC_NextYear3", iCurrentYear.ToString());
             }
 
 
@@ -2117,7 +2117,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         ReportModels rp = new ReportModels();
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
-        tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        tblProductResult = productCapacityService.GetDataCapacity(ReportId, IsPlan);
         //Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
         tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
 
