@@ -88,6 +88,7 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
             BindUsingEnerySystem();
             BindProductCapacity();
             BindProductCapacityToMay();
+            BindProductCapacityPlan();
         }
     }
 
@@ -214,15 +215,6 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
         }
 
         btnCancelProductResult_Click(sender, e);
-        //btnAddProductResult.Visible = true;
-        //btnUpdateProductResult.Visible = false;
-        //btnCancelProductResult.Visible = false;
-
-        //foreach (RepeaterItem ri in rptProductResult.Items)
-        //{
-        //    TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
-        //    txtMaxQuantity.ReadOnly = true;
-        //}
     }
 
     protected void btnCancelProductResult_Click(object sender, EventArgs e)
@@ -1064,4 +1056,76 @@ public partial class Client_Modules_DataEnergy_ProductYear13 : System.Web.UI.Use
 
     }
     #endregion
+
+
+    protected void rptProductPlan_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            //DataRowView item = (DataRowView)e.Item.DataItem;
+            //if (item["NoFuel_TOE"] != DBNull.Value)
+            //{
+            //    No_TOE_Future = No_TOE_Future + Convert.ToDecimal(item["NoFuel_TOE"]);
+            //}
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+            btnDelete.Visible = AllowEdit;
+            btnEdit.Visible = AllowEdit;
+
+            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",false); return false;");
+
+        }
+    }
+
+    protected void rptProductPlan_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName.Equals("delete"))
+        {
+            ProductCapacityService rptbso = new ProductCapacityService();
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            long i = rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+            if (i > 0)
+                BindProductCapacityPlan();
+            else
+                ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "alert('Xóa không thành không. Vui lòng thử lại');", true);
+        }
+        else if (e.CommandName.Equals("edit"))
+        {
+            LinkButton btnEdit = (LinkButton)e.CommandSource;
+            btnEdit.Visible = AllowEdit;
+            ProductCapacity productCapacity = new ProductCapacity();
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            int ProductCapacityId = int.Parse(((LinkButton)e.CommandSource).CommandArgument);
+            productCapacity = productCapacityService.FindByKey(ProductCapacityId);
+            if (productCapacity != null)
+            {
+                try
+                {
+                    //txtMaxQtyPlan.Text = productCapacity.MaxQuantity.ToString();
+                    //txtQtyByDesignPlan.Text = productCapacity.DesignQuantity.ToString();
+                    //txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
+                    //txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
+                    //ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();
+                    //txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
+                    //Product product = new Product();
+                    //ProductService productService = new ProductService();
+                    //product = productService.FindByKey(productCapacity.ProductId);
+                    //ltMeasurementPlan.Text = "(" + product.Measurement + ")";
+                }
+                catch { }
+            }
+            hdnId.Value = ProductCapacityId.ToString();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "AddProductQtyPlan(" + hdnId.Value + ");", true);
+        }
+    }
+
+    private void BindProductCapacityPlan()
+    {
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        DataTable tbl = new DataTable();
+        tbl = productCapacityService.GetDataCapacity(ReportId, true);
+        rptProductPlan.DataSource = tbl;
+        rptProductPlan.DataBind();
+    }
 }
