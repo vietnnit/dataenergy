@@ -956,7 +956,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
         //tblProductPlan
         DataTable tblProductPlan = new DataTable();
-        tblProductPlan = GetDataTbl1(ReportId, true, memVal.OrgId);
+        if (ReportTemplate == ReportKeyTemplate.ANNUAL13)
+            tblProductPlan = GetData133(ReportId, true, memVal.OrgId);
+        else
+            tblProductPlan = GetDataTbl1(ReportId, true, memVal.OrgId);
         dshientai.Merge(tblProductPlan);
         dshientai.Tables[2].TableName = "tbl3";
 
@@ -1934,6 +1937,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             case "BC1.4.DOCX":
                 tblProductResult = GetData14(ReportId, IsPlan, OrgId);
                 break;
+            case "BC1.3.DOCX":
+                tblProductResult = GetData131(ReportId, IsPlan, OrgId);
+                break;
             case "BC1.2.DOCX":
                 tblProductResult = GetData12(ReportId, IsPlan, OrgId);
                 break;
@@ -2260,6 +2266,41 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         return tblProductResult;
     }
 
+    private DataTable GetData133(int ReportId, bool IsPlan, int OrgId)
+    {
+        ReportModels rp = new ReportModels();
+        DataTable tblProductResult = new DataTable();
+        tblProductResult.Columns.Add("ProductName", typeof(string));
+        tblProductResult.Columns.Add("Measurement", typeof(string));
+        tblProductResult.Columns.Add("DesignQuantity", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == true) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_Measurement on a.MeasurementId equals d.Id
+                    where a.EnterpriseId == memVal.OrgId && a.IsProduct == true
+                    && a.ProductType13 == ReportKey.ProductKey_133
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductName = a.ProductName,
+                        MeasurementName = d.MeasurementName,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
+                        DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString())
+                    }).ToList();
+
+        foreach (var item in data)
+        {
+            var row = tblProductResult.NewRow();
+            row["ProductName"] = item.ProductName;
+            row["Measurement"] = item.MeasurementName;
+            row["DesignQuantity"] = item.DesignQuantity;
+            row["MaxQuantity"] = item.MaxQuantity;
+            tblProductResult.Rows.Add(row);
+        }
+        return tblProductResult;
+    }
 }
 
 
