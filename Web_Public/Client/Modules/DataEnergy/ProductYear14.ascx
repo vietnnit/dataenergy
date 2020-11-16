@@ -110,6 +110,63 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="margin-bottom-10">
+                <div class="">
+                    <div class="control-label pt5" style="width: 100%">
+                        <i>b. Kế hoạch sản xuất năm 
+                            <asp:Literal ID="ltReportNext" runat="server"></asp:Literal></i>
+                        <div style="float: right">
+                            <asp:LinkButton ID="btnAddProductNextResult" runat="server" Text="Thêm mới" ToolTip="Thêm sản phẩm"
+                                OnClientClick='javascript:AddProductQtyPlan(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm mới</asp:LinkButton>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover mbn" width="100%">
+                    <thead>
+                        <tr class="primary fs12">
+                            <th style="width: 15%">Tên sản phẩm<br />
+                                <asp:LinkButton ID="btnAddProductPlan" runat="server" CssClass="fs9 btn btn-primary"
+                                    Text="Thêm sản phẩm" ToolTip="Thêm sản phẩm" OnClientClick='javascript:AddProduct14(); return false;'><i class="fa fa-plus"></i>&nbsp;Thêm sản phẩm</asp:LinkButton>
+                            </th>
+                            <th style="width: 10%">Đơn vị đo</th>
+                            <th style="width: 15%">Theo thiết kế
+                            </th>
+                            <th style="width: 15%">Mức sản xuất dự kiến
+                            </th>
+                            <th style="width: 5%">Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptProductPlan" runat="server" OnItemCommand="rptProductPlan_ItemCommand"
+                            OnItemDataBound="rptProductPlan_ItemDataBound">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <%# Eval("ProductName")%>
+                                    </td>
+                                    <td class="text-right">
+                                        <%# Eval("Measurement")%>
+                                    </td>
+                                    <td class="text-right">
+                                        <%# Eval("DesignQuantity")%>
+                                    </td>
+                                    <td class="text-right">
+                                        <%# Eval("MaxQuantity")%>
+                                    </td>
+                                    <td>
+                                        <asp:LinkButton ID="btnDelete" runat="server" CommandArgument='<%#Eval("Id") %>'
+                                            CommandName="delete" CssClass="" ToolTip="Xóa" OnClientClick="javascript:return confirm('Bạn có muốn chắc chắn xóa không???');"><i class="fa fa-trash-o"></i></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEdit" runat="server" CssClass="" ToolTip="Sửa" CommandArgument='<%#Eval("Id") %>'
+                                            CommandName="edit"><i class="fa fa-edit"></i></asp:LinkButton>
+                                    </td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <%--2. Tiêu thụ năng lượng--%>
@@ -755,7 +812,7 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Thông tin hạ tầng<span class="append-icon right text-danger">*</span>:</label>
+                            Thông tin<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtProductName" CssClass="form-control input-sm" ValidationGroup="validProduct"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ControlToValidate="txtProductName"
@@ -782,7 +839,179 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="divProduct14" data-backdrop="static">
+    <div class="modal-dialog large">
+        <div class="modal-content">
+            <div class="modal-header panel-heading  ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">Cập nhật danh mục sản phẩm sản xuất</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Tên sản phẩm<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" ID="txtProductName14" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtProductName14"
+                                CssClass="text-danger" ValidationGroup="valProduct14" Text="Vui lòng nhập tên sản phẩm"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            Năng lực sản xuất theo thiết kế<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtDesignQty14" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RangeValidator ID="RangeValidator3" runat="server" ControlToValidate="txtDesignQty14"
+                                CssClass="text-danger" Text="Vui lòng nhập năng lực sản xuất là ký tự số" ValidationGroup="valProduct14"
+                                Type="Double" MinimumValue="0" MaximumValue="999999999999" Display="Dynamic"></asp:RangeValidator>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtDesignQty14"
+                                CssClass="text-danger" ValidationGroup="valProduct" Text="Vui lòng nhập năng lực sản xuất"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <label class="col-lg-3">
+                            Đơn vị tính<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtMeasurement14" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtMeasurement14"
+                                CssClass="text-danger" ValidationGroup="valProduct14" Text="Vui lòng nhập đơn vị tính tấn/năm;m/năm;..."
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Năm Bắt đầu SX<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtYearStart14" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RangeValidator ID="rvYearStart" runat="server" ControlToValidate="txtYearStart14"
+                                CssClass="text-danger" Text="Vui lòng nhập năm bắt đầu trong khoảng từ 0 đến 9999"
+                                ValidationGroup="valProduct14" Type="Double" MinimumValue="0" MaximumValue="9999"
+                                Display="Dynamic"></asp:RangeValidator>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtYearStart14"
+                                ValidationGroup="valProduct14" Text="Vui lòng nhập năm bắt đầu sản xuất" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                        <label class="col-lg-3">
+                            Kết thúc SX:</label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtYearEnd14" CssClass="form-control input-sm"></asp:TextBox>
+                            <asp:RangeValidator ID="rvYearEnd" runat="server" ControlToValidate="txtYearEnd14"
+                                CssClass="text-danger" Text="Vui lòng nhập năm kết thúc trong khoảng từ 0 đến 9999"
+                                ValidationGroup="valProduct14" Type="Double" MinimumValue="0" MaximumValue="9999"
+                                Display="Dynamic"></asp:RangeValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            Ghi chú:</label>
+                        <div class="col-lg-9">
+                            <asp:TextBox runat="server" ID="txtDescription14" CssClass="form-control input-sm"></asp:TextBox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:Button ID="btnSaveProduct14" runat="server" Visible="true" ValidationGroup="valProduct14"
+                    Text="Lưu lại" OnClick="btnSaveProduct14_Click" CssClass="btn btn-sm btn-primary mr10"
+                    AutoPostback="false" UseSubmitBehavior="false"></asp:Button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal" tabindex="-1" role="dialog" id="divProductPlan" data-backdrop="static">
+    <div class="modal-dialog large">
+        <div class="modal-content">
+            <div class="modal-header panel-heading  ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×</button>
+                <h3 class="modal-title">Kế hoạch sản xuất năm tiếp theo</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Tên sản phẩm<span class="append-icon right text-danger">*</span>:</label>
+                        <div class="col-lg-9">
+                            <asp:DropDownList runat="server" ID="ddlProductPlan" CssClass="form-control input-sm"
+                                AutoPostBack="true" OnSelectedIndexChanged="ddlProductPlan_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="ddlProductPlan" CssClass="text-danger"
+                                ValidationGroup="valProductYearPlan" Text="Vui lòng nhập tên sản phẩm" Display="Dynamic"></asp:RequiredFieldValidator>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">
+                            Năng lực SX theo thiết kế:</label>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_txtQtyByDesignPlan" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProductPlan" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtQtyByDesignPlan" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator20" runat="server" ControlToValidate="txtQtyByDesignPlan"
+                                CssClass="text-danger" ValidationGroup="valProductYear" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div class="col-lg-3">
+                            <asp:Literal ID="Literal3" runat="server"></asp:Literal>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            Dự kiến sản xuất<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:UpdatePanel ID="update_txtMaxQtyPlan" runat="server">
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="ddlProductPlan" EventName="SelectedIndexChanged" />
+                                </Triggers>
+                                <ContentTemplate>
+                                    <asp:TextBox runat="server" ID="txtMaxQtyPlan" CssClass="form-control input-sm"></asp:TextBox>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="txtMaxQtyPlan"
+                                CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Vui lòng nhập dự kiến sản xuất"
+                                Display="Dynamic"></asp:RequiredFieldValidator>
+                            <asp:RegularExpressionValidator ID="RegularExpressionValidator14" runat="server" ControlToValidate="txtMaxQtyPlan"
+                                CssClass="text-danger" ValidationGroup="valProductYearPlan" Text="Chỉ nhập số" ValidationExpression="^[1-9]\d*(\,\d{1,2})?$"
+                                Display="Dynamic"></asp:RegularExpressionValidator>
+                        </div>
+                        <div class="col-lg-6">
+                            <asp:Literal ID="ltMeasurementPlan" runat="server"></asp:Literal>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display: none;">
+                        <label class="col-lg-3">
+                            Tỷ lệ so với CPSX(%)<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtRateOfCost" CssClass="form-control input-sm"></asp:TextBox>
+                        </div>
+                        <%--</div>
+                    <div class="form-group">--%>
+                        <label class="col-lg-3">
+                            Tỷ lệ so với Doanh thu(%)<span class="append-icon right text-danger">*</span></label>
+                        <div class="col-lg-3">
+                            <asp:TextBox runat="server" ID="txtRateOfRevenue" CssClass="form-control input-sm"></asp:TextBox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <asp:Button ID="btnSaveProductPlan" runat="server" Visible="true" ValidationGroup="valProductYearPlan"
+                    Text="Lưu lại" OnClick="btnSaveProductPlan_Click" CssClass="btn btn-sm btn-primary mr10"
+                    AutoPostback="false" UseSubmitBehavior="false"></asp:Button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <br />
 <asp:HiddenField ID="hddGroup" runat="server" />
@@ -830,6 +1059,40 @@
     function AddProduct() {
         $('#divProduct').modal('toggle');
     }
+
+    function AddProduct14() {
+        $('#divProduct14').modal('toggle');
+    }
+
+    function AddProductQtyPlan(id) {
+
+        if (id == "0") {
+            $("#<%=hdnId.ClientID%>").val('0');
+            $("#<%=txtMaxQtyPlan.ClientID%>").val('');
+            $("#<%=txtRateOfCost.ClientID%>").val('');
+            $("#<%=txtRateOfRevenue.ClientID%>").val('');
+            $("#<%=ltMeasurementPlan.ClientID%>").val('');
+
+        }
+        else {
+            $("#<%=hdnId.ClientID%>").val(id);
+
+        }
+
+        $('#divProductPlan').modal('toggle');
+    }
+
+
+    $('#divProductPlan').on('hidden.bs.modal', function () {
+        $("#<%=ddlProductPlan.ClientID%>").prop('disabled', false);
+    });
+
+    $('#divProductPlan').on('show.bs.modal', function () {
+        if ($("#<%=hdnId.ClientID%>").val() != "")
+            $("#<%=ddlProductPlan.ClientID%>").prop('disabled', true);
+        else
+            $("#<%=ddlProductPlan.ClientID%>").prop('disabled', false);
+    });
 
     (function ($) {
         $.fn.inputFilter = function (inputFilter) {

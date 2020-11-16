@@ -658,6 +658,18 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
                 ex.WriteToMergeField("BC_NextYear3", iCurrentYear.ToString());
             }
 
+            if (ReportTemplate == ReportKeyTemplate.ANNUAL15)
+            {
+                ex.WriteToMergeField("BC_NextYear3", iCurrentYear.ToString());
+                ex.WriteToMergeField("BC_NextYear4", iCurrentYear.ToString());
+                ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
+            }
+            if (ReportTemplate == ReportKeyTemplate.ANNUAL14)
+            {
+                ex.WriteToMergeField("BC_NextYear3", iCurrentYear.ToString());
+                //ex.WriteToMergeField("BC_NextYear4", iCurrentYear.ToString());
+                //ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
+            }
 
             ex.WriteToMergeField("BC_NextYear2", NextYear);
             ex.WriteToMergeField("BC_Year1", NextYear);
@@ -948,6 +960,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         DataTable tblProductPlan = new DataTable();
         if (ReportTemplate == ReportKeyTemplate.ANNUAL13)
             tblProductPlan = GetData133(ReportId, true, memVal.OrgId);
+        else if (ReportTemplate == ReportKeyTemplate.ANNUAL14)
+        {
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            tblProductPlan = productCapacityService.GetDataCapacity(ReportId, true);
+        }
         else
             tblProductPlan = GetDataTbl1(ReportId, true, memVal.OrgId);
 
@@ -966,11 +983,31 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         dshientai.Tables[4].TableName = "tbl5";
 
         DataTable tblTBPlan = new DataTable();
-        tblTBPlan = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
+        tblTBPlan = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, false);
+        tblTBPlan.Columns.Add("STT", typeof(string));
+        tblTBPlan.Columns.Add("KhaNangThucHien", typeof(string));
+        int k = 1;
+        foreach (DataRow r in tblTBPlan.Rows)
+        {
+            r["STT"] = k.ToString();
+            r["KhaNangThucHien"] = (bool)r["IsExecuted"] == true ? "Có" : "Không";
+            k++;
+        }
+        tblTBPlan.AcceptChanges();
+
         dshientai.Merge(tblTBPlan);
         dshientai.Tables[5].TableName = "tbl6";
 
-        dshientai.Merge(tblProductPlan.Copy());
+
+        DataTable tbl7 = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
+        tbl7.Columns.Add("STT", typeof(string));
+        k = 1;
+        foreach (DataRow r in tbl7.Rows)
+        {
+            r["STT"] = k.ToString();
+            k++;
+        }
+        dshientai.Merge(tbl7);
         dshientai.Tables[6].TableName = "tbl7";
 
         dshientai.Merge(dthientai.Copy());
@@ -2118,33 +2155,95 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
     {
         ReportModels rp = new ReportModels();
         DataTable tblProductResult = new DataTable();
-        tblProductResult.Columns.Add("ProductName", typeof(string));
-        tblProductResult.Columns.Add("Measurement", typeof(string));
-        tblProductResult.Columns.Add("DataReport1415", typeof(string));
-        tblProductResult.Columns.Add("MaxQuantity", typeof(string));
+        tblProductResult.Columns.Add("ProductNameOdd", typeof(string));
+        tblProductResult.Columns.Add("MeasurementOdd", typeof(string));
+        tblProductResult.Columns.Add("DataReport1415Odd", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantityOdd", typeof(string));
+
+        tblProductResult.Columns.Add("ProductNameEven", typeof(string));
+        tblProductResult.Columns.Add("MeasurementEven", typeof(string));
+        tblProductResult.Columns.Add("DataReport1415Even", typeof(string));
+        tblProductResult.Columns.Add("MaxQuantityEven", typeof(string));
 
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == IsPlan) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
-                    where a.EnterpriseId == OrgId
+                    where a.EnterpriseId == memVal.OrgId
                     orderby a.ProductName ascending
                     select new
                     {
+                        ProductId = a.Id,
                         ProductName = a.ProductName,
                         Measurement = a.Measurement != null ? a.Measurement : string.Empty,
                         DataReport1415 = c.DataReport1415,
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
-        foreach (var item in data)
+        var rowCount = data.Count;
+        if (rowCount == 0)
+            return tblProductResult;
+
+        if (rowCount == 1)
         {
             var row = tblProductResult.NewRow();
-            row["ProductName"] = item.ProductName;
-            row["Measurement"] = item.Measurement;
-            row["DataReport1415"] = item.DataReport1415;
-            row["MaxQuantity"] = item.MaxQuantity;
+            var item = data[0];
+            row["ProductNameOdd"] = item.ProductName;
+            row["MeasurementOdd"] = item.Measurement;
+            row["DataReport1415Odd"] = item.DataReport1415;
+            row["MaxQuantityOdd"] = item.MaxQuantity;
+
+            row["ProductNameEven"] = string.Empty;
+            row["MeasurementEven"] = string.Empty;
+            row["DataReport1415Even"] = string.Empty;
+            row["MaxQuantityEven"] = string.Empty;
+            tblProductResult.Rows.Add(row);
+
+            return tblProductResult;
+        }
+
+        var loopCounter = 0;
+        if (rowCount % 2 != 0)
+            loopCounter = rowCount - 1;
+        else
+            loopCounter = rowCount;
+
+        //counter>=2
+        int index = 0;
+        while (index < loopCounter)
+        {
+            var row = tblProductResult.NewRow();
+            var item1 = data[index];
+            row["ProductNameOdd"] = item1.ProductName;
+            row["MeasurementOdd"] = item1.Measurement;
+            row["DataReport1415Odd"] = item1.DataReport1415;
+            row["MaxQuantityOdd"] = item1.MaxQuantity;
+
+            var item2 = data[index + 1];
+            row["ProductNameEven"] = item2.ProductName;
+            row["MeasurementEven"] = item2.Measurement;
+            row["DataReport1415Even"] = item2.DataReport1415;
+            row["MaxQuantityEven"] = item2.MaxQuantity;
+
+            tblProductResult.Rows.Add(row);
+            index = index + 2;
+        }
+
+        if (loopCounter < rowCount) //Lấy dòng lẻ cuối cùng
+        {
+            var row = tblProductResult.NewRow();
+            var item = data[loopCounter];
+            row["ProductNameOdd"] = item.ProductName;
+            row["MeasurementOdd"] = item.Measurement;
+            row["DataReport1415Odd"] = item.DataReport1415;
+            row["MaxQuantityOdd"] = item.MaxQuantity;
+
+            row["ProductNameEven"] = string.Empty;
+            row["MeasurementEven"] = string.Empty;
+            row["DataReport1415Even"] = string.Empty;
+            row["MaxQuantityEven"] = string.Empty;
             tblProductResult.Rows.Add(row);
         }
+
         return tblProductResult;
     }
 
@@ -2220,6 +2319,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
 
         return tblProductResult;
     }
+
     private DataTable GetData132(int ReportId, bool IsPlan, int OrgId)
     {
         ReportModels rp = new ReportModels();
@@ -2353,6 +2453,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
         }
         return tblProductResult;
     }
+
+
 }
 
 

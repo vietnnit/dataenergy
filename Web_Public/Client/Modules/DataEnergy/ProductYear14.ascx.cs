@@ -86,7 +86,9 @@ public partial class Client_Modules_DataEnergy_ProductYear14 : System.Web.UI.Use
             BindResultTKNL();
             BindPlanTKNL();
             BindUsingEnerySystem();
+            BindProductCapacityPlan();
             BindProductCapacity();
+            BindProduct();
         }
     }
 
@@ -124,11 +126,12 @@ public partial class Client_Modules_DataEnergy_ProductYear14 : System.Web.UI.Use
             product.MeasurementId = Convert.ToInt32(ddlProductMeasurement.SelectedValue);
         }
         product.EnterpriseId = memVal.OrgId;
-        product.IsProduct = false;
+        product.IsProduct = true;
         product.ProductOrder = 10;
 
         int i = productService.Insert(product);
-        BindProductCapacity();
+        //BindProductCapacity();
+        BindProductCapacityPlan();
     }
 
     //Last year
@@ -225,8 +228,6 @@ public partial class Client_Modules_DataEnergy_ProductYear14 : System.Web.UI.Use
         var data = (from a in rp.DE_Product
                     join b in rp.DE_ProductCapacity.Where(x => x.ReportId == ReportId && x.IsPlan == false) on a.Id equals b.ProductId into ab
                     from c in ab.DefaultIfEmpty()
-                        //join d in rp.DE_Measurement on a.MeasurementId equals d.Id into ad
-                        //from m in ad.DefaultIfEmpty()
                     where a.EnterpriseId == memVal.OrgId
                     orderby a.ProductName ascending
                     select new
@@ -235,13 +236,172 @@ public partial class Client_Modules_DataEnergy_ProductYear14 : System.Web.UI.Use
                         ProductName = a.ProductName,
                         Measurement = a.Measurement != null ? a.Measurement : string.Empty,
                         DataReport1415 = c.DataReport1415,
-                        //MeasurementName = m != null ? m.MeasurementName : string.Empty,
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
         rptProductResult.DataSource = data;
         rptProductResult.DataBind();
     }
+
+    private void BindProductCapacityPlan()
+    {
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        DataTable tbl = new DataTable();
+        tbl = productCapacityService.GetDataCapacity(ReportId, true);
+        rptProductPlan.DataSource = tbl;
+        rptProductPlan.DataBind();
+    }
+    protected void rptProductPlan_ItemCommand(object source, RepeaterCommandEventArgs e)
+    {
+        if (e.CommandName.Equals("delete"))
+        {
+            ProductCapacityService rptbso = new ProductCapacityService();
+            LinkButton btnDelete = (LinkButton)e.CommandSource;
+            btnDelete.Visible = AllowEdit;
+            long i = rptbso.Delete(int.Parse(((LinkButton)e.CommandSource).CommandArgument));
+            if (i > 0)
+                BindProductCapacityPlan();
+            else
+                ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "alert('Xóa không thành không. Vui lòng thử lại');", true);
+        }
+        else if (e.CommandName.Equals("edit"))
+        {
+            LinkButton btnEdit = (LinkButton)e.CommandSource;
+            btnEdit.Visible = AllowEdit;
+            ProductCapacity productCapacity = new ProductCapacity();
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            int ProductCapacityId = int.Parse(((LinkButton)e.CommandSource).CommandArgument);
+            productCapacity = productCapacityService.FindByKey(ProductCapacityId);
+            if (productCapacity != null)
+            {
+                try
+                {
+                    txtMaxQtyPlan.Text = productCapacity.MaxQuantity.ToString();
+                    txtQtyByDesignPlan.Text = productCapacity.DesignQuantity.ToString();
+                    txtRateOfCost.Text = productCapacity.RateOfCost.ToString();
+                    txtRateOfRevenue.Text = productCapacity.RateOfRevenue.ToString();
+                    ddlProductPlan.SelectedValue = productCapacity.ProductId.ToString();
+                    //txtDoanhThuTheoSP.Text = productCapacity.DoanhThuTheoSP.ToString();
+                    Product product = new Product();
+                    ProductService productService = new ProductService();
+                    product = productService.FindByKey(productCapacity.ProductId);
+                    ltMeasurementPlan.Text = "(" + product.Measurement + ")";
+                }
+                catch { }
+            }
+            hdnId.Value = ProductCapacityId.ToString();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showtb", "AddProductQtyPlan(" + hdnId.Value + ");", true);
+        }
+    }
+
+    void BindProduct()
+    {
+        //ddlProduct.Items.Clear();
+        IList<Product> list = new List<Product>();
+
+        list = new ProductService().GetListByEnterprise(memVal.OrgId);
+
+        if (list != null && list.Count > 0)
+        {
+            var listSearch = from o in list where o.IsProduct == true orderby o.ProductName ascending select o;
+            //ddlProduct.DataSource = listSearch;
+            //ddlProduct.DataValueField = "Id";
+            //ddlProduct.DataTextField = "ProductName";
+            //ddlProduct.DataBind();
+            //ddlProduct.Items.Insert(0, new ListItem("---Chọn sản phẩm---", ""));
+
+            ddlProductPlan.DataSource = listSearch;
+            ddlProductPlan.DataValueField = "Id";
+            ddlProductPlan.DataTextField = "ProductName";
+            ddlProductPlan.DataBind();
+            ddlProductPlan.Items.Insert(0, new ListItem("---Chọn sản phẩm---", ""));
+        }
+    }
+
+    protected void ddlProductPlan_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlProductPlan.SelectedIndex > 0)
+        {
+            Product product = new Product();
+            ProductService productService = new ProductService();
+            product = productService.FindByKey(Convert.ToInt32(ddlProductPlan.SelectedValue));
+            ltMeasurementPlan.Text = product.Measurement;
+        }
+        else
+        {
+            ltMeasurementPlan.Text = "";
+        }
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "AddProductQtyPlan(0);", true);
+    }
+
+    protected void rptProductPlan_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            //DataRowView item = (DataRowView)e.Item.DataItem;
+            //if (item["NoFuel_TOE"] != DBNull.Value)
+            //{
+            //    No_TOE_Future = No_TOE_Future + Convert.ToDecimal(item["NoFuel_TOE"]);
+            //}
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+            btnDelete.Visible = AllowEdit;
+            btnEdit.Visible = AllowEdit;
+
+            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",false); return false;");
+
+        }
+    }
+
+    public void btnSaveProductPlan_Click(object sender, EventArgs e)
+    {
+        ProductCapacityService productCapacityService = new ProductCapacityService();
+        ProductCapacity productCapacity = new ProductCapacity();
+        int _ProductId = Convert.ToInt32(ddlProductPlan.SelectedValue);
+
+        if (txtQtyByDesignPlan.Text != "")
+            productCapacity.DesignQuantity = Convert.ToDecimal(txtQtyByDesignPlan.Text);
+        if (txtMaxQtyPlan.Text.Trim() != "")
+            productCapacity.MaxQuantity = Convert.ToDecimal(txtMaxQtyPlan.Text.Trim());
+        productCapacity.IsPlan = true;
+        if (txtRateOfRevenue.Text.Trim() != "")
+            productCapacity.RateOfRevenue = Convert.ToDecimal(txtRateOfRevenue.Text.Trim());
+        if (txtRateOfCost.Text.Trim() != "")
+            productCapacity.RateOfCost = Convert.ToDecimal(txtRateOfCost.Text.Trim());
+        productCapacity.ProductId = _ProductId;
+        productCapacity.ReportId = ReportId;
+        productCapacity.ReportYear = ReportYear;
+
+        ReportModels rp = new ReportModels();
+        var check = rp.DE_ProductCapacity.FirstOrDefault(o => o.ReportId == ReportId && o.IsPlan == true && o.ProductId == _ProductId);
+        if (check != null)
+            hdnId.Value = check.Id.ToString();
+
+        int i = 0;
+        if (hdnId.Value != "" && Convert.ToInt32(hdnId.Value) > 0)
+        {
+            productCapacity.Id = Convert.ToInt32(hdnId.Value);
+            productCapacity = productCapacityService.Update(productCapacity);
+            if (productCapacity != null) i = 1;
+        }
+        else
+        {
+            i = productCapacityService.Insert(productCapacity);
+        }
+
+        if (i <= 0)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "AddProductQtyPlan(" + hdnId.Value + ");", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
+        }
+        else
+        {
+            BindProductCapacityPlan();
+        }
+
+    }
+
+
     void BindData()
     {
         //btnAddDevice.Visible = btnAddPlan.Visible = btnAddPlanDeviceNext.Visible = btnAddPlanNext.Visible = btnAddSolution.Visible = btnAddSolution2.Visible = AllowEdit;
@@ -903,6 +1063,33 @@ public partial class Client_Modules_DataEnergy_ProductYear14 : System.Web.UI.Use
             }
         }
 
+    }
+
+    public void btnSaveProduct14_Click(object sender, EventArgs e)
+    {
+        ProductService productService = new ProductService();
+        Product product = new Product();
+        product.ProductName = txtProductName14.Text.Trim();
+        if (txtYearStart14.Text.Trim() != "")
+            product.YearStart = Convert.ToInt32(txtYearStart14.Text.Trim());
+        if (txtYearEnd14.Text.Trim() != "")
+            product.YearEnd = Convert.ToInt32(txtYearEnd14.Text.Trim());
+        product.Quantity = Convert.ToInt32(txtDesignQty14.Text.Trim());
+        product.Measurement = txtMeasurement14.Text.Trim();
+        product.Note = txtDescription14.Text.Trim();
+        product.EnterpriseId = memVal.OrgId;
+        product.IsProduct = true;
+
+        int i = productService.Insert(product);
+        if (i <= 0)
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "showgpkh", "AddProductQty();", true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "message", "alert('Cập nhật không thành công. Vui lòng thử lại!');", true);
+        }
+        else
+        {
+            BindProduct();
+        }
     }
     #endregion
 }

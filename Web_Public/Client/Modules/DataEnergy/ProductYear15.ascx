@@ -127,7 +127,7 @@
                         <tr class="primary fs12">
                             <th style="width: 15%">Tên thiết bị
                             </th>
-                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
+                            <th style="width: 15%">Loại nhãn năng lượng của thiết bị
                             </th>
                             <th style="width: 10%">Cách lắp đặt
                             </th>
@@ -188,7 +188,7 @@
                         <tr class="primary fs12">
                             <th style="width: 15%">Tên thiết bị
                             </th>
-                            <th style="width: 15%">Mô tả tính năng, vị trí sử dụng của thiết bị
+                            <th style="width: 15%">Loại nhãn năng lượng của thiết bị
                             </th>
                             <th style="width: 10%">Cách lắp đặt
                             </th>
@@ -935,7 +935,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Mô tả tính năng, vị trí sử dụng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
+                            Loại nhãn năng lượng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtTinhNangTB" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="txtTinhNangTB"
@@ -1029,7 +1029,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3">
-                            Mô tả tính năng, vị trí sử dụng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
+                            Loại nhãn năng lượng của thiết bị<span class="append-icon right text-danger">*</span>:</label>
                         <div class="col-lg-9">
                             <asp:TextBox runat="server" ID="txtMoTaTinhNangBS" TextMode="MultiLine" CssClass="form-control input-sm"></asp:TextBox>
                             <asp:RequiredFieldValidator ID="RequiredFieldValidator25" runat="server" ControlToValidate="txtMoTaTinhNangBS"
