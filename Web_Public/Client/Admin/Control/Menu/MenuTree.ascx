@@ -1,6 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuTree.ascx.cs" Inherits="Control_Modules_Menu_MenuTree" %>
-
- 
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuTree.ascx.cs" Inherits="Client_Admin_Control_Menu_MenuTree" %>
 <ul class="nav sidebar-menu">
     <asp:Literal ID="MenuNews" runat="server"></asp:Literal>
         

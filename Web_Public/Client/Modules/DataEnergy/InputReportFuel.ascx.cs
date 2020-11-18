@@ -729,6 +729,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel : System.Web.UI.U
             ex.WriteToMergeField("BC_Fax", dtinfo.Rows[0]["Fax"].ToString());
         else
             ex.WriteToMergeField("BC_Fax", "");
+
         if (dtinfo.Rows[0]["Email"] != DBNull.Value)
             ex.WriteToMergeField("BC_Email", dtinfo.Rows[0]["Email"].ToString());
         else

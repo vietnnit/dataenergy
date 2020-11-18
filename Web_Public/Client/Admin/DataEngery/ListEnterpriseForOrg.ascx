@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ListEnterpriseForOrg.ascx.cs"
     Inherits="Client_Admin_ListEnterpriseForOrg" %>
-<%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/PagingControl.ascx" TagPrefix="uc1" TagName="PagingControl" %>
 <header id="topbar">
     <div class="topbar-left">
         <ol class="breadcrumb">

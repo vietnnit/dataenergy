@@ -131,11 +131,13 @@
                 <table class="table table-bordered table-hover mbn" width="100%">
                     <thead>
                         <tr class="primary fs12">
-                            <th style="width: 50%">Tên sản phẩm
+                            <th style="width: 40%">Tên sản phẩm
                             </th>
-                            <th style="width: 20%;">Số lượng(chiếc)
+                            <th style="width: 15%;">Số lượng(chiếc)
                             </th>
-                            <th style="width: 20%; border-right: none;">Loại nhiên liệu/năng lượng
+                            <th style="width: 15%;">Số lượng thiết kế(chiếc)
+                            </th>
+                            <th style="width: 15%; border-right: none;">Loại nhiên liệu/năng lượng
                             </th>
                             <th style="border-left: none;"></th>
                         </tr>
@@ -150,6 +152,9 @@
                                     <td class="text-right" style="border-right: none;">
                                         <asp:HiddenField ID="hdProductId" runat="server" Value='<%# Eval("ProductId")%>' />
                                         <asp:TextBox ID="txtMaxQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("MaxQuantity")%>'></asp:TextBox>
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtDesignQuantity" ReadOnly="true" CssClass="form-control input-sm onlyNumberCss" runat="server" Text='<%# Eval("DesignQuantity")%>'></asp:TextBox>
                                     </td>
                                     <td style="border-right: none;">
                                         <%# Eval("FuelName")%>

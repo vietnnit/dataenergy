@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ListReportTapDoan.ascx.cs"
     Inherits="Client_Admin_DataEngery_ListReportTapDoan" %>
-<%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/PagingControl.ascx" TagPrefix="uc1" TagName="PagingControl" %>
 <header id="topbar">
     <div class="topbar-left">
         <ol class="breadcrumb">

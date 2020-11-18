@@ -1,29 +1,23 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuBarMulti.ascx.cs"
-    Inherits="Control_Modules_Menu_MenuBarMulti" %>
-    
-
-<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/")%>CSS_Admin/js/menu/ddsmoothmenu.css" />
-<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/")%>CSS_Admin/js/menu/ddsmoothmenu-v.css" />
-
-<%--<script type="text/javascript" src="<%=ResolveUrl("~/")%>CSS_Admin/js/menu/jquery.min.js"></script>--%>
-<script type="text/javascript" src="<%=ResolveUrl("~/")%>CSS_Admin/js/menu/ddsmoothmenu.js">
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="MenuBarMulti.ascx.cs" Inherits="Client_Admin_Control_Menu_MenuBarMulti" %>
+<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/")%>Scripts/menubar/ddsmoothmenu.css" />
+<link rel="stylesheet" type="text/css" href="<%=ResolveUrl("~/")%>Scripts/menubar/ddsmoothmenu-v.css" />
+<script type="text/javascript" src="<%=ResolveUrl("~/")%>Scripts/menubar/ddsmoothmenu.js"></script>
+<script type="text/javascript">
+    ddsmoothmenu.init({
+        mainmenuid: "smoothmenu1",
+        orientation: 'h',
+        classname: 'ddsmoothmenu',
+        contentsource: "markup"
+    })
 </script>
 
-<script type="text/javascript">
+    <div class="container_24 menubar-bg">
+        <div class="grid_24">
+            <div id="smoothmenu1" class="ddsmoothmenu">
+                <asp:Literal ID="MenuNews" runat="server"></asp:Literal>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
 
-ddsmoothmenu.init({
-	mainmenuid: "smoothmenu1", //menu DIV id
-	orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
-	classname: 'ddsmoothmenu', //class added to menu's outer DIV
-	//customtheme: ["#1c5a80", "#18374a"],
-	contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
-})
-
-</script>    
-
-<div id="smoothmenu1" class="ddsmoothmenu">
-<asp:Literal ID="MenuNews" runat="server"></asp:Literal>
-
-<br style="clear: left" />
-</div> 

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="SCTTongHopNLTTHangNam.ascx.cs" Inherits="Client_Admin_DataEngery_SCTTongHopNLTTHangNam" %>
-<%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/PagingControl.ascx" TagPrefix="uc1" TagName="PagingControl" %>
 <asp:HiddenField ID="hdnNewsUrl" Value="" runat="server" />
 <header id="topbar">
     <div class="topbar-left">

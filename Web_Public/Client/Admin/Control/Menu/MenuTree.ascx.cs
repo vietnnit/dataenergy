@@ -7,7 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using ETO;
 using BSO;
-public partial class Control_Modules_Menu_MenuTree : System.Web.UI.UserControl
+
+public partial class Client_Admin_Control_Menu_MenuTree : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {

@@ -7,109 +7,131 @@ using System.Web.UI.WebControls;
 using System.Data;
 using ETO;
 using BSO;
-public partial class Control_Modules_Menu_MenuBarMulti : System.Web.UI.UserControl
+public partial class Client_Admin_Control_Menu_MenuBarMulti : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        string strMenu = "";
-
-        if (AspNetCache.CheckCache("HTML_MenuBar_Admin_" + Session["Admin_Username"].ToString()) == false)
+        int gId = 0;
+        if (!String.IsNullOrEmpty(Request["g"]))
+            if (!int.TryParse(Request["g"], out gId))
+                Response.Redirect("~/Default.aspx");
+        if (!IsPostBack)
         {
-            strMenu += BindMenu("", 0);
 
-            AspNetCache.SetCacheWithTime("HTML_MenuBar_Admin_" + Session["Admin_Username"].ToString(), strMenu, 150);
-            MenuNews.Text = strMenu;
-
-        }
-        else
-        {
-            MenuNews.Text = (string)AspNetCache.GetCache("HTML_MenuBar_Admin_" + Session["Admin_Username"].ToString());
+            GetMenuCateGroupAll(Language.language, gId);
         }
     }
 
-    private string BindMenu(string strMenuSub, int iCate)
+    private void GetMenuCateGroupAll(string lang, int gID)
     {
-        if (Session["Admin_Username"] != null)
+
+        string strMenu = "";
+        if (AspNetCache.CheckCache("HTML_MenuBar_All_" + gID + "_" + Language.language.Replace("-", "_")) == false)
         {
-            DataTable table = new DataTable();
-            commonBSO common = new commonBSO();
-            String SQL = "";
-
-            string AdminName = Session["Admin_Username"].ToString();
-            AdminRolesBSO adminRolesBSO = new AdminRolesBSO();
-            string strRoles = adminRolesBSO.GetRoles(AdminName);
-            RolesBSO rolesBSO = new RolesBSO();
-            DataTable table1 = rolesBSO.GetRolesbyStrRolesID(strRoles);
-
-            string strModules = "";
-
-            if (table1.Rows.Count > 0)
-            {
-                foreach (DataRow row in table1.Rows)
-                {
-                    strModules += row["Roles_Modules"].ToString();
-                }
-                strModules = strModules.Remove(strModules.LastIndexOf(",")).Replace(",", "','");
-            }
-
-            if (AdminName.Equals("administrator"))
-            {
-                SQL = "SELECT * FROM tblModules Where [IsMenu] = 1 And [Modules_Parent] = " + iCate + " Order by [Modules_Order] ASC";
-                table = common.CreateDataView(SQL);
-            }
-            else
-            {
-                SQL = "SELECT * FROM tblModules Where [IsMenu] = 1 And [Modules_Parent] = " + iCate + " And Slug in ('" + strModules + "') Order by [Modules_Order] ASC";
-                table = common.CreateDataView(SQL);
-            }
-            strMenuSub += "<ul>";
-            strMenuSub += "<li><a href='" + ResolveUrl("~/") + "Admin/home/Default.aspx'>Trang chủ</li>";
-            if (table.Rows.Count > 0)
-            {
-                
-                foreach (DataRow dataRow in table.Rows)
-                {
-                    strMenuSub += "<li>";
-                    strMenuSub += "<a href='" + ResolveUrl("~/") + "Admin/" + dataRow["Slug"] + "/Default.aspx'>" + dataRow["Modules_Name"].ToString() + "</a>";
-
-                    strMenuSub += GetSubMenu("", Convert.ToInt32(dataRow["Modules_ID"].ToString()), Session["Admin_Username"].ToString(), strModules);
-
-                    strMenuSub += "</li>";
-                }
-               
-
-            }
-            strMenuSub += "</ul>";
+            strMenu += BindMenuCateGroupAll("", lang, gID);
+            AspNetCache.SetCacheWithTime("HTML_MenuBar_All_" + gID + "_" + Language.language.Replace("-", "_"), strMenu, 150);
+            MenuNews.Text = strMenu;
         }
         else
-            Response.Redirect("~/Default.aspx");
+        {
+            MenuNews.Text = (string)AspNetCache.GetCache("HTML_MenuBar_All_" + gID + "_" + Language.language.Replace("-", "_"));
+        }
 
 
+    }
 
-            
+    private string BindMenuCateGroupAll(string strMenuSub, string lang, int gID)
+    {
+        CateNewsGroupBSO catnewsgroupBSO = new CateNewsGroupBSO();
+        DataTable table = catnewsgroupBSO.GetCateNewsGroupMenuAll(lang);
+        string strClass = "";
+
+        if (table.Rows.Count > 0)
+        {
+            strMenuSub += "<ul>";
+            //if (gID==0)
+            //{
+            //    strClass = "<li class='selected'>";
+            //}
+            //else
+            //    strClass = "<li>";
+
+            //strMenuSub += strClass;
+            //strMenuSub += "<a href='" + ResolveUrl("~/") + "' title='" + Resources.resource.T_home + "'>" + Resources.resource.T_home + "</a>";
+            //strMenuSub += "</a>";
+            //strMenuSub += "</li>";
+
+            foreach (DataRow dataRow in table.Rows)
+            {
+                if (Convert.ToInt32(dataRow["GroupCate"].ToString()) == gID)
+                {
+                    strClass = "class='selected'";
+                }
+                else
+                    strClass = "";
+
+                strMenuSub += "<li " + strClass + ">";
+                if (Convert.ToBoolean(dataRow["isUrl"].ToString()))
+                    strMenuSub += "<a href='" + dataRow["Url"].ToString() + "' " + strClass + " >" + dataRow["CateNewsGroupName"].ToString() + "</a>";
+                //else if (Convert.ToBoolean(dataRow["IsPage"].ToString()))
+                //    strMenuSub += "<a href='" + ResolveUrl("~/") + "tin-tuc-fp/" + GetString(dataRow["CateNewsGroupName"]) + "-" + dataRow["GroupCate"] + ".aspx' "+strClass+" >" + dataRow["CateNewsGroupName"].ToString() + "</a>";
+                else
+                    strMenuSub += "<a href='" + ResolveUrl("~/") + "c2/" + catnewsgroupBSO.GetSlugById(Convert.ToInt32(dataRow["CateNewsGroupID"])) + "/" + GetString(dataRow["CateNewsGroupName"]) + "-" + dataRow["GroupCate"] + ".aspx' " + strClass + " >" + dataRow["CateNewsGroupName"].ToString() + "</a>";
+
+                strMenuSub += BindMenuCateGroup("", 0, lang, Convert.ToInt32(dataRow["GroupCate"].ToString()));
+
+                strMenuSub += "</li>";
+            }
+            strMenuSub += "</ul>";
+
+        }
 
         return strMenuSub;
 
     }
 
-    private string GetSubMenu(string strMenuSub, int iCate, string AdminName, string strModules)
+    private string BindMenuCateGroup(string strMenuSub, int iCate, string lang, int group)
     {
-        DataTable datatable = new DataTable();
-        commonBSO common = new commonBSO();
-        String SQL = "";
+        CateNewsBSO catenewsBSO = new CateNewsBSO();
+        DataTable table = catenewsBSO.getCateClientGroupUrl(iCate, lang, group, true);
 
-
-        if (AdminName.Equals("administrator"))
+        CateNewsGroupBSO cateNewsgroupBSO = new CateNewsGroupBSO();
+        CateNewsGroup catenewsgroup = cateNewsgroupBSO.GetCateNewsGroupByGroupCate(group, lang);
+        if (catenewsgroup != null)
         {
-            SQL = "SELECT * FROM tblModules Where [IsMenu] = 1 And [Modules_Parent] = " + iCate + " Order by [Modules_Order] ASC";
-            datatable = common.CreateDataView(SQL);
-        }
-        else
-        {
-            SQL = "SELECT * FROM tblModules Where [IsMenu] = 1 And [Modules_Parent] = " + iCate + " And Slug in ('" + strModules + "') Order by [Modules_Order] ASC";
-            datatable = common.CreateDataView(SQL);
-        }
 
+            if (table.Rows.Count > 0)
+            {
+                strMenuSub += "<ul>";
+                foreach (DataRow dataRow in table.Rows)
+                {
+                    strMenuSub += "<li>";
+                    if (Convert.ToBoolean(dataRow["isUrl"].ToString()))
+                        strMenuSub += "<a href='" + dataRow["Url"].ToString() + "'>" + dataRow["CateNewsName"].ToString() + "</a>";
+                    //else if (catenewsgroup.IsPage)
+                    //    strMenuSub += "<a href='" + ResolveUrl("~/") + "tin-tuc-dmp/" + GetString(dataRow["CateNewsName"]) + "-" + dataRow["GroupCate"] + "-" + dataRow["CateNewsID"].ToString() + ".aspx'>" + dataRow["CateNewsName"].ToString() + "</a>";
+                    else
+                        strMenuSub += "<a href='" + ResolveUrl("~/") + "c3/" + catenewsBSO.GetSlugByCateId(Convert.ToInt32(dataRow["CateNewsID"])) + "/" + GetString(dataRow["CateNewsName"]) + "-" + dataRow["GroupCate"] + "-" + dataRow["CateNewsID"].ToString() + ".aspx'>" + dataRow["CateNewsName"].ToString() + "</a>";
+
+                    strMenuSub += GetSubCategoryMenuCateGroup("", Convert.ToInt32(dataRow["CateNewsID"].ToString()), lang, group);
+
+                    strMenuSub += "</li>";
+                }
+                strMenuSub += "</ul>";
+
+            }
+        }
+        return strMenuSub;
+
+    }
+
+    private string GetSubCategoryMenuCateGroup(string strMenuSub, int iCate, string lang, int group)
+    {
+        CateNewsBSO catenewsBSO = new CateNewsBSO();
+        DataTable datatable = catenewsBSO.getCateClientGroupUrl(iCate, lang, group, true);
+
+        CateNewsGroupBSO cateNewsgroupBSO = new CateNewsGroupBSO();
+        CateNewsGroup catenewsgroup = cateNewsgroupBSO.GetCateNewsGroupByGroupCate(group, lang);
 
         if (datatable.Rows.Count > 0)
         {
@@ -117,10 +139,14 @@ public partial class Control_Modules_Menu_MenuBarMulti : System.Web.UI.UserContr
             foreach (DataRow dataRow in datatable.Rows)
             {
                 strMenuSub += "<li>";
+                if (Convert.ToBoolean(dataRow["isUrl"].ToString()))
+                    strMenuSub += "<a href='" + dataRow["Url"].ToString() + "'>" + dataRow["CateNewsName"].ToString() + "</a>";
+                //else if (catenewsgroup.IsPage)
+                //    strMenuSub += "<a href='" + ResolveUrl("~/") + "tin-tuc-dmp/" + GetString(dataRow["CateNewsName"]) + "-" + dataRow["GroupCate"] + "-" + dataRow["CateNewsID"].ToString() + ".aspx'>" + dataRow["CateNewsName"].ToString() + "</a>";
+                else
+                    strMenuSub += "<a href='" + ResolveUrl("~/") + "c3/" + catenewsBSO.GetSlugByCateId(Convert.ToInt32(dataRow["CateNewsID"].ToString())) + "/" + GetString(dataRow["CateNewsName"]) + "-" + dataRow["GroupCate"] + "-" + dataRow["CateNewsID"].ToString() + ".aspx'>" + dataRow["CateNewsName"].ToString() + "</a>";
 
-                strMenuSub += "<a href='" + ResolveUrl("~/") + "Admin/" + dataRow["Slug"] + "/Default.aspx'>" + dataRow["Modules_Name"].ToString() + "</a>";
-
-                strMenuSub += GetSubMenu("", Convert.ToInt32(dataRow["Modules_ID"].ToString()), AdminName, strModules);
+                strMenuSub += GetSubCategoryMenuCateGroup("", Convert.ToInt32(dataRow["CateNewsID"].ToString()), lang, group);
 
                 strMenuSub += "</li>";
             }
@@ -129,5 +155,15 @@ public partial class Control_Modules_Menu_MenuBarMulti : System.Web.UI.UserContr
         }
         return strMenuSub;
 
+    }
+
+    protected string GetString(object _txt)
+    {
+        if (_txt != null)
+        {
+            Utils objUtil = new Utils();
+            return objUtil.Getstring(_txt.ToString());
+        }
+        return "";
     }
 }

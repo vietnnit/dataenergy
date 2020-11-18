@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ViewPlan5Year.ascx.cs"
     Inherits="Client_Admin_DataEngery_ViewPlan5Year" %>
-<%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/PagingControl.ascx" TagPrefix="uc1" TagName="PagingControl" %>
 <!-- Begin: Content -->
 <!-- Dashboard Tiles -->
 <asp:Literal ID="clientview" runat="server"></asp:Literal>

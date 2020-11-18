@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ListReportWaitting.ascx.cs"
     Inherits="Client_Admin_DataEnergy_ListReportWaitting" %>
-<%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<%@ Register Src="~/Client/Modules/PagingControl.ascx" TagPrefix="uc1" TagName="PagingControl" %>
 <asp:HiddenField ID="hdnValueId" Value="" runat="server" />
 <header id="topbar">
     <div class="topbar-left">

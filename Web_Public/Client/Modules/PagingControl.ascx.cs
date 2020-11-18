@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 
-public partial class Admin_PagingControl : System.Web.UI.UserControl
+public partial class Modules_PagingControl : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {

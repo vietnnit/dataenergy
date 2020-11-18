@@ -75,7 +75,7 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
             if (!string.IsNullOrEmpty(Request["ReportId"]))
                 int.TryParse(Request["ReportId"].Replace(",", ""), out Id);
             ReportId = Id;
-            
+
             BindMeasurement();
             BindFuelFuture();
             BindUsingElectrictFuture();
@@ -211,7 +211,9 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
         foreach (RepeaterItem ri in rptProductPlan.Items)
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = false;
+            txtDesignQuantity.ReadOnly = false;
         }
     }
 
@@ -223,7 +225,9 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
         foreach (RepeaterItem ri in rptProductPlan.Items)
         {
             TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+            TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
             txtMaxQuantity.ReadOnly = true;
+            txtDesignQuantity.ReadOnly = true;
         }
     }
 
@@ -236,7 +240,9 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
             foreach (RepeaterItem ri in rptProductPlan.Items)
             {
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
+
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 var pcInfo = tempData.FirstOrDefault(x => x.ProductId == ProductId);
                 decimal tmpDecimal = 0;
@@ -244,6 +250,12 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
+
+                if (decimal.TryParse(txtDesignQuantity.Text, style, culture, out tmpDecimal))
+                    pcInfo.DesignQuantity = tmpDecimal;
+                else
+                    pcInfo.DesignQuantity = 0;
+
             }
 
             rp.SaveChanges();
@@ -254,6 +266,7 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
             {
                 DE_ProductCapacity pcInfo = new DE_ProductCapacity();
                 TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
+                TextBox txtDesignQuantity = ri.FindControl("txtDesignQuantity") as TextBox;
                 HiddenField hdProductId = ri.FindControl("hdProductId") as HiddenField;
                 int ProductId = Convert.ToInt32(hdProductId.Value);
                 pcInfo.ProductId = ProductId;
@@ -266,20 +279,18 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                     pcInfo.MaxQuantity = tmpDecimal;
                 else
                     pcInfo.MaxQuantity = 0;
+
+                if (decimal.TryParse(txtDesignQuantity.Text, style, culture, out tmpDecimal))
+                    pcInfo.DesignQuantity = tmpDecimal;
+                else
+                    pcInfo.DesignQuantity = 0;
+
                 rp.DE_ProductCapacity.Add(pcInfo);
             }
             rp.SaveChanges();
         }
 
-        btnAddProductNextResult.Visible = true;
-        btnAddProductNextResultUpdate.Visible = false;
-        btnAddProductNextResultCancel.Visible = false;
-
-        foreach (RepeaterItem ri in rptProductPlan.Items)
-        {
-            TextBox txtMaxQuantity = ri.FindControl("txtMaxQuantity") as TextBox;
-            txtMaxQuantity.ReadOnly = true;
-        }
+        btnAddProductNextResultCancel_Click(sender, e);
     }
 
 
@@ -299,7 +310,7 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                         ProductName = a.ProductName,
                         Measurement = a.Measurement,
                         FuelName = d.FuelName,
-                        DesignQuantity= (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                        DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
                         MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
                     }).ToList();
 
@@ -319,7 +330,8 @@ public partial class Client_Modules_DataEnergy_ProductYear17 : System.Web.UI.Use
                                 ProductName = a.ProductName,
                                 Measurement = a.Measurement,
                                 FuelName = d.FuelName,
-                                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                                MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
+                                DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString())
                             }).ToList();
 
         rptProductPlan.DataSource = dataNextYear;

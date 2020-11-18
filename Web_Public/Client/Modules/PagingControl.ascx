@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PagingControl.ascx.cs" Inherits="Admin_PagingControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PagingControl.ascx.cs" Inherits="Modules_PagingControl" %>
 <div class="paging-div">
 <asp:panel runat="server" id="pnl_First">
     <asp:LinkButton ID="lnkFirst" runat="server" OnCommand="lnkPaging_Click" ></asp:LinkButton>

@@ -12,7 +12,7 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ETO;
 using BSO;
-public partial class Client_Logo : System.Web.UI.UserControl
+public partial class Client_LogoLab : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {
