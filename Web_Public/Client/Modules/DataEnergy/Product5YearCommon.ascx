@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Product5YearCommon.ascx.cs" Inherits="Client_Modules_DataEnergy_Product5YearCommon" %>
+  <asp:PlaceHolder ID="productYearContainer" runat ="server"></asp:PlaceHolder>

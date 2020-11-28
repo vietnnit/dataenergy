@@ -21,7 +21,7 @@ using PR.Service;
 using System.Net;
 using ReportEF;
 
-public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web.UI.UserControl
+public partial class Client_Modules_DataEnergy_Product5Year26 : System.Web.UI.UserControl
 {
     string specifier = "0";
     int ReportId
@@ -116,8 +116,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             BindReportInfo();
             BindLog();
             BindReportFile();
-            GetNangLucSX();
         }
+
     }
 
     #region initControl
@@ -409,7 +409,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                     cbMoHinhQLNL_ChuaAD.Enabled = false;
                     cbMoHinhQLNL_DaAD.Enabled = false;
                     cbMoHinhQLNL_DaAD_ISO.Enabled = false;
-
                     BindInfoLabel();
                 }
             }
@@ -485,8 +484,38 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         ltPhoneParent.Text = txtPhoneReporter.Text;
     }
 
-
     #endregion
+    private ReportFuel ReceiveHtml()
+    {
+        ReportFuel faqs = new ReportFuel();
+        faqs.ProviceId = Convert.ToInt32(ddlProvinceReporter.SelectedValue);
+        faqs.DistrictId = Convert.ToInt32(ddlDistrictReporter.SelectedValue);
+        faqs.AreaId = Convert.ToInt32(ddlArea.SelectedValue);
+        faqs.SubAreaId = Convert.ToInt32(ddlSubArea.SelectedValue);
+        faqs.ReporterName = txtReportName.Text;
+        IFormatProvider culture = new System.Globalization.CultureInfo("en-US", true);
+        faqs.ReportDate = DateTime.ParseExact(txtReportDate.Text, "dd/MM/yyyy", culture);
+        faqs.ReporterName = txtReportName.Text;
+        faqs.Address = txtAddressReporter.Text;
+        faqs.Email = txtEmail.Text;
+        faqs.Phone = txtPhoneReporter.Text;
+        faqs.Fax = txtFaxReporter.Text;
+
+        if (memVal.OrgId > 0)
+        {
+            faqs.EnterpriseId = Convert.ToInt32(memVal.OrgId);
+            Enterprise enter = new EnterpriseService().FindByKey(faqs.EnterpriseId);
+            if (enter != null)
+            {
+                faqs.OrganizationId = enter.OrganizationId;
+            }
+        }
+        if (ddlYear.SelectedIndex > 0)
+            faqs.Year = Convert.ToInt32(ddlYear.SelectedValue);
+        return faqs;
+
+    }
+
     protected void lbtDownload_Click(object sender, EventArgs e)
     {
         LinkButton btnDownload = (LinkButton)sender;
@@ -518,670 +547,31 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             Response.End();
         }
     }
-
-    protected void btnExport_Click(object sender, EventArgs e)
+    protected void btn_add_Click(object sender, EventArgs e)
     {
-        #region get data
-        WordExtend ex = new WordExtend();
-        string temp = "TempReport/TemMauBaoCao" + drpmaubaocao.SelectedValue + ".doc";
-        ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
-        Enterprise or = new Enterprise();
-        EnterpriseService orser = new EnterpriseService();
-        or = orser.FindByKey(Convert.ToInt32(memVal.OrgId));
-
-        DataTable dtinfo = new DataTable();
-        ex.WriteToMergeField("BC_MaDN", memVal.UserName);
-        if (memVal.OrgId > 0)
+        try
         {
-            dtinfo = new ReportFuelService().GetInfoReportFuel(ReportId);
-        }
-
-        if (or != null)
-        {
-            ex.WriteToMergeField("BC_Title", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo1", or.Title);
-            ex.WriteToMergeField("BC_TenCoSo2", or.Title);
-
-            //Mô hình quản lý năng lượng
-            string emptyBoxImgUrl = Server.MapPath(ResolveUrl("~") + "TempReport/icons/unchecked-checkbox.png");
-            string checkedBoxImgUrl = Server.MapPath(ResolveUrl("~") + "TempReport/icons/checked-checkbox.png");
-
-            switch (or.MoHinhQLNL)
+            ReportFuel faqs = ReceiveHtml();
+            ReportFuelService faqsBSO = new ReportFuelService();
+            int ret = faqsBSO.Insert(faqs);
+            if (ret > 0)
             {
-                case 0:
-                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
-                    break;
-                case 1:
-                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD2", checkedBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
-                    break;
-                case 2:
-                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD3", checkedBoxImgUrl);
-                    break;
-                default:
-                    ex.BoolmarkInsertImage("QLNL_AD1", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD2", emptyBoxImgUrl);
-                    ex.BoolmarkInsertImage("QLNL_AD3", emptyBoxImgUrl);
-                    break;
-            }
-        }
-        else
-            ex.WriteToMergeField("BC_TenCoSo", "");
-        if (dtinfo.Rows[0]["Year"] != DBNull.Value)
-        {
-            int iCurrentYear = Convert.ToInt32(dtinfo.Rows[0]["Year"]);
-            string NextYear = dtinfo.Rows[0]["Year"].ToString();
-            ex.WriteToMergeField("BC_NextYear", NextYear);
-            ex.WriteToMergeField("BC_NextYear1", NextYear);
-            ex.WriteToMergeField("BC_NextYear2", NextYear);
-            ex.WriteToMergeField("BC_NextYear3", NextYear);
-            ex.WriteToMergeField("BC_Year1", NextYear);
-            ex.WriteToMergeField("BC_Year_1", (iCurrentYear - 1).ToString());
-            ex.WriteToMergeField("BC_Year_11", (iCurrentYear - 1).ToString());
-            ex.WriteToMergeField("BC_Year_111", (iCurrentYear - 1).ToString());
-
-
-            //ex.WriteToMergeField("BC_NextYear3", NextYear);
-        }
-        if (dtinfo.Rows[0]["Responsible"] != DBNull.Value)
-        {
-            ex.WriteToMergeField("BC_ChiuTrachNhiem", dtinfo.Rows[0]["Responsible"].ToString());
-        }
-        else
-            ex.WriteToMergeField("BC_ChiuTrachNhiem", "");
-
-        //if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
-        //{
-        //    ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-        //    ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-        //}
-        if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayNhan", Convert.ToDateTime(dtinfo.Rows[0]["ReceivedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayNhan", "");
-        if (dtinfo.Rows[0]["ConfirmedDate"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NgayXacNhan", Convert.ToDateTime(dtinfo.Rows[0]["ConfirmedDate"]).ToString("dd/MM/yyyy"));
-        else
-            ex.WriteToMergeField("BC_NgayXacNhan", "");
-        if (dtinfo.Rows[0]["SubAreaName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_PhanNganh", dtinfo.Rows[0]["SubAreaName"].ToString());
-        else
-            ex.WriteToMergeField("BC_PhanNganh", "");
-
-        if (dtinfo.Rows[0]["TaxCode"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TaxCode", dtinfo.Rows[0]["TaxCode"].ToString());
-        else
-            ex.WriteToMergeField("BC_TaxCode", "");
-
-        ex.WriteToMergeField("BC_Owner", ltOwner.Text);
-
-        if (or.Address != null)
-            ex.WriteToMergeField("BC_DiaChi", or.Address);
-        if (dtinfo.Rows[0]["DistrictName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Huyen", dtinfo.Rows[0]["DistrictName"].ToString());
-        else
-            ex.WriteToMergeField("BC_Huyen", "");
-        if (dtinfo.Rows[0]["ProvinceName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Tinh", dtinfo.Rows[0]["ProvinceName"].ToString());
-        else
-            ex.WriteToMergeField("BC_Tinh", "");
-        if (dtinfo.Rows[0]["ReporterName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_NguoiBC", dtinfo.Rows[0]["ReporterName"].ToString());
-        else
-            ex.WriteToMergeField("BC_NguoiBC", "");
-
-        if (dtinfo.Rows[0]["Fax"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Fax", dtinfo.Rows[0]["Fax"].ToString());
-        else
-            ex.WriteToMergeField("BC_Fax", "");
-        if (dtinfo.Rows[0]["Email"] != DBNull.Value)
-            ex.WriteToMergeField("BC_Email", dtinfo.Rows[0]["Email"].ToString());
-        else
-            ex.WriteToMergeField("BC_Email", "");
-
-        if (dtinfo.Rows[0]["Phone"] != DBNull.Value)
-            ex.WriteToMergeField("BC_DienThoai", dtinfo.Rows[0]["Phone"].ToString());
-        else
-            ex.WriteToMergeField("BC_DienThoai", "");
-        if (dtinfo.Rows[0]["ParentName"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TenCtyMe", dtinfo.Rows[0]["ParentName"].ToString());
-        else
-            ex.WriteToMergeField("BC_TenCtyMe", "");
-
-        if (dtinfo.Rows[0]["AddressParent"] != null)
-            ex.WriteToMergeField("BC_DiaChiP", dtinfo.Rows[0]["AddressParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_DiaChiP", "");
-
-        if (dtinfo.Rows[0]["DistrictNameP"] != null)
-            ex.WriteToMergeField("BC_HuyenP", dtinfo.Rows[0]["DistrictNameP"].ToString());
-        else
-            ex.WriteToMergeField("BC_HuyenP", "");
-
-        if (dtinfo.Rows[0]["ProvinceNameP"] != DBNull.Value)
-            ex.WriteToMergeField("BC_TinhP", dtinfo.Rows[0]["ProvinceNameP"].ToString());
-        else
-            ex.WriteToMergeField("BC_TinhP", "");
-
-        if (dtinfo.Rows[0]["PhoneParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_DienThoaiP", dtinfo.Rows[0]["PhoneParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_DienThoaiP", "");
-
-        if (dtinfo.Rows[0]["FaxParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_FaxP", dtinfo.Rows[0]["FaxParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_FaxP", "");
-        if (dtinfo.Rows[0]["EmailParent"] != DBNull.Value)
-            ex.WriteToMergeField("BC_EmailP", dtinfo.Rows[0]["EmailParent"].ToString());
-        else
-            ex.WriteToMergeField("BC_EmailP", "");
-
-        if (or.ActiveYear > 0)
-            ex.WriteToMergeField("ActiveYear", or.ActiveYear.ToString());
-        else
-            ex.WriteToMergeField("ActiveYear", "");
-
-        Infrastructure infra = new Infrastructure();
-        InfrastructureService infraService = new InfrastructureService();
-
-        infra = infraService.GetInfrastructureByReport(ReportId);
-        if (infra != null)
-        {
-            if (infra.ProduceAreaNo > 0)
-                ex.WriteToMergeField("ProduceAreaNo", infra.ProduceAreaNo.ToString());
-            else
-                ex.WriteToMergeField("ProduceAreaNo", "");
-            if (infra.OfficeAreaNo > 0)
-                ex.WriteToMergeField("OfficeAreaNo", infra.OfficeAreaNo.ToString());
-            else
-                ex.WriteToMergeField("OfficeAreaNo", "");
-            if (infra.ProduceEmployeeNo > 0)
-                ex.WriteToMergeField("ProduceEmployeeNo", infra.ProduceEmployeeNo.ToString());
-            else
-                ex.WriteToMergeField("ProduceEmployeeNo", "");
-            if (infra.OfficeEmployeeNo > 0)
-                ex.WriteToMergeField("OfficeEmployeeNo", infra.OfficeEmployeeNo.ToString());
-            else
-                ex.WriteToMergeField("OfficeEmployeeNo", "");
-        }
-        else
-        {
-            ex.WriteToMergeField("ProduceAreaNo", "");
-            ex.WriteToMergeField("OfficeAreaNo", "");
-            ex.WriteToMergeField("ProduceEmployeeNo", "");
-            ex.WriteToMergeField("OfficeEmployeeNo", "");
-        }
-
-
-        UsingElectrict usingElectrict = new UsingElectrict();
-        UsingElectrictService usingElectrictService = new UsingElectrictService();
-
-        //usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, false);
-        usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
-        if (usingElectrict != null)
-        {
-            //Su dung dien 2
-            //if (usingElectrict.Quantity > 0)
-            //    ex.WriteToMergeField("QuantityResult2", usingElectrict.Quantity.ToString());
-            //else
-            //    ex.WriteToMergeField("QuantityResult2", "");
-            //if (usingElectrict.InstalledCapacity > 0)
-            //    ex.WriteToMergeField("InstalledCapacityResult2", usingElectrict.InstalledCapacity.ToString());
-            //else
-            //    ex.WriteToMergeField("InstalledCapacityResult2", "");
-            //if (usingElectrict.Capacity > 0)
-            //    ex.WriteToMergeField("CapacityResult2", usingElectrict.Capacity.ToString());
-            //else
-            //    ex.WriteToMergeField("CapacityResult2", "");
-            //if (usingElectrict.BuyCost > 0)
-            //    ex.WriteToMergeField("BuyCostResult2", usingElectrict.BuyCost.ToString());
-            //else
-            //    ex.WriteToMergeField("BuyCostResult2", "");
-            //if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-            //    ex.WriteToMergeField("BuyPriceResult2", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
-            //else
-            //    ex.WriteToMergeField("BuyPriceResult2", "");
-            //if (usingElectrict.ProduceQty > 0)
-            //    ex.WriteToMergeField("ProduceQtyResult2", usingElectrict.ProduceQty.ToString());
-            //else
-            //    ex.WriteToMergeField("ProduceQtyResult2", "");
-            //if (usingElectrict.Technology != null)
-            //    ex.WriteToMergeField("TechnologyResult2", usingElectrict.Technology.ToString());
-            //else
-            //    ex.WriteToMergeField("TechnologyResult2", "");
-            //if (usingElectrict.FuelId > 0)
-            //{
-
-            //    Fuel fuel = new Fuel();
-
-            //    fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-            //    if (fuel != null)
-            //    {
-            //        ex.WriteToMergeField("FuelNameResult2", fuel.FuelName);
-            //        ex.WriteToMergeField("FuelNameResult", fuel.FuelName);
-            //    }
-            //    else
-            //    {
-            //        ex.WriteToMergeField("FuelNameResult2", "");
-            //        ex.WriteToMergeField("FuelNameResult", "");
-            //    }
-            //}
-            //else
-            //{
-            //    ex.WriteToMergeField("FuelNameResult2", "");
-            //    ex.WriteToMergeField("FuelNameResult", "");
-            //}
-            //if (usingElectrict.PriceProduce > 0)
-            //    ex.WriteToMergeField("PriceProduceResult2", usingElectrict.PriceProduce.ToString());
-            //else
-            //    ex.WriteToMergeField("PriceProduceResult2", "");
-
-
-            //Su dung dien 1
-            if (usingElectrict.Capacity > 0)
-                ex.WriteToMergeField("QuantityResult", usingElectrict.Capacity.ToString());
-            else
-                ex.WriteToMergeField("QuantityResult", "");
-
-            if (usingElectrict.InstalledCapacity > 0)
-                ex.WriteToMergeField("CapacityResult", usingElectrict.InstalledCapacity.ToString());
-            else
-                ex.WriteToMergeField("CapacityResult", "");
-
-
-            //if (usingElectrict.Capacity > 0)
-            //    ex.WriteToMergeField("CapacityResult", usingElectrict.Capacity.ToString());
-            //else
-            //    ex.WriteToMergeField("CapacityResult", "");
-            //if (usingElectrict.BuyCost > 0)
-            //    ex.WriteToMergeField("BuyCostResult", usingElectrict.BuyCost.ToString());
-            //else
-            //    ex.WriteToMergeField("BuyCostResult", "");
-
-            //if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-            //    ex.WriteToMergeField("BuyPriceResult", Math.Round((usingElectrict.BuyCost / (usingElectrict.Capacity * 1000)), 0).ToString());
-            //else
-            //    ex.WriteToMergeField("BuyPriceResult", "");
-            //if (usingElectrict.ProduceQty > 0)
-            //    ex.WriteToMergeField("ProduceQtyResult", usingElectrict.ProduceQty.ToString());
-            //else
-            //    ex.WriteToMergeField("ProduceQtyResult", "");
-            //if (usingElectrict.Technology != null)
-            //    ex.WriteToMergeField("TechnologyResult", usingElectrict.Technology.ToString());
-            //else
-            //    ex.WriteToMergeField("TechnologyResult", "");
-            //if (usingElectrict.FuelId > 0)
-            //    ex.WriteToMergeField("FuelNameResult", usingElectrict.FuelId.ToString());
-            //else
-            //    ex.WriteToMergeField("FuelNameResult", "");
-
-            if (usingElectrict.CongSuatBan > 0)
-                ex.WriteToMergeField("CongSuatBan", usingElectrict.CongSuatBan.ToString());
-            else
-                ex.WriteToMergeField("CongSuatBan", "");
-
-            if (usingElectrict.SanLuongBan > 0)
-                ex.WriteToMergeField("SanLuongBan", usingElectrict.SanLuongBan.ToString());
-            else
-                ex.WriteToMergeField("SanLuongBan", "");
-        }
-        else
-        {
-            ex.WriteToMergeField("QuantityResult2", "");
-            ex.WriteToMergeField("InstalledCapacityResult2", "");
-            ex.WriteToMergeField("CapacityResult2", "");
-            ex.WriteToMergeField("BuyCostResult2", "");
-            ex.WriteToMergeField("ProduceQtyResult2", "");
-            ex.WriteToMergeField("TechnologyResult2", "");
-            ex.WriteToMergeField("FuelNameResult2", "");
-            ex.WriteToMergeField("PriceProduceResult2", "");
-            ex.WriteToMergeField("BuyPriceResult2", "");
-
-            ex.WriteToMergeField("QuantityResult", "");
-            ex.WriteToMergeField("InstalledCapacityResult", "");
-            ex.WriteToMergeField("CapacityResult", "");
-            ex.WriteToMergeField("BuyCostResult", "");
-            ex.WriteToMergeField("ProduceQtyResult", "");
-            ex.WriteToMergeField("TechnologyResult", "");
-            ex.WriteToMergeField("FuelNameResult", "");
-            ex.WriteToMergeField("BuyPriceResult", "");
-
-            ex.WriteToMergeField("CongSuatBan", "");
-            ex.WriteToMergeField("SanLuongBan", "");
-        }
-
-
-        //usingElectrict = new UsingElectrict();
-
-        //usingElectrict = usingElectrictService.GetUsingElectrictByReport(ReportId, true);
-        //if (usingElectrict != null)
-        //{
-        //    //Su dung dien 2
-        //    if (usingElectrict.Quantity > 0)
-        //        ex.WriteToMergeField("QuantityPlan", usingElectrict.Quantity.ToString());
-        //    else
-        //        ex.WriteToMergeField("QuantityPlan", "");
-        //    if (usingElectrict.InstalledCapacity > 0)
-        //        ex.WriteToMergeField("InstalledCapacityPlan", usingElectrict.InstalledCapacity.ToString());
-        //    else
-        //        ex.WriteToMergeField("InstalledCapacityPlan", "");
-        //    if (usingElectrict.Capacity > 0)
-        //        ex.WriteToMergeField("CapacityPlan", usingElectrict.Capacity.ToString());
-        //    else
-        //        ex.WriteToMergeField("CapacityPlan", "");
-        //    if (usingElectrict.BuyCost > 0)
-        //        ex.WriteToMergeField("BuyCostPlan", usingElectrict.BuyCost.ToString());
-        //    else
-        //        ex.WriteToMergeField("BuyCostPlan", "");
-
-        //    if (usingElectrict.BuyCost > 0 && usingElectrict.Capacity > 0)
-        //    {
-        //        decimal buypricePlan = Math.Round(usingElectrict.BuyCost / usingElectrict.Capacity, 2);
-        //        ex.WriteToMergeField("BuyPricePlan", buypricePlan.ToString());
-        //    }
-        //    else
-        //    {
-        //        ex.WriteToMergeField("BuyPricePlan", " ");
-        //    }
-
-        //    if (usingElectrict.ProduceQty > 0)
-        //        ex.WriteToMergeField("ProduceQtyPlan", usingElectrict.ProduceQty.ToString());
-        //    else
-        //        ex.WriteToMergeField("ProduceQtyPlan", "");
-        //    if (usingElectrict.Technology != null)
-        //        ex.WriteToMergeField("TechnologyPlan", usingElectrict.Technology.ToString());
-        //    else
-        //        ex.WriteToMergeField("TechnologyPlan", "");
-        //    if (usingElectrict.FuelId > 0)
-        //    {
-        //        Fuel fuel = new Fuel();
-
-        //        fuel = new FuelService().FindByKey(usingElectrict.FuelId);
-        //        if (fuel != null)
-        //        {
-        //            ex.WriteToMergeField("FuelNamePlan", fuel.FuelName);
-
-        //        }
-        //        else
-        //        {
-        //            ex.WriteToMergeField("FuelNamePlan", "");
-
-        //        }
-        //    }
-        //    else
-        //    {
-        //        ex.WriteToMergeField("FuelNamePlan", "");
-        //    }
-        //    if (usingElectrict.PriceProduce > 0)
-        //        ex.WriteToMergeField("PriceProducePlan", usingElectrict.PriceProduce.ToString());
-        //    else
-        //        ex.WriteToMergeField("PriceProducePlan", "");
-        //}
-        //else
-        //{
-        //    ex.WriteToMergeField("QuantityPlan", "");
-        //    ex.WriteToMergeField("InstalledCapacityPlan", "");
-        //    ex.WriteToMergeField("CapacityPlan", "");
-        //    ex.WriteToMergeField("BuyCostPlan", "");
-        //    ex.WriteToMergeField("ProduceQtyPlan", "");
-        //    ex.WriteToMergeField("TechnologyPlan", "");
-        //    ex.WriteToMergeField("FuelNamePlan", "");
-        //    ex.WriteToMergeField("PriceProducePlan", "");
-        //    ex.WriteToMergeField("BuyPricePlan", " ");
-        //}
-
-        DataTable dthientai = new DataTable();
-        DataTable dtdukien = new DataTable();
-
-
-
-        DataSet dshientai = new DataSet("tbl1");
-
-        DataTable dt = new DataTable();
-
-        dt = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
-
-        dt.Columns.Add("dvnhietnang", typeof(string));
-        dt.Columns.Add("dvnhieulieu", typeof(string));
-        dthientai = dt.Clone();
-        foreach (DataRow item in dt.Rows)
-        {
-
-            DataRow workRow = null;
-            workRow = dthientai.NewRow();
-            workRow = item;
-            if (workRow["MeasurementName"].ToString().Contains("Mét khối"))
-            {
-                workRow["dvnhietnang"] = "kJ/m3";
+                Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam.aspx?Id=" + ret + "&activetab=1");
+                clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
             }
             else
-            {
-                workRow["dvnhietnang"] = "kJ/kg";
-            }
-            if (workRow["MeasurementName"].ToString().Contains("tấn") || workRow["MeasurementName"].ToString().Contains("Klg"))
-            {
-                workRow["dvnhieulieu"] = "kJ/tấn";
-            }
-            else
-            {
-                workRow["dvnhieulieu"] = "đ/m3";
-            }
-            workRow.AcceptChanges();
-            dthientai.AcceptChanges();
-            dthientai.ImportRow(workRow);
+                clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
         }
-        dt = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, true);
-        dt.Columns.Add("dvnhietnang", typeof(string));
-        dt.Columns.Add("dvnhieulieu", typeof(string));
-        dt.Columns.Add("stt", typeof(string));
-        dtdukien = dt.Clone();
-        int counter = 0;
-        foreach (DataRow item in dt.Rows)
+        catch (Exception ex)
         {
-            counter++;
-            DataRow workRow = null;
-            workRow = dtdukien.NewRow();
-            workRow = item;
-            if (workRow["MeasurementName"].ToString().Contains("Mét khối"))
-            {
-                workRow["dvnhietnang"] = "kJ/m3";
-            }
-            else
-            {
-                workRow["dvnhietnang"] = "kJ/kg";
-            }
-            if (workRow["MeasurementName"].ToString().Contains("tấn") || workRow["MeasurementName"].ToString().Contains("Klg"))
-            {
-                workRow["dvnhieulieu"] = "kJ/tấn";
-            }
-            else
-            {
-                workRow["dvnhieulieu"] = "đ/m3";
-            }
-            workRow["stt"] = counter.ToString();
-            workRow.AcceptChanges();
-            dtdukien.ImportRow(workRow);
-            dtdukien.AcceptChanges();
-
+            clientview.Text = ex.Message.ToString();
         }
-        ProductCapacityService productCapacityService = new ProductCapacityService();
-        DataTable tblProductResult = new DataTable();
-        tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
-        //Thêm cột tính lại giá trị tiêu thụ năng lượng theo sp
-        tblProductResult.Columns.Add("TTNLTHEOSP", typeof(string));
-
-        ReportModels rp = new ReportModels();
-        foreach (DataRow r in tblProductResult.Rows)
-        {
-            int _ProductCapacityId = (int)r["Id"];
-            var data = (from a in rp.DE_ProductCapacityFuel
-                        join b in rp.DE_Measurement on a.MeasurementId equals b.Id
-                        join c in rp.DE_Fuel on a.FuelId equals c.Id
-                        where a.ProductCapacityId == _ProductCapacityId
-                        select new
-                        {
-                            c.FuelName,
-                            a.ConsumeQty,
-                            b.MeasurementName
-                        }).ToList();
-
-            string tmp = string.Empty;
-            foreach (var item in data)
-            {
-                tmp += string.Format("{0}: {1}({2})\n", item.FuelName, item.ConsumeQty, item.MeasurementName);
-            }
-
-            r["TTNLTHEOSP"] = tmp;
-        }
-
-        dshientai.Merge(tblProductResult);
-        dshientai.Tables[0].TableName = "tbl1";
-
-        dshientai.Merge(dthientai);
-
-        dshientai.Tables[1].TableName = "tbl2";
-        //ex.WriteDataSetToMergeField(dshientai);
-
-        DataTable tblProductPlan = new DataTable();
-        tblProductPlan = productCapacityService.GetDataCapacity(ReportId, true);
-        dshientai.Merge(tblProductPlan);
-        dshientai.Tables[2].TableName = "tbl3";
-
-        dshientai.Merge(dtdukien);
-        dshientai.Tables[3].TableName = "tbl4";
-        //ex.WriteDataSetToMergeField(dshientai);
-
-
-        DataSet dsData = new DataSet();
-        PlanTBService plangpservice = new PlanTBService();
-        PlanTKNLService plangTKNLservice = new PlanTKNLService();
-        DataTable tblGPTKNLPlan = new DataTable();
-        tblGPTKNLPlan = plangTKNLservice.GetPlanTKNLEnerprise(Convert.ToInt32(memVal.OrgId), ReportId, false, true);
-        dshientai.Merge(tblGPTKNLPlan);
-        dshientai.Tables[4].TableName = "tbl5";
-
-        DataTable tblTBPlan = new DataTable();
-        tblTBPlan = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, true);
-        dshientai.Merge(tblTBPlan);
-        dshientai.Tables[5].TableName = "tbl6";
-
-        dshientai.Merge(tblProductPlan.Copy());
-        dshientai.Tables[6].TableName = "tbl7";
-
-        dshientai.Merge(dthientai.Copy());
-        dshientai.Tables[7].TableName = "tbl8";
-
-        DataTable tblGPTKNLResult = new DataTable();
-        tblGPTKNLResult = plangTKNLservice.GetPlanTKNLEnerprise(Convert.ToInt32(memVal.OrgId), ReportId, false, false);
-        dshientai.Merge(tblGPTKNLResult);
-        dshientai.Tables[8].TableName = "tbl9";
-        DataTable tblTBResult = new DataTable();
-        tblTBResult = plangpservice.GetPlanTBEnterprise(memVal.OrgId, ReportId, false, false);
-        DataTable tblTBResultR = tblTBResult.Clone();
-        tblTBResultR.Columns.Add(new DataColumn("CoTH"));
-        DataTable tblTBResultP = tblTBResult.Clone();
-        tblTBResultP.Columns.Add(new DataColumn("CoTH"));
-        if (tblTBResult != null && tblTBResult.Rows.Count > 0)
-        {
-            for (int i = 0; i < tblTBResult.Rows.Count; i++)
-            {
-                if (tblTBResult.Rows[i]["IsNew"] != DBNull.Value && Convert.ToBoolean(tblTBResult.Rows[i]["IsNew"]))
-                {
-                    DataRow dr = tblTBResultR.NewRow();
-                    dr["IsNew"] = tblTBResult.Rows[i]["IsNew"];
-                    dr["NameTB"] = tblTBResult.Rows[i]["NameTB"];
-                    dr["TinhNang"] = tblTBResult.Rows[i]["TinhNang"];
-                    dr["CachLapDat"] = tblTBResult.Rows[i]["CachLapDat"];
-                    dr["LyDoLapDat"] = tblTBResult.Rows[i]["LyDoLapDat"];
-                    dr["KhaNang"] = tblTBResult.Rows[i]["KhaNang"];
-                    dr["CamKet"] = tblTBResult.Rows[i]["CamKet"];
-                    dr["Nam"] = tblTBResult.Rows[i]["Nam"];
-                    if (tblTBResult.Rows[i]["IsExecuted"] != DBNull.Value && Convert.ToBoolean(tblTBResult.Rows[i]["IsExecuted"]))
-                    {
-                        dr["CoTH"] = "Có";
-                    }
-                    else
-                    {
-                        dr["CoTH"] = "Không";
-                    }
-                    tblTBResultR.Rows.Add(dr);
-                }
-                else
-                {
-                    DataRow dr = tblTBResultP.NewRow();
-                    dr["IsNew"] = tblTBResult.Rows[i]["IsNew"];
-                    dr["NameTB"] = tblTBResult.Rows[i]["NameTB"];
-                    dr["TinhNang"] = tblTBResult.Rows[i]["TinhNang"];
-                    dr["CachLapDat"] = tblTBResult.Rows[i]["CachLapDat"];
-                    dr["LyDoLapDat"] = tblTBResult.Rows[i]["LyDoLapDat"];
-                    dr["KhaNang"] = tblTBResult.Rows[i]["KhaNang"];
-                    dr["CamKet"] = tblTBResult.Rows[i]["CamKet"];
-                    dr["Nam"] = tblTBResult.Rows[i]["Nam"];
-                    if (tblTBResult.Rows[i]["IsExecuted"] != DBNull.Value && Convert.ToBoolean(tblTBResult.Rows[i]["IsExecuted"]))
-                    {
-                        dr["CoTH"] = "Có";
-                    }
-                    else
-                    {
-                        dr["CoTH"] = "Không";
-                    }
-                    tblTBResultP.Rows.Add(dr);
-                }
-            }
-        }
-        dshientai.Merge(tblTBResultP);
-        dshientai.Tables[9].TableName = "tbl10";
-
-        dshientai.Tables.Add(tblTBResultR);
-        dshientai.Tables[10].TableName = "tbl11";
-
-
-        DataTable dtDienTuSX = GetDienTuSanXuat();
-        dshientai.Tables.Add(dtDienTuSX);
-        dshientai.Tables[11].TableName = "tbl12";
-        dshientai.Merge(dtDienTuSX);
-
-        //Tính toán điện tổng điện tự sx
-        decimal _InstalledCapacityResult = 0;
-        decimal _ProduceQtyResult = 0;
-        decimal _temp = 0;
-        foreach (DataRow r in dtDienTuSX.Rows)
-        {
-            _temp = 0;
-            if (decimal.TryParse(r["CongSuatLapDat"].ToString(), out _temp))
-                _InstalledCapacityResult += _temp;
-            _temp = 0;
-            if (decimal.TryParse(r["DienNangSanXuat"].ToString(), out _temp))
-                _ProduceQtyResult += _temp;
-        }
-
-        if (_InstalledCapacityResult > 0)
-            ex.WriteToMergeField("InstalledCapacityResult", _InstalledCapacityResult.ToString());
-        else
-            ex.WriteToMergeField("InstalledCapacityResult", "");
-
-        if (_ProduceQtyResult > 0)
-            ex.WriteToMergeField("ProduceQtyResult", _ProduceQtyResult.ToString());
-        else
-            ex.WriteToMergeField("ProduceQtyResult", "");
-
-
-        ex.WriteDataSetToMergeField(dshientai);
-        // dsg.Tables.Add(dst); 
-        //var dt2 = ExcelExportHelper.CreateGroupInDT(dt, "DepName", "STT");
-        #endregion
-        ex.Save(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc"));
-        HttpContext.Current.Response.Redirect(string.Format("~/Download.aspx?fp={0}&fn={1}",
-              System.IO.Path.GetFileName(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-hang-nam-" + dtinfo.Rows[0]["Year"] + ".doc")),
-              ""
-          ));
+    }
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        LinkButton btnDelete = (LinkButton)sender;
+        ReportFuelDetailService faqsBSO = new ReportFuelDetailService();
+        faqsBSO.Delete(Convert.ToInt32(btnDelete.CommandArgument));
     }
 
     protected void btnExport5_Click(object sender, EventArgs e)
@@ -1566,6 +956,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     {
         try
         {
+            //ReportFuel faqs = ReceiveHtml();
+
             ReportFuelService faqsBSO = new ReportFuelService();
 
             if (ReportId > 0)
@@ -1709,7 +1101,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             ScriptManager.RegisterStartupScript(this, GetType(), "sendFeedback", "ShowDialogFeedback();aler('Gửi không thành công, vui lòng thử lại.')", true);
         }
     }
-
     protected void btnSend_Click(object sender, EventArgs e)
     {
         try
@@ -1795,12 +1186,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             clientview.Text = ex.Message.ToString();
         }
     }
-
     protected void btnEditInfo_Click(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "showformInfo", "showformInfo();", true);
     }
-
     protected void btn_edit_Click(object sender, EventArgs e)
     {
         try
@@ -1869,24 +1258,11 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
     }
 
-    protected void btn_list_click(object sender, EventArgs e)
-    {
-        Response.Redirect("~/Admin/listfaqs/Default.aspx");
-
-    }
-
-    protected void btn_new_click(object sender, EventArgs e)
-    {
-        Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam.aspx");
-
-    }
-
     protected void ddlArea_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindSubArea();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo('" + hdnNextYear.Value + "');", true);
     }
-
     void BindDistrictReporter()
     {
         ddlDistrictReporter.Items.Clear();
@@ -1916,7 +1292,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             ddlDistrictReporter.Items.Insert(0, new ListItem("---Chọn Quận/Huyện---", ""));
         }
     }
-
     void BindDistrict()
     {
         ddlDistrict.Items.Clear();
@@ -1947,53 +1322,22 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
 
     }
-
     protected void ddlProvince_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindDistrict();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo();", true);
     }
-
     protected void ddlProvinceReporter_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindDistrictReporter();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo();", true);
     }
 
-    private DataTable GetDienTuSanXuat()
-    {
-        try
-        {
-            DataTable res = new DataTable();
-            res.Columns.Add("TenNhienLieu", typeof(string));
-            res.Columns.Add("CongSuatLapDat", typeof(string));
-            res.Columns.Add("DienNangSanXuat", typeof(string));
 
-            ReportModels reportModels = new ReportModels();
-            var data = (from a in reportModels.DE_ElectrictTechnology
-                        join b in reportModels.DE_ElectrictProduce
-                        on a.TechKey equals b.TechKey
-                        where b.ReportId == ReportId
-                        select new { TenNhienLieu = a.TechName, CongSuatLapDat = b.InstalledCapacity, DienNangSanXuat = b.ProduceQty }
-                        ).Distinct().ToList();
-            int counter = 1;
-            foreach (var item in data)
-            {
-                DataRow row = res.NewRow();
-                row["TenNhienLieu"] = string.Format("{0}.{1}", counter, item.TenNhienLieu);
-                row["CongSuatLapDat"] = item.CongSuatLapDat.ToString();
-                row["DienNangSanXuat"] = item.DienNangSanXuat.ToString();
-                res.Rows.Add(row);
-                counter++;
-            }
-            return res;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
+    #region vietnn edit bao cao
+    //1. Thêm bảng 2.2.2 Tiêu thụ điện
+    //Cấu trúc bảng dựa trên bootstrap html => sẽ vẽ bảng từ code .cs
+    
     DataTable GetKQThucHienKeHoach()
     {
         StringBuilder sb = new StringBuilder();
@@ -2128,65 +1472,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         return tbl;
     }
 
-    private void GetNangLucSX()
+
+    private void BindNangLucSX()
     {
-        ReportModels rp = new ReportModels();
-        var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
-        var data = (from a in rp.DE_Enterprise
-                    join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
-                    where a.Id == memVal.OrgId
-                    select b).FirstOrDefault();
-        var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);
-        string BCTemp = loadTemp.TemplateBC.ToUpper();
-        //////////////////////////////////
-        switch (BCTemp)
-        {
-            case "BC2.1.DOCX":
-                CreateReport21();
-                break;
-            case "BC2.2.DOCX":
-                break;
-            case "BC2.3.DOCX":
-                break;
-            case "BC2.4.DOCX":
-                break;
-            case "BC2.5.DOCX":
-                break;
-            case "BC2.6.DOCX":
-                break;
 
-        }
     }
-
-    private string CreateReport21()
-    {
-        try
-        {
-            string table = string.Empty;
-            table += "<table class='table table-bordered table - hover mbn'>";
-            table += "<thead>";
-            table += "<tr class='primary fs12'>";
-            table += "<th>Tên sản phẩm</th>";
-            table += "<th style='width: 10%'>Đơn vị đo</th>";
-            table += "<th style='width: 15%'>Theo thiết kế</th>";
-            table += "<th style='width: 20%'>Mức sản xuất hiện tại</th>";
-            table += "</tr>";
-            table += "</thead>";
-            table += "<tbody>";
-
-            //Load data
-            table += "";
-
-            table += "</tbody>";
-            table += "</table>";
-            return string.Empty;
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
-    }
+    #endregion
 }
 
 

@@ -1,0 +1,3 @@
+﻿Thêm báo cáo 5 năm
+1. Thêm widget Product5YearCommon.ascx
+2. Hiệu chỉnh page Trang Báo cáo số liệu hàng năm(slug: bao-cao-so-lieu-hang-nam): Thay main control= Product5YearCommon.ascx

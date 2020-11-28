@@ -31,7 +31,7 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     void BindReportTemplate()
     {
         ReportModels rp = new ReportModels();
-        var list = rp.DE_BaocaoLinhVuc.ToList();
+        var list = rp.DE_BaocaoLinhVuc.Where(x => x.PhanLoaiBC == ReportKey.PLAN).ToList();
         ddlReportTemplate.DataValueField = "AutoId";
         ddlReportTemplate.DataTextField = "TenMauBC";
         ddlReportTemplate.DataSource = list;

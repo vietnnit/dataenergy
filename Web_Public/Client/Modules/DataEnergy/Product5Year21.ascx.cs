@@ -21,7 +21,7 @@ using PR.Service;
 using System.Net;
 using ReportEF;
 
-public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web.UI.UserControl
+public partial class Client_Modules_DataEnergy_Product5Year21 : System.Web.UI.UserControl
 {
     string specifier = "0";
     int ReportId
@@ -114,10 +114,17 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             BindDistrictReporter();
             BindEnterprise();
             BindReportInfo();
+            BindFuel();
+            BindMeasurement();
+            BindDataDetail();
             BindLog();
             BindReportFile();
-            GetNangLucSX();
+
+            //
+            CreateTable_TieuThuDien(ReportId);
+            Load_ElectrictTechno();
         }
+
     }
 
     #region initControl
@@ -268,6 +275,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     {
         if (ReportId > 0)
         {
+            btnAddFuel.Attributes.Add("onclick", "javascript:SelectUrl(" + ReportId + ",false);return false;");
+            btnAddFuelFuture.Attributes.Add("onclick", "javascript:SelectUrl(" + ReportId + ",true);return false;");
+            btnAddFuel.Visible = true;
+            btnAddFuelFuture.Visible = true;
             btn_edit2.Visible = true;
             AllowEdit = true;
             try
@@ -285,6 +296,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                         btnReSend.Visible = false;
                         btnSaveResend.Visible = false;
                         btnSaveSend.Visible = false;
+                        btnAddFuel.Visible = false;
+                        btnAddFuelFuture.Visible = false;
                         btn_edit2.Visible = false;
                         AllowEdit = false;
                     }
@@ -298,6 +311,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                             btnReSend.Visible = false;
                             btnSaveResend.Visible = false;
                             btnSaveSend.Visible = false;
+                            btnAddFuel.Visible = false;
+                            btnAddFuelFuture.Visible = false;
                             btn_edit2.Visible = false;
                             AllowEdit = false;
                         }
@@ -323,9 +338,17 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                         }
                     }
 
+                    ucDetailPlanYear.ReportYear = report.Year;
+                    ucDetailPlanYear.AllowEdit = AllowEdit;
+                    ucDetailPlanYear.ReportId = ReportId;
+
                     ucInputPlan5Year.ReportYear = report.Year;
                     ucInputPlan5Year.AllowEdit = AllowEdit;
                     ucInputPlan5Year.ReportId = ReportId;
+
+                    ucProduct.ReportYear = report.Year;
+                    ucProduct.AllowEdit = AllowEdit;
+                    ucProduct.ReportId = ReportId;
 
                     if (memVal.OrgId > 0 && report.EnterpriseId != Convert.ToInt32(memVal.OrgId))//Neu                     
                         Response.Redirect(ResolveUrl("~"));
@@ -333,7 +356,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                     txtReportName.Text = report.ReporterName;
                     if (report.SendDate != null && report.SendDate.Year > 1)
                         txtReportDate.Text = String.Format("{0:dd/MM/yyyy}", report.SendDate);//DateTime.Parse(faqs.PostDate.ToString()).ToString("dd/MM/yyyy hh:mm", ci); // faqs.PostDate.ToString();               
-
+                    ltDataCurrentTitle.Text = "1. Nhiên liệu tiêu thụ năm " + (report.Year - 1);
+                    //ltDataNextYearTitle.Text = "2. Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
+                    ltDataNextYearTitle.Text = "Nhiên liệu tiêu thụ dự kiến năm " + report.Year.ToString();
                     txtEnterpriseName.Text = report.CompanyName;
                     txtResponsible.Text = report.Responsible;
                     txtMST.Text = report.TaxCode;
@@ -410,6 +435,9 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                     cbMoHinhQLNL_DaAD.Enabled = false;
                     cbMoHinhQLNL_DaAD_ISO.Enabled = false;
 
+
+                    BindReportDetail();
+                    BindReportDetailNext();
                     BindInfoLabel();
                 }
             }
@@ -484,9 +512,52 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         ltAddressParent.Text = txtAddressReporter.Text;
         ltPhoneParent.Text = txtPhoneReporter.Text;
     }
-
-
+    void BindReportDetail()
+    {
+        DataTable dtCurrent = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, false);
+        rptNoFuelCurrent.DataSource = dtCurrent;
+        rptNoFuelCurrent.DataBind();
+        ltTotal_TOE.Text = "Tổng năng lượng tiêu thụ quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE, 2) + "</span>";
+    }
+    void BindReportDetailNext()
+    {
+        DataTable dtFuture = new ReportFuelDetailService().GetNoFuelDetailByReport(ReportId, true);
+        rptNoFuelFuture.DataSource = dtFuture;
+        rptNoFuelFuture.DataBind();
+        ltTotal_TOE_Future.Text = "Tổng năng lượng tiêu thụ dự kiến quy đổi ra TOE: <span style='color:red'>" + Tool.ConvertDecimalToString(No_TOE_Future, 2) + "</span>";
+    }
     #endregion
+    private ReportFuel ReceiveHtml()
+    {
+        ReportFuel faqs = new ReportFuel();
+        faqs.ProviceId = Convert.ToInt32(ddlProvinceReporter.SelectedValue);
+        faqs.DistrictId = Convert.ToInt32(ddlDistrictReporter.SelectedValue);
+        faqs.AreaId = Convert.ToInt32(ddlArea.SelectedValue);
+        faqs.SubAreaId = Convert.ToInt32(ddlSubArea.SelectedValue);
+        faqs.ReporterName = txtReportName.Text;
+        IFormatProvider culture = new System.Globalization.CultureInfo("en-US", true);
+        faqs.ReportDate = DateTime.ParseExact(txtReportDate.Text, "dd/MM/yyyy", culture);
+        faqs.ReporterName = txtReportName.Text;
+        faqs.Address = txtAddressReporter.Text;
+        faqs.Email = txtEmail.Text;
+        faqs.Phone = txtPhoneReporter.Text;
+        faqs.Fax = txtFaxReporter.Text;
+
+        if (memVal.OrgId > 0)
+        {
+            faqs.EnterpriseId = Convert.ToInt32(memVal.OrgId);
+            Enterprise enter = new EnterpriseService().FindByKey(faqs.EnterpriseId);
+            if (enter != null)
+            {
+                faqs.OrganizationId = enter.OrganizationId;
+            }
+        }
+        if (ddlYear.SelectedIndex > 0)
+            faqs.Year = Convert.ToInt32(ddlYear.SelectedValue);
+        return faqs;
+
+    }
+
     protected void lbtDownload_Click(object sender, EventArgs e)
     {
         LinkButton btnDownload = (LinkButton)sender;
@@ -518,7 +589,34 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             Response.End();
         }
     }
+    protected void btn_add_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ReportFuel faqs = ReceiveHtml();
+            ReportFuelService faqsBSO = new ReportFuelService();
+            int ret = faqsBSO.Insert(faqs);
+            if (ret > 0)
+            {
+                Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam.aspx?Id=" + ret + "&activetab=1");
+                clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
+            }
+            else
+                clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
+        }
+        catch (Exception ex)
+        {
+            clientview.Text = ex.Message.ToString();
+        }
+    }
+    protected void btnDelete_Click(object sender, EventArgs e)
+    {
+        LinkButton btnDelete = (LinkButton)sender;
+        ReportFuelDetailService faqsBSO = new ReportFuelDetailService();
+        faqsBSO.Delete(Convert.ToInt32(btnDelete.CommandArgument));
+        BindReportDetail();
 
+    }
     protected void btnExport_Click(object sender, EventArgs e)
     {
         #region get data
@@ -1183,7 +1281,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
               ""
           ));
     }
-
     protected void btnExport5_Click(object sender, EventArgs e)
     {
         #region get data
@@ -1566,6 +1663,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     {
         try
         {
+            //ReportFuel faqs = ReceiveHtml();
+
             ReportFuelService faqsBSO = new ReportFuelService();
 
             if (ReportId > 0)
@@ -1709,7 +1808,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             ScriptManager.RegisterStartupScript(this, GetType(), "sendFeedback", "ShowDialogFeedback();aler('Gửi không thành công, vui lòng thử lại.')", true);
         }
     }
-
     protected void btnSend_Click(object sender, EventArgs e)
     {
         try
@@ -1795,12 +1893,10 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             clientview.Text = ex.Message.ToString();
         }
     }
-
     protected void btnEditInfo_Click(object sender, EventArgs e)
     {
         ScriptManager.RegisterStartupScript(this, GetType(), "showformInfo", "showformInfo();", true);
     }
-
     protected void btn_edit_Click(object sender, EventArgs e)
     {
         try
@@ -1874,19 +1970,66 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         Response.Redirect("~/Admin/listfaqs/Default.aspx");
 
     }
-
     protected void btn_new_click(object sender, EventArgs e)
     {
         Response.Redirect(ResolveUrl("~") + "bao-cao-so-lieu-hang-nam.aspx");
 
     }
+    protected void btnEditDetail_Click(object sender, EventArgs e)
+    {
+        LinkButton btnEdit = (LinkButton)sender;
+        if (btnEdit != null)
+        {
+            hdnDetailId.Value = btnEdit.CommandArgument;
+            BindDataDetail();
+            ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail(" + hdnNextYear.Value + ");", true);
+        }
 
+    }
+
+
+    protected void rptNoFuelFuture_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemIndex == 0) No_TOE_Future = 0;
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView item = (DataRowView)e.Item.DataItem;
+            if (item["NoFuel_TOE"] != DBNull.Value)
+            {
+                No_TOE_Future = No_TOE_Future + Convert.ToDecimal(item["NoFuel_TOE"]);
+            }
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+            btnDelete.Visible = AllowEdit;
+            btnEdit.Visible = AllowEdit;
+
+            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",false); return false;");
+
+        }
+    }
+    protected void rptNoFuelCurrent_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemIndex == 0) No_TOE = 0;
+        if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        {
+            DataRowView item = (DataRowView)e.Item.DataItem;
+            if (item["NoFuel_TOE"] != DBNull.Value)
+            {
+                No_TOE = No_TOE + Convert.ToDecimal(item["NoFuel_TOE"]);
+            }
+            LinkButton btnDelete = (LinkButton)e.Item.FindControl("btnDelete");
+            LinkButton btnEdit = (LinkButton)e.Item.FindControl("btnEdit");
+            btnDelete.Visible = AllowEdit;
+            btnEdit.Visible = AllowEdit;
+            //btnEdit.Attributes.Add("onclick", "javascript:UpdateFuel(" + btnEdit.CommandArgument + ",true); return false;");            
+
+        }
+    }
     protected void ddlArea_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindSubArea();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo('" + hdnNextYear.Value + "');", true);
     }
-
     void BindDistrictReporter()
     {
         ddlDistrictReporter.Items.Clear();
@@ -1916,7 +2059,6 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             ddlDistrictReporter.Items.Insert(0, new ListItem("---Chọn Quận/Huyện---", ""));
         }
     }
-
     void BindDistrict()
     {
         ddlDistrict.Items.Clear();
@@ -1947,17 +2089,485 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
 
     }
-
     protected void ddlProvince_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindDistrict();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo();", true);
     }
-
     protected void ddlProvinceReporter_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindDistrictReporter();
         ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "showformInfo();", true);
+    }
+    #region Nhap muc nhien lieu hang nam
+
+    void BindFuel()
+    {
+        ddlFuel.Items.Clear();
+        IList<Fuel> list = new List<Fuel>();
+        AspNetCache.RemoveCache(Constants.Cache_ReportFuel_Fuel_All);
+
+        if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Fuel_All))
+        {
+            ReportModels rp = new ReportModels();
+            list = (from a in rp.DE_Fuel
+                    join b in rp.DE_GroupFuel on a.GroupFuelId equals b.Id
+                    where b.GroupCode != "POWER"
+                    select new Fuel
+                    {
+                        Id = a.Id,
+                        MeasurementId = a.MeasurementId.Value,
+                        GroupFuelId = a.GroupFuelId.Value,
+                        FuelName = a.FuelName
+                    }).ToList();
+            //list = new FuelService().FindAll();
+            AspNetCache.SetCache(Constants.Cache_ReportFuel_Fuel_All, list);
+        }
+        else
+            list = (IList<Fuel>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Fuel_All);
+        //int GroupId = 0;
+        //if (ddlFuelType.SelectedIndex > 0)
+        //    GroupId = Convert.ToInt32(ddlFuelType.SelectedValue);
+
+        //ddlFuelType.DataSource = list;
+        var listSearch = from o in list orderby o.FuelName ascending select o;
+        ddlFuel.DataSource = listSearch;
+        ddlFuel.DataValueField = "Id";
+        ddlFuel.DataTextField = "FuelName";
+        ddlFuel.DataBind();
+        ddlFuel.Items.Insert(0, new ListItem("---Chọn nhiên liệu---", ""));
+        if (ddlFuel.Items.Count == 2)
+            ddlFuel.SelectedIndex = 1;
+        BindMeasurement();
+    }
+
+    void BindMeasurement()
+    {
+        ddlMeasure.Items.Clear();
+        DataTable list = new DataTable();
+        if (ddlFuel.SelectedIndex > 0)
+        {
+            list = new MeasurementFuelService().GetListMeasurement(Convert.ToInt32(ddlFuel.SelectedValue));
+        }
+
+        ddlMeasure.DataSource = list;
+        ddlMeasure.DataValueField = "Id";
+        ddlMeasure.DataTextField = "MeasurementName";
+        ddlMeasure.DataBind();
+        ddlMeasure.Items.Insert(0, new ListItem("---Chọn đơn vị tính---", ""));
+        if (ddlMeasure.Items.Count == 2)
+        {
+            ddlMeasure.SelectedIndex = 1;
+            BindTOE();
+        }
+    }
+    private void BindDataDetail()
+    {
+
+        if (hdnDetailId.Value != "")
+        {
+            ReportFuelDetail reportDetail = new ReportFuelDetailService().FindByKey(Convert.ToInt32(hdnDetailId.Value));
+            if (reportDetail != null)
+            {
+                try
+                {
+                    if (reportDetail.FuelId > 0)
+                    {
+                        ddlFuel.SelectedValue = reportDetail.FuelId.ToString();
+                        BindMeasurement();
+                    }
+                    if (reportDetail.MeasurementId > 0)
+                    {
+                        ddlMeasure.SelectedValue = reportDetail.MeasurementId.ToString();
+                        BindTOE();
+                    }
+                }
+                catch { }
+                txtPropose.Text = reportDetail.Reason;
+                if (reportDetail.NoFuel > 0)
+                    txtNoFuel.Text = reportDetail.NoFuel.ToString();
+                if (reportDetail.Price > 0)
+                    txtPrice.Text = reportDetail.Price.ToString();
+                if (reportDetail.No_RateTOE > 0)
+                    txtNoTOE.Text = Tool.ConvertDecimalToString(reportDetail.No_RateTOE);
+                hdnNextYear.Value = reportDetail.IsNextYear ? "1" : "0";
+                if (reportDetail.IsNextYear)
+                    ltTitle.Text = "Mức nhiên liệu tiêu thụ dự kiến năm " + (reportDetail.Year + 1).ToString();
+                else
+                    ltTitle.Text = "Mức nhiên liệu tiêu thụ năm " + reportDetail.Year;
+            }
+        }
+
+    }
+
+
+    #region ReceiveHtml
+    private ReportFuelDetail ReceiveHtmlDetail()
+    {
+        ReportFuelDetail rep = new ReportFuelDetail();
+        if (ddlFuel.SelectedIndex > 0)
+            rep.FuelId = Convert.ToInt32(ddlFuel.SelectedValue);
+        if (rep.FuelId > 0)
+        {
+            Fuel fuel = new FuelService().FindByKey(rep.FuelId);
+            if (fuel != null)
+            {
+                rep.GroupFuelId = fuel.GroupFuelId;
+            }
+        }
+        //if (ddlFuel.SelectedIndex > 0)
+        //    rep.GroupFuelId = Convert.ToInt32(ddlFuelType.SelectedValue);
+        if (ddlMeasure.SelectedIndex > 0)
+            rep.MeasurementId = Convert.ToInt32(ddlMeasure.SelectedValue);
+        if (txtNoFuel.Text.Trim() != "")
+            rep.NoFuel = Convert.ToDecimal(txtNoFuel.Text.Trim());
+        if (txtNoTOE.Text.Trim() != "")
+            rep.No_RateTOE = Convert.ToDecimal(txtNoTOE.Text.Trim());
+        rep.Reason = txtPropose.Text.Trim();
+
+        if (txtPrice.Text.Trim() != "")
+            rep.Price = Convert.ToDecimal(txtPrice.Text.Trim());
+        rep.IsNextYear = (hdnNextYear.Value == "1");
+        rep.Year = ReportYear;
+        rep.ReportId = ReportId;
+        rep.EnterpriseId = memVal.OrgId;
+        rep.NoFuel_TOE = rep.NoFuel * rep.No_RateTOE;
+        return rep;
+
+    }
+    #endregion
+
+
+    protected void btnSaveFuel_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            ReportFuelDetail faqs = ReceiveHtmlDetail();
+            ReportFuelDetailService faqsBSO = new ReportFuelDetailService();
+            if (hdnDetailId.Value != "")
+            {
+                //faqs = faqsBSO.FindByKey(ReportDetailId);
+                faqs.Id = Convert.ToInt32(hdnDetailId.Value);
+                if (faqsBSO.Update(faqs) != null)
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
+                    if (hdnNextYear.Value == "0")
+                        BindReportDetail();
+                    else
+                        BindReportDetailNext();
+                }
+                else
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
+                }
+            }
+            else
+            {
+                if (faqsBSO.Insert(faqs) > 0)
+                {
+                    clientview.Text = "<div class='alert alert-sm alert-success bg-gradient'>Lưu thông tin Thành công !</div>";
+                    if (hdnNextYear.Value == "0")
+                        BindReportDetail();
+                    else
+                        BindReportDetailNext();
+                }
+                else
+                    clientview.Text = "<div class='alert alert-sm alert-danger bg-gradient'>Lưu thông tin không Thành công !</div>";
+            }
+        }
+        catch (Exception ex)
+        {
+            clientview.Text = ex.Message.ToString();
+        }
+    }
+
+    protected void ddlMeasure_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        BindTOE();
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail(" + hdnNextYear.Value + ");", true);
+
+    }
+    protected void ddlFuelType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        txtNoTOE.Enabled = false;
+        txtNoTOE.Text = "";
+        BindFuel();
+        //ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "alert('sfsdfg');", true);
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
+    }
+    protected void ddlFuel_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        txtNoTOE.Enabled = false;
+        txtNoTOE.Text = "";
+        BindMeasurement();
+
+        ScriptManager.RegisterStartupScript(this, GetType(), "showformDetail", "updateReportDetail('" + hdnNextYear.Value + "');", true);
+
+    }
+    void BindTOE()
+    {
+
+        txtNoTOE.Enabled = false;
+        if (ddlMeasure.SelectedIndex > 0)
+        {
+
+            DataTable mea = new MeasurementFuelService().GetTOE(Convert.ToInt32(ddlFuel.SelectedValue), Convert.ToInt32(ddlMeasure.SelectedValue));
+            if (mea != null && mea.Rows.Count > 0)
+            {
+
+                txtNoTOE.Text = TypeHelper.ToDecimal(mea.Rows[0]["TOE"].ToString()).ToString();
+                txtNoTOE.Enabled = false;
+                if (mea.Rows[0]["From_TOE"].ToString() != mea.Rows[0]["To_TOE"].ToString())
+                {
+                    rvNoTOE.Enabled = true;
+                    txtNoTOE.Enabled = true;
+                    //rvNoTOE.Text = "Nhập hệ số chuyển đổi từ " + mea.From_TOE + " đến " + mea.To_TOE;
+                    rvNoTOE.MaximumValue = mea.Rows[0]["To_TOE"].ToString();
+                    rvNoTOE.MinimumValue = mea.Rows[0]["From_TOE"].ToString();
+                    rvNoTOE.Text = string.Format("Nhập hệ số chuyển đổi từ {0} đến {1}", TypeHelper.ToDecimal(mea.Rows[0]["From_TOE"].ToString()), TypeHelper.ToDecimal(mea.Rows[0]["To_TOE"].ToString()));
+
+                }
+                else
+                {
+                    txtNoTOE.Enabled = false;
+                    if (mea.Rows[0]["TOE"] != DBNull.Value)
+                    {
+                        rvNoTOE.Enabled = false;
+                        rvNoTOE.MaximumValue = mea.Rows[0]["TOE"].ToString();
+                        rvNoTOE.MinimumValue = rvNoTOE.MaximumValue;
+                        rvNoTOE.Text = "Nhập hệ số chuyển đổi từ " + rvNoTOE.MinimumValue;
+                    }
+
+                }
+            }
+
+        }
+    }
+    #endregion
+
+    #region vietnn edit bao cao
+    //1. Thêm bảng 2.2.2 Tiêu thụ điện
+    //Cấu trúc bảng dựa trên bootstrap html => sẽ vẽ bảng từ code .cs
+    private void CreateTable_TieuThuDien(int reportId)
+    {
+        //1. Get data: Điện năng mua và Điện năng bán từ bảng DE_UsingElectrict
+        ReportModels reportModels = new ReportModels();
+        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == reportId && o.IsPlan == true);
+        //2. Get data: Điện tự sản suất
+        var DienSX = (from a in reportModels.DE_ElectrictTechnology
+                      join b in reportModels.DE_ElectrictProduce
+                      on a.TechKey equals b.TechKey
+                      where b.ReportId == reportId && b.State == 0
+                      select new
+                      {
+                          ReportId = b.ReportId,
+                          ReportYear = b.ReportYear,
+                          TechKey = a.TechKey,
+                          TechName = a.TechName,
+                          InstalledCapacity = b.InstalledCapacity,
+                          ProduceQty = b.ProduceQty
+                      }).Distinct().ToList();
+
+        decimal _DSXCongSuatLapDat = 0, _DSXSanLuongBan = 0;
+        foreach (var item in DienSX)
+        {
+            if (item.InstalledCapacity != null)
+                _DSXCongSuatLapDat += item.InstalledCapacity.Value;
+
+            if (item.ProduceQty != null)
+                _DSXSanLuongBan += item.ProduceQty.Value;
+        }
+
+        string htmlTable = string.Empty;
+        htmlTable += "<table class='table table-bordered table-hover mbn' width='100%'>";
+        htmlTable += "<tr class='primary fs12'>";
+        htmlTable += "<td>I. Điện năng mua từ lưới: </td>";
+
+        htmlTable += string.Format("<td>Công suất đăng ký: {0:0} (kW)</td>", DienMuaBan != null && DienMuaBan.InstalledCapacity != null ? DienMuaBan.InstalledCapacity : 0);
+        htmlTable += string.Format("<td>Điện năng: {0:0} (10<sup>6</sup>kWh/năm)</td>", DienMuaBan != null && DienMuaBan.Capacity != null ? DienMuaBan.Capacity : 0);
+
+        htmlTable += "</tr>";
+
+        htmlTable += "<tr class='primary fs12'>";
+        htmlTable += "<td>II. Điện tự sản xuất(nếu có):</td>";
+        htmlTable += string.Format("<td>Công suất lắp đặt: {0:0} (kW)</td>", _DSXCongSuatLapDat);
+        htmlTable += string.Format("<td>Điện năng sản xuất: {0:0} (10<sup>6</sup>kWh/năm)</td>", _DSXSanLuongBan);
+        htmlTable += "</tr>";
+        //Lặp danh mục công nghệ
+        int i = 1;
+        foreach (var item in reportModels.DE_ElectrictTechnology.ToList())
+        {
+            var tmp = DienSX.FirstOrDefault(o => o.TechKey == item.TechKey);
+
+            htmlTable += "<tr class='primary fs12'>";
+            htmlTable += string.Format("<td>{0}. {1}:</td>", i, item.TechName);
+            htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.InstalledCapacity.Value : 0);
+            htmlTable += string.Format("<td>{0:0}</td>", tmp != null ? tmp.ProduceQty.Value : 0);
+            htmlTable += "</tr>";
+            i++;
+        }
+
+        //Điện bán ra
+        htmlTable += "<tr class='primary fs12'>";
+        htmlTable += "<td>III. Điện bán ra(nếu có):</td>";
+
+        htmlTable += string.Format("<td>Công suất bán ra: {0:0} (kW)</td>", DienMuaBan != null && DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan : 0);
+        htmlTable += string.Format("<td>Sản lượng điện bán ra: {0:0} (10<sup>6</sup>kWh/năm)</td>", DienMuaBan != null && DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan : 0);
+
+        htmlTable += "</tr>";
+
+        //close table
+        htmlTable += "</table>";
+
+        ltTieuThuDien.Text = htmlTable;
+    }
+
+    //2. Danh mục công nghệ điện tự sản xuất
+    private void Load_ElectrictTechno()
+    {
+        ReportModels reportModels = new ReportModels();
+        var list = reportModels.DE_ElectrictTechnology.Where(o => o.TechState == 0).ToList();
+        ddlElectrictTechnology.DataValueField = "TechKey";
+        ddlElectrictTechnology.DataTextField = "TechName";
+        ddlElectrictTechnology.DataSource = list;
+        ddlElectrictTechnology.DataBind();
+        ddlElectrictTechnology.Items.Insert(0, new ListItem("", ""));
+    }
+
+    protected void btBindTieuThuSXDien_Click(object sender, EventArgs e)
+    {
+        ReportModels reportModels = new ReportModels();
+        var DienMuaBan = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId && o.IsPlan == true);
+
+
+        if (DienMuaBan != null)
+        {
+            txtDienDkMua.Text = DienMuaBan.InstalledCapacity != null ? DienMuaBan.InstalledCapacity.Value.ToString(specifier) : "0";
+            txtDienTieuThu.Text = DienMuaBan.Capacity != null ? DienMuaBan.Capacity.Value.ToString(specifier) : "0";
+
+            txtCongSuaBanRa.Text = DienMuaBan.CongSuatBan != null ? DienMuaBan.CongSuatBan.Value.ToString(specifier) : "0";
+            txtSanLuongBanRa.Text = DienMuaBan.SanLuongBan != null ? DienMuaBan.SanLuongBan.Value.ToString(specifier) : "0";
+        }
+
+        string ElectrictTech = ddlElectrictTechnology.SelectedValue;
+        BindElectrictTechData(ReportId, ElectrictTech);
+
+        ltmsg.Text = "";
+    }
+
+    private void BindElectrictTechData(int ReportId, string TeckKey)
+    {
+        ReportModels reportModels = new ReportModels();
+        var DienSX = reportModels.DE_ElectrictProduce.FirstOrDefault(o => o.ReportId == ReportId && o.State == 0 && o.TechKey == TeckKey);
+        if (DienSX != null)
+        {
+            txtInstalledCapacityPlan.Text = DienSX.InstalledCapacity != null ? DienSX.InstalledCapacity.Value.ToString(specifier) : "0";
+            txtProduceQty.Text = DienSX.ProduceQty != null ? DienSX.ProduceQty.Value.ToString(specifier) : "0";
+        }
+        else
+        {
+            txtInstalledCapacityPlan.Text = "0";
+            txtProduceQty.Text = "0";
+        }
+    }
+
+    protected void btBindListTieuThuSXDien_Click(object sender, EventArgs e)
+    {
+        CreateTable_TieuThuDien(ReportId);
+    }
+    protected void btnSaveElectrictPlan_Click(object sender, EventArgs e)
+    {
+
+        try
+        {
+            TieuThuDien_Update();
+            if (ddlElectrictTechnology.SelectedValue != "")
+                SanXatDien_Update();
+
+            ltmsg.Text = "Cập nhật thành công!";
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    protected void ddlElectrictTechnology_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string ElectrictTech = ddlElectrictTechnology.SelectedValue;
+        BindElectrictTechData(ReportId, ElectrictTech);
+    }
+
+    private void SanXatDien_Update()
+    {
+        ReportModels reportModels = new ReportModels();
+        string TeckKey = ddlElectrictTechnology.SelectedValue;
+        DE_ElectrictProduce _dienSX = new DE_ElectrictProduce();
+
+        _dienSX = reportModels.DE_ElectrictProduce.FirstOrDefault(o => o.ReportId == ReportId && o.State == 0 && o.TechKey == TeckKey);
+
+        decimal _InstalledCapacity = 0;
+        if (txtInstalledCapacityPlan.Text.Trim() != string.Empty)
+            decimal.TryParse(txtInstalledCapacityPlan.Text.Trim(), out _InstalledCapacity);
+
+        decimal _ProduceQty = 0;
+        if (txtProduceQty.Text.Trim() != string.Empty)
+            decimal.TryParse(txtProduceQty.Text.Trim(), out _ProduceQty);
+
+        if (_dienSX == null)
+            _dienSX = new DE_ElectrictProduce();
+
+        _dienSX = new DE_ElectrictProduce();
+        _dienSX.ReportId = ReportId;
+        _dienSX.ReportYear = ReportYear;
+        _dienSX.TechKey = ddlElectrictTechnology.SelectedValue;
+        _dienSX.InstalledCapacity = _InstalledCapacity;
+        _dienSX.ProduceQty = _ProduceQty;
+        _dienSX.State = 0;
+
+        if (_dienSX.AutoId == 0)
+            reportModels.DE_ElectrictProduce.Add(_dienSX);
+
+        reportModels.SaveChanges();
+    }
+
+    private void TieuThuDien_Update()
+    {
+        ReportModels reportModels = new ReportModels();
+        DE_UsingElectrict _sudungdien = new DE_UsingElectrict();
+        _sudungdien = reportModels.DE_UsingElectrict.FirstOrDefault(o => o.ReportId == ReportId && o.ReportYear == ReportYear && o.IsPlan == true);
+        if (_sudungdien == null)
+            _sudungdien = new DE_UsingElectrict();
+
+        _sudungdien.ReportYear = ReportYear;
+        _sudungdien.ReportId = ReportId;
+        _sudungdien.IsPlan = true;
+
+        //txtDienDkMua
+        decimal _InstalledCapacity = 0;
+        if (txtDienDkMua.Text.Trim() != string.Empty)
+            _InstalledCapacity = decimal.Parse(txtDienDkMua.Text.Trim());
+        _sudungdien.InstalledCapacity = _InstalledCapacity;
+
+        decimal _Capacity = 0;
+        if (txtDienTieuThu.Text.Trim() != string.Empty)
+            _Capacity = decimal.Parse(txtDienTieuThu.Text.Trim());
+        _sudungdien.Capacity = _Capacity;
+
+        decimal _CongSuaBanRa = 0;
+        if (txtCongSuaBanRa.Text.Trim() != string.Empty)
+            _CongSuaBanRa = decimal.Parse(txtCongSuaBanRa.Text.Trim());
+        _sudungdien.CongSuatBan = _CongSuaBanRa;
+
+        decimal _SanLuongBanRa = 0;
+        if (txtSanLuongBanRa.Text.Trim() != string.Empty)
+            _SanLuongBanRa = decimal.Parse(txtSanLuongBanRa.Text.Trim());
+        _sudungdien.SanLuongBan = _SanLuongBanRa;
+
+        if (_sudungdien.Id == 0)
+            reportModels.DE_UsingElectrict.Add(_sudungdien);
+
+        reportModels.SaveChanges();
     }
 
     private DataTable GetDienTuSanXuat()
@@ -1993,6 +2603,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             throw;
         }
     }
+
+    protected void rptProductResult_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+
+    }
+
 
     DataTable GetKQThucHienKeHoach()
     {
@@ -2127,68 +2743,8 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         tbl.Rows.InsertAt(fRow, 0);
         return tbl;
     }
-
-    private void GetNangLucSX()
-    {
-        ReportModels rp = new ReportModels();
-        var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
-        var data = (from a in rp.DE_Enterprise
-                    join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
-                    where a.Id == memVal.OrgId
-                    select b).FirstOrDefault();
-        var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);
-        string BCTemp = loadTemp.TemplateBC.ToUpper();
-        //////////////////////////////////
-        switch (BCTemp)
-        {
-            case "BC2.1.DOCX":
-                CreateReport21();
-                break;
-            case "BC2.2.DOCX":
-                break;
-            case "BC2.3.DOCX":
-                break;
-            case "BC2.4.DOCX":
-                break;
-            case "BC2.5.DOCX":
-                break;
-            case "BC2.6.DOCX":
-                break;
-
-        }
-    }
-
-    private string CreateReport21()
-    {
-        try
-        {
-            string table = string.Empty;
-            table += "<table class='table table-bordered table - hover mbn'>";
-            table += "<thead>";
-            table += "<tr class='primary fs12'>";
-            table += "<th>Tên sản phẩm</th>";
-            table += "<th style='width: 10%'>Đơn vị đo</th>";
-            table += "<th style='width: 15%'>Theo thiết kế</th>";
-            table += "<th style='width: 20%'>Mức sản xuất hiện tại</th>";
-            table += "</tr>";
-            table += "</thead>";
-            table += "<tbody>";
-
-            //Load data
-            table += "";
-
-            table += "</tbody>";
-            table += "</table>";
-            return string.Empty;
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
-    }
 }
-
+#endregion
 
 
 

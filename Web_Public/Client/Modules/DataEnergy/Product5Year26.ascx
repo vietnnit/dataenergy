@@ -1,10 +1,11 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="InputReportFuel5Year.ascx.cs"
-    Inherits="Client_Modules_DataEnergy_InputReportFuel5Year" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="Product5Year26.ascx.cs"
+    Inherits="Client_Modules_DataEnergy_Product5Year26" %>
 <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/InputPlan5Year.ascx" TagName="InputPlan5Year"
     TagPrefix="uc1" %>
 <%@ Register Src="~/Client/Modules/DataEnergy/DetailPlanYear.ascx" TagName="DetailPlanYear"
     TagPrefix="uc1" %>
+
 <asp:HiddenField ID="hdnNewsUrl" Value="" runat="server" />
 <asp:HiddenField ID="hdnReport" Value="" runat="server" />
 <asp:HiddenField ID="hdnNextYear" Value="" runat="server" />
@@ -231,7 +232,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs tabs-border" id="Reporttabs">
-                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và sản phẩm</a></li>
+                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và hoạt động xxx</a></li>
                                 <li><a rel="tabPlan5Year" href="#" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
@@ -242,11 +243,9 @@
                                 <div class="col-lg-12">
                                     <label class="control-label">
                                         <asp:Literal ID="Literal7" runat="server" Text="1. Năng lực sản xuất của cơ sở"></asp:Literal>
-                                        
                                     </label>
                                     <div class="margin-bottom-10">
-                                        <asp:Literal ID="ltRp5_NangLucSXNamCoSo" runat="server" Text="xxxxxxxxxxxxxxx"></asp:Literal>
-
+                                        <asp:Literal ID="ltNangLucSX" runat ="server"></asp:Literal>
                                         <table class="table table-bordered table-hover mbn" width="100%">
                                             <thead>
                                                 <tr class="primary fs12">
@@ -284,7 +283,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             <div id="tabPlan5Year">
                                 <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
                             </div>
@@ -403,9 +401,6 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-left">
-                        <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
-                            Text="Xuất báo cáo hàng năm" Style="display: none;" OnClientClick="ShowDialogExportword();return false;"
-                            data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
@@ -669,45 +664,7 @@
     </div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="dlgExportReport">
-    <div class="modal-dialog">
-        <div class="modal-content sky-form">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Lựa chọn mẫu báo cáo hàng năm</h4>
-            </div>
-            <div class="modal-body">
-                <section class="mbn">
-                    <label class="select">
-                        <asp:DropDownList runat="server" ID="drpmaubaocao">
-                            <asp:ListItem Value="1" Text="Dùng cho cơ sở hoạt động trong lĩnh vự sản xuất công nghiệp" Selected="True"></asp:ListItem>
-                            <asp:ListItem Value="2" Text="Dùng cho cơ sở sản xuất điện"></asp:ListItem>
-                            <asp:ListItem Value="3" Text="Dùng cho tòa nhà đặt trụ sở, văn phòng làm việc"></asp:ListItem>
-                            <asp:ListItem Value="4" Text="Dùng cho các trường học; bệnh viện; khu vui chơi, giải trí; thể dục, thể thao"></asp:ListItem>
-                            <asp:ListItem Value="5" Text="Dùng cho các khách sạn, nhà hàng"></asp:ListItem>
-                            <asp:ListItem Value="6" Text="Dùng cho tòa nhà siêu thị, cửa hàng"></asp:ListItem>
-                            <asp:ListItem Value="7" Text="Dùng cho cơ sở là cơ quan, đơn vị sử dụng ngân sách nhà nước"></asp:ListItem>
-                            <asp:ListItem Value="8" Text="Dùng cho các cơ sở hoạt động trong lĩnh vực Giao thông vận tải"></asp:ListItem>
-                            <asp:ListItem Value="9" Text="Dùng cho các cơ sở chế biến, gia công sản phẩm trong nông nghiệp"></asp:ListItem>
-                            <asp:ListItem Value="10" Text="Dùng cho các cơ sở đánh bắt thủy, hải sản; máy móc phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                            <asp:ListItem Value="11" Text="Dùng cho cơ sở thủy lợi phục vụ sản xuất nông nghiệp"></asp:ListItem>
-                        </asp:DropDownList>
-                        <i></i>
-                    </label>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <asp:LinkButton ID="btnExport" runat="server" Visible="true" OnClick="btnExport_Click"
-                    Text="Xuất báo cáo" CssClass="btn-u btn-u-primary mr10"></asp:LinkButton>
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">
-                    Đóng</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
+
 <div class="modal fade" tabindex="-1" role="dialog" id="dlgExportReport5">
     <div class="modal-dialog">
         <div class="modal-content sky-form">
@@ -912,13 +869,12 @@ btn-u-primary mr10"
 </div>
 
 
-
 <script type="text/javascript">
 
     function showformInfo() {
         $('#frmInfo').modal('toggle');
     }
-   
+
     $(document).ready(function () {
         $("#<%=txtReportDate.ClientID%>").datetimepicker
             ({
