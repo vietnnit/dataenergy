@@ -246,41 +246,6 @@
                                     </label>
                                     <div class="margin-bottom-10">
                                         <asp:Literal ID="ltRp5_NangLucSXNamCoSo" runat="server" Text="xxxxxxxxxxxxxxx"></asp:Literal>
-
-                                        <table class="table table-bordered table-hover mbn" width="100%">
-                                            <thead>
-                                                <tr class="primary fs12">
-                                                    <th style="width: 15%">Tên sản phẩm
-                                                    </th>
-                                                    <th style="width: 10%">Đơn vị đo
-                                                    </th>
-                                                    <th style="width: 15%">Theo thiết kế
-                                                    </th>
-                                                    <th style="width: 20%">Mức sản xuất hiện tại
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rptProductResult" runat="server">
-                                                    <ItemTemplate>
-                                                        <tr>
-                                                            <td>
-                                                                <%# Eval("ProductName")%>
-                                                            </td>
-                                                            <td>
-                                                                <%# Eval("Measurement")%>
-                                                            </td>
-                                                            <td class="text-right">
-                                                                <%# Eval("DesignQuantity")%>
-                                                            </td>
-                                                            <td class="text-right">
-                                                                <%# Eval("MaxQuantity")%>
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -403,9 +368,6 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 text-left">
-                        <asp:LinkButton runat="server" ID="btnExportWord" CssClass="btn btn-sm btn-success mr10"
-                            Text="Xuất báo cáo hàng năm" Style="display: none;" OnClientClick="ShowDialogExportword();return false;"
-                            data-toggle="modal" data-target="#dlgExportReport"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo hàng năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
                             Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
                             data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>

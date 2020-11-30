@@ -115,7 +115,7 @@
                             <%#Container.ItemIndex+1  %>
                         </td>
                         <td>
-                            <a href='<%#ResolveUrl("~") %>bao-cao-so-lieu-hang-5-nam-r<%#Eval("Id")%>.aspx'>
+                            <a href='<%#ResolveUrl("~") %>bao-cao-so-lieu-5-nam-<%#Eval("Id")%>.aspx'>
                                 <%#Eval("Year") %>
                             </a>
                         </td>
@@ -132,7 +132,7 @@
                             <%#Eval("ReporterName")%>
                         </td>
                         <td class="text-center">
-                            <a href='<%#ResolveUrl("~") %>bao-cao-so-lieu-hang-nam-r<%#Eval("Id") %>.aspx'><i
+                            <a href='<%#ResolveUrl("~") %>bao-cao-so-lieu-5-nam-<%#Eval("Id") %>.aspx'><i
                                 class='fa fa-search'></i></a>
                             <%--<asp:LinkButton runat="server" ID="LinkButton1" CommandName="WordComment" CommandArgument='<%#Eval("Id") %>'
                                 CssClass="" data-toggle="modal" data-target="#myModal" ToolTip="Xuất mẫu báo cáo"

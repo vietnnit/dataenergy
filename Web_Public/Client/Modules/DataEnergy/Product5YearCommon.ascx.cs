@@ -18,7 +18,7 @@ public partial class Client_Modules_DataEnergy_Product5YearCommon : System.Web.U
         var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
         var data = (from a in rp.DE_Enterprise
                     join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
-                    where a.Id == memVal.OrgId
+                    where a.Id == memVal.OrgId 
                     select b).FirstOrDefault();
 
         var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);

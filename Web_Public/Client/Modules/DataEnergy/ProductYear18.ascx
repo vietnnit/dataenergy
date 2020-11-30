@@ -2,6 +2,7 @@
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
+<asp:ScriptManager ID="scriptmag" runat ="server"></asp:ScriptManager>
 <div class="form-horizontal">
     <div class="form-group" style="margin-bottom: 0">
         <div class="col-lg-12" style="display: none;">

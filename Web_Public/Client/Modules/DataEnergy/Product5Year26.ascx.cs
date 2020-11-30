@@ -116,6 +116,7 @@ public partial class Client_Modules_DataEnergy_Product5Year26 : System.Web.UI.Us
             BindReportInfo();
             BindLog();
             BindReportFile();
+            GetNangLucSX();
         }
 
     }
@@ -1473,9 +1474,65 @@ public partial class Client_Modules_DataEnergy_Product5Year26 : System.Web.UI.Us
     }
 
 
-    private void BindNangLucSX()
+    private void GetNangLucSX()
     {
+        ReportModels rp = new ReportModels();
+        var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
+        var data = (from a in rp.DE_Enterprise
+                    join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+                    where a.Id == memVal.OrgId
+                    select b).FirstOrDefault();
+        var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);
+        string BCTemp = loadTemp.TemplateBC.ToUpper();
+        //////////////////////////////////
+        switch (BCTemp)
+        {
+            case "BC2.1.DOCX":
+                
+                break;
+            case "BC2.2.DOCX":
+                break;
+            case "BC2.3.DOCX":
+                break;
+            case "BC2.4.DOCX":
+                break;
+            case "BC2.5.DOCX":
+                break;
+            case "BC2.6.DOCX":
+                CreateReport26();
+                break;
 
+        }
+    }
+
+    private string CreateReport26()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table - hover mbn'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Tên sản phẩm</th>";
+            table += "<th style='width: 10%'>Đơn vị đo</th>";
+            table += "<th style='width: 15%'>Theo thiết kế</th>";
+            table += "<th style='width: 20%'>Mức sản xuất hiện tại</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            //Load data
+            table += "";
+
+            table += "</tbody>";
+            table += "</table>";
+            return string.Empty;
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
     #endregion
 }

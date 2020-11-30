@@ -2142,7 +2142,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         switch (BCTemp)
         {
             case "BC2.1.DOCX":
-                CreateReport21();
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport21();
                 break;
             case "BC2.2.DOCX":
                 break;
@@ -2153,6 +2153,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
             case "BC2.5.DOCX":
                 break;
             case "BC2.6.DOCX":
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport26();
                 break;
 
         }
@@ -2163,23 +2164,159 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         try
         {
             string table = string.Empty;
-            table += "<table class='table table-bordered table - hover mbn'>";
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
             table += "<thead>";
             table += "<tr class='primary fs12'>";
             table += "<th>Tên sản phẩm</th>";
             table += "<th style='width: 10%'>Đơn vị đo</th>";
-            table += "<th style='width: 15%'>Theo thiết kế</th>";
+            table += "<th style='width: 20%'>Theo thiết kế</th>";
             table += "<th style='width: 20%'>Mức sản xuất hiện tại</th>";
+            table += "<th style='width: 20%'>Tiêu thụ năng lượng theo sản phẩm</th>";
+            table += "<th style='width: 20%'>Doanh thu</th>";
             table += "</tr>";
             table += "</thead>";
             table += "<tbody>";
 
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            DataTable tbl = new DataTable();
+            tbl = productCapacityService.GetDataCapacity(dataCurrentYear.Id, false);
+
             //Load data
             table += "";
+            foreach (DataRow item in tbl.Rows)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item["ProductName"].ToString());
+                table += string.Format("<td>{0}</td>", item["Measurement"].ToString());
+                table += string.Format("<td>{0}</td>", item["DesignQuantity"].ToString());
+                table += string.Format("<td>{0}</td>", item["MaxQuantity"].ToString());
+                table += string.Format("<td>{0}</td>", item["DoanhThuTheoSP"].ToString());
+                table += "</tr>";
+            }
 
             table += "</tbody>";
             table += "</table>";
-            return string.Empty;
+            return table;
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+    }
+
+    private string CreateReport22()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Nhiên liệu sử dụng</th>";
+            table += "<th style='width: 10%'>Loại nhiên liệu</th>";
+            table += "<th style='width: 20%'>Khối lượng SD/năm</th>";
+            table += "<th style='width: 20%'>Nhiệt trị thấp (kJ/kg)</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            ProductCapacityService productCapacityService = new ProductCapacityService();
+            DataTable tbl = new DataTable();
+            tbl = productCapacityService.GetDataCapacity(dataCurrentYear.Id, false);
+
+            //Load data
+            table += "";
+            foreach (DataRow item in tbl.Rows)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item["ProductName"].ToString());
+                table += string.Format("<td>{0}</td>", item["Measurement"].ToString());
+                table += string.Format("<td>{0}</td>", item["DesignQuantity"].ToString());
+                table += string.Format("<td>{0}</td>", item["MaxQuantity"].ToString());
+                table += string.Format("<td>{0}</td>", item["DoanhThuTheoSP"].ToString());
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            return table;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private string CreateReport26()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Hạng mục</th>";
+            table += "<th style='width: 20%'>Đơn vị đo</th>";
+            table += "<th style='width: 20%'>Số lượng</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            var data = (from a in rp.DE_Product
+                        join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                        from c in ab.DefaultIfEmpty()
+                        where a.EnterpriseId == memVal.OrgId
+                        orderby a.ProductOrder ascending
+                        select new
+                        {
+                            ProductId = a.Id,
+                            ProductName = a.ProductName,
+                            Measurement = a.Measurement,
+                            MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                        }).ToList();
+
+            //Load data
+            table += "";
+            foreach (var item in data)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}</td>", item.Measurement);
+                table += string.Format("<td>{0}</td>", item.MaxQuantity);
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            return table;
         }
         catch (Exception ex)
         {

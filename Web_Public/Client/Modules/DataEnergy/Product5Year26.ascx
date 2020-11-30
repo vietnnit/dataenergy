@@ -232,7 +232,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="nav nav-tabs tabs-border" id="Reporttabs">
-                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và hoạt động xxx</a></li>
+                                <li><a rel="tabProduct" href="#" class="active">Cơ sở hạ tầng và hoạt động</a></li>
                                 <li><a rel="tabPlan5Year" href="#" class="">Giải pháp TKNL 5 năm</a></li>
                             </ul>
                         </div>
