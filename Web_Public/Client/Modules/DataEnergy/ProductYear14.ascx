@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ProductYear14.ascx.cs" Inherits="Client_Modules_DataEnergy_ProductYear14" %>
 <%@ Register Src="../PagingControl.ascx" TagName="PagingControl" TagPrefix="uc1" %>
+<asp:ScriptManager ID="script14" runat ="server"></asp:ScriptManager>
 <asp:Literal ID="ltNotice" runat="server"></asp:Literal>
 <asp:HiddenField ID="hdnId" Value="0" runat="server" />
 <div class="form-horizontal">

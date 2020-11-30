@@ -2145,12 +2145,16 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                 ltRp5_NangLucSXNamCoSo.Text = CreateReport21();
                 break;
             case "BC2.2.DOCX":
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport22();
                 break;
             case "BC2.3.DOCX":
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport23();
                 break;
             case "BC2.4.DOCX":
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport24();
                 break;
             case "BC2.5.DOCX":
+                ltRp5_NangLucSXNamCoSo.Text = CreateReport25();
                 break;
             case "BC2.6.DOCX":
                 ltRp5_NangLucSXNamCoSo.Text = CreateReport26();
@@ -2219,11 +2223,12 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         try
         {
             string table = string.Empty;
+            table += "<div class='margin-bottom-10'>";
             table += "<table class='table table-bordered table-hover mbn' width='100%'>";
             table += "<thead>";
             table += "<tr class='primary fs12'>";
             table += "<th>Nhiên liệu sử dụng</th>";
-            table += "<th style='width: 10%'>Loại nhiên liệu</th>";
+            table += "<th style='width: 20%'>Loại nhiên liệu</th>";
             table += "<th style='width: 20%'>Khối lượng SD/năm</th>";
             table += "<th style='width: 20%'>Nhiệt trị thấp (kJ/kg)</th>";
             table += "</tr>";
@@ -2239,20 +2244,136 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                 return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
             }
 
-            ProductCapacityService productCapacityService = new ProductCapacityService();
-            DataTable tbl = new DataTable();
-            tbl = productCapacityService.GetDataCapacity(dataCurrentYear.Id, false);
+            var data = (from a in rp.DE_Product
+                        join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                        from c in ab.DefaultIfEmpty()
+                        join d in rp.DE_GroupFuel on a.GroupFuel equals d.Id
+                        where a.EnterpriseId == memVal.OrgId && a.IsProduct == false
+                        && a.ProductType13 == ReportKey.ProductKey_131
+                        orderby a.ProductName ascending
+                        select new
+                        {
+                            ProductId = a.Id,
+                            ProductName = a.ProductName,
+                            NhietTriThap = a.NhietTriThap == null ? 0 : a.NhietTriThap,
+                            GroupFuelName = d.Title,
+                            MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                        }).ToList();
 
             //Load data
             table += "";
-            foreach (DataRow item in tbl.Rows)
+            foreach (var item in data)
             {
                 table += "<tr>";
-                table += string.Format("<td>{0}</td>", item["ProductName"].ToString());
-                table += string.Format("<td>{0}</td>", item["Measurement"].ToString());
-                table += string.Format("<td>{0}</td>", item["DesignQuantity"].ToString());
-                table += string.Format("<td>{0}</td>", item["MaxQuantity"].ToString());
-                table += string.Format("<td>{0}</td>", item["DoanhThuTheoSP"].ToString());
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}</td>", item.GroupFuelName);
+                table += string.Format("<td>{0}</td>", item.MaxQuantity);
+                table += string.Format("<td>{0}</td>", item.NhietTriThap);
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            table += "</div>";
+
+            //table 2
+            table += "<div class='margin-bottom-10'>";
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Số tổ máy</th>";
+            table += "<th style='width: 20%'>Công suất(MW)</th>";
+            table += "<th style='width: 20%'>Hiệu suất thiết kế</th>";
+            table += "<th style='width: 20%'>Hiệu suất vận hành trung bình</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            //Load data
+            table += "";
+            var data1 = (from a in rp.DE_Product
+                         join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                         from c in ab.DefaultIfEmpty()
+                         where a.EnterpriseId == memVal.OrgId
+                         && a.IsProduct == true
+                         && a.ProductType13 == ReportKey.ProductKey_132
+                         orderby a.ProductName ascending
+                         select new
+                         {
+                             ProductId = a.Id,
+                             ProductName = a.ProductName,
+                             CongSuat13 = (c == null ? string.Empty : c.CongSuat13.ToString()),
+                             DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                             MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                         }).ToList();
+
+            foreach (var item in data1)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}</td>", item.CongSuat13);
+                table += string.Format("<td>{0}</td>", item.DesignQuantity);
+                table += string.Format("<td>{0}</td>", item.MaxQuantity);
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            table += "</div>";
+
+
+            return table;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    private string CreateReport23()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Thông tin</th>";
+            table += "<th style='width: 15%'></th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            var data = (from a in rp.DE_Product
+                        join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                        from c in ab.DefaultIfEmpty()
+                        where a.EnterpriseId == memVal.OrgId
+                        orderby a.ProductName ascending
+                        select new
+                        {
+                            ProductId = a.Id,
+                            ProductName = a.ProductName,
+                            Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+                            DataReport1415 = c.DataReport1415,
+                            MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                        }).ToList();
+
+            //Load data
+            table += "";
+            foreach (var item in data)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}{1}</td>", item.DataReport1415, item.Measurement);
                 table += "</tr>";
             }
 
@@ -2262,6 +2383,137 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
         catch (Exception ex)
         {
+
+            throw ex;
+        }
+    }
+
+    private string CreateReport24()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Loại phương tiện</th>";
+            table += "<th style='width: 15%'>Số lượng(chiếc)</th>";
+            table += "<th style='width: 15%'>Loại nhiên liệu</th>";
+            table += "<th style='width: 15%'>H.khách x km</th>";
+            table += "<th style='width: 15%'>Tấn x km</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            var data = (from a in rp.DE_Product
+                        join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                        from c in ab.DefaultIfEmpty()
+                        join d in rp.DE_Fuel on a.FuelId equals d.Id
+                        where a.EnterpriseId == memVal.OrgId
+                        orderby a.ProductName ascending
+                        select new
+                        {
+                            ProductId = a.Id,
+                            ProductName = a.ProductName,
+                            Measurement = a.Measurement,
+                            FuelName = d.FuelName,
+                            MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
+                            NangLucVanChuyenNguoi = (c == null ? string.Empty : c.NangLucVanChuyenNguoi.ToString()),
+                            NangLucVanChuyenHang = (c == null ? string.Empty : c.NangLucVanChuyenHang.ToString())
+                        }).ToList();
+
+            //Load data
+            table += "";
+            foreach (var item in data)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}</td>", item.Measurement);
+                table += string.Format("<td>{0}</td>", item.FuelName);
+                table += string.Format("<td>{0}</td>", item.NangLucVanChuyenNguoi);
+                table += string.Format("<td>{0}</td>", item.NangLucVanChuyenHang);
+                
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            return table;
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
+    }
+
+    private string CreateReport25()
+    {
+        try
+        {
+            string table = string.Empty;
+            table += "<table class='table table-bordered table-hover mbn' width='100%'>";
+            table += "<thead>";
+            table += "<tr class='primary fs12'>";
+            table += "<th>Loại phương tiện</th>";
+            table += "<th style='width: 20%'>Số lượng thực tế(chiếc)</th>";
+            table += "<th style='width: 20%'>Loại nhiên liệu/năng lượng</th>";
+            table += "</tr>";
+            table += "</thead>";
+            table += "<tbody>";
+
+            ReportModels rp = new ReportModels();
+            //Lấy dữ liệu báo cáo năm hiện tại
+            var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+            if (dataCurrentYear == null)
+            {
+                return "Chưa cập nhật dữ liệu báo cáo kế hoạch năm";
+            }
+
+            var data = (from a in rp.DE_Product
+                        join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                        from c in ab.DefaultIfEmpty()
+                        join d in rp.DE_Fuel on a.FuelId equals d.Id
+                        where a.EnterpriseId == memVal.OrgId
+                        orderby a.ProductName ascending
+                        select new
+                        {
+                            ProductId = a.Id,
+                            ProductName = a.ProductName,
+                            Measurement = a.Measurement,
+                            FuelName = d.FuelName,
+                            DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                            MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                        }).ToList();
+
+            //Load data
+            table += "";
+            foreach (var item in data)
+            {
+                table += "<tr>";
+                table += string.Format("<td>{0}</td>", item.ProductName);
+                table += string.Format("<td>{0}</td>", item.MaxQuantity);
+                table += string.Format("<td>{0}</td>", item.FuelName);
+                table += "</tr>";
+            }
+
+            table += "</tbody>";
+            table += "</table>";
+            return table;
+        }
+        catch (Exception ex)
+        {
+
             throw ex;
         }
     }
