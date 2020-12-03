@@ -9,6 +9,7 @@ namespace ReportEF
     public partial class DE_Area
     {
         public int Id { get; set; }
+        public int? MainAreaId { get; set; }
 
         [StringLength(500)]
         public string AreaName { get; set; }
@@ -20,5 +21,26 @@ namespace ReportEF
         public int? SortOrder { get; set; }
 
         public bool? IsDelete { get; set; }
+
+        [StringLength(1000)]
+        public string LinhVuc { get; set; }
+
+        [StringLength(1000)]
+        public string PhanLoai { get; set; }
+
+        [StringLength(50)]
+        public string Mau1x { get; set; }
+
+        [StringLength(50)]
+        public string Mau2x { get; set; }
+    }
+
+
+    public partial class DE_MainArea
+    {
+        public int Id { get; set; }
+        [StringLength(500)]
+        public string Name { get; set; }
+        public int? SortOrder { get; set; }
     }
 }

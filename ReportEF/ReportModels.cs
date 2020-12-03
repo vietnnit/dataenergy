@@ -11,6 +11,8 @@ namespace ReportEF
             : base("name=ReportModels")
         {
         }
+
+        public virtual DbSet<DE_MainArea> DE_MainArea { get; set; }
         public virtual DbSet<DE_InfrastructInfo> DE_InfrastructInfo { get; set; }
         public virtual DbSet<DE_ProductCapacity18> DE_ProductCapacity18 { get; set; }
         public virtual DbSet<DE_BaocaoLinhVuc> DE_BaocaoLinhVuc { get; set; }

@@ -1,0 +1,75 @@
+﻿/*
+Run this script on:
+
+        (local)\SQL2K17EXPRESS.dbDataEnergy    -  This database will be modified
+
+to synchronize it with:
+
+        (local)\SQL2K17EXPRESS.dbDataEnergyUp
+
+You are recommended to back up your database before running this script
+
+Script created by SQL Compare version 12.4.9.4945 from Red Gate Software Ltd at 12/3/2020 10:36:36
+
+*/
+SET NUMERIC_ROUNDABORT OFF
+GO
+SET ANSI_PADDING, ANSI_WARNINGS, CONCAT_NULL_YIELDS_NULL, ARITHABORT, QUOTED_IDENTIFIER, ANSI_NULLS ON
+GO
+SET XACT_ABORT ON
+GO
+SET TRANSACTION ISOLATION LEVEL Serializable
+GO
+BEGIN TRANSACTION
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+PRINT N'Altering [dbo].[DE_Area]'
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+ALTER TABLE [dbo].[DE_Area] ADD
+[LinhVuc] [nvarchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[PhanLoai] [nvarchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Mau1x] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[Mau2x] [nvarchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+[MainAreaId] [int] NULL
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+PRINT N'Creating [dbo].[DE_MainArea]'
+GO
+CREATE TABLE [dbo].[DE_MainArea]
+(
+[Id] [int] NOT NULL IDENTITY(1, 1),
+[Name] [nvarchar] (1000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+[SortOrder] [int] NULL
+)
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+PRINT N'Creating primary key [PK_DE_MainArea] on [dbo].[DE_MainArea]'
+GO
+ALTER TABLE [dbo].[DE_MainArea] ADD CONSTRAINT [PK_DE_MainArea] PRIMARY KEY CLUSTERED  ([Id])
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+COMMIT TRANSACTION
+GO
+IF @@ERROR <> 0 SET NOEXEC ON
+GO
+DECLARE @Success AS BIT
+SET @Success = 1
+SET NOEXEC OFF
+IF (@Success = 1) PRINT 'The database update succeeded'
+ELSE BEGIN
+	IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
+	PRINT 'The database update failed'
+END
+GO
+-------------------------UPDATE DATA---------------------------
+TRUNCATE TABLE 
+GO
+insert into de_mainarea(name) select  distinct [LinhVuc]  FROM [dbo].[DE_Area] where [ParentId]=0
+GO
+update [dbDataEnergyUp].[dbo].[DE_Area] set mainareaid=a.id from  de_mainarea a inner join DE_Area b on a.name=b.linhvuc

@@ -7,6 +7,7 @@ using BSO;
 using ePower.DE.Domain;
 using ePower.DE.Service;
 using ReportEF;
+using System.Data.SqlClient;
 
 public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserControl
 {
@@ -40,58 +41,85 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
 
     void BindArea()
     {
-        IList<Area> list = new List<Area>();
-        if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
-        {
-            list = new AreaService().FindAll();
-            AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
-        }
-        else
-            list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
-        if (list != null && list.Count > 0)
-        {
-            var listSearch = from o in list where o.ParentId == 0 || o.ParentId == null orderby o.SortOrder ascending select o;
-            ddlArea.DataSource = listSearch;
-            ddlArea.DataTextField = "AreaName";
-            ddlArea.DataValueField = "Id";
-            ddlArea.DataBind();
-            ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
-        }
-        else
-        {
-            ddlArea.DataSource = null;
-            ddlArea.DataTextField = "AreaName";
-            ddlArea.DataValueField = "Id";
-            ddlArea.DataBind();
-            ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
+        //IList<Area> list = new List<Area>();
+        //if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
+        //{
+        //    list = new AreaService().FindAll();
+        //    AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
+        //}
+        //else
+        //    list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
+        //if (list != null && list.Count > 0)
+        //{
+        //    var listSearch = from o in list where o.ParentId == 0 || o.ParentId == null orderby o.SortOrder ascending select o;
+        //    ddlArea.DataSource = listSearch;
+        //    ddlArea.DataTextField = "AreaName";
+        //    ddlArea.DataValueField = "Id";
+        //    ddlArea.DataBind();
+        //    ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
+        //}
+        //else
+        //{
+        //    ddlArea.DataSource = null;
+        //    ddlArea.DataTextField = "AreaName";
+        //    ddlArea.DataValueField = "Id";
+        //    ddlArea.DataBind();
+        //    ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
 
-        }
+        //}
+
+        ReportModels rp = new ReportModels();
+        var linhvuc = rp.DE_MainArea.ToList();
+        //var list = rp.DE_Area.Where(x => x.ParentId == 0).ToList();
+        ddlArea.DataSource = linhvuc;
+        ddlArea.DataTextField = "Name";
+        ddlArea.DataValueField = "Id";
+        ddlArea.DataBind();
+        ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
     }
     void BindSubArea()
     {
-        ddlSubArea.Items.Clear();
-        IList<Area> list = new List<Area>();
-        if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
-        {
-            list = new AreaService().FindAll();
-            AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
-        }
+        if (ddlArea.SelectedValue == "")
+            return;
+
+        int pId = Convert.ToInt32(ddlArea.SelectedValue);
+        if (pId == 0)
+            ddlSubArea.Items.Clear();
         else
-            list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
-        if (list != null && list.Count > 0 && ddlArea.SelectedIndex > 0)
         {
-            int ParentId = Convert.ToInt32(ddlArea.SelectedValue);
-            var listSearch = from o in list where o.ParentId == ParentId orderby o.AreaName ascending select o;
-            ddlSubArea.DataSource = listSearch;
+            ReportModels rp = new ReportModels();
+            List<DE_Area> listArea = rp.DE_Area.Where(x => x.MainAreaId == pId).ToList();
+            ddlSubArea.DataSource = listArea;
             ddlSubArea.DataTextField = "AreaName";
             ddlSubArea.DataValueField = "Id";
             ddlSubArea.DataBind();
             ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
         }
-        else
-        {
-            ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
-        }
+
+        //ddlSubArea.Items.Clear();
+        //IList<Area> list = new List<Area>();
+        //if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
+        //{
+        //    list = new AreaService().FindAll();
+        //    AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
+        //}
+        //else
+        //    list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
+
+        //if (list != null && list.Count > 0 && ddlArea.SelectedIndex > 0)
+        //{
+        //    int ParentId = Convert.ToInt32(ddlArea.SelectedValue);
+        //    var listSearch = from o in list where o.ParentId == ParentId orderby o.AreaName ascending select o;
+        //    ddlSubArea.DataSource = listSearch;
+        //    ddlSubArea.DataTextField = "AreaName";
+        //    ddlSubArea.DataValueField = "Id";
+        //    ddlSubArea.DataBind();
+        //    ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
+        //}
+        //else
+        //{
+        //    ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
+        //}
     }
     void BindProvince()
     {
@@ -441,5 +469,18 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     protected void ddlArea_SelectedIndexChanged(object sender, EventArgs e)
     {
         BindSubArea();
+    }
+
+    private List<DE_Area> getListSubArea(int pId)
+    {
+        ReportModels rp = new ReportModels();
+        string command = " WITH Selects AS (";
+        command += " SELECT * FROM DE_Area WHERE ParentId = @pId";
+        command += " UNION ALL SELECT  t.* FROM DE_Area t INNER JOIN Selects s ON t.ParentID = s.Id ";
+        command += " ) SELECT  * FROm  Selects order by AreaName";
+        //var result = rp.Database.SqlQuery<DE_Area>(command).ToList();
+        var result = rp.DE_Area.SqlQuery(command, new SqlParameter("@pId", pId)).ToList<DE_Area>();
+        //var result = rp.DE_Area.SqlQuery("select * from DE_Area where ", new SqlParameter("@pId", pId)).ToList<DE_Area>();
+        return result;
     }
 }
