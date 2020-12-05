@@ -1,0 +1,23 @@
+﻿create PROCEDURE dbo.de_area_get_by_parentId
+@Parent int
+as
+WITH    q AS 
+        (
+        SELECT  m.*, CAST(str(ROW_NUMBER() OVER (ORDER BY m.areacode),5) AS VARCHAR(MAX)) COLLATE Latin1_General_BIN AS bc
+        FROM    DE_Area m
+        WHERE   ParentID =@Parent
+        UNION ALL
+        SELECT  m.*,  q.bc + '.' + rtrim(str(ROW_NUMBER()  OVER (PARTITION BY m.ParentID ORDER BY m.areacode),5)) COLLATE Latin1_General_BIN
+        FROM    DE_Area m
+        JOIN    q
+        ON      m.parentID = q.Id
+        )
+SELECT  Id, ParentId, AreaCode,
+case when level=1 then '--'+AreaName
+	 when level=2 then '----'+ AreaCode + '-' + AreaName
+	 when level=3 then '------' + AreaCode + '-' + AreaName
+	 when level=4 then '--------' + AreaCode + '-' + AreaName
+else +'----------' + AreaCode + '-'+ AreaName end
+ as AreaName, IsStatus, SortOrder, IsDelete, Level, Mau1x, Mau2x
+FROM    q
+ORDER BY bc

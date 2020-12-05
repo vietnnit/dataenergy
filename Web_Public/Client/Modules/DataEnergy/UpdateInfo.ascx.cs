@@ -69,10 +69,10 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
         //}
 
         ReportModels rp = new ReportModels();
-        var linhvuc = rp.DE_MainArea.ToList();
-        //var list = rp.DE_Area.Where(x => x.ParentId == 0).ToList();
-        ddlArea.DataSource = linhvuc;
-        ddlArea.DataTextField = "Name";
+        //var linhvuc = rp.DE_MainArea.ToList();
+        var list = rp.DE_Area.Where(x => x.ParentId == 0).ToList();
+        ddlArea.DataSource = list;
+        ddlArea.DataTextField = "AreaName";
         ddlArea.DataValueField = "Id";
         ddlArea.DataBind();
         ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
@@ -81,19 +81,17 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     {
         if (ddlArea.SelectedValue == "")
             return;
-
+        ddlSubArea.Items.Clear();
         int pId = Convert.ToInt32(ddlArea.SelectedValue);
-        if (pId == 0)
-            ddlSubArea.Items.Clear();
-        else
+        if (pId > 0)
         {
             ReportModels rp = new ReportModels();
-            List<DE_Area> listArea = rp.DE_Area.Where(x => x.MainAreaId == pId).ToList();
+            List<DE_Area> listArea = getListSubArea(pId);
             ddlSubArea.DataSource = listArea;
             ddlSubArea.DataTextField = "AreaName";
             ddlSubArea.DataValueField = "Id";
             ddlSubArea.DataBind();
-            ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
+            ddlSubArea.Items.Insert(0, new ListItem("Chọn Phân ngành", ""));
         }
 
         //ddlSubArea.Items.Clear();
@@ -474,13 +472,8 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     private List<DE_Area> getListSubArea(int pId)
     {
         ReportModels rp = new ReportModels();
-        string command = " WITH Selects AS (";
-        command += " SELECT * FROM DE_Area WHERE ParentId = @pId";
-        command += " UNION ALL SELECT  t.* FROM DE_Area t INNER JOIN Selects s ON t.ParentID = s.Id ";
-        command += " ) SELECT  * FROm  Selects order by AreaName";
-        //var result = rp.Database.SqlQuery<DE_Area>(command).ToList();
-        var result = rp.DE_Area.SqlQuery(command, new SqlParameter("@pId", pId)).ToList<DE_Area>();
-        //var result = rp.DE_Area.SqlQuery("select * from DE_Area where ", new SqlParameter("@pId", pId)).ToList<DE_Area>();
+        string sp = "de_area_get_by_parentId @Parent";
+        var result = rp.DE_Area.SqlQuery(sp, new SqlParameter("@Parent", pId)).ToList<DE_Area>();
         return result;
     }
 }
