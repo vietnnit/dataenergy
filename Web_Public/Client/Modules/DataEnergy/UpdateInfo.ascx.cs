@@ -16,7 +16,6 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
     {
         if (!IsPostBack)
         {
-            BindReportTemplate();
             BindArea();
             BindProvince();
             BindDistrict();
@@ -29,47 +28,9 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
         }
     }
 
-    void BindReportTemplate()
-    {
-        ReportModels rp = new ReportModels();
-        var list = rp.DE_BaocaoLinhVuc.Where(x => x.PhanLoaiBC == ReportKey.PLAN).ToList();
-        ddlReportTemplate.DataValueField = "AutoId";
-        ddlReportTemplate.DataTextField = "TenMauBC";
-        ddlReportTemplate.DataSource = list;
-        ddlReportTemplate.DataBind();
-    }
-
     void BindArea()
     {
-        //IList<Area> list = new List<Area>();
-        //if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
-        //{
-        //    list = new AreaService().FindAll();
-        //    AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
-        //}
-        //else
-        //    list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
-        //if (list != null && list.Count > 0)
-        //{
-        //    var listSearch = from o in list where o.ParentId == 0 || o.ParentId == null orderby o.SortOrder ascending select o;
-        //    ddlArea.DataSource = listSearch;
-        //    ddlArea.DataTextField = "AreaName";
-        //    ddlArea.DataValueField = "Id";
-        //    ddlArea.DataBind();
-        //    ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
-        //}
-        //else
-        //{
-        //    ddlArea.DataSource = null;
-        //    ddlArea.DataTextField = "AreaName";
-        //    ddlArea.DataValueField = "Id";
-        //    ddlArea.DataBind();
-        //    ddlArea.Items.Insert(0, new ListItem("---Chọn lĩnh vực---", ""));
-
-        //}
-
         ReportModels rp = new ReportModels();
-        //var linhvuc = rp.DE_MainArea.ToList();
         var list = rp.DE_Area.Where(x => x.ParentId == 0).ToList();
         ddlArea.DataSource = list;
         ddlArea.DataTextField = "AreaName";
@@ -93,31 +54,6 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
             ddlSubArea.DataBind();
             ddlSubArea.Items.Insert(0, new ListItem("Chọn Phân ngành", ""));
         }
-
-        //ddlSubArea.Items.Clear();
-        //IList<Area> list = new List<Area>();
-        //if (!AspNetCache.CheckCache(Constants.Cache_ReportFuel_Area_All))
-        //{
-        //    list = new AreaService().FindAll();
-        //    AspNetCache.SetCache(Constants.Cache_ReportFuel_Area_All, list);
-        //}
-        //else
-        //    list = (IList<Area>)AspNetCache.GetCache(Constants.Cache_ReportFuel_Area_All);
-
-        //if (list != null && list.Count > 0 && ddlArea.SelectedIndex > 0)
-        //{
-        //    int ParentId = Convert.ToInt32(ddlArea.SelectedValue);
-        //    var listSearch = from o in list where o.ParentId == ParentId orderby o.AreaName ascending select o;
-        //    ddlSubArea.DataSource = listSearch;
-        //    ddlSubArea.DataTextField = "AreaName";
-        //    ddlSubArea.DataValueField = "Id";
-        //    ddlSubArea.DataBind();
-        //    ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
-        //}
-        //else
-        //{
-        //    ddlSubArea.Items.Insert(0, new ListItem("---Chọn Phân ngành---", ""));
-        //}
     }
     void BindProvince()
     {
@@ -253,8 +189,9 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                     if (obj.SubAreaId > 0)
                         ddlSubArea.SelectedValue = obj.SubAreaId.ToString();
                 }
-                if (obj.ReportTemplate != null && obj.ReportTemplate > 0)
-                    ddlReportTemplate.SelectedValue = obj.ReportTemplate.ToString();
+
+                //if (obj.ReportTemplate != null && obj.ReportTemplate > 0)
+                //    ddlReportTemplate.SelectedValue = obj.ReportTemplate.ToString();
 
                 txtMST.Text = obj.TaxCode;
                 txtCustomerCode.Text = obj.CustomerCode;
@@ -332,6 +269,7 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
                     obj.AreaId = Convert.ToInt32(ddlArea.SelectedValue);
                 else
                     obj.AreaId = 0;
+
                 if (ddlSubArea.SelectedIndex > 0)
                     obj.SubAreaId = Convert.ToInt32(ddlSubArea.SelectedValue);
                 else
@@ -373,7 +311,8 @@ public partial class Client_Modules_DataEnergy_UpdateInfo : System.Web.UI.UserCo
 
                 obj.MoHinhQLNL = _MoHinhQLNL;
                 int tmpMoHinhQLNL = obj.MoHinhQLNL;
-                obj.ReportTemplate = Convert.ToInt32(ddlReportTemplate.SelectedValue);
+
+                //obj.ReportTemplate = Convert.ToInt32(ddlReportTemplate.SelectedValue);
 
                 if (memVal.OrgId > 0)
                 {

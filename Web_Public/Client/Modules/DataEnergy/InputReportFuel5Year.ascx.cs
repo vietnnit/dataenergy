@@ -2131,13 +2131,26 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
     private void GetNangLucSX()
     {
         ReportModels rp = new ReportModels();
+        //var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
+        //var data = (from a in rp.DE_Enterprise
+        //            join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
+        //            where a.Id == memVal.OrgId
+        //            select b).FirstOrDefault();
+        //var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);
+
         var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
-        var data = (from a in rp.DE_Enterprise
-                    join b in rp.DE_BaocaoLinhVuc on a.ReportTemplate equals b.AutoId
-                    where a.Id == memVal.OrgId
-                    select b).FirstOrDefault();
-        var loadTemp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.PhanLoaiBC == ReportKey.PLAN5 && x.IdLinhVuc == data.IdLinhVuc);
-        string BCTemp = loadTemp.TemplateBC.ToUpper();
+        var are = rp.DE_Area.FirstOrDefault(x => x.Id == en.SubAreaId);
+
+        string BCTemp = string.Empty;
+        if (are != null)
+        {
+            var temp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.TenMauBC.ToUpper() == are.Mau2x.ToUpper() && x.PhanLoaiBC == ReportKey.PLAN5);
+            if (temp != null)
+                BCTemp = temp.TenControl;
+        }
+        else
+            throw new Exception("Chưa chọn mẫu báo cáo");
+
         //////////////////////////////////
         switch (BCTemp)
         {
@@ -2441,7 +2454,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
                 table += string.Format("<td>{0}</td>", item.FuelName);
                 table += string.Format("<td>{0}</td>", item.NangLucVanChuyenNguoi);
                 table += string.Format("<td>{0}</td>", item.NangLucVanChuyenHang);
-                
+
                 table += "</tr>";
             }
 
