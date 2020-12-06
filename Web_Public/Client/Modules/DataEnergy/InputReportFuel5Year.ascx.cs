@@ -1184,12 +1184,35 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
           ));
     }
 
+    private string GetReportTemplate()
+    {
+        ReportModels rp = new ReportModels();
+        var en = rp.DE_Enterprise.FirstOrDefault(o => o.Id == memVal.OrgId);
+        var are = rp.DE_Area.FirstOrDefault(x => x.Id == en.SubAreaId);
+        string res = string.Empty;
+        
+        if (are != null)
+        {
+            var temp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.TenMauBC.ToUpper() == are.Mau2x.ToUpper() && x.PhanLoaiBC == ReportKey.PLAN5);
+            if (temp != null)
+            {
+                res = temp.TemplateBC;
+            }
+        }
+        else
+            throw new Exception("Chưa chọn mẫu báo cáo");
+        return res;
+    }
+
     protected void btnExport5_Click(object sender, EventArgs e)
     {
         #region get data
+        //string temp = "TempReport/Template_5nam_new" + ddlReportType5.SelectedValue + ".docx";
+        var tempBC = GetReportTemplate();
+        string temp = "TempReport/" + tempBC;
+
+
         WordExtend ex = new WordExtend();
-        //string temp = "TempReport/Template_5nam" + ddlReportType5.SelectedValue + ".docx";
-        string temp = "TempReport/Template_5nam_new" + ddlReportType5.SelectedValue + ".docx";
         ex.OpenFile(Server.MapPath(ResolveUrl("~") + temp));
         Enterprise or = new Enterprise();
         EnterpriseService orser = new EnterpriseService();
@@ -1205,6 +1228,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         if (or != null)
         {
             ex.WriteToMergeField("BC_Title", or.Title);
+            ex.WriteToMergeField("BC_TenCoSo", or.Title);
             ex.WriteToMergeField("BC_TenCoSoX", or.Title);
             ex.WriteToMergeField("BC_TenCoSo1", or.Title);
         }
@@ -1233,7 +1257,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         if (dtinfo.Rows[0]["ReportDate"] != DBNull.Value)
         {
             ex.WriteToMergeField("BC_NgayLap", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
-            //ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
+            ex.WriteToMergeField("BC_NgayBC", Convert.ToDateTime(dtinfo.Rows[0]["ReportDate"]).ToString("dd/MM/yyyy"));
         }
 
         if (dtinfo.Rows[0]["ReceivedDate"] != DBNull.Value)
@@ -1511,23 +1535,52 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
         ProductCapacityService productCapacityService = new ProductCapacityService();
         DataTable tblProductResult = new DataTable();
+        DataTable tblProductResult02 = new DataTable();
         ReportModels rp = new ReportModels();
         int _baseReportYear = ReportYear - 1;
-        var oldData = rp.DE_ReportFuel.FirstOrDefault(o => o.Year == ReportYear && o.EnterpriseId == memVal.OrgId && o.IsFiveYear == false && o.ReportType == ReportKey.PLAN);
 
-        if (oldData != null)
-            tblProductResult = productCapacityService.GetDataCapacity(oldData.Id, false);
 
-        //tblProductResult = productCapacityService.GetDataCapacity(ReportId, false);
+        //Check report template
+        switch (tempBC.ToUpper())
+        {
+            case "BC2.1.DOCX":
+                var oldData = rp.DE_ReportFuel.FirstOrDefault(o => o.Year == ReportYear && o.EnterpriseId == memVal.OrgId && o.IsFiveYear == false && o.ReportType == ReportKey.PLAN);
+                if (oldData != null)
+                    tblProductResult = productCapacityService.GetDataCapacity(oldData.Id, false);
+                break;
+            case "BC2.2.DOCX":
+                tblProductResult = CreateReport22_Data01();
+                tblProductResult02 = CreateReport22_Data02();
+                break;
+            case "BC2.3.DOCX":
+                tblProductResult = CreateReport23_Data();
+                break;
+            case "BC2.4.DOCX":
+                tblProductResult = CreateReport24_Data();
+                break;
+            case "BC2.5.DOCX":
+                tblProductResult = CreateReport25_Data();
+                break;
+            case "BC2.6.DOCX":
+                tblProductResult = CreateReport26_Data();
+                break;
+            default: break;
+        }
 
 
         dshientai.Merge(tblProductResult);
         dshientai.Tables[0].TableName = "tbl1";
 
-        dshientai.Merge(dthientai);
-
-        dshientai.Tables[1].TableName = "tbl2";
-
+        if (temp == "BC2.2.DOCX")
+        {
+            dshientai.Merge(tblProductResult02);
+            dshientai.Tables[1].TableName = "tbl2";
+        }
+        else
+        {
+            dshientai.Merge(dthientai);
+            dshientai.Tables[1].TableName = "tbl2";
+        }
         DataTable dtPlanTB = new DataTable();
         dtPlanTB = new PlanTBService().GetPlanTBEnterprise(memVal.OrgId, ReportId, true, true);
         DataTable dtPlanTKNL = new DataTable();
@@ -1555,6 +1608,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         ex.WriteDataSetToMergeField(dshientai);
 
         #endregion
+
         ex.Save(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-5-nam-" + dtinfo.Rows[0]["Year"] + ".docx"));
         HttpContext.Current.Response.Redirect(string.Format("~/Download.aspx?fp={0}&fn={1}",
               System.IO.Path.GetFileName(Server.MapPath(ResolveUrl("~") + "TempReport/" + memVal.UserName + ".Bao-cao-5-nam-" + dtinfo.Rows[0]["Year"] + ".docx")),
@@ -2146,7 +2200,7 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         {
             var temp = rp.DE_BaocaoLinhVuc.FirstOrDefault(x => x.TenMauBC.ToUpper() == are.Mau2x.ToUpper() && x.PhanLoaiBC == ReportKey.PLAN5);
             if (temp != null)
-                BCTemp = temp.TenControl;
+                BCTemp = temp.TemplateBC.ToUpper();
         }
         else
             throw new Exception("Chưa chọn mẫu báo cáo");
@@ -2343,6 +2397,114 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
     }
 
+    private DataTable CreateReport22_Data01()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_GroupFuel on a.GroupFuel equals d.Id
+                    where a.EnterpriseId == memVal.OrgId && a.IsProduct == false
+                    && a.ProductType13 == ReportKey.ProductKey_131
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        NhietTriThap = a.NhietTriThap == null ? 0 : a.NhietTriThap,
+                        GroupFuelName = d.Title,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("NhienLieuSuDung", typeof(string));
+        tbl.Columns.Add("LoaiNhienLieu", typeof(string));
+        tbl.Columns.Add("KhoiLuongSuDung", typeof(string));
+        tbl.Columns.Add("NhietTriThap", typeof(string));
+        foreach (var item in data)
+        {
+            DataRow r = tbl.NewRow();
+            r["NhienLieuSuDung"] = item.ProductName;
+            r["LoaiNhienLieu"] = item.GroupFuelName;
+            r["KhoiLuongSuDung"] = item.MaxQuantity;
+            r["NhietTriThap"] = item.NhietTriThap;
+            tbl.Rows.Add(r);
+        }
+        return tbl;
+    }
+
+    private DataTable CreateReport22_Data02()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == memVal.OrgId
+                    && a.IsProduct == true
+                    && a.ProductType13 == ReportKey.ProductKey_132
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        CongSuat13 = (c == null ? string.Empty : c.CongSuat13.ToString()),
+                        DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("SoToMay1", typeof(string));
+        tbl.Columns.Add("CongSuat1", typeof(string));
+        tbl.Columns.Add("HieuSuatTK1", typeof(string));
+        tbl.Columns.Add("HieuSuatVH1", typeof(string));
+
+        tbl.Columns.Add("SoToMay2", typeof(string));
+        tbl.Columns.Add("CongSuat2", typeof(string));
+        tbl.Columns.Add("HieuSuatTK2", typeof(string));
+        tbl.Columns.Add("HieuSuatVH2", typeof(string));
+
+        int _totalRow = data.Count;
+        int _looper = 0;
+        while (_looper < _totalRow)
+        {
+            DataRow r = tbl.NewRow();
+
+            var odd = data[_looper];
+            r["SoToMay1"] = odd.ProductName;
+            r["CongSuat1"] = odd.CongSuat13;
+            r["HieuSuatTK1"] = odd.DesignQuantity;
+            r["HieuSuatVH1"] = odd.MaxQuantity;
+
+            _looper++;
+            if (_looper < _totalRow)
+            {
+                var even = data[_looper];
+                r["SoToMay2"] = even.ProductName;
+                r["CongSuat2"] = even.CongSuat13;
+                r["HieuSuatTK2"] = even.DesignQuantity;
+                r["HieuSuatVH2"] = even.MaxQuantity;
+            }
+            else
+            {
+                r["SoToMay2"] = string.Empty;
+                r["CongSuat2"] = string.Empty;
+                r["HieuSuatTK2"] = string.Empty;
+                r["HieuSuatVH2"] = string.Empty;
+            }
+
+            tbl.Rows.Add(r);
+            _looper++;
+        }
+
+        return tbl;
+    }
+
     private string CreateReport23()
     {
         try
@@ -2399,6 +2561,67 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
 
             throw ex;
         }
+    }
+
+    private DataTable CreateReport23_Data()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == memVal.OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement != null ? a.Measurement : string.Empty,
+                        DataReport1415 = c.DataReport1415,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("TieuDe1", typeof(string));
+        tbl.Columns.Add("GiaTri1", typeof(string));
+        tbl.Columns.Add("DonVi1", typeof(string));
+
+        tbl.Columns.Add("TieuDe2", typeof(string));
+        tbl.Columns.Add("GiaTri2", typeof(string));
+        tbl.Columns.Add("DonVi2", typeof(string));
+
+        int _totalRow = data.Count;
+        int _looper = 0;
+        while (_looper < _totalRow)
+        {
+            DataRow r = tbl.NewRow();
+
+            var odd = data[_looper];
+            r["TieuDe1"] = odd.ProductName;
+            r["GiaTri1"] = odd.DataReport1415;
+            r["DonVi1"] = odd.Measurement;
+
+            _looper++;
+            if (_looper < _totalRow)
+            {
+                var even = data[_looper];
+                r["DonVi2"] = even.ProductName;
+                r["GiaTri2"] = even.DataReport1415;
+                r["DonVi2"] = even.Measurement;
+            }
+            else
+            {
+                r["DonVi2"] = string.Empty;
+                r["GiaTri2"] = string.Empty;
+                r["DonVi2"] = string.Empty;
+            }
+
+            tbl.Rows.Add(r);
+            _looper++;
+        }
+        return tbl;
     }
 
     private string CreateReport24()
@@ -2469,6 +2692,48 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
     }
 
+    private DataTable CreateReport24_Data()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_Fuel on a.FuelId equals d.Id
+                    where a.EnterpriseId == memVal.OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement,
+                        FuelName = d.FuelName,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString()),
+                        NangLucVanChuyenNguoi = (c == null ? string.Empty : c.NangLucVanChuyenNguoi.ToString()),
+                        NangLucVanChuyenHang = (c == null ? string.Empty : c.NangLucVanChuyenHang.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("PhuongTien", typeof(string));
+        tbl.Columns.Add("SoLuong", typeof(string));
+        tbl.Columns.Add("NhienLieu", typeof(string));
+        tbl.Columns.Add("NangLucKhach", typeof(string));
+        tbl.Columns.Add("NangLucHang", typeof(string));
+        foreach (var item in data)
+        {
+            DataRow r = tbl.NewRow();
+            r["PhuongTien"] = item.ProductName;
+            r["SoLuong"] = item.MaxQuantity;
+            r["NhienLieu"] = item.Measurement;
+            r["NangLucKhach"] = item.NangLucVanChuyenNguoi;
+            r["NangLucHang"] = item.NangLucVanChuyenHang;
+            tbl.Rows.Add(r);
+        }
+        return tbl;
+    }
+
     private string CreateReport25()
     {
         try
@@ -2531,6 +2796,43 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
         }
     }
 
+    private DataTable CreateReport25_Data()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    join d in rp.DE_Fuel on a.FuelId equals d.Id
+                    where a.EnterpriseId == memVal.OrgId
+                    orderby a.ProductName ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement,
+                        FuelName = d.FuelName,
+                        DesignQuantity = (c == null ? string.Empty : c.DesignQuantity.ToString()),
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("PhuongTien", typeof(string));
+        tbl.Columns.Add("SoLuong", typeof(string));
+        tbl.Columns.Add("NhienLieu", typeof(string));
+        foreach (var item in data)
+        {
+            DataRow r = tbl.NewRow();
+            r["PhuongTien"] = item.ProductName;
+            r["SoLuong"] = item.MaxQuantity;
+            r["NhienLieu"] = item.Measurement;
+            tbl.Rows.Add(r);
+        }
+        return tbl;
+    }
+
     private string CreateReport26()
     {
         try
@@ -2588,6 +2890,40 @@ public partial class Client_Modules_DataEnergy_InputReportFuel5Year : System.Web
 
             throw ex;
         }
+    }
+
+    private DataTable CreateReport26_Data()
+    {
+        ReportModels rp = new ReportModels();
+        var dataCurrentYear = rp.DE_ReportFuel.FirstOrDefault(x => x.EnterpriseId == memVal.OrgId && x.Year == ReportYear
+                                                                    && x.IsFiveYear == false && x.ReportType == ReportKey.PLAN);
+
+        var data = (from a in rp.DE_Product
+                    join b in rp.DE_ProductCapacity.Where(x => x.ReportId == dataCurrentYear.Id && x.IsPlan == false) on a.Id equals b.ProductId into ab
+                    from c in ab.DefaultIfEmpty()
+                    where a.EnterpriseId == memVal.OrgId
+                    orderby a.ProductOrder ascending
+                    select new
+                    {
+                        ProductId = a.Id,
+                        ProductName = a.ProductName,
+                        Measurement = a.Measurement,
+                        MaxQuantity = (c == null ? string.Empty : c.MaxQuantity.ToString())
+                    }).ToList();
+
+        DataTable tbl = new DataTable();
+        tbl.Columns.Add("PhuongTien", typeof(string));
+        tbl.Columns.Add("SoLuong", typeof(string));
+        tbl.Columns.Add("NhienLieu", typeof(string));
+        foreach (var item in data)
+        {
+            DataRow r = tbl.NewRow();
+            r["PhuongTien"] = item.ProductName;
+            r["SoLuong"] = item.MaxQuantity;
+            r["NhienLieu"] = item.Measurement;
+            tbl.Rows.Add(r);
+        }
+        return tbl;
     }
 }
 

@@ -242,14 +242,14 @@
                                 <div class="col-lg-12">
                                     <label class="control-label">
                                         <asp:Literal ID="Literal7" runat="server" Text="1. Năng lực sản xuất của cơ sở"></asp:Literal>
-                                        
+
                                     </label>
                                     <div class="margin-bottom-10">
                                         <asp:Literal ID="ltRp5_NangLucSXNamCoSo" runat="server" Text="xxxxxxxxxxxxxxx"></asp:Literal>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div id="tabPlan5Year">
                                 <uc1:InputPlan5Year ID="ucInputPlan5Year" runat="server" Visible="true" />
                             </div>
@@ -369,8 +369,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-left">
                         <asp:LinkButton runat="server" ID="btnExport5Word" CssClass="btn btn-sm btn-success mr10"
-                            Visible="true" Text="Xuất báo cáo 5 năm" OnClientClick="ShowDialogExportword();return false;"
-                            data-toggle="modal" data-target="#dlgExportReport5"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
+                            Visible="true" Text="Xuất báo cáo 5 năm" OnClick="btnExport5_Click"><i class="fa fa-file-word-o"></i>&nbsp;Xuất báo cáo 5 năm</asp:LinkButton>
                         <asp:LinkButton runat="server" ID="btnReSend" CssClass="btn btn-sm btn-danger mr10"
                             OnClientClick="ShowDialogResend();return false;" data-toggle="modal" data-target="#dlgResend"
                             Text="Hoàn thành và Gửi SCT" OnClick="btnReSend_Click" ValidationGroup="view"><i class="fa fa-send-o"></i>&nbsp;Hoàn thành và Gửi SCT</asp:LinkButton>
@@ -880,7 +879,7 @@ btn-u-primary mr10"
     function showformInfo() {
         $('#frmInfo').modal('toggle');
     }
-   
+
     $(document).ready(function () {
         $("#<%=txtReportDate.ClientID%>").datetimepicker
             ({

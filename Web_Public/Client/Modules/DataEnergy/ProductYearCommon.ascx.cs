@@ -29,6 +29,6 @@ public partial class Client_Modules_DataEnergy_ProductYearCommon : System.Web.UI
             }
         }
         else
-            throw new Exception("Chưa chọn mẫu báo cáo");
+            throw new Exception("Chưa cập nhật thông tin phân ngành");
     }
 }
